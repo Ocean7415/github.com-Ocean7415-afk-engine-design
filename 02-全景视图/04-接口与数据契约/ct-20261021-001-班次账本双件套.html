@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ct-20261021-001 · 契约卡 · 班次账本双件套（queue-events + queue-ledger）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>ct-20261021-001 · 契约卡 · 班次账本双件套（queue-events + queue-ledger）</h1>
+<div class="meta"><b>id</b> ct-20261021-001 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-11-03 · <b>repo_head</b> e170067 · <b>run_id</b> w251</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+<p><strong>变更注记（v2 增密·W-251·拍板#334·2026-11-03）</strong>：repo_head 01c1d9a→e170067 重锚；五态随 W-139 中文化勘正（中文键+LEGACY 映射）；新增<strong>邻域契约节</strong>=队列写口审计行字段表（任务书④预置·实勘属 L2 窗队列审计账域·域界注记见该节）。</p>
+</blockquote>
+<h1>契约卡 · 班次账本双件套（queue-events + queue-ledger）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：定义每班次两本 append-only JSONL 账的字段契约——queue-events（行车记录仪·gate 判定在它）与 queue-ledger（排期账本·五态推进）+queue-summary 投影件。<strong>为什么存在</strong>：账本=夜车可回放的全部根据，字段契约锁定后「读旧账的代码」与「写新账的代码」永不漂移（W-041 字段对照 3/3 自检·<code>90-过程/执行台账.md:583</code>）。<strong>边界</strong>：阈值语义/判卷不在本卡（账本只记不判）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>实物定约：queue-40 班两账本实物逐字段抽验（seq/ts/type/payload 顶层键+3 事件型 payload 全在卡面）——W-041 accept 自检 PASS</td><td><code>90-过程/执行台账.md:583</code></td></tr><tr><td>2</td><td>读侧纪律锚：gate 终态读取单一正本=queue-events.jsonl（不在 queue-ledger·拍板#35 实锚）</td><td>本卡接口节</td></tr><tr><td>3</td><td>三方对账工具：排期账↔事件账↔关环件对账走 monitor-audit</td><td><code>pipeline-lab/scripts/monitor-audit.mjs:3</code></td></tr></tbody></table>
+<h2>接口（双件分工）</h2>
+<table><thead><tr><th>件</th><th>角色</th><th>写入方类</th><th>事件型来源</th><th>锚</th></tr></thead><tbody><tr><td><code>queue-events.jsonl</code></td><td>行车记录仪（队列级事件流）</td><td><code>Ledger</code>（全局账本类）</td><td>全局 <code>EVENT_TYPES</code> 白名单 queue 段</td><td>ts/src/queue/queue-runner.ts:161</td></tr><tr><td><code>queue-ledger.jsonl</code></td><td>排期账本（每版本状态推进）</td><td><code>QueueLedger</code>（queue 自有类）</td><td>自有三型白名单</td><td>ts/src/queue/queue-runner.ts:162</td></tr><tr><td><code>queue-summary.md</code></td><td>汇总投影（退出码/阈值/版本终态表）</td><td>queue-runner 收车时写</td><td>—</td><td>ts/src/queue/queue-runner.ts:268</td></tr></tbody></table>
+<p><strong>读侧纪律（实然）</strong>：gate 终态读取单一正本=<code>queue-events.jsonl</code>（不在 queue-ledger——拍板#35 实锚）；三方对账=排期账↔事件账↔关环件（<code>pipeline-lab/scripts/monitor-audit.mjs:3</code>）。</p>
+<h2>字段表（顶层·两账同构·抽验自 queue-40 实物）</h2>
+<table><thead><tr><th>字段</th><th>型</th><th>语义</th><th>queue-40 实物例</th></tr></thead><tbody><tr><td><code>seq</code></td><td>number</td><td>单调递增序号（=账本游标）</td><td><code>1</code></td></tr><tr><td><code>ts</code></td><td>string</td><td>ISO 8601 时间戳</td><td><code>2026-10-14T18:06:25.552Z</code></td></tr><tr><td><code>type</code></td><td>string</td><td>事件型（写侧白名单门外 TypeError）</td><td><code>queue_dispatched</code></td></tr><tr><td><code>payload</code></td><td>object</td><td>事件负载（随 type 变）</td><td><code>{"version":"V0R","round":1,...}</code></td></tr></tbody></table>
+<h2>事件型与 payload 契约</h2>
+<h3>queue-events.jsonl（行车记录仪·白名单=ts/src/shared/event-types.ts:90）</h3>
+<table><thead><tr><th>type</th><th>payload 字段（实物实证）</th><th>语义</th></tr></thead><tbody><tr><td><code>queue_dispatched</code></td><td>version, round, resume, package, workspace</td><td>派一班</td></tr><tr><td><code>queue_gate_passed</code></td><td>version, starred, finalReds, threshold, reason</td><td>过闸（queue-40 seq2 实物）</td></tr><tr><td><code>queue_gate_failed</code></td><td>version, finalReds, threshold, reason</td><td>拒闸→停队列·EXIT=1</td></tr><tr><td><code>queue_dirty</code></td><td>file, detail</td><td>损坏行登记（Q3 自净·由 QueueLedger 回写全局账）</td></tr></tbody></table>
+<h3>queue-ledger.jsonl（排期账本·自有白名单三型=ts/src/queue/queue-ledger.ts:68）</h3>
+<table><thead><tr><th>type</th><th>payload 字段</th><th>语义</th></tr></thead><tbody><tr><td><code>queue_enqueued</code></td><td>version, package, decision_ref, state:"queued"</td><td>入队登记（重复入队拒·排期唯一）</td></tr><tr><td><code>queue_entry_state</code></td><td>version, from, to</td><td>状态推进（合法转移才记）</td></tr><tr><td><code>queue_entry_state_rejected</code></td><td>version, from, to</td><td>非法转移留痕（不影响末态）</td></tr></tbody></table>
+<h2>数据流（图示与节点详注）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    QR[queue-runner<br/>班内执行] -->|派班/判闸| LE[Ledger 全局账本类]
+    QR -->|五态推进| QL[QueueLedger 自有类]
+    LE --> EV[("queue-events.jsonl<br/>行车记录仪·gate 正本")]
+    QL --> LG[("queue-ledger.jsonl<br/>排期账本·五态")]
+    QR -->|收车| SUM[queue-summary.md<br/>投影·退出码]
+    EV -->|gate 事件流| PS[postshift --watch<br/>班后复盘触发]
+    EV & LG --> AUD[monitor-audit<br/>三方对账]
+    LG -.->|queue_dirty 回写| EV
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>queue-runner</td><td>双账本唯一写入方（类落位锚 ts/src/queue/queue-runner.ts:161/<code>:162</code>）：派班写 events、推进写 ledger、收车写 summary——三件全由它驱动。</td></tr><tr><td>Ledger（全局账本类）</td><td>行车记录仪的写入类：append 收全局 EVENT_TYPES 白名单 queue 段（锚 ts/src/shared/event-types.ts:90）——白名单外 TypeError 写侧契约门。</td></tr><tr><td>QueueLedger（自有类）</td><td>排期账本写入类：自有三型白名单（锚 ts/src/queue/queue-ledger.ts:68）；五态转移逐边校验（<code>:14</code> 枚举/<code>:19</code> 转移表·投影见 sm-20261021-002）。</td></tr><tr><td>queue-events.jsonl</td><td>gate 判定正本（读侧单一正本·拍板#35）：过闸/拒闸的最终真相在这本账（实物 <code>runs/.queue-roots/queue-40/queue-events.jsonl:1</code>）。</td></tr><tr><td>queue-ledger.jsonl</td><td>每版本状态线（实物 <code>runs/.queue-roots/queue-40/queue-ledger.jsonl:1</code>）：非法转移留痕 rejected 不影响末态——账干净、史完整。</td></tr><tr><td>queue-summary.md</td><td>人类可读投影（锚 ts/src/queue/queue-runner.ts:268）：退出码/阈值/版本终态表——晨读入口，真相仍在两 JSONL。</td></tr><tr><td>postshift --watch</td><td>账本的第一读者：gate 事件流=班后复盘触发源——账本不只存档，还驱动下游（触发锚 pipeline-lab/scripts/postshift.mjs:8）。</td></tr><tr><td>monitor-audit</td><td>三方对账工具（锚 pipeline-lab/scripts/monitor-audit.mjs:3）：排期账↔事件账↔关环件对表——账本间不一致逃不掉。</td></tr><tr><td>queue_dirty 回写</td><td>Q3 自净接缝：QueueLedger 载入遇损坏行→回写全局账 queue_dirty 登记——两账联动自净不互相污染。</td></tr></tbody></table>
+<h2>追加语义（两账同守）</h2>
+<ol><li><strong>append-only</strong>：只许追加永不涂改（<code>appendFileSync</code> 逐行 JSON）；</li><li><strong>游标续读</strong>：<code>cursor()</code>=已落盘最大 seq·<code>since(seq)</code> 取其后全量；</li><li><strong>删库可重建</strong>：<code>rebuild()</code> 清内存投影从事件流全量重放；</li><li><strong>冷启空账</strong>：不建空文件·首写才落盘；</li><li><strong>Q3 自净</strong>：载入遇损坏行/非法转移不抛——登记 <code>queue_dirty</code> 跳过·合法行照常恢复末态。</li></ol>
+<h2>波次状态（排期账本维护·细节见状态机卡）</h2>
+<p>五态 <code>排队中/施工中/完成/被替代/待重排</code>（W-139 中文键正本·拍板#198；英文旧名 queued/in_progress/done/superseded/needs_replan 经 LEGACY_EN_MAP 读取映射·历史英文账一字不动重放等价）与合法转移表定义在 ts/src/queue/queue-ledger.ts:14、:19——逐格投影见 <code>05-状态机/sm-20261021-002</code>（本卡不重复）。</p>
+<h2>邻域契约 · 队列写口审计行（storage/queue_audit.jsonl·W-251 补·域界注记）</h2>
+<blockquote>
+<p><strong>域界注记（B 级留痕候追认）</strong>：本节=L2 窗队列写口审计账契约（任务书④预置落卡）——与班次账本双件套（L1 夜车）<strong>不同域不同件</strong>：班次账=夜车排期/gate 判定；审计账=窗队列翻格/注记的道4 审计留痕。落本卡系任务书预置·候独立契约卡（沿拍板#294 漏盘申报→清偿窗补卡先例·本票不出新卡）。</p>
+</blockquote>
+<p>审计账=<code>storage/queue_audit.jsonl</code>（append-only·道4 审计·每写一行·W-189 拍板#263 立·W-226 拍板#311 增指纹）。字段契约（91-脚本/队列写口.mjs 实勘·:371 翻格成功行/:434 拒写行/:492 注记行）：</p>
+<table><thead><tr><th>字段</th><th>型</th><th>语义</th><th>翻格行</th><th>拒写行</th><th>注记行(op:note)</th></tr></thead><tbody><tr><td><code>ts</code></td><td>string</td><td>ISO 时间戳</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>actor</code></td><td>string</td><td>写权者（dispatcher/window/owner/inspector）</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>ticket</code></td><td>string</td><td>窗ID（W-NNN）</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>from</code> / <code>to</code></td><td>string</td><td>转移前后态（注记行 from=to=现态）</td><td>✔</td><td>from=null·to=null</td><td>✔（=现态）</td></tr><tr><td><code>note</code></td><td>string</td><td>注记词面</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>ok</code></td><td>bool</td><td>是否真落写（幂等零写=false 亦记·事故可回放）</td><td>✔</td><td>false</td><td>✔</td></tr><tr><td><code>gate</code> / <code>reason</code></td><td>string</td><td>拒写道号/拒因（≤300字）</td><td>—</td><td>✔</td><td>—</td></tr><tr><td><code>via</code></td><td>string</td><td>固定「队列写口.mjs」</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>pid</code></td><td>number</td><td>写者进程号</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>op</code></td><td>string</td><td>事件标记：翻格行<strong>无此字段</strong>·注记行=<code>"note"</code>（消费方按 op 缺省读作翻格=向后兼容）</td><td>—</td><td>—</td><td><code>"note"</code></td></tr><tr><td><code>preMd5</code>/<code>preLines</code>/<code>preMaxW</code></td><td>string/number/number</td><td><strong>写前指纹三字段</strong>（W-226）：队列全文 md5/票据行数（「\</td><td>W-xxx \</td><td>」起头行计数）/最大W号数值（指纹函数=队列写口.mjs:83-93·拒写行亦携带·fpBox 锁外预读回填）</td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><code>postMd5</code>/<code>postLines</code>/<code>postMaxW</code></td><td>同上</td><td><strong>写后指纹三字段</strong>（真落写才记·幂等零写全 null）</td><td>✔</td><td>—</td><td>✔</td></tr></tbody></table>
+<p><strong>向后兼容（两级·案18-21 实证=队列写口.mjs selftest）</strong>：①新增指纹字段旧行照读——消费方逐行 JSON.parse 无指纹键不炸（旧格式审计行活证=:806 案20）；②注记行 op:"note" 标记翻格行无此字段——M4 等消费方按 postMd5 读不受影响（:422 注记）。dry-run 零副作用不含审计；auditPath 未传=审计关（module API 沙盒零污染）。</p>
+<h2>从哪测</h2>
+<p><code>ts/src/queue/</code> 下 vitest 用例；实物对账=读 <code>runs/.queue-roots/queue-40/</code> 两 JSONL 逐行 JSON.parse；三方对账跑 <code>pipeline-lab/scripts/monitor-audit.mjs</code>。</p>
+<h2>参数与预算</h2>
+<p>阈值语义：<code>max_final_reds</code>（manifest 声明）与 gate payload 的 <code>threshold</code>/<code>finalReds</code> 对表——终局红票≤阈值才 passed；叫停只作用未开工（queued）——排期口径（纪要 §四-4）；判卷/预算三路不在本卡范围（账本只记不判）。</p>
+<h2>时效</h2>
+<p>基准=仓 head e170067（2026-11-03·W-251 对账批复勘：行锚随 W-139 中文化刷新+审计行契约节落卡）；上一基准 01c1d9a（2026-10-21 W-041·queue-40 实物逐字段比对）；失效触发=本卡头 frontmatter「失效触发」键。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/04-接口与数据契约/ct-20261021-001-班次账本双件套.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

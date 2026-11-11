@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-007 · 模块卡 · 三站站4施工（station4-build）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-007 · 模块卡 · 三站站4施工（station4-build）</h1>
+<div class="meta"><b>id</b> mk-20261021-007 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 67e5b04 · <b>run_id</b> queue-93-w040</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；自愈环（干活自愈环·L1）。</p>
+</blockquote>
+<h1>模块卡 · 三站站4施工（station4-build）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：流水线的「施工道」——按工单计划把票做成代码：双槽位（copy 确定性搬运/llm 写码工程师）+自动分槽+预授权降级链。<strong>为什么存在</strong>：施工既要 LLM 的产能又要确定性的保底，站4 用「机器不发明新手段、只在预授权清单内降档」两头兼顾（头注·锚 ts/src/station4-build/build.ts:1）。<strong>边界</strong>：判卷素材防篡改（拍板#82 守卫·<code>90-过程/拍板记录表.md:101</code>）——守卫只防篡改不判卷，红绿权仍在验收命令。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立规：拍板#82 落表——判卷素材防篡改（验收命令执行全走 runAcceptanceGuarded·篡改=红旗 fail-closed 终局·不进⟲环不进降级链·不可自愈豁免）</td><td><code>90-过程/拍板记录表.md:101</code></td></tr><tr><td>2</td><td>守卫接线：所有验收命令执行走 runAcceptanceGuarded（判卷前校验工作区副本哈希）</td><td>本卡实现概览·锚 ts/src/station4-build/build.ts:210</td></tr><tr><td>3</td><td>降级链纪律：llm 槽 ⟲≤3 自愈环不绿且有素材→自动切 copy·DEC 留痕晨报追认——机器只在预授权清单内降档</td><td>本卡实现概览（头注·锚 ts/src/station4-build/build.ts:1）</td></tr></tbody></table>
+<h2>接口</h2>
+<p>主入口 buildTicket（锚 ts/src/station4-build/build.ts:137）——按工单计划施工出码；predeployTicketAssets 包内资产预布（锚 ts/src/station4-build/build.ts:129）。 判卷守卫 import 自 shared/judge-guard（runAcceptanceGuarded/lockJudgeSnapshot·锚 ts/src/station4-build/build.ts:24）。</p>
+<h2>实现概览</h2>
+<p>双槽位+自动分槽+预授权降级链（头注·锚 ts/src/station4-build/build.ts:1）：copy=确定性施工员（基线/前端票保底·搬运 artifacts）；llm=写码工程师（五槽装备+设计书全文→分文件生成→反馈式自愈环 ⟲≤3）；auto=业主拍板默认（前端票走确定性保底·其余走 LLM·⟲3 不绿且有素材→自动切 copy·DEC 留痕晨报追认——机器不发明新手段只在预授权清单内降档）。 判卷素材防篡改（拍板#82）：所有验收命令执行走 runAcceptanceGuarded（调用点锚 ts/src/station4-build/build.ts:210）——判卷前校验工作区副本哈希·篡改=红旗 fail-closed 终局（不进⟲环不进降级链·不可自愈豁免）；红绿权仍归验收命令。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    T[工单票] --> S{自动分槽<br/>auto}
+    S -->|前端/基线票| CP[copy 槽<br/>确定性搬运]
+    S -->|其余| LM[llm 槽<br/>五槽装备+设计书全文]
+    LM --> GEN[分文件生成]
+    GEN --> ACC{验收命令<br/>runAcceptanceGuarded}
+    ACC -->|绿| DONE[票成]
+    ACC -->|红| HE{⟲自愈环<br/>≤3}
+    HE -->|未满| GEN
+    HE -->|满且有素材| DEG[降级切 copy<br/>DEC 留痕晨报追认]
+    ACC -->|哈希校验败| FLAG[篡改红旗<br/>fail-closed 终局]
+    DEG --> ACC
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>工单票</td><td>施工输入：站3 导入后的票（含计划/预算/验收命令）——站4 只按工单施工，不自造票不出题（出题权冻结在开工前）。</td></tr><tr><td>自动分槽</td><td>auto=业主拍板默认档：前端票走确定性保底，其余走 LLM——分槽规则机械可预期，机器不发明新档位。</td></tr><tr><td>copy 槽</td><td>确定性施工员：搬运 artifacts 保底（基线/前端票），零 LLM 零漂移——降级链的落点与确定性路线的本体。</td></tr><tr><td>llm 槽</td><td>写码工程师：五槽装备+设计书全文→分文件生成→反馈式自愈环（⟲≤3）——产能担当，预算走工单 llm-call-budget。</td></tr><tr><td>runAcceptanceGuarded</td><td>判卷守卫（拍板#82·锚 ts/src/station4-build/build.ts:210）：判卷前校验工作区副本哈希——防「先改判卷素材再跑命令」的作弊面；红绿权仍归验收命令本身。</td></tr><tr><td>篡改红旗</td><td>fail-closed 终局：不进⟲环不进降级链、不可自愈豁免——守卫是唯一「一票终局」路径，因它防的是对判卷制度本身的攻击。</td></tr><tr><td>降级切 copy</td><td>预授权降档：⟲3 不绿且有素材→自动切 copy+DEC 留痕晨报追认——降级可追认可推翻，不静默吞结果。</td></tr></tbody></table>
+<h2>调用方与被调用</h2>
+<p>被调：queue-runner（切片流水线站4道）。 调用：llm-builder/llm-prompts/llm-session 族（LLM 施工）·judge-guard（判卷守卫）·degrade-chain（降级链）·selfheal-triage（自愈分诊）。</p>
+<h2>从哪测</h2>
+<p>同目录测试族（phase3/llm 各件 .test.ts）+e2e 链；<code>npm test</code> 全量跑。</p>
+<h2>参数与预算</h2>
+<p>LLM 调用走工单预算（llm-call-budget 件）；⟲≤3 自愈环上限；判卷红绿权/出题权零触碰（#82 守卫只防篡改不判卷）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 67e5b04（2026-10-21·W-040 核对）；失效触发=槽位/降级链/守卫语义改动（看 ts/ 面 git log+执行台账）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-007-三站站4施工-station4-build.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

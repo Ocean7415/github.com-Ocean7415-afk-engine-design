@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>三件对照 · 代码实态×版本三本账×验收判定册V2 差距与待办</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, useMaxWidth: false, padding: 8, nodeSpacing: 40, rankSpacing: 40 }, themeVariables: { fontSize: "14px" } });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .redline { background:#fef2f2; border:1px solid #dc2626; }
+  .shuo { background:#fffbeb; border-left:4px solid #d97706; }
+  .term { background:#f0f9ff; border-left:4px solid #0284c7; }
+  code { font-size: 0.85em; }
+  .mermaid { overflow-x: auto; }
+  .mermaid svg { height: auto; }
+  .mermaid svg .nodeLabel, .mermaid svg .edgeLabel, .mermaid svg .label,
+  .mermaid svg foreignObject div, .mermaid svg foreignObject span { font-size: 14px !important; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+<header class="space-y-2">
+  <h1 class="font-serif text-3xl">三件对照 · 差距与待办 <span class="text-slate-400 text-xl">7 卡 · 20261028（v4）</span></h1>
+  <p class="text-sm text-slate-500">2026-10-28 · 基准 <code class="bg-stone-200 rounded px-1">工作区HEAD</code> · 对照件=版本三本账候拍件（07-设计理念专题）＋04-验收判定册V2分层版（02-全景视图/08-机制目录）＋机制目录九册五十七项（同目录）· tags: [三件对照, 差距分析, 版本三本账, 验收判定, 实施计划, 骨架详解, 配图卡]</p>
+  <div class="deep-box rounded-lg p-3 text-sm text-slate-100">本册主旨：验收判定域票级 10/14·窗级 8/14 环节已在码（当日逐锚实勘·判定册V2已升分层版）；要达设计理念，缺的不是新机闸，而是四层欠账——在飞收口→版本 pin→尺子管尺子→骨架母版，排好序共七步。<br><b class="text-emerald-300">v5 注（20261029·主窗时效勘误·零内容改动）</b>：卡3「第一层·在飞收口（最急）」与卡4 七步表的<b>进度叙述已过时</b>——在飞八张 10-29 全清✅（W-145~152 拍板#211/#213/#214 链）·步①构成物清单已拍（#215）·步②钉版闸已落（W-153·#215）·步③留出分割已落（W-154·#216）且留出四题已点定（10-29·核账道 W-160/#220 首跑 4/4 绿）·审批熔断已 enforce（10-29 业主令）。机制对照与差距分析仍为准·<b>进度叙述以窗队列与执行台账为正本</b>。<br><b class="text-amber-300">v4 注</b>：增补卡7骨架 S1.x 详解——解答总闸门「版本钉死」钉的是什么、「基类化」基的是什么（与《版本三本账配图卡》卡6 同源）。</div>
+</header>
+
+<!-- 卡1 三件关系 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡1 · 三件是什么关系 <span class="text-slate-400 text-sm">as-built × 两份应然件</span></h2>
+  <p class="text-sm">一句话：代码是地基，三本账管「引擎自己哪一版」，判定册V2 管「评审怎么更强」——两份应然在「管尺子」处合流。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  CODE["当前代码 as-built<br/>八大机闸在码<br>(判卷守卫·自愈环·复考闸<br>会审门·熔断·回滚)"]
+  V3["版本三本账（候拍件）<br/>骨架单源·两层装配<br/>版本pin·自举环"]
+  CC["验收判定册V2（分层候选稿）<br/>票级14环节·窗级14环节<br/>候A~F按层重分组"]
+  CODE -->|"地基：票级10/14·窗级8/14<br/>已覆盖且普遍更严"| CC
+  CODE -->|"manifest 纪律<br/>镜面反射的起点"| V3
+  V3 <==>|"合流点：尺子自己<br/>也要被管被版本化"| CC
+  NOTE["分界线：V3 管版本归属<br/>CC 管判定强度<br/>红绿权始终只在<br/>验收命令 exit code"]
+  V3 -.-> NOTE
+  CC -.-> NOTE
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：as-built＝照实画（码里有什么画什么）｜应然＝应该要有（候选·待拍板）｜镜面反射＝把管客人 APP 版本的三件纪律（登记册/继承/对账指纹）原样照到引擎自己身上｜红绿权＝判合格不合格的最终权力，只在验收命令退出码手里，任何 agent 只建议。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：现在厂房已经能生产（代码八大机闸）。桌上放着两份改造图：一份说「给机器刻版本铭牌、让机器自己造自己」（三本账），一份说「把质检队再升级六件装备」（判定册V2）。两份图在一点上交汇：考卷和评审员自己也得有版本、也得被考试——三本账的「考题库独立版本化」和判定册的「失败变题库」是同一件事的两半。</div>
+  <p class="text-xs text-slate-500">锚：版本三本账=07-设计理念专题/版本三本账-…-候拍-20261028.html（§五五步·§六候拍四项）｜判定册V2分层版=02-全景视图/08-机制目录/04-验收判定册V2.html（§1A 票级小结：10/14覆盖·缺口=候A/B/F；§1B 窗级小结：8/14覆盖·缺口=候C/D/E）｜哲学一致性=分层版§4「全册最重的一句话」+新增「第二层候选更保守·不新建 LLM 审核岗」</p>
+</section>
+
+<!-- 卡2 as-built 实勘 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡2 · 验收判定域家底：八大机闸在码 <span class="text-slate-400 text-sm">deepread 当日逐锚实勘</span></h2>
+  <p class="text-sm">一句话：判定册V2 说「已覆盖 8 环节」不是纸面话——八个闸当天全部逐行验明正身。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  M5["⑤图纸会审门四查<br/>pi_runner.mjs:377<br/>领单后开窗前·红打回不烧钱"]
+  M5 --> M2["②自愈环≤3<br/>build.ts:184<br/>施工中红了自动修"]
+  M2 --> M1["①验收命令守卫<br/>build.ts:210<br/>自报绿灯不认"]
+  M1 --> M3["③红票七源一出口<br/>red-ruling.ts:35"]
+  M3 --> M4["④复考闸·永不装绿<br/>pi_runner.mjs:215"]
+  M4 --> M6["⑥M6同因熔断<br/>lane-drain.ts:50"]
+  M6 --> M7["⑦绿缓存resume链<br/>build-lane.ts:63"]
+  M7 --> M8["⑧rollback回滚兑底<br/>confirm.ts:90"]
+  M8 --> ALL["票级10/14·窗级8/14 已覆盖<br/>红绿权=exit code<br/>一寸未动"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：自报绿灯不认＝工人说「我做完了」不算数，只算自报｜自愈环＝红了自动重修最多3轮｜七源一出口＝七种报红渠道全走同一个裁决出口｜复考闸＝收口✅前按考题库重跑机检（#87·W-027）｜会审门＝领单后开窗前四查（基线测试/类型/锚点指纹/假设复验·#170·红打回不烧钱）｜M6熔断＝同一病因反复出现直接零轮终局｜绿缓存＝没变的部分不重跑但指纹失效必重验。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：先盘家底。质检线上八台机器当天挨个通了电：验收命令守卫在（build.ts:210 只认机器判卷）、自愈环在（:184 重修记账）、红票总出口在（red-ruling.ts:35）、收口复考闸在（pi_runner.mjs:215 考题重跑）、开窗会审门在（:377 四查拦烧钱）、同因熔断在（lane-drain.ts:50）、免重跑指纹链在（build-lane.ts:63）、一键回滚在（confirm.ts:90）。CC 评审链 15 个环节，这八台已对应覆盖且普遍更严——所以差距不在「再买机器」，在下面三张卡说的欠账。</div>
+  <p class="text-xs text-slate-500">锚（当日实勘原文）：runAcceptanceGuarded=build.ts:210｜self_heal_retry=build.ts:184｜makeRedRuling=red-ruling.ts:35（night-shift）｜needsReexam+考题匹配=pi_runner.mjs:215-243｜会审门#170 注记=pi_runner.mjs:377-382｜M6 熔断打印=lane-drain.ts:50＋票级停车 park≤2=park.ts:26｜resumeDirect=build-lane.ts:63｜executeRollback=confirm.ts:90｜票级授权面=types.ts:185-207（#42·判定册分层版新增锚）｜shared/ 58 件·queue-runner.ts:5 spawn 红线</p>
+</section>
+
+<!-- 卡3 差距分层 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡3 · 四层欠账：到设计理念还缺什么 <span class="text-slate-400 text-sm">三件整合差距总图</span></h2>
+  <p class="text-sm">一句话：四层由急到缓——在飞8张收口→版本pin→尺子管尺子→骨架母版；每层都有明确载体和前置。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  L1["第一层·在飞收口（最急）<br/>8张窗卡：145/148等确认<br/>149待实施·146/147/152挂起<br/>150/151候拍"]
+  L2["第二层·版本化（总闸门）<br/>步①构成物清单拍板<br/>步②夜车入口版本pin<br/>缺pin拒启"]
+  L3["第三层·尺子管尺子<br/>步③考题库留出分割<br/>×候D班外评审评测集<br/>（合流出对比件）"]
+  L4["第四层·骨架与评审增强<br/>步④基类化母版（P2）<br/>候D→候E→候C 链式拍<br/>候A/B票级+候B窗级变式"]
+  L1 -->|"W-152收口=步①班外栏前置"| L2
+  L2 -->|"pin后涨跌才可归因<br/>尺子才有版本可言"| L3
+  L3 -->|"考题分家+评测集就位<br/>自举核账才有尺"| L4
+  L4 --> GOAL["终点：自举生产环<br/>L2用L1施工→产L1新版<br/>→留出核账→业主终认→上线"]
+  LINK["判定册链式拍序：候D出数据<br/>→候E用数据收紧→候C定谁批<br/>窗级候选全机械守门<br/>不新建 LLM 审核岗"]
+  L4 -.-> LINK
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：构成物清单＝拍板「哪些件算引擎版本的一部分」（L1栏/L2栏/S栏/版本外栏）｜版本pin＝夜车开工前读 pin 文件钉死「代码sha+岗卡版本+考题版本」，缺了拒绝开工｜留出分割＝考题分「日常练兵」和「锁柜终考」两套（出题权禁区·走对比件候拍）｜候D＝班外评审失手实录变题库天天机跑·涨留跌撤｜候E＝回退率/事故率越阈自动收紧审批档位（候C低档零人批的前置闸）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：欠账分四层，一层堵一层。第一层是手上的活：8 张窗卡没收口，其中「维修环搬家」（W-152）堵着版本清单的班外栏——先清手。第二层是给机器刻铭牌（pin）：不刻铭牌，之后一切「这版比那版强」的话都无法证明——这是所有度量的地基，而且只是小工程。第三层管尺子：考卷分家＋评审失手变题库，两半合一张对比件拍（都碰出题权，业主终审）。第四层才是加装备：审批熔断先行（它是「低风险零人批」的保险丝）、分级器随后、冷眼复审和投票筛真等预算分账拍板后再上。四层清完，自举环（自己造自己、留出卷核账、老板签字上线）才有地基。</div>
+  <p class="text-xs text-slate-500">锚：L1=飞书窗卡台8行在飞实拉｜L2=版本三本账§五步①②（validateManifestRoot=queue-runner.ts:132·T8拒发车=:54-56 先例）｜L3=三本账对表④×判定册V2候D（合流点=#212⑤出题权禁区同源·候D=窗级最大缺口）｜L4=判定册V2候A/B/C/E（候B含窗级变式·候F安全扫描建议挂起·窗级候选全机械守门）｜<span class="redline rounded px-1">红线：全程不动判卷语义·不碰禁区六项·无拍板号不入列队</span></p>
+</section>
+
+<!-- 卡5 机制目录九册盘点 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡5 · 机制目录九册盘点：四个新增差距 <span class="text-slate-400 text-sm">业内名：Pattern Catalog 全景盘点 · v3 新增</span></h2>
+  <p class="text-sm">一句话：机制目录九册五十七项全部落卡（当日锚点抽验约九成命中），但通读提炼出四个此前未入账的差距，各自已有处方。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  MC["机制目录九册·五十七项<br/>全部落卡（v2白话版）<br/>锚点抽验约九成命中"]
+  MC --> GA["新增差距一<br/>两层同构靠文档<br/>不靠共享代码"]
+  MC --> GB["新增差距二<br/>班外执行器散居<br/>第一层实验室面"]
+  MC --> GC["新增差距三<br/>跳过/打回原因<br/>只进控制台会丢"]
+  MC --> GD["新增差距四<br/>机制卡行号锚<br/>随大文件改动漂移"]
+  GA --> RA["处方一：先同构对对拍机检<br/>再骨架基类化（步④）"]
+  GB --> RB["处方二：W-152 收口<br/>班外执行器归位"]
+  GC --> RC["处方三：W-150<br/>跳过原因落盘"]
+  GD --> RD["处方四：锚点改符号断言<br/>告警级机检"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：机制目录＝全厂五十七个运行时控制机制的盘点总账（每机制一张卡：图+术语对照+口述+业内对照+变式对照+锚点）｜变式对照＝同一个机制思想在第一层和第二层各有一个实例（例如：第一层「进料三关」检查交付包，第二层「任务书三关」检查作业指导书——检查哲学相同、检查对象不同）｜对拍机检＝两层同构机制各留一份对照样张，改动时机器比对样张是否仍然一致（已有先例：窗卡实体迁移时的四十八行对拍验证）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：把全厂五十七个机制的家底册子逐册读完，家底比想象厚——九册全部落卡，锚点抽验约九成命中（抽了二十多个锚，只有两处行号级漂移，机制本体都在）。但有四个册子里藏着、之前没进差距账的新发现。<b>第一个</b>：册子里处处写着「变式对照：第一层某某与第二层某某互为同构」——同构关系全靠文档互相指认，代码层是两套各写各的实现；改了一层的闸，另一层的同款闸不会自动跟，时间长了必然漂移成两套行为。<b>第二个</b>：班外维修环的正本文件（维修环八岔分类器和病卡状态机契约）实际住在第一层的实验室目录里，不在第二层的脚本区——这就是「班外执行器散居」的实锤，正好是在飞窗 W-152（班内外维修环分层解耦）要搬的家。<b>第三个</b>：领单五闸和打回分诊两处都自报「跳过原因/打回原因只打印在控制台上，而控制台输出是丢弃的」——出了问题要靠人肉考古半小时才能发现，在飞窗 W-150（队列行三关）治的正是这个。<b>第四个</b>：五十七张机制卡的锚点大多是「文件名加行号」，而派工器是个两千多行的大文件，在飞窗口改它几行，后面所有行号全部漂移——本次实勘就抓到两处。处方是锚点断言从「行号」改成「符号名存在性检查」（告警级不拦车，沿落差扫描器的惯例）。</div>
+  <p class="text-xs text-slate-500">锚（当日抽验实勘）：ticket-state.ts:21 房间清单在·variable-box.ts:12 封套协议号在·reviewer.ts:42 审查员系统提示在·ladder.ts:13 看不清占比门槛 0.2 在·gates.ts:115 拍板号门卫在·split.ts:57 实施清单解析在·types.ts:185 票面授权面（拍板#170 拍板A）在·mutation-gate.ts:227 考题标定在·morning-report.ts:56 三栏槽在·event-types.ts:21 事件白名单在｜漂移两处：queue-ledger.ts:166 空行（行号级）·pi_runner 领单链行号（机制实体在·与册①「在飞面收口后复验」预警一致）｜散居实锤：pipeline-lab/scripts/fail-loop.mjs:30 八岔分类器在·repair-contract.mjs:23 病卡七态在——均在第一层实验室面而非第二层脚本区</p>
+</section>
+
+<!-- 卡4 七步路线 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡4 · 七步待办路线 <span class="text-slate-400 text-sm">整合排序 · 每步带载体</span></h2>
+  <p class="text-sm">一句话：先收手上的，再刻铭牌，再管尺子，再加装备，最后自举转起来。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  S1["①收口在飞8张<br/>确认145/148→解挂146/147<br/>→开工149→拍150/151→收口152"]
+  S2["②版本铭牌（三本账步①②）<br/>清单拍板+pin接线<br/>最小闭环·自举即成立"]
+  S3["③管尺子（步③×候D合流）<br/>留出分割+班外评测集<br/>候D=窗级最大缺口·建库省"]
+  S4["④审批保险丝（候E→候C）<br/>先有账·再装闸·最后定档<br/>判定册链式拍序"]
+  S5["⑤评审增强（候A+候B）<br/>票级冷眼复审+筛真<br/>含窗级变式：候拍池入池前投票"]
+  S6["⑥母版提炼（步④基类化）<br/>P2提效·不设卡"]
+  S7["⑦自举环转起来（步⑤）<br/>按业主确认句落地·终点态"]
+  S1 ==>|"手清了才好动土"| S2
+  S2 -->|"有pin才有归因"| S3
+  S3 -->|"尺子干净才敢放开"| S4
+  S4 -->|"审批面稳了再增强"| S5
+  S5 -->|"提效不拦路"| S6
+  S6 -->|"万事俱备"| S7
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：最小闭环＝步①清单+步②pin 两步走完，「哪版代码出的什么成绩」就能对上账，自举在账面上成立｜绑定拍＝候E 和候C 一张对比件同时拍（候E 是候C 的前置保险丝，拆开拍有风险窗）｜预算分账＝候A/候B 每票要多花 2-3 次 LLM 调用，须业主先拍「这笔钱记哪路账」。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：干活顺序七步。第一步清手上的 8 张（两张等签字、一张能开工、两张等拍板、一张多人等它收口）；第二步刻铭牌——拍一张清单、装一个「没铭牌拒绝开工」的小闸，钱少活大；第三步给考卷分家＋把评审失手记成题库（判定册说了：数据在、题库面不在——推翻件、复考红的账都在，建库成本低），一张对比件一起拍；第四步装审批保险丝（回退率一高自动收紧人工审批），稳了再加自动分级——判定册的链式口诀：先有账、再装闸、最后定档；第五步给质检队配冷眼复审和投票筛真（窗级的候拍池也同闸筛真，别让小问题稀释老板注意力；先拍预算）；第六步把重复流程提炼成母版（省力活，随时可插队）；第七步自举环正式转起来——用稳定版造新版、锁柜卷核账、老板签字、换班上岗。到这里，设计理念的图就全部落地了。</div>
+  <p class="text-xs text-slate-500">锚：步序整合自=版本三本账§五优先序（1→2最小闭环·3补保险·4提效·5终点态）×判定册V2分层版§2B链式关系（候D出数据→候E用数据收紧→候C定谁批·拍序=候D→候E→候C）×窗卡台在飞依赖链（W-152→步①班外栏）｜拍板载体：步②③④⑤=§六候拍四项·候A~F=判定册V2各卡拍板点｜<span class="redline rounded px-1">本册=分析件·零码主张·全部候拍</span></p>
+</section>
+
+<!-- 卡6 三阶段具体实施计划 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡6 · 三阶段具体实施计划 <span class="text-slate-400 text-sm">十六个动作·每个带为什么和验收标准 · v3 新增</span></h2>
+  <p class="text-sm">一句话：把七步路线细化成三个阶段十六个动作——每步说清做什么、为什么、怎么算做完；代号首现都写全名。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  P1["第一阶段·收口在飞<br/>把手上的八张清完<br/>（动作一至六·见表一）"]
+  P2["第二阶段·版本化地基<br/>清单+pin+留出分割<br/>（动作七至九·见表二）"]
+  P3["第三阶段·评审链与骨架<br/>熔断→分级→复审→筛真<br/>→基类化→自举环<br/>（动作十至十六·见表三）"]
+  P1 -->|"手清了才好动土"| P2
+  P2 -->|"有版本锚才可归因"| P3
+  P3 --> GOAL["终点：自举生产环转起来<br/>第二层用在役第一层施工<br/>产出候选→留出考题核账<br/>→业主终认→上线切换"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：在飞＝已经立票还没收口的窗卡｜pin（钉版）＝开工前把「这夜用哪一版代码、哪一版岗卡、哪一版考题」写进一个钉版文件，缺了拒绝开工｜留出分割＝把考题库分成「日常练兵卷」和「锁柜终考卷」两套，练兵卷永远不用于终考｜影子模式＝新闸先只记不拦跑满一个观察班，业主看数据后才翻真拦（渐进开闸制）。</div>
+
+  <h3 class="font-serif text-lg">表一 · 第一阶段：收口在飞八张（把手清了才好动土）</h3>
+  <div class="overflow-x-auto"><table class="text-xs w-full border-collapse">
+  <thead><tr class="bg-stone-100"><th class="border p-2">动作</th><th class="border p-2">做什么</th><th class="border p-2">为什么</th><th class="border p-2">怎么算做完</th></tr></thead>
+  <tbody>
+  <tr><td class="border p-2"><b>一</b></td><td class="border p-2">业主确认 W-145（窗级预算三路机械刹车）翻✅——它让每张施工窗带着预算帽开工，接近上限自动降档收敛，到顶自动收车留断点，不硬杀进程</td><td class="border p-2">治「一个窗烧穿整夜预算」——目前派工链只有窗自己报数的自律记账，没有机械硬闸</td><td class="border p-2">窗卡台状态翻✅；下一班派工链预算硬闸生效留痕</td></tr>
+  <tr><td class="border p-2"><b>二</b></td><td class="border p-2">业主确认 W-148（假▶签名分诊）翻✅——对「标着施工中其实已经死了」的队列行，按会话档停更原因分四类机械路由（限流延重探/上下文爆转续拍/死循环候人工/断网重排）</td><td class="border p-2">治 W-125/W-126 等「窗死了账上还在跑」的误报族——不确定时宁停不误判</td><td class="border p-2">窗卡台状态翻✅；下一班假死行不再误告警</td></tr>
+  <tr><td class="border p-2"><b>三</b></td><td class="border p-2">前两件翻✅后，解挂 W-146（班产效率账：每班票据数/窗时长/开销聚合进班次汇报新节）与 W-147（班末收尾加同因熔断：挂起窗班末自动重试一轮，同因复发零轮候人工）</td><td class="border p-2">两张都声明前置=W-145 同泳道——刹车没生效前效率账没数据源、班末重试没安全垫</td><td class="border p-2">两窗解挂开工、领单▶、收口✅</td></tr>
+  <tr><td class="border p-2"><b>四</b></td><td class="border p-2">W-149（班次判定梯）直接开工（已批待实施）——纯函数把整班结果压成绿/黄/红：窗完工待确认算黄绝不析取成班绿，挂起/打回/预算触顶=班红</td><td class="border p-2">业主看班次汇报十秒钟要的那个总评——第一层判定梯（看不清不等于看清）平移到窗级</td><td class="border p-2">判定梯纯函数落地+班次汇报聚合器接上+同包重放对照绿</td></tr>
+  <tr><td class="border p-2"><b>五</b></td><td class="border p-2">出对比件拍板 W-150（队列行三关+跳过原因落盘：立票格式机器关，领单跳过原因写进文件不再只打控制台）与 W-151（包级三关修复环：交付包检出病后自动回嗂拆票打包师/考题起草师两岗修，最多三轮）</td><td class="border p-2">W-150 治「跳过原因会丢、考古半小时」；W-151 治「包检出病只能整包退回人工重走」——两张都在探讨中未批，需对比件</td><td class="border p-2">对比件过三关→业主拍板→入列队施工→收口</td></tr>
+  <tr><td class="border p-2"><b>六</b></td><td class="border p-2">W-152（班内外维修环分层解耦）开工——把班外维修环正本（八岔分类器 fail-loop、病卡状态机契约 repair-contract、两个维修执行器）从第一层实验室目录搬到第二层脚本区，两层账互不直写加机器断言</td><td class="border p-2">本次实勘实锤：班外执行器正本现住 pipeline-lab（第一层实验室面）——不搬家，版本构成物清单的「第二层栏」就填不了</td><td class="border p-2">班外执行器全部住第二层脚本区+回归对拍绿+两层互不直写断言生效</td></tr>
+  </tbody></table></div>
+
+  <h3 class="font-serif text-lg mt-4">表二 · 第二阶段：版本化地基（自举最小闭环）</h3>
+  <div class="overflow-x-auto"><table class="text-xs w-full border-collapse">
+  <thead><tr class="bg-stone-100"><th class="border p-2">动作</th><th class="border p-2">做什么</th><th class="border p-2">为什么</th><th class="border p-2">怎么算做完</th></tr></thead>
+  <tbody>
+  <tr><td class="border p-2"><b>七</b></td><td class="border p-2">拍版本构成物清单（版本三本账步①，零代码拍板件）：四栏清单——第一层构成物=代码区全部+十六张岗卡+系统提示词常量；第二层构成物=脚本区+派工配置+班外岗卡+W-152 搬来的班外执行器；骨架构成物=共享机械件包五十八件+交接契约；版本外=考题库+出题权+禁区六项</td><td class="border p-2">不先拍「哪些东西算引擎版本的一部分」，后面一切版本纪律无分母——这是所有版本工作的第一张多米诺</td><td class="border p-2">业主拍板入拍板表（候拍清单§六①）——拍板后 W-152 收口填班外栏终值</td></tr>
+  <tr><td class="border p-2"><b>八</b></td><td class="border p-2">夜车入口版本钉死（步②，小工程）：开工前读钉版文件三键（构成物清单快照标识+岗卡版本+考题库版本），缺钉版拒绝开班——沿集装箱镜像指纹对不上拒发车的先例</td><td class="border p-2">现在出厂铭牌是死值、夜车跑的是工作区最新代码——成绩没法归因到固定代码版，涨了跌了说不清是方法好了还是零件换了</td><td class="border p-2">无钉版文件时夜车拒绝启动（红不烧钱）；班次汇报新增「本班跑在哪版」一栏</td></tr>
+  <tr><td class="border p-2"><b>九</b></td><td class="border p-2">考题库留出分割×班外评审评测集（步③×候选D 合流，一张对比件）：三份考题清单每题加「用途」字段（日常练兵/锁柜终考）；班外评审失手实录（业主追认推翻件/复考红/打回件）立题卡入库只增不改；班外评审岗每天机跑过题，分数涨了才换提示词跌了就撤</td><td class="border p-2">现在一套考题既日常复考又终考（尺病传染口）；班外评审岗换提示词无题可考（判定册定的窗级最大缺口）——数据都在账上，建库成本低</td><td class="border p-2">对比件过三关→业主拍板（出题权禁区，与拍板#212⑤合流）→留出清单生效+题库首批判入库</td></tr>
+  </tbody></table></div>
+
+  <h3 class="font-serif text-lg mt-4">表三 · 第三阶段：评审链与骨架（先保险丝后增强）</h3>
+  <div class="overflow-x-auto"><table class="text-xs w-full border-collapse">
+  <thead><tr class="bg-stone-100"><th class="border p-2">动作</th><th class="border p-2">做什么</th><th class="border p-2">为什么</th><th class="border p-2">怎么算做完</th></tr></thead>
+  <tbody>
+  <tr><td class="border p-2"><b>十</b></td><td class="border p-2">审批面熔断器（候选E）：每班收车统计两个率——追认推翻加回滚占比、复考红加新病卡占比——任一越阈值自动收紧审批档（低风险档停自动过、全体升一档人工批、晨报置顶宣告）；连续几班回落后才放开（放开也留痕候追认）</td><td class="border p-2">回退率一高说明系统在病中，该收权而不是放权——这是「低风险零人批」能开的前置保险丝，两家（本仓与 Claude Code）都没建过的件</td><td class="border p-2">先影子模式一班只报数不收紧（渐进开闸制），业主看数据后翻实拦</td></tr>
+  <tr><td class="border p-2"><b>十一</b></td><td class="border p-2">改动风险分级（候选C）：会审门挂机械分类器（规则+敏感路径词表，零大模型起步）读收口申报自动定档——低（文档/注释）零人批、中（普通改动+敏感区）一人批、高（判卷语义/红绿权/禁区六项）停车候拍；分类器只定「几个人批」永远不定「过不过」</td><td class="border p-2">现在什么进禁区靠约定不靠机器判——分级器让「胆子」有了精确刻度，且级越高人越多（权限与大模型话语权反相关）</td><td class="border p-2">先影子模式一班；敏感区词表第一版随对比件拍板；动作十的熔断器必须在位才可开低档</td></tr>
+  <tr><td class="border p-2"><b>十二</b></td><td class="border p-2">冷眼复审三问（候选A，票级）：票自愈三轮烧满仍红、或判卷门前抽检时，换一个全新上下文的审查员只看票面和最终改动（不带回喂历史防被带偏），按三问审——达票面目标了吗/跟既有系统合得来吗/会波及别处吗；只出意见不改码，意见进晨报候追认</td><td class="border p-2">施工工人看了很多轮失败明细容易越修越偏还自我感觉良好——冷眼审查员没有被带偏的机会；补上审核三问的后两问（兼容性/影响面现在无显式岗）</td><td class="border p-2">先拍预算分账（每票新增大模型调用面）→落位审查员旁复用变量盒协议→影子跑一班</td></tr>
+  <tr><td class="border p-2"><b>十三</b></td><td class="border p-2">报红投票筛真（候选B，票级+窗级变式）：建议类发现让两三个独立判官各判一次「是不是真问题」，多数票才报；报出贴三标——重要（拦收口）/小问题（入台账不拦车）/已有问题（记病卡不记本票）；窗级同款=班次汇报的候拍池入池前也过同一投票闸</td><td class="border p-2">现在一源报红即走无筛真闸，风格类噪声稀释晨报；候拍池只聚不筛稀释业主注意力——多数票压噪声是把业主注意力留给真问题</td><td class="border p-2">先拍预算分账（每发现两三次调用）→只挂建议面（七源硬红不投票照旧）→筛真依据留痕防「投票洗红」</td></tr>
+  <tr><td class="border p-2"><b>十四</b></td><td class="border p-2">骨架基类化（步④，先轻后重）：先落「同构对对拍机检」——两层同构机制（进料三关对任务书三关、判卷素材冻结对领地断言、判定梯对班次判定梯等九册变式对照清单）各留对照样张，改动时机器对拍防漂移；再把重复流程提炼成共享母版（站序基类）</td><td class="border p-2">现在两层同构靠文档互指不靠代码——改一层另一层不跟；对拍机检是轻方案（零重构先堵漂移），母版是重方案（治本）</td><td class="border p-2">对拍机检进例行机检（告警级）；母版提炼按 P2 提效排期不设卡</td></tr>
+  <tr><td class="border p-2"><b>十五</b></td><td class="border p-2">锚点符号断言机检（新增优化项）：机制目录五十七张卡的锚点从「文件名加行号」改为「符号名存在断言」（例如查「选票函数存在」而非「第二百零九十三行有代码」），告警级不拦车，可进落差扫描器邻位</td><td class="border p-2">派工器两千多行大文件，在飞窗改几行后面行号全漂——本次实勘已抓到两处；行号锚失效会让整册机制卡的可校验性慢慢腐烂</td><td class="border p-2">小机检器落地+对现存五十七卡跑一轮全量断言（漂移的逐卡修锚）</td></tr>
+  <tr><td class="border p-2"><b>十六</b></td><td class="border p-2">自举生产环转起来（步⑤，终点态）：按业主确认句接线——第二层用在役第一层施工维修→产出第一层新版候选→留出考题核账→业主终认→上线切换→新稳定版继续被用，轮子一圈圈滚；骨架升级两实例各自择机跟进不强绑</td><td class="border p-2">这是全部路线的终点态：引擎自己造自己的新版本、用锁柜终考卷核账、老板签字上岗——前十五个动作都是在给这个轮子铺轨</td><td class="border p-2">第一轮自举实跑：候选产出→留出核账→终认→上线全链走通并留全档</td></tr>
+  </tbody></table></div>
+
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：十六个动作分三阶段，节奏是「先收手、再立尺、后加装备」。<b>第一阶段（动作一至六）</b>把手上的八张窗清完——两张等业主签字（花钱刹车、假死分诊），签完字就解锁两张被堵住的（效率账、班末熔断），一张已批的直接开工（班次判定梯），两张要出对比件候拍（队列行三关、包级修复环），最后是最多人等的那张「维修环搬家」——它不收口，版本清单的第二层栏就空着。<b>第二阶段（动作七至九）</b>是全路线最便宜也最要紧的三步：先拍一张清单（哪些东西算引擎版本的一部分，零代码）；再装一个小闸（开工前没钉版文件就拒绝开班）；然后给考卷分家、给班外评审岗建档考题——做完这三步，「哪版代码出的什么成绩」就能对上账，自举在账面上成立。<b>第三阶段（动作十至十六）</b>按「先保险丝后增强」加装备：先装审批熔断器（回退率一高自动收权），再装风险分级器（机器定几个人批），然后给质检队配冷眼复审和投票筛真（先拍预算），顺手把两层同构的对拍机检立起来、把锚点从行号换成符号名，最后——自举环正式转起来。</div>
+  <p class="text-xs text-slate-500">载体与拍板面：动作一至四=窗卡台已有票（确认/开工）；动作五至六=在飞票（出对比件/开工）；动作七至九=版本三本账候拍清单§六①②③；动作十至十三=验收判定册V2分层版各候选卡拍板点；动作十四=版本三本账步④+新增对拍机检；动作十五=新增优化项（候选进灵感池或直接落告警级小机检）；动作十六=版本三本账步⑤（业主确认句 2026-10-28 在案）｜<span class="redline rounded px-1">红线：全程不动判卷语义·不碰禁区六项·无拍板号不入列队·新拦截闸一律先影子模式</span></p>
+</section>
+
+<!-- 卡7 骨架详解 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡7 · 骨架 S1.x 详解：总闸门钉的是什么 <span class="text-slate-400 text-sm">它现在还不是实体类 · v4 新增·与版本三本账配图卡卡6 同源</span></h2>
+  <p class="text-sm">一句话：卡3 卡4 反复说的「版本钉死」钉的对象、步④基类化的对象，就是骨架——它是全厂唯一一份发动机图纸，三件套：流程模板+机械零件库+交接凭据格式；现在三件都不是类，把它变成实体基类正是基类化那一步的活。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  SK["骨架 S1.x＝一份图纸<br/>不是一类·是三件套"]
+  SK --> A["件一·模板方法基类<br/>夜车站序 run()<br/>管：流程怎么走"]
+  SK --> B["件二·机械件包<br/>shared/ 五十八件零件<br/>管：零件从哪拿"]
+  SK --> C["件三·交接契约<br/>班产物 schema+契约台<br/>管：交接怎么对账"]
+  A --> D["现状：函数体雏形<br/>站序焊死在主函数里<br/>第二层 spawn 子进程复用<br/>不 import 不继承"]
+  B --> E["现状：模块集合<br/>多为纯函数+常量<br/>仅账本件是真类"]
+  C --> F["现状：契约格式已在码<br/>接口契约台候 W-152"]
+  D --> G["步④基类化后：<br/>抽象骨架基类·站序焊死<br/>各站留填空钩子<br/>两层各继承一份"]
+  E --> G
+  F --> G
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：模板方法模式＝父类定流程（焊死不许改）、子类填内容的面向对象手法｜钩子方法＝基类里留空的「填空题」，每个实例填自己的做法｜spawn 子进程复用＝第二层要跑同一条流水线时不是引用同一段代码，而是另开一个独立进程去跑——隔离性好但代码层是两套｜Pull Up（上提）＝把多处重复的代码上提为一份共享母版的重构手法｜钉版文件＝开工前写「这夜用哪版代码/岗卡/考题」的文件，缺了拒开班。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：本册卡3 说「版本化是总闸门」、卡4 说「步④基类化」、卡6 动作七说「拍构成物清单」——这三处共同指向的对象就是骨架，所以值得单独一张卡说清它是什么。把骨架想成全厂唯一一张发动机图纸，图上画三样东西。<b>第一样是流水线的工序顺序</b>（模板方法基类）：夜车开工必须按「入夜门禁六硬项→导入拆单→探针编译装备→施工→质量门→切片验收→报告」的顺序走。这段顺序今天真实存在于代码里（主函数体内），但像一道菜谱整页抄在纸上——第二层要用同一条流水线时，是开一个独立子进程整进程跑（不引用同一段代码），而不是照着菜谱母版各做各的。<b>第二样是标准零件库</b>（机械件包）：五十八个两层共用的零件——记流水账的账本、防偷改考题的判卷守卫三卫、大模型档位旋钮、防提示注入的变量盒封套等；形态上绝大多数是纯函数和常量，只有账本等少数是真类——「零件包」是零件的集合，不是面向对象的类库。<b>第三样是交货单格式</b>（交接契约）：班与班之间交货凭机器可查的凭据，凭据格式已在码里，「接口契约台」（逐项对账的机器面）还挂在候拍窗 W-152 名下。<br>所以直答：骨架<b>现在不是一个实体对象类</b>——三件里没有一件以「类」为中心形态存在。<b>基类化拍板之后才是</b>：把焊死的站序上提为抽象基类的模板方法，各站留填空钩子，第一层填「造客人 APP 的做法」、第二层填「管团队的做法」——届时的样子见下方伪代码示意。为什么本册把它当总闸门的对象？三个理由：一是卡5 差距一（两层同构靠文档不靠代码）的治本方就是基类化——同构从「文档互指」变「继承关系」，改一处两处自动跟；二是版本记账需要它——「骨架版本 S1.x」要先成为边界清晰的实体，才钉得进动作八的钉版文件三键里；三是自举需要它——造新版的车和被造的零件共享同一张图纸，自举核账的账才对得上。排序上它是 P2「提效不设卡」：进程边界已提供隔离复用，基类化是省力活不是保命活。</div>
+<pre class="text-xs bg-slate-900 text-slate-100 rounded p-3 overflow-x-auto"><code>// 步④基类化后的形态示意（非实码·真实设计以步④拍板件为准）
+abstract class NightShiftSkeleton {        // ← 骨架 S1.x 的实体形态
+  final async run(pkg): ExitCode {         // 模板方法：站序焊死，子类不许改流程
+    await this.preflight();                // 段0 入夜门禁
+    const plan = this.importAndSplit(pkg); // 段1 导入+拆单
+    await this.build(plan);                // 段2 施工
+    await this.verify();                   // 段3 验收
+    return this.report();                  // 收尾报告
+  }
+  protected abstract preflight(): void;    // 站实现＝填空（钩子方法）
+  protected abstract build(plan): void;
+}
+class TeamL1 extends NightShiftSkeleton { /* 造客人 APP 的填空：岗卡+系统提示词常量 */ }
+class ManagerL2 extends NightShiftSkeleton { /* 管团队的填空：六闸+维修环+派工 */ }
+</code></pre>
+  <p class="text-xs text-slate-500">锚：站序雏形=<code>ts/src/run-slice.ts:2</code>（头注站序声明）·<code>:44</code>（主函数）·<code>:115/:135/:211/:247/:258</code>（段0/段1/段2/段2.7/段3 锚）｜进程复用=<code>ts/src/queue/queue-runner.ts:5</code>（spawn 不 import 红线）｜机械件包=<code>ts/src/shared/</code> 五十八件实勘（真类仅 ledger/package-ledger）｜契约面=<code>ts/src/contract/</code>｜与本册其他卡的接口：卡3 第四层·卡4 步④·卡6 动作八（钉版三键）/动作十四（基类化）·卡5 差距一（同构靠文档）｜<span class="redline rounded px-1">红线：伪代码为形态示意非实码——基类真实现步④拍板件定，落码前禁改 ts/ 区</span></p>
+</section>
+
+<section class="deep-box rounded-lg p-4 text-sm text-slate-100 space-y-1">
+  <p class="font-semibold">册尾注 · 同构轴</p>
+  <p>六卡一根轴＝「家底→差距→排序→落地」：卡1 定三件分工（地基/版本/评审），卡2 盘家底（八闸逐锚实勘·红绿权未动），卡3 把差距立成四层（收口→pin→尺→母版），卡4 排七步总路线，卡5 补机制目录九册视角的四个新增差距（同构靠文档不靠代码·班外执行器散居·原因不落盘·行号锚漂移），卡6 落成三阶段十六个动作（每个带为什么和验收标准）。总闸门=版本钉死——没有它，一切涨跌归因和自举核账都是无锚之谈。</p>
+  <p class="text-slate-300 text-xs">锚点验证：2026-10-28 当日实勘——验收判定域八锚全中（build.ts:210/184·red-ruling.ts:35·pi_runner.mjs:215/377·lane-drain.ts:50·build-lane.ts:63·confirm.ts:90）＋机制目录抽验二十余锚约九成命中（ticket-state:21·variable-box:12·reviewer:42·ladder:13·gates:115·split:57·types:185·mutation-gate:227·morning-report:56 等）·两处行号级漂移（queue-ledger:166 空行·pi_runner 领单链行号随在飞面漂·机制实体均在）·班外执行器散居实锤（fail-loop.mjs/repair-contract.mjs 住 pipeline-lab/scripts）。判卷语义零触碰核验=各闸只读 exit code。配套窗卡通篇=同目录《W型窗卡通篇-…-20261028.html》。<br><b>v5 变更记录</b>（20261029·主窗时效勘误·零内容改动）：卡3/卡4 进度叙述过时注记（在飞八张 10-29 全清·步①②③已落地·审批熔断 enforce 翻闸·详见窗队列与执行台账为正本）·同目录新增分析件《Claude-Code评审机制对照-博客16条×本厂六篇-同构对账与借鉴建议-分析件-20261029.md》（博客 16 条对账：10 同构/4 差距/5 本厂独有）。<br><b>v4 变更记录</b>：增补卡7骨架 S1.x 详解（三件套现状形态+步④基类化目标形态+伪代码示意·与版本三本账配图卡卡6 同源）·册头卡数 6→7。<br><b>v3 变更记录</b>：增补机制目录九册通读（卡5）＋三阶段十六动作实施计划（卡6）·表头卡数 4→6。<br><b>v2 变更记录</b>（同日·判定册V2升分层版触发）：总账改票级10/14+窗级8/14·候D定窗级最大缺口（数据在题库面不在）·拍序改候D→候E→候C链式·候B增窗级变式（候拍池筛真）·新增锚 types.ts:185-207/park.ts:26。</p>
+</section>
+
+<footer class="text-xs text-slate-400 border-t border-stone-200 pt-3">三件对照差距配图卡 · 2026-10-28 · 落盘目录=07-设计理念专题/ · 性质=分析件（候拍·零码主张）</footer>
+</main>
+</body>
+</html>

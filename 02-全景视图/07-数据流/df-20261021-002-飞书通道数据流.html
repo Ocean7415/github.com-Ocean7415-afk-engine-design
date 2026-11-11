@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261021-002 · 数据流卡 · df-002 飞书通道数据流（F1-F6 五表一流）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261021-002 · 数据流卡 · df-002 飞书通道数据流（F1-F6 五表一流）</h1>
+<div class="meta"><b>id</b> df-20261021-002 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 0cb1d3d · <b>run_id</b> queue-99-w047</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>数据流卡 · df-002 飞书通道数据流（F1-F6 五表一流）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：回答「引擎与飞书五表一 IM 流之间，谁以什么身份读写了哪个表哪个字段」——边=e2.1~e2.7（登记表编号零漂移），<strong>bot/user 双色身份</strong>贯穿全图。<strong>边界</strong>：本卡只画通道面（投影/推审/回读/桥接/分流）；审批流转的业务语义归拍板流程，病卡三表回写细节归 [df-20261021-004]。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>W-042 实败例：window_card_sync 批写失败 42 行两跑同败（批写重试后仍失败·错误信息空）——<strong>投影=单向投影·本地队列才是真源</strong>，失败不拦车如实报</td><td><code>91-脚本/window_card_sync.mjs:6</code></td></tr><tr><td>2</td><td>W-026 重试机制在案：批写失败→3 秒自动重试一次→仍失败如实报 exit 1（不装绿）</td><td><code>91-脚本/window_card_sync.mjs:19</code></td></tr><tr><td>3</td><td>审批卡全链活例：postshift 显式 --base-token 推 F2（df-004 e4.2）→approval_push IM 通知→业主 F2 批「准」→approval_poll 回读放行</td><td><code>91-脚本/approval_push.mjs:119</code></td></tr></tbody></table>
+<h2>§节点与边总览（编号正本=00 登记表·零漂移）</h2>
+<ul><li><strong>节点</strong>：N1 窗队列（事实源）、N3 桥接会话态、N4 窗进程表、F1 窗卡台（<code>tblfvvXffnFX1kVg</code>）、F2 审批台（<code>tblKZCSUTaPKxdmw</code>·<code>ts/.env:134</code> APPROVAL_TABLE_ID）、F3 病卡表/F4 班次表/F5 用例库（同库·回写边归 df-004）、F6 IM 消息流（bot profile+企微）。</li><li><strong>边</strong>：e2.1~e2.7 共 7 条。<strong>base 同库标识</strong>：<code>91-脚本/window_card_sync.mjs:30</code> BASE 硬编码 ≡ <code>ts/.env:133</code> APPROVAL_BASE_TOKEN 同值（值掩码·拍板#90 只列键名）。</li><li><strong>死键注记</strong>：<code>ts/.env:105</code> FEISHU_CHAT_ID=空值=死键（IM 实际走 bot profile+运行时 open_id·<code>91-脚本/approval_push.mjs:119</code> recv）——删除候选候业主拍板（登记表 §八 在案）。</li></ul>
+<h2>§数据流主线（mermaid·实线=程序边·双色标注身份）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    subgraph 本地
+      N1[("N1 窗队列<br/>唯一事实源")]
+      N4[("N4 窗进程表<br/>afk-window-pids.json")]
+      N3[("N3 桥接会话态<br/>afk_bridge_sessions.json")]
+    end
+    subgraph 飞书base
+      F1["F1 窗卡台<br/>tblfvvXffnFX1kVg"]
+      F2["F2 审批台<br/>tblKZCSUTaPKxdmw"]
+      F6["F6 IM 消息流<br/>bot profile+企微"]
+    end
+    WCS["window_card_sync.mjs<br/>【bot】--watch 防抖2s"] -->|"e2.1 投影 11列直映<br/>窗PID=N4 活体计算"| F1
+    F1 -.->|"e2.2 record-list 只建映射<br/>永不反向写本地【bot】"| WCS
+    AP["approval_push.mjs<br/>【bot】"] -->|"e2.3 写 F2 业务字段<br/>审批状态=待批"| F2
+    AP -->|"e2.3 IM 推新审批卡"| F6
+    POL["approval_poll/approval-card<br/>【user】轮询"] -->|"e2.4 读审批状态/批准时间/批注"| F2
+    BR["afk_bridge.mjs<br/>【bot】常驻"] -->|"e2.5 event consume 收流<br/>classifyEvent 按发件人分流"| RT["路由<br/>chat/wecom/kf"]
+    RT -->|"e2.6 im +messages-send 回发【bot】"| F6
+    FAM["family_capture/kf/broadcast/receptionist"] <-->|"e2.7 status 文件读写"| N3
+    F6 -->|"e2.5 业主消息进流"| BR
+</div></div>
+<h2>§节点详注（图正下方·每节点做什么/边界/锚点）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>N1 窗队列</td><td>投影侧唯一事实源：11 列直映 F1 前 8 列+第 9 列→「大业务」五类单选（字段 <code>fldy4T6NiY</code>）；七态外状态=跳投 fail-open——本地永远先落，飞书只是投影。</td></tr><tr><td>N4 窗进程表</td><td>窗PID 活体数据面：<code>91-脚本/window_card_sync.mjs:29</code> PIDFILE 读 pi_runner 落盘记录+存活判定，合成 F1「窗PID」格（<code>pid·存活｜已退</code>·无记录=—）。</td></tr><tr><td>N3 桥接会话态</td><td>常驻桥进程状态族：<code>.bridge.pid/.bridge-stream.json/afk_bridge_sessions.json</code> 等八文件常量（<code>91-脚本/afk_bridge.mjs:127</code>）；e2.7 各 family 脚本读写各自 status 文件（写法=<code>91-脚本/afk_receptionist.mjs:329</code> 读旧+patch 合并+覆盖写）。</td></tr><tr><td>F1 窗卡台</td><td>表 id=<code>91-脚本/window_card_sync.mjs:31</code>；状态列为七态单选白名单——队列里白名单外状态跳投不炸（fail-open）；watch 常驻防抖 2s+30min 定时保底双道。</td></tr><tr><td>F2 审批台</td><td>审批流转表：approval_push 写全部业务字段+审批状态=待批（env 检查=<code>91-脚本/approval_push.mjs:105</code> hasEnv·缺 APPROVAL_BASE_TOKEN/APPROVAL_TABLE_ID 即降级）；<strong>审批状态列业主专属写·引擎只读</strong>（纪律线3）。</td></tr><tr><td>F6 IM 消息流</td><td>bot profile 收发+企微分流；<code>91-脚本/approval_push.mjs:119</code> 推「新审批卡」用 --as bot --chat-id recv（运行时 open_id·FEISHU_CHAT_ID 死键不参与）。</td></tr><tr><td>路由 classifyEvent</td><td>afk_bridge 收流后按发件人身份分流 chat/wecom/kf 三车道——身份判定是 e2.5→e2.6 的分岔点。</td></tr></tbody></table>
+<h2>§边明细（e2.1~e2.7·对照登记表 §二 零漂移）</h2>
+<table><thead><tr><th>边</th><th>程序</th><th>方向</th><th>表·字段</th><th>身份·触发</th></tr></thead><tbody><tr><td>e2.1</td><td>window_card_sync.mjs</td><td>N1→F1</td><td>11 列直映+大业务 select+窗PID 活体；七态外跳投 fail-open</td><td>bot·--watch 防抖 2s</td></tr><tr><td>e2.2</td><td>window_card_sync.mjs</td><td>F1→(映射)</td><td>record-list 建 窗ID→record_id；<strong>永不反向写本地</strong></td><td>bot</td></tr><tr><td>e2.3</td><td>approval_push.mjs</td><td>引擎→F2+F6</td><td>写 F2 业务字段+待批；IM 推新审批卡通知</td><td>bot·审批卡产生时</td></tr><tr><td>e2.4</td><td>approval_poll/approval-card.mjs</td><td>F2→引擎</td><td>读审批状态+批准时间+批注（<code>pipeline-lab/scripts/approval-card.mjs:29</code> parseApprovalRecord·准+批准时间才放行）</td><td>user·轮询</td></tr><tr><td>e2.5</td><td>afk_bridge.mjs</td><td>F6→路由</td><td>event consume 常驻收流→classifyEvent 分流</td><td>bot·常驻</td></tr><tr><td>e2.6</td><td>afk_bridge.mjs</td><td>路由→F6</td><td>im +messages-send 回发（<code>91-脚本/afk_bridge.mjs:621</code>）</td><td>bot·事件驱动</td></tr><tr><td>e2.7</td><td>family_capture/kf/broadcast/receptionist</td><td>F6(企微/kf)↔N3</td><td>各自 status 文件读写</td><td>常驻</td></tr></tbody></table>
+<h2>§纪律线（登记表 §七 落图·本块归属 3 条）</h2>
+<ul><li><strong>线1 事实源→投影单向</strong>：N1→F1 永不反向（<code>91-脚本/window_card_sync.mjs:6</code> 定位句+<code>91-脚本/window_card_sync.mjs:19</code> 纪律句·e2.2 只读映射）——上图 e2.2 用虚线负向表达「查而永不写」。</li><li><strong>线2 两套身份</strong>：91-脚本系=bot（e2.1/e2.2/e2.3/e2.5/e2.6 标 bot）、pipeline-lab 系=user（e2.4 标 user）——上图全边带身份标注。</li><li><strong>线3 审批状态列业主专属</strong>：F2 审批状态引擎只读（<code>pipeline-lab/scripts/approval-card.mjs:29</code> 红线头注·e2.4 只读面）。</li><li>本块另注：FEISHU_CHAT_ID 死键（<code>ts/.env:105</code> 空值·全仓零消费方）——删除候选候业主另拍，本卡只注记不处理。</li></ul>
+<h2>§防重复指针</h2>
+<ul><li>窗卡台投影模块接口=[mk-20261021-003]；票状态七态定义=[sm-20261021-001]（标源=窗队列）；派工链本地数据面=[df-20261021-001]；病卡/班次/用例三表回写字段级细节=[df-20261021-004]。</li><li>本卡与 mk-003 分类轴不同：本卡=通道数据面（谁写哪个表哪个字段），mk-003=模块接口面——零正文复制。</li></ul>
+<h2>§时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 0cb1d3d（2026-10-21 现勘·锚点 14 处 sed 亲验·env 只列键名值掩码）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（表 id 与登记表逐字对照·BASE 行号漂移 :27→:30 已按现行码修正）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261021-002-飞书通道数据流.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

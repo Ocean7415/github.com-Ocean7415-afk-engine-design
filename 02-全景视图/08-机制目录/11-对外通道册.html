@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mc-20261029-011 · 机制卡册⑪ · 对外通道（2 卡·D类通道族·2026-10-29）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mc-20261029-011 · 机制卡册⑪ · 对外通道（2 卡·D类通道族·2026-10-29）</h1>
+<div class="meta"><b>id</b> mc-20261029-011 · <b>kind</b> 机制卡册 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-29 · <b>repo_head</b> 4e6d7df</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本册·口径正本 §3）</strong>：「票」按层消歧（工序票 L1/窗票 L2）；通道熔断＝对外调用保护。</p>
+<p><strong>事件名速查（口径正本 §4·拍板#316① W-234 双名化落册）</strong></p>
+<p>- 本册两卡（通道与接线员/家庭面广播与客服）§4 暂无对应行 → <strong>全册候正名</strong>（对外通道＝框架外辅助系统·不入运行时机制分母）</p>
+<p>- 邻册关联：接线员分诊正本＝册⑤卡42/43（速查见册⑤）· 熔断近邻＝册③卡20</p>
+<p>- 双名制：首现双写「标准事件名（现行短名）」·短名机检永不改；§4 空缺→候正名不硬造名</p>
+</blockquote>
+<h1>机制卡册⑪ · 对外通道（2 卡·D类通道族·2026-10-29）</h1>
+<blockquote>
+<p><strong>本册管什么</strong>：引擎的「前门与家庭喇叭」——业主手机（飞书/企微）与家人（家庭微信群/微信客服）怎么把话递进引擎、引擎怎么把话递出去。四个通道机制聚成两卡：<strong>卡69 通道与接线员</strong>（桥接常驻=进料门房＋回执先行＋防烧钱熔断＋接线员分诊=快慢前台＋企微通道=第二部电话）与 <strong>卡70 家庭面</strong>（广播分流=家庭喇叭＋微信客服管家=家人指令口）。索引=00-机制总索引卡（尾增补节）。</p>
+<p><strong>业内定位</strong>：Channel Gateway（通道网关/消息门面）＋ message-driven facade——外部世界与引擎核心之间的一层「翻译与守门」；文档学位置=02-全景视图动态横切视图的对外通道分册（桥接静态结构另有模块卡 mk-012·本册管机制怎么转）。</p>
+<p><strong>纪律</strong>：fail-closed 全链（白名单外/配置缺/验签败=关与拒·绝不装绿）；密钥永不入 git（业主亲填 ts/.env·代理不经手明文）；「重活不降级」——分诊只分路不换活；主件仍 .mjs（E类 TS 化横切候批0·拍板#235③·锚以 4e6d7df 实锚为准）。</p>
+<p><strong>图版</strong>：本册 md 正本·html 由 render_views 全量覆盖生成（生成品永不手改）。</p>
+</blockquote>
+<h2>册头总图 · 对外通道全景（谁在说话·话走哪条路）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  subgraph WHO["外部入口（谁在说话）"]
+    FS["业主手机<br/>飞书私聊"]
+    WQ["业主手机<br/>企微应用"]
+    FAM["家人个人微信<br/>家庭群＋客服号"]
+  end
+  FS -->|"常驻流监听"| BR["卡69 桥接门房<br/>回执先行＋排队"]
+  WQ -->|"回调验签<br/>只绑本机"| BR
+  FAM -->|"客服回调＋<br/>30秒拉取兜底"| KF["卡70 家庭管家<br/>白名单清单制"]
+  BR --> RC["卡69 接线员<br/>快慢分诊前台"]
+  KF -->|"清单命中<br/>同链同规矩"| RC
+  RC -->|"闲聊"| FAST["⚡直答 2-4秒<br/>不经引擎"]
+  RC -->|"任务·继续"| PI["施工引擎<br/>一次性会话"]
+  BR -->|"告警"| RT["卡70 分流规则<br/>私聊＋广播"]
+  BR -->|"晨报收口"| BC["仅家庭群广播"]
+</div></div>
+<p><strong>读法</strong>：三条入口（飞书/企微/家人客服）汇进同一根处理脊柱（门房→前台→引擎），出口按「说给谁听」分流（业主私聊/家庭群广播）。两卡分工：卡69 管脊柱与业主双通道，卡70 管家庭侧的入口清单与出口喇叭。</p>
+<p>---</p>
+<h2>卡69 · 通道与接线员（业内名：Channel Gateway + Receipt-first FIFO with LLM Triage）</h2>
+<p><strong>harness 层</strong>：harness第二层（对外通道层·91-脚本常驻件·经一次性会话伸入第一层执行）</p>
+<p><strong>一句话</strong>：业主手机发话，本机常驻门房秒回「收到」再排队干活，先问快模型接线员——闲聊两三秒直答、真任务才起引擎会话；连败三次自动熔断停烧钱，删一个文件就恢复。</p>
+<h3>图（一条消息的一生·L 型）</h3>
+<div class="figwrap"><div class="mermaid">
+sequenceDiagram
+  autonumber
+  participant OW as 业主手机
+  participant BR as 常驻桥接
+  participant RC as 接线员
+  participant PI as 施工引擎
+  OW->>BR: 消息到达<br/>（常驻流监听）
+  BR->>OW: 回执先行<br/>「收到·正在处理」
+  BR->>BR: 白名单＋去重<br/>＋熔断检查
+  alt 暂停态（连败3次）
+    BR-->>OW: ⛔暂停提示<br/>删暂停文件即恢复
+  else 白名单内放行
+    BR->>RC: 先问接线员<br/>（8秒预算）
+    alt 闲聊·直答
+      RC-->>OW: ⚡直答 2-4秒<br/>不经引擎
+    else 继续旧话题
+      RC->>BR: 提取话题名<br/>续会话映射
+      BR->>PI: 续会话重跑
+      PI-->>OW: 【结果】回发
+    else 真任务·转派
+      BR->>PI: 新一次性会话<br/>排队串行跑
+      PI-->>OW: 【结果】回发<br/>超长落盘附路径
+    end
+  end
+  Note over BR,OW: 企微=第二部电话<br/>并发回发失败只记日志<br/>（不进熔断账防误伤）
+</div></div>
+<h3>图说明（逐节点注解）</h3>
+<ul><li><strong>业主手机</strong>＝飞书私聊机器人（主道）或企微应用（附加道）——消息从哪来不改变后面的处理链。</li><li><strong>常驻桥接（门房）</strong>＝本机一个常驻进程：单个长跑事件流逐行读消息（进程活=流活·异常退后指数退避自动重启·2 秒起 60 秒封顶·稳定一分钟重置）；收到消息<strong>先回执再干活</strong>，然后进先进先出队列。</li><li><strong>白名单＋去重＋熔断检查</strong>＝三道门：白名单只认业主（企微认本人账号·配置缺=全忽略关死）；消息编号去重防重投；暂停态不烧引擎只回提示。</li><li><strong>接线员（前台）</strong>＝裸快模型分诊：只会说话不会动手（零文件写·零命令执行·零仓读取），八秒预算内三选一——超时或失败就降级走老路（不起快道不重试）。</li><li><strong>施工引擎</strong>＝一次性会话（或按话题续旧会话）：排队串行跑·不并行抢道；超长回复截断回发、全文落盘附路径。</li><li><strong>熔断暂停</strong>＝连败三次（引擎非零退/超时/回发失败）写暂停文件+发红色告警+全家广播——删暂停文件即恢复，或用桌面启停台停止再启动。</li><li><strong>企微第二部电话</strong>＝回发时双通道并发：飞书结果为主，企微尽力同发——企微失败只记日志<strong>不进熔断账</strong>（防附加道故障误伤暂停全家通道）。</li></ul>
+<h3>术语白话对照</h3>
+<p><code>常驻流式监听</code>＝监听进程长跑不重启，消息任何时候来都能接（旧版每条消息重启一次·已被替换）；<code>回执先行</code>＝收到先回「收到·正在处理（约 30-60 秒）」，回执与结果用前缀区分（结果带【结果】头）——业主不用对着黑屏等；<code>先进先出单工人</code>＝队列里一条条干，同一时刻只跑一条（不并行抢引擎名额），排队不丢；<code>接线员</code>＝afk_receptionist.mjs 的快模型分诊台：输入消息文本，输出三分类之一（闲聊直答/继续话题/真任务）；<code>裸调用</code>＝直接发一次 HTTPS 对话请求，不起引擎进程、不给工具不给仓权限；<code>三分类</code>＝direct_answer（闲聊直答）/continue（继续旧话题·提取话题名落会话映射）/task（转派引擎）；<code>防烧钱熔断</code>＝连续失败达阈值就自锁暂停——宁可停服不可空烧；<code>会话映射</code>＝「话题名→会话编号」对照表，「继续〈话题〉」按表续旧会话防上下文膨胀；<code>单飞</code>＝企微令牌缓存并发共享一次刷新（五路并发只发一次 HTTP）；<code>验签回显</code>＝企微回调端点的接头暗号校验（对上才回明文·后台验证用）。</p>
+<h3>口述（一条手机消息的一生）</h3>
+<p>业主在地铁上用手机发「帮我看下 W-170 跑完没有」。本机常驻门房的监听流立刻收到这一行，<strong>不到一秒</strong>业主手机就弹出「收到·正在处理（约 30-60 秒）」——这是回执先行，改造前同样位置要等 11-27 秒才有动静。消息进队列排队（前面有人也在说就等着·实测两条连发只串行不并行）。轮到它，先问接线员：这句话是要动手还是闲聊？接线员是只快模型，八秒内答「这是任务」（action=task）——于是门房拉起一个一次性引擎会话（工作目录=本仓根·自动继承全仓纪律），跑完把结果加上【结果】前缀发回手机；太长就截断、全文存档附路径。要是发的只是「你好呀」——接线员直接答，一两秒回电，引擎根本不醒。连着三次没干成（比如引擎接口抽风）？门房自锁暂停：不再起会话烧钱，红字告警发到业主手机、同时广播到家庭群让全家知道；业主排除故障后删掉暂停文件（或用桌面启停台重启），一切照旧。企微通道是第二部电话：业主在企微应用里说的话走回调端点进来（验签+只绑本机+伪造全拒），回发时飞书企微一起发——企微发挂了只记一笔，不牵连全家通道熔断。</p>
+<p><strong>实战案例（W-019~W-022 实测·进度总览 :52-55 行在案）</strong>：①提速实证——单链注入实测收到到回执 <strong>约 1 秒</strong>（改造前 11-27 秒）；两条连发排队不丢不并行（件2 等件1 完工才开工）。②接线员真调实测——闲聊直答 1.2-1.8 秒（2-4 秒目标超额达标）、读文件任务转派引擎 12.5 秒不降级；「接着W020施工的话题说」端到端提取话题建映射续会话成功。③重构不换行为——通道抽象改造时原 13 案自测<strong>原样全绿</strong>（基线逐字节对账）+飞书原链注入回归全通。④安全用例先行——企微回调端点先跑桩版让伪造/错签/重放/超窗四案<strong>跑红留证</strong>，实装后 11/11 全绿、伪造请求全 403。</p>
+<h3>业内对照</h3>
+<p>API Gateway / Channel Adapter（企业集成模式：外部通道各自适配、核心链路统一）＋ ack-first receipt（消息系统的先确认后处理·HTTP 202 Accepted 同族）＋ serialized queue / worker pool concurrency=1（单工人串行队列·防并发抢配额）＋ LLM intent router（客服系统的意图路由器：小模型分类、大模型执行·成本分级调度）＋ circuit breaker（熔断器·连败trip防雪崩）＋ singleflight（并发去重共享一次远程调用）。差异：本厂的「回执」同时是<strong>人读的</strong>（业主手机可见）而非纯协议 ACK；接线员的「降级」永远落向重通道（引擎）而非轻通道——重活不降级是铁律。</p>
+<h3>变式对照</h3>
+<p>15 对全集指针＝<code>90-过程/handoffs/同构漂移实测报告-20261029.md</code> §1（不复制表）；<strong>随卡申报：零未登记同构对</strong>——对外通道层=第二层特有的对外边界面，第一层夜车无镜像件（实测报告 §1 十五对＋附带发现均无涉·报告 :42 明注 bridge 演练闸=同层同族非跨层对）。语义近邻三处（只互指不重述）：<strong>接线员三分类↔方向题闸</strong>（册⑤卡43——「该不该动手、找谁动手」的分诊同构，对象面=手机消息而非方案分歧）；<strong>回执先行↔拉窗快照回执</strong>（spawn 三键快照+就绪探针=「窗已拉起」的回执·拍板#89 AX己件）；<strong>防烧钱熔断↔同因熔断</strong>（册③卡20——第一层夜车侧的连败熔断同骨架）＋接线员连败自动关↔审批熔断（册⑤卡62）。</p>
+<h3>锚点表（file:line·出卡亲验·HEAD=4e6d7df·2026-10-29·批A 切换注记：本卡主件均批A 四件外仍 .mjs 如实注·E类 TS 化候批0·无 .ts 切换面）</h3>
+<table><thead><tr><th>锚</th><th>亲验行内容</th></tr></thead><tbody><tr><td>91-脚本/afk_bridge.mjs:3-40</td><td>头注链路全图：监听→回执先行→接线员→企微→家庭面→路 B→熔断六段白纸黑字</td></tr><tr><td>91-脚本/afk_bridge.mjs:143-146</td><td>流退避常量：首退 2s·封顶 60s·稳定阈 60s（指数退避三参数）</td></tr><tr><td>91-脚本/afk_bridge.mjs:186</td><td>RECEIPT_TEXT=「收到·正在处理（约 30-60 秒）」（回执先行文案·拍板#79②原文）</td></tr><tr><td>91-脚本/afk_bridge.mjs:191-200</td><td>DEFAULT_CONFIG：owner_open_id 白名单·max_consecutive_failures=3·pi 超时 900s·截断 3800 字</td></tr><tr><td>91-脚本/afk_bridge.mjs:326-355</td><td>classifyEvent 通道感知白名单：飞书认 open_id/企微认 touser（缺=全 ignored）/kf 认清单+激活态</td></tr><tr><td>91-脚本/afk_bridge.mjs:351-368</td><td>createLineSplitter 流式 NDJSON 分帧（跨 chunk·剥 CR·残行 flush fail-closed）</td></tr><tr><td>91-脚本/afk_bridge.mjs:375-380</td><td>nextRestartBackoffMs 流重启退避纯函数（base×2^(n-1)·封顶）</td></tr><tr><td>91-脚本/afk_bridge.mjs:389-408</td><td>CircuitBreaker 连败熔断器（连败+1·达阈 trip·成功清零）</td></tr><tr><td>91-脚本/afk_bridge.mjs:585-600</td><td>runPi 起 pi：cmd /c 拉起·消息走 stdin 零注入面·超时/非零退=计失败</td></tr><tr><td>91-脚本/afk_bridge.mjs:629-659</td><td>sendViaFeishu 飞书发送（W-088 演练闸：设闸零外发只落日志·@file 传值避转义）</td></tr><tr><td>91-脚本/afk_bridge.mjs:1130-1158</td><td>handleIncomingEvent：分类→回执先行（失败不弃单 WARN）→FIFO 入队→拉 worker</td></tr><tr><td>91-脚本/afk_bridge.mjs:1172-1231</td><td>processQueuedItem 分诊前置：机械「继续」优先零 LLM·direct 直答⚡/continue 落映射/task 走引擎</td></tr><tr><td>91-脚本/afk_bridge.mjs:1233-1252</td><td>workerLoop 单工人串行（异常兜底计败·双时间戳日志：收到/回发）</td></tr><tr><td>91-脚本/afk_bridge.mjs:1536-1557</td><td>recordVerdict 终判入账：rate_limited 零记账·连败 3→写暂停文件+红字告警+家庭广播</td></tr><tr><td>91-脚本/afk_receptionist.mjs:40-48</td><td>DEFAULT_RECEPTIONIST_CONFIG：glm-5.3-flash 快档·8s 超时·Anthropic 协议口（OpenAI 口 429 实证迁移）</td></tr><tr><td>91-脚本/afk_receptionist.mjs:172-226</td><td>extractJsonObject 平衡扫描＋parseReceptionistReply 三分类（空直答 fail-closed 不发空消息）</td></tr><tr><td>91-脚本/afk_receptionist.mjs:230-315</td><td>triageChat 裸 HTTPS 一次调用：AbortSignal.timeout 到点降级·Result 不抛·key 永不入日志</td></tr><tr><td>91-脚本/afk_receptionist.mjs:317-347</td><td>ReceptionistGate 连败自动关闭（达阈只报一次·恢复=重启桥接重装载）</td></tr><tr><td>91-脚本/afk_wecom_sender.mjs:151-169</td><td>resolveWecomRuntime fail-closed 四件套缺一=该侧关（发送/回调分立判定）</td></tr><tr><td>91-脚本/afk_wecom_sender.mjs:173-217</td><td>WeComTokenCache：缓存至过期+5min 裕量·inflight 单飞（并发 N 调用一次 HTTP）·失败不缓存</td></tr><tr><td>91-脚本/afk_wecom_sender.mjs:252-293</td><td>truncateWecomText 2048 字节码点切＋sendWecomReply（40014/42001 强刷重发一次）</td></tr><tr><td>91-脚本/afk_wecom_callback.mjs:38-55</td><td>computeSignature sha1 排序四元组＋verifyWeComSignature 常量时间比较（防时序侧信道）</td></tr><tr><td>91-脚本/afk_wecom_callback.mjs:151-208</td><td>createWecomCallbackServer：重放缓存 1024·新鲜窗 300s·无签/错签/重放/超窗全 403</td></tr><tr><td>91-脚本/afk_wecom_callback.mjs:292-306</td><td>listen 只绑 127.0.0.1（安全三件套②·穿透由业主侧转发）</td></tr></tbody></table>
+<h3>红线</h3>
+<p>密钥永不入 git、永不入日志（企微三密钥/接线员 key 全走 ts/.env·业主亲填代理不经手）；白名单外零执行（陌生人消息只记日志·配置缺=关死不猜）；熔断暂停态不烧引擎（恢复权在业主）；附加通道（企微）失败<strong>不进熔断账</strong>（防附加道故障误伤暂停全家）；接线员零文件写零命令执行零仓读取（提示词红线句·只会说话）；分诊只分路不换活——<strong>重活不降级</strong>（task/超时/失败一律走完整引擎链）。</p>
+<h3>失效触发＋防重复指针</h3>
+<p>失效触发：回执文案/熔断阈值/截断阈值改动→本卡锚点表复验；企微验签协议或错误码语义变→企微锚点复验；接线员换模型/换端点→分诊锚点复验；六主件 TS 化（E类候批0）→整表复验。防重复：分诊判路正本＝册⑤卡42/43（互指）；熔断骨架正本＝册③卡20（互指）；fail-closed 通则＝册⑦卡56（互指）；各主件头注即机制正本（本卡零复制只提炼）。</p>
+<p>---</p>
+<h2>卡70 · 家庭面广播与客服（业内名：Audience-Segregated Broadcast + Rate-limit-aware Customer Service Channel）</h2>
+<p><strong>harness 层</strong>：harness第二层（对外通道层·家庭侧面部）</p>
+<p><strong>一句话</strong>：家人不用装企微——告警全家同知、晨报收口只进家庭群；家人发指令走白名单清单+接线员同链分诊；48 小时超窗不硬发、平台限频退避且不烧熔断账、首次拉取只建水位防历史轰炸。</p>
+<h3>图（出口分流＋入口清单·F 型）</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  subgraph OUT["出口：什么话进家庭群"]
+    EV["引擎消息三类<br/>告警/晨报/收口"] --> RT{"分流规则表"}
+    RT -->|"熔断告警"| BOTH["私聊＋广播<br/>全家同知"]
+    RT -->|"晨报·收口"| BC["仅广播<br/>不扰业主"]
+    RT -->|"未知类别"| PRI["仅私聊<br/>不乱播"]
+  end
+  subgraph IN["入口：谁能使唤管家"]
+    MSG["家人微信消息<br/>回调通知＋30秒拉取"] --> WL{"白名单清单？"}
+    WL -->|"清单外"| IGN["忽略记日志<br/>不烧引擎"]
+    WL -->|"清单内"| TRI["接线员分诊<br/>同链同规矩"]
+    TRI --> ACT["执行后回发家人<br/>不抄飞书不扰业主"]
+  end
+  ACT --> GD{"回发三道保险"}
+  GD -->|"超48小时窗"| HINT["单次尝试即止<br/>＋限频提示业主"]
+  GD -->|"限频45009"| BK["退避1s起翻倍<br/>耗尽不进熔断账"]
+  GD -->|"正常"| OK["送达"]
+</div></div>
+<h3>图说明（逐节点注解）</h3>
+<ul><li><strong>分流规则表</strong>＝一张写死的三行表：熔断告警=私聊+广播（全家同知防烧钱事件）；晨报/收口=仅广播；<strong>其余/未知类别=仅私聊</strong>——表上没有的类别绝不广播（fail-closed 不骚扰全家）。</li><li><strong>家庭群广播</strong>＝家庭微信群里的群机器人：引擎把晨报/收口/告警 POST 进群，家人个人微信直接可见（零企微安装）；通知类单次发送失败只记日志不重试轰炸。</li><li><strong>白名单清单</strong>＝业主亲自维护的家人客服 ID 清单（每条=ID+备注名）——清单外忽略记日志；<strong>清单为空=管家关死</strong>（零人可用·fail-closed·装载时告警提示配清单）。</li><li><strong>同链同规矩</strong>＝家人消息与业主消息走同一根脊柱：一样回执先行、一样先过接线员、一样排队串行——只是回发走客服道回家人、不抄送飞书不扰业主。</li><li><strong>48 小时窗</strong>＝官方规矩：家人 48 小时内发过消息才回发得进去；超窗=单次尝试即止+对业主限频提示（24 小时最多提醒一次）——<strong>不硬发不刷屏</strong>，家人下次随便发一条消息自然激活。</li><li><strong>限频退避</strong>＝平台回「频率超限」（错误码 45009）时按 1s→2s→4s…60s 封顶退避重试，八次耗尽就如实放弃并记 rate_limited——<strong>不进熔断账</strong>（平台瞬态限频≠执行缺陷·烧了熔断会误停全家通道）。</li><li><strong>首拉只建水位</strong>＝客服通道首次接通时，第一轮拉取只记「看到哪了」（水位）不派发任何历史消息——防新账号接入瞬间历史消息轰炸全家。</li></ul>
+<h3>术语白话对照</h3>
+<p><code>分流规则（routeBroadcast）</code>＝消息类别→出口的组合表：alert（告警）=私聊+广播、digest（晨报）/closing（收口）=仅广播、未知=仅私聊；<code>清单制白名单</code>＝家人身份用清单管理（业主增删）而非单人白名单——清单哲学同事件账本白名单但对象是家人客服 ID；<code>48h 窗</code>＝微信客服官方会话窗：48 小时内家人来过消息才可主动回发，超窗回发会失败；<code>水位（cursor）</code>＝「同步到哪条了」的书签——回调道与 30 秒拉取道共用同一个水位文件（无第二套游标·防重复消费靠消息编号幂等兜底）；<code>seed 模式</code>＝水位为空的首轮拉取：只存水位不派发（防历史重放）；<code>45009</code>＝企微官方「接口频率超限」错误码——退避序列 1s→2s→4s…60s 封顶·八次帽；<code>rate_limited</code>＝限频耗尽的终判值：熔断记账闸对该值零记账（对齐「平台瞬态≠执行缺陷」）；<code>origin=3</code>＝官方消息来源标记：3=家人在微信发来——只取这类（接待侧发出的不回声·系统事件不空转）。</p>
+<h3>口述（家人的一天）</h3>
+<p>早上八点，家庭群「叮」一声：晨报到了——昨晚夜车跑了七张票六绿一红、花了多少钱，全家都看得见（这是<strong>仅广播</strong>：全家知情但不私聊扰业主）。中午引擎连败三次自锁了，群里同时蹦出红字告警——<strong>私聊+广播</strong>，业主手机和家庭群一起知道出事了。下午女儿想查进度，她用个人微信给「家庭管家」客服号发了句「家里最近跑了啥」：管家先查清单——她的客服 ID 在妈妈定的名单上（名单外的人说破天也只被记一笔日志），于是回执先行、过接线员分诊、起会话跑完，结果回到她的微信——业主手机全程不响。三天后儿子也想要这服务？业主把他的客服 ID 填进清单就行。若有人 48 小时没说话，管家想发提醒也发不进去——那就只试一次，对业主说一声「XX 的会话超窗了」，不刷屏不硬发；等儿子哪天随手发个「在吗」，会话自动激活，一切照旧。</p>
+<p><strong>实战案例（W-023/W-026 实测·进度总览 :56/:60 行在案）</strong>：①清单外演练——真实配置空清单时家人消息全 ignored 不烧引擎（fail-closed 关死实证）；②自测逮真雷——sendKfReply 实装漏 dryRun 参数，演练时真调了令牌接口（40001）当场逮住补齐；本地回环豁免坑——广播 POST 强制 https 曾拒掉演练用的本地假 webhook，补 127.0.0.1/localhost 回环豁免（真 webhook 仍强制 https）；③路 B 兜底——回调没配也能 30 秒级自动闭环（治「回调与拉取两头落空」痛点）；水位互斥=拉取道与回调道共用同一 sync_cursor 书签、消息编号幂等去重兜底；④桩跑红留证——广播适配器桩版 0/6 跑红留证→实装 6/6 绿（先红后绿）。</p>
+<h3>业内对照</h3>
+<p>Audience segmentation / unicast-broadcast routing table（受众分道：一张静态路由表决定单发还是群发·未知落保守侧）＋ allowlist（白名单准入·deny-by-default）＋ 48h customer service window（Meta/微信系客服消息的官方会话窗·超窗不可主动触达——本厂把它读成「不硬发不刷屏」的礼貌纪律）＋ cursor-based sync with watermark（游标水位同步·Kafka 消费者 offset 同族）＋ initial-offset seeding（新消费组首挂只推进位不回放——auto.offset-reset=latest 的手工版）＋ exponential backoff with rate-limit exemption（429/Retry-After 语义：限频退避但<strong>不计入</strong>故障熔断——限频是流量信号不是健康信号）。</p>
+<h3>变式对照</h3>
+<p>15 对全集指针＝<code>90-过程/handoffs/同构漂移实测报告-20261029.md</code> §1（不复制表）；<strong>随卡申报：零未登记同构对</strong>——家庭面=第二层特有面·第一层无镜像件（实测报告 §1 十五对＋附带发现均无涉）。语义近邻三处（只互指不重述）：<strong>清单制白名单↔事件账本白名单</strong>（册⑦卡54——「清单外拒收」同哲学，对象=家人身份≠事件类型）；<strong>48h 超窗不硬发↔宁停不装绿</strong>（册⑦卡56 同族——发不进=如实停·绝不刷屏硬凑）；<strong>45009 不进熔断账↔审批熔断风险分级</strong>（册⑤卡62——「平台瞬态≠执行缺陷」的记账豁免同构）。</p>
+<h3>锚点表（file:line·出卡亲验·HEAD=4e6d7df·2026-10-29·批A 切换注记：本卡主件均批A 四件外仍 .mjs 如实注·E类 TS 化候批0·无 .ts 切换面）</h3>
+<table><thead><tr><th>锚</th><th>亲验行内容</th></tr></thead><tbody><tr><td>91-脚本/afk_family_broadcast.mjs:53-59</td><td>BROADCAST_ROUTE 分流规则表＋routeBroadcast（alert=双发/digest·closing=仅广播/未知=仅私聊 fail-closed）</td></tr><tr><td>91-脚本/afk_family_broadcast.mjs:141-166</td><td>truncateWebhookText 码点截断（text 1900/markdown 3800）＋buildWebhookBody（非法 msgtype=null fail-closed）</td></tr><tr><td>91-脚本/afk_family_broadcast.mjs:168-213</td><td>postWebhook：https 强制（本地回环仅演练豁免）·单次无重试（通知类不轰炸）</td></tr><tr><td>91-脚本/afk_family_broadcast.mjs:216-247</td><td>createFamilyBroadcastChannel：骨架态静默零 HTTP·失败只回调日志</td></tr><tr><td>91-脚本/afk_family_kf.mjs:55</td><td>KF_WINDOW_HINT=「请先发任意消息激活会话」（48h 超窗引导语原文）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:118-156</td><td>parseFamilyAccounts 清单解析（每条=客服 ID+备注名·非法条目剔除留痕）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:159-165</td><td>isAllowedFamily 清单制白名单（空清单=false 降级关死·ID 精确匹配）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:190-215</td><td>resolveFamilyKfRuntime fail-closed（secret/open_kfid/清单缺一=关·发送与回调分立）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:247-267</td><td>parseKfMsgList origin=3 过滤（只取家人来文·不回声不空转）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:269-285</td><td>kfMsgToEvent 标准事件同构（channel=kf·kf_ 前缀幂等键·进桥接链零特判）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:287-300</td><td>48h 超窗判定（errcode 集合候真班回填·errmsg 模式匹配·误判后果=少重试语义安全·如实声明）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:337-344</td><td>shouldNotifyWindowExpired 超窗提示 24h 限频一次（不报错刷屏）</td></tr><tr><td>91-脚本/afk_family_kf.mjs:413-450</td><td>pullAndDispatch 拉取链（cursor 水位·首拉 seed 只建水位不派发·分页≤3 轮）</td></tr><tr><td>91-脚本/afk_bridge.mjs:149-157</td><td>45009 退避常量+nextKfRateLimitDelayMs 纯函数（1s→2s→4s·60s 封顶·八次帽）</td></tr><tr><td>91-脚本/afk_bridge.mjs:833-874</td><td>sendKfReplyWithBackoff：限频退避重试·耗尽=rate_limited·超窗零重试（对齐 48h 语义）</td></tr><tr><td>91-脚本/afk_bridge.mjs:877-951</td><td>kfPullOnce 路 B 单轮拉取（复用 kf 件零改·KF_PULL 结构化单行 JSON 日志·W-061）</td></tr><tr><td>91-脚本/afk_bridge.mjs:953-969</td><td>kfPullLoop 路 B 长跑循环（每 N 秒·配置 0=关·仅激活态拉·异常兜底进程不退）</td></tr><tr><td>91-脚本/afk_bridge.mjs:168-181</td><td>parseKfPullIntervalSeconds 路 B 开关（0 或 10~86400·非法=0 fail-safe）</td></tr></tbody></table>
+<h3>红线</h3>
+<p>分流规则表不可倒——未知类别永远不广播（家庭群不被骚扰是硬边界）；家人清单增删权在业主（代理不代填家人身份·空清单=关死不猜）；密钥不入 git（客服 Secret/回调 Token/AES 键全走 ts/.env）；48h 超窗零重试（重试=轰炸）；45009 限频不得计入熔断账（误伤会暂停全家通道·平台瞬态≠执行缺陷）；首拉 seed 不可省（省了=历史消息轰炸全家）；家人回发不抄送业主道（两世界隔离·业主开放名单在飞书道零变化）。</p>
+<h3>失效触发＋防重复指针</h3>
+<p>失效触发：企微协议/错误码语义变（KF_WINDOW_ERRCODES 候真班实测回填·当前空集如实声明）→本卡复验；分流规则表改行→卡面与锚点同步复验；pull_interval 语义变→路 B 锚点复验；主件 TS 化（E类候批0）→整表复验。防重复：分流与清单正本＝各主件头注（零复制只提炼）；白名单哲学＝册⑦卡54（互指）；fail-closed 通则＝册⑦卡56（互指）；记账豁免近邻＝册⑤卡62（互指）；家庭面业主操作指引＝91-脚本/家庭面业主操作指引.md（只指针不搬运）。</p>
+<p>---</p>
+<h2>册⑪ 尾注 · 同构轴</h2>
+<p>2 卡是一条「对外通道轴」：<strong>卡69 管「业主的话怎么进、引擎的话怎么出」（门房＋前台＋第二部电话）·卡70 管「家人的话怎么看、怎么说」（家庭喇叭＋管家客服）</strong>。两卡共用一根脊柱（回执先行→接线员→排队串行→回发）与同一条铁律：<strong>通道只搬运不判卷——分诊只分路不干活，广播只分流不私改，白名单外零执行，失败 fail-closed 关道不装绿，附加道故障不烧主道熔断</strong>。</p>
+<p><strong>锚点验证</strong>：4e6d7df 逐卡实锚（本窗 2026-10-29 亲验·六主件 selftest 56 案复跑全绿：bridge 21+receptionist 4+sender 5+callback 11+broadcast 6+kf 9）；主件均 .mjs（E类 TS 化横切候批0 立票·拍板#235③·届时本册锚点表整表复验）。</p>
+<blockquote>
+<p>编号注记：任务书原拟号「卡67」撞册⑦既有卡67（两层 harness 分治·W-165 出卡）→顺延 <strong>卡69/卡70＝当前首个真空号</strong>（卡67/68 已有主·既有卡号零动·沿 W-165 两跳先例·窗产物 latitude-log 在案候追认）；册⑪为 D 类通道族入射程新建册（D 类无既有对应册·沿册⑩增册先例·latitude 留痕候追认）；总索引射程声明与分母口径见其尾增补节。</p>
+</blockquote>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/08-机制目录/11-对外通道册.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

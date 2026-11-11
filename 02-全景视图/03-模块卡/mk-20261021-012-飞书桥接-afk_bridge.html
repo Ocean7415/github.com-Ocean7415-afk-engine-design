@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-012 · 模块卡 · 飞书桥接（afk_bridge）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-012 · 模块卡 · 飞书桥接（afk_bridge）</h1>
+<div class="meta"><b>id</b> mk-20261021-012 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 67e5b04 · <b>run_id</b> queue-93-w040</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；复考（交活重考闸·L2）；熔断（同因熔断 L1／收班复盘器 L2）。</p>
+</blockquote>
+<h1>模块卡 · 飞书桥接（afk_bridge）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：让业主在手机飞书上就能使唤引擎——私聊机器人收指令→本机桥接→pi 跑活→结果回发，外加企微/家庭面多通道。<strong>为什么存在</strong>：引擎跑在业主机器上，桥接就是「人不在电脑前也能派活收报」的常驻接口（链路全景头注·锚 91-脚本/afk_bridge.mjs:1）。<strong>边界</strong>：白名单制（仅业主 open_id·清单外忽略记日志）；闲聊/真任务分诊降级 fail-closed 不阻塞桥接；密钥零入账。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>分诊定形：拍板#80 落表——接线员分诊（W-021）：闲聊 direct_answer 直回·真任务走 pi 流程·连败达阈值自动关闭+IM 告警</td><td><code>90-过程/拍板记录表.md:99</code></td></tr><tr><td>2</td><td>收发分离（W-020）：收到立即回执「收到·正在处理」→FIFO 单 worker 逐条跑（排队不丢不并行抢 API）→完成回发【结果】</td><td>本卡实现概览</td></tr><tr><td>3</td><td>通道抽象（W-022）：回发统一 sendReply·附加通道（企微）尽力并发失败只 WARN·回调端点只绑 127.0.0.1·密钥未填=通道自动关闭+告警</td><td>本卡实现概览（锚 91-脚本/afk_bridge.mjs:737）</td></tr><tr><td>4</td><td>事件流纪律：单长跑 <code>lark-cli event consume</code> NDJSON 逐行读·进程生命周期=桥接生命周期·异常退出自动重启（指数退避 2s→60s 封顶·稳定 60s 重置）</td><td>本卡实现概览（mainLoop 锚 91-脚本/afk_bridge.mjs:1335）</td></tr></tbody></table>
+<h2>接口</h2>
+<p>常驻进程（无 CLI 子命令·<code>node 91-脚本/afk_bridge.mjs</code> 拉起·main 锚 91-脚本/afk_bridge.mjs:2048）：业主手机飞书私聊机器人→本机桥接→pi 跑活→回发结果。 导出：sendReply 统一回发口（锚 91-脚本/afk_bridge.mjs:737·W-022 通道抽象·主道飞书熔断记账锚零变化）·handleIncomingEvent 统一入事件口（锚 91-脚本/afk_bridge.mjs:1090·飞书/企微事件汇流）·mainLoop 流式监听主循环（锚 91-脚本/afk_bridge.mjs:1335）。</p>
+<h2>实现概览</h2>
+<p>链路全景（头注·锚 91-脚本/afk_bridge.mjs:1）：单长跑 <code>lark-cli event consume im.message.receive_v1 --as bot</code> NDJSON 逐行读·进程生命周期=桥接生命周期；事件流异常退出→自动重启（指数退避 2s→60s 封顶·稳定 60s 重置）。 收发分离（W-020）：收到立即回执「收到·正在处理」→FIFO 队列单 worker 逐条跑 pi（排队不丢不并行抢 API）→完成回发结果（【结果】前缀）。 接线员分诊（W-021·拍板#80）：worker 处理件先过裸 LLM 接线员——闲聊 direct_answer 直回·真任务走 pi 流程；超时/失败降级走现行为·连败达阈值自动关闭+IM 告警（fail-closed 不阻塞桥接）。 通道抽象（W-022）：回发统一 sendReply·附加通道（企微）尽力并发失败只 WARN；企微接收=回调端点只绑 127.0.0.1·密钥未填=通道自动关闭+IM 告警。 家庭面（W-023/W-026）：群机器人广播（熔断告警=私聊+广播·晨报/收口=仅广播·routeBroadcast 未知类别 fail-closed）+微信客服「家庭管家」（白名单清单制·48h 超限单次尝试即止）+sync_msg 拉取循环兜底。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    FS[飞书私聊<br/>业主指令] --> EV[handleIncomingEvent<br/>事件汇流]
+    WC[企微回调<br/>127.0.0.1:8423] --> EV
+    EV --> ACK[立即回执<br/>收到·正在处理]
+    ACK --> FIFO[FIFO 队列<br/>单 worker 逐条]
+    FIFO --> TR{接线员分诊<br/>裸 LLM}
+    TR -->|闲聊| DA[direct_answer 直回]
+    TR -->|真任务| PI[pi 一次性会话<br/>跑活]
+    TR -->|超时/失败| FB[降级走现行为]
+    DA & PI & FB --> SR[sendReply 统一回发<br/>【结果】前缀]
+    SR -->|熔断告警| BC[群广播<br/>私聊+广播]
+    EV -.->|异常退出| RS[自动重启<br/>指数退避 2s→60s]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>飞书私聊</td><td>主通道：业主手机私聊机器人发指令；白名单制——仅业主 open_id，清单外忽略记日志（防陌生人使唤引擎）。</td></tr><tr><td>handleIncomingEvent</td><td>统一入事件口（锚 91-脚本/afk_bridge.mjs:1090）：飞书/企微两源事件汇流成同构入队——下游不关心消息从哪来。</td></tr><tr><td>立即回执</td><td>收发分离第一半（W-020）：先回「收到·正在处理」——业主秒级有反馈，不干等。</td></tr><tr><td>FIFO 队列</td><td>单 worker 逐条跑：排队不丢、不并行抢 API——任务多了排队能预期，不炸上游配额。</td></tr><tr><td>接线员分诊</td><td>裸 LLM 分诊（W-021·拍板#80·<code>90-过程/拍板记录表.md:99</code>）：闲聊直答省预算、真任务走 pi、连败达阈值自动关闭+告警——fail-closed 不阻塞桥接本体。</td></tr><tr><td>sendReply</td><td>统一回发口（锚 91-脚本/afk_bridge.mjs:737·W-022）：主道飞书熔断记账；附加通道（企微）尽力并发失败只 WARN——附加面坏不拖垮主道。</td></tr><tr><td>群广播</td><td>家庭面（W-023/W-026）：熔断告警=私聊+广播、晨报/收口=仅广播、routeBroadcast 未知类别 fail-closed——告警必达，日常不打扰。</td></tr><tr><td>自动重启</td><td>事件流=桥接生命周期（mainLoop 锚 91-脚本/afk_bridge.mjs:1335）：异常退出指数退避重启（2s→60s 封顶·稳定 60s 重置）——lark-cli 长连接断了自愈。</td></tr></tbody></table>
+<h2>调用方与被调用</h2>
+<p>被调：常驻在役（开机自启/业主手动拉起）；会话路由默认 pi --print 新会话（cwd=本仓根继承 AGENTS.md）·「继续〈话题〉」映射续 --session-id。 调用：lark-cli（事件流+回发）·afk_receptionist（接线员）·afk_wecom_sender/afk_wecom_callback（企微双件）·afk_family_broadcast/afk_family_kf（家庭面）·pi 子进程。</p>
+<h2>从哪测</h2>
+<p>IM 通道面测试=91-脚本/考题库/清单-桥接通道窗.json（复考闸机检域）；常驻行为=真班观察（.bridge.log 双时间戳留痕）。</p>
+<h2>参数与预算</h2>
+<p>白名单制（仅业主 open_id·清单外忽略记日志）；熔断记账；零判卷零出题权触碰；配置=afk_dispatch_config 同族 .env/config 面（密钥零入账）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 67e5b04（2026-10-21·W-040 核对）；失效触发=事件消费/回发通道/分诊降级语义改动（看执行台账 afk_bridge 新笔）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-012-飞书桥接-afk_bridge.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>cfg-20261028-000 · 09-配置目录 · 00-配置总索引卡（引擎可调参数总账·v1）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>cfg-20261028-000 · 09-配置目录 · 00-配置总索引卡（引擎可调参数总账·v1）</h1>
+<div class="meta"><b>id</b> cfg-20261028-000 · <b>kind</b> 配置目录总索引卡（初版盘点·v1） · <b>domain</b> engine · <b>status</b> verified（当日 grep 实勘） · <b>created_at</b> 2026-10-28</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；三关（收包验货关 L1／立票验单关·贴卡拦病关·领单再验单 L2）；复考（交活重考闸·L2）；授权面（票单 L1／窗单 L2）；熔断（同因熔断 L1／收班复盘器 L2）；挂起（事件对 L1／⏸格 L2·随文标注）；自愈环（干活自愈环·L1）。</p>
+</blockquote>
+<h1>09-配置目录 · 00-配置总索引卡（引擎可调参数总账·v1）</h1>
+<blockquote>
+<p><strong>这是什么</strong>：全厂「旋钮台账」——每个可调参数的名字、现值、住哪、谁消费、怎么调、什么等级。机制目录（08）管「机制怎么转」，本目录管「旋钮在哪、拧到几」。</p>
+<p><strong>为什么需要</strong>：token 预算帽、回退率阈值这类参数此前散在代码常量与 env 里——调一次帽要动码（2026-10-28 业主调帽即动了 <code>窗预算刹车.mjs:40</code>）；没有一处能看全「现在全厂拧到几」。</p>
+<p><strong>变更注记（v1.1 补行·W-251·拍板#334·2026-11-03）</strong>：§3 补三旋钮行（AFK_GATE4_ESCALATE/PROCESS_MAX_BLOCK_CHARS/RRM_CHUNK_STRATEGY 逃生口）——三旋钮均系 67e5b04 后落码·本卡 v1 盘点期未存在·grep 零命中实勘后补行（缺省值与出处拍板/commit 锚随行）。</p>
+</blockquote>
+<h2>§1 配置四层分级（本目录的核心设计）</h2>
+<table><thead><tr><th>层</th><th>是什么</th><th>怎么调</th><th>纪律</th></tr></thead><tbody><tr><td><strong>L0 纪律级</strong>（代码常量）</td><td>「只加严不加松」的纪律红线——⟲≤3、park≤2、循环帽≥3、NA 门槛、CRAP30</td><td><strong>改=拍板</strong>（走码改＋拍板号）·故意<strong>不做</strong>成方便调的配置——防「配置一改纪律悄悄松了」</td><td>本目录只登记不上调参面</td></tr><tr><td><strong>L1 引擎配置</strong>（配置文件）</td><td>运维调参面——预算帽/比率/阈值/开关/词表</td><td>业主令→主窗改配置件＋台账留痕候追认</td><td>调参即台账</td></tr><tr><td><strong>L2 票面参数</strong></td><td>每票自带——任务书预算帽/考题 timeout</td><td>立票时写·三关机检</td><td>票面自证</td></tr><tr><td><strong>L3 环境变量</strong>（AFK_*）</td><td>运维急用阀/路径/演练开关</td><td>设 env·不改文件</td><td>急用阀·非日常调参</td></tr></tbody></table>
+<h2>§2 L1 运维调参面（建议逐步向配置件集中·现值=2026-10-28）</h2>
+<table><thead><tr><th>#</th><th>参数</th><th>现值</th><th>码锚</th><th>消费方</th><th>调法</th><th>备注</th></tr></thead><tbody><tr><td>1</td><td>槽位 max_parallel</td><td>5</td><td>afk_dispatch_config.json</td><td>派工器 worker pool</td><td>派工台[5]</td><td>已配置化</td></tr><tr><td>2</td><td>桥接接线员模型/超时</td><td>glm-5.3-flash / 8000ms</td><td>afk_dispatch_config.json receptionist 段</td><td>桥接接线员</td><td>改配置件</td><td>已配置化</td></tr><tr><td>3</td><td><strong>缺省预算帽 DEFAULT_CAP_TOKENS</strong></td><td><strong>5,000,000</strong>（2026-10-29 业主令·历史：1,000,000→3,000,000→5,000,000）</td><td><code>窗预算刹车.mjs:40</code></td><td>窗级预算三级判</td><td>现=码改·<strong>建议迁配置件</strong>（L1 化）</td><td>票面任务书帽&gt;缺省（两级）</td></tr><tr><td>4</td><td><strong>软超比 SOFT_RATIO</strong></td><td>0.8</td><td><code>窗预算刹车.mjs:91</code></td><td>软超降档线</td><td>现=码改·建议随 3 迁</td><td></td></tr><tr><td>5</td><td>班外评测日上限</td><td>10 次调用/日（B4）</td><td>任务书 W-154 审批规格节→日跑器</td><td>班外评测跑</td><td>票面→候迁 L1</td><td>W-154 落地时定</td></tr><tr><td>6</td><td>熔断阈值（回退率&gt;20%/事故率≥2 件）</td><td>待建</td><td>W-155 设计=afk_dispatch_config 加 <code>approval_tier</code> 节</td><td>审批熔断器</td><td><strong>W-155 落地即配置化</strong></td><td>影子缺省</td></tr><tr><td>7</td><td>分级词表四族＋App 永不低档</td><td>待建</td><td>同上 approval_tier 节</td><td>风险分级器</td><td>同上</td><td>词表增删=拍板点 C3 范围内</td></tr><tr><td>8</td><td>考题 timeout_ms</td><td>各清单 meta</td><td>考题库/清单-*.json</td><td>复考闸</td><td>改清单（业主令）</td><td>L2 票面近亲</td></tr></tbody></table>
+<h2>§3 L3 环境变量家族（AFK_*·当日 grep 实勘 20 个）</h2>
+<table><thead><tr><th>参数</th><th>引用数</th><th>语义</th><th>备注</th></tr></thead><tbody><tr><td>AFK_LARK_DRYRUN</td><td>20</td><td>飞书写入演练开关（零突变守卫）</td><td>演练阀</td></tr><tr><td>AFK_SHENBAO_MTIME_MIN</td><td>17</td><td>申报器 mtime 判活阈值（分）</td><td>收口申报器</td></tr><tr><td>AFK_SCLERK_STALL_MIN</td><td>11</td><td>收据员停更阈（缺省 10 分）</td><td>W-132/134/148 三轮先例</td></tr><tr><td>AFK_STALL_DAYS</td><td>6</td><td>wip_scan 超时扫描阈（缺省 3 天）</td><td></td></tr><tr><td>AFK_SCLERK_TAIL_LINES / _REPROBE_DELAY_MIN / _REPROBE_MAX / _REDISPATCH_CAP</td><td>各 6</td><td>W-148 四参：尾窗 80 行/重探延时 5 分/重探 2 次/重排帽 3</td><td>已参数化（拍板#211-A）</td></tr><tr><td>AFK_REVIEW_GATE</td><td>3</td><td>会审门三态 off/dryrun/enforce</td><td>渐进开闸·首例</td></tr><tr><td>AFK_HARVEST_ALLOW / AFK_SPAWN_MODE / AFK_LATITUDE_GATE</td><td>各 1-3</td><td>收割白名单/施工窗形态/授权面急停阀</td><td>急用阀族</td></tr><tr><td>AFK_BRIDGE_*（PIDFILE/STATUSFILE/ENV_FILE/DISPATCH_CONFIG）/ AFK_LOG / AFK_CWD / AFK_EDGE_BASE / AFK_PROMPT</td><td>各 1-6</td><td>路径与通道面</td><td>运维固定</td></tr><tr><td><strong>AFK_GATE4_ESCALATE</strong></td><td>1</td><td>闸4 升格开关：🔁归属超时升格「派工器翻回重领」——∈ on/true/1（trim+大小写不敏感）=开·<strong>未设/空/其他=关（缺省 off fail-closed</strong>·告警语义零变）·实翻候业主令（W-243）</td><td>91-脚本/pi_runner.ts:1091（gate4EscalateEnabled）·出处=W-243 拍板#323①（commit 62af883）·判据文档=窗产物/W-243-队列写治理批3/</td></tr><tr><td><strong>PROCESS_MAX_BLOCK_CHARS</strong></td><td>1</td><td>process 轨散文块长帽：未设/空=<strong>缺省 4000</strong>；非法/≤0=fail-closed RuntimeError（配置错≠静默回退·沿拍板#136）；帽只切 process 宽松轨散文块·RRM 轨/表格行零涉</td><td>94-班外经验库RAG/build_index.py:85-98 ·出处=W-227 续跑拍板#324①（commit fc81635·W-209 外考截断线同参）</td></tr><tr><td><strong>RRM_CHUNK_STRATEGY（逃生口）</strong></td><td>3</td><td>RRM 分块档位：未设/空=<strong>缺省句窗档 sentence_window</strong>（窗 800/重叠 80·W-227 拍板#321② 翻缺省）·<code>"section"</code>=旧节切逃生口（显式设逐字可达·输出逐字节同 W-115 现役）·其他值=fail-closed RuntimeError</td><td>94-班外经验库RAG/rrm_chunker.py:33-40/:104-110（自持 env 口）＋build_index.py:702＋settings.py:32 ·出处=W-115 拍板#165 建＋W-227 拍板#321② 翻缺省（fc81635）</td></tr></tbody></table>
+<h2>§4 L0 纪律级（登记·不上调参面·改=拍板）</h2>
+<table><thead><tr><th>参数</th><th>现值</th><th>码锚</th><th>语义</th></tr></thead><tbody><tr><td>NA_RATIO_GATE</td><td>0.2</td><td><code>ladder.ts:13</code></td><td>看不清占比门槛（NA≠PASS）</td></tr><tr><td>CRAP_FAIL_ON</td><td>30</td><td><code>crap-gate.ts:14</code></td><td>整洁度绝对线（存量热点分级实测定档）</td></tr><tr><td>自愈环 ⟲</td><td>≤3</td><td><code>build.ts:184</code></td><td>回喂重试上限</td></tr><tr><td>停车场 park</td><td>≤2</td><td><code>red-ruling.ts</code>（挂起上限）</td><td>同票最多挂两次</td></tr><tr><td>打回循环帽</td><td>≥3 转⏸</td><td><code>打回分诊.mjs</code>（缺省 3·env 可调=拍板#173 拍定）</td><td>翻来覆去三次不过候人工</td></tr><tr><td>红连击 RED_STREAK_THRESHOLD</td><td>2</td><td><code>red-ledger.ts:13</code></td><td>红连击判据</td></tr><tr><td>安装红 LIMIT</td><td>3</td><td><code>lane-stop.ts:41</code></td><td></td></tr><tr><td>M6 同因熔断</td><td>复发零轮</td><td><code>lane-drain.ts:50</code></td><td>修错面熔断</td></tr><tr><td>QA_CALL_CAP / QA_SLICE_CAP</td><td>3 / 8</td><td><code>qa-steps.ts:16,18</code></td><td></td></tr><tr><td>PREFLIGHT_ASSUMPTION_CAP</td><td>3 票/班</td><td><code>preflight.ts:23</code></td><td>假设复验抽检帽</td></tr></tbody></table>
+<h2>§5 迁移建议（候拍板·不阻塞）</h2>
+<ol><li><strong>首批迁 L1</strong>：参数 3/4（预算帽/软超比）——高频调参（本月已调两次）＋业主已行使调帽权，迁配置件后「调帽=改配置＋台账」，不再动码；</li><li><strong>W-155 落地自带配置化</strong>：approval_tier 节（参数 6/7）——设计已入任务书；</li><li><strong>L0 永不迁移</strong>：纪律级保持代码常量（设计判断非技术债）；</li><li>本目录随拍板#216 后三票（W-154/155/156）收口逐参补行。</li></ol>
+<h2>§6 防重复指针</h2>
+<p>机制语义=08-机制目录（57 项）·数据流=07-数据流·本目录只管「参数名/现值/调法/等级」。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/09-配置目录/00-配置总索引卡.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>层级全景 · 用例/票内/班内/班外四层流程 · AFK无人值守引擎V1.0</title><style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;background:#f1f5f9;color:#0f172a;line-height:1.75}
+.wrap{max-width:1020px;margin:24px auto;padding:0 16px}
+header{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border-radius:12px;padding:24px 30px}
+header h1{font-size:22px} header .sub{opacity:.85;margin-top:4px;font-size:13px}
+section{background:#fff;border-radius:12px;padding:20px 26px;margin-top:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+h2{font-size:15px;color:#1e3a8a;border-left:4px solid #1e3a8a;padding-left:10px;margin-bottom:10px}
+h3{font-size:13.5px;color:#0f172a;margin:14px 0 6px}
+p{font-size:13.5px;margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:6px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+th{background:#f8fafc;color:#475569}
+li{margin:3px 0 3px 20px;font-size:13.5px}
+.small{color:#64748b;font-size:12px}
+code{background:#f1f5f9;padding:1px 6px;border-radius:5px;font-size:12px}
+blockquote{border-left:4px solid #94a3b8;background:#f8fafc;padding:8px 14px;margin:8px 0;font-size:13px;color:#334155}
+.badge{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:600;color:#fff}
+.g{background:#16a34a}.b{background:#2563eb}.r{background:#dc2626}.o{background:#d97706}
+.flow{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 16px;font-size:12.5px;font-family:Consolas,monospace;overflow-x:auto;line-height:1.9;white-space:pre}
+.flow b{color:#7dd3fc}.flow i{color:#fbbf24;font-style:normal}.flow em{color:#f87171;font-style:normal}
+.warn{background:#fef2f2;border-left:4px solid #dc2626;padding:8px 14px;margin:8px 0;font-size:13px}
+.ok{background:#f0fdf4;border-left:4px solid #16a34a;padding:8px 14px;margin:8px 0;font-size:13px}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin:22px 0}</style></head><body><div class='wrap'>
+<header><h1>层级全景 · 用例 / 票内 / 班内 / 班外 四层流程 <span class='badge b' style='vertical-align:middle'>v1.8</span></h1>
+<div class='sub'>AFK无人值守引擎V1.0 · 07-设计理念专题 · HTML 成品权威件（沿 v1.2 拍板#35 纪律）· v1.0 2026-10-12（业主动议「专门出一个专题说明不同层级的流程图」·HEAD <code>3456b41 后</code>）· 姊妹件：《考题增删改查矩阵》（用例层细则·`01-蓝图/`）· 本文零新机制——只把已落地的四层流程各画一张图，层间交接面写死 · v1.5 2026-10-13（拍板#21/#22 引擎三笔代码更新对表收拢）· v1.6 2026-10-13（⑪翻译官补录+⑫班外优化师上线存照·花名册十一岗+1 工位）· v1.7 落位定案 · v1.8 2026-10-13（拍板#28 岗卡工程 P1·花名册表改由岗卡生成·班外三岗提示词外置读卡·机检三件套上线）· v1.9 2026-10-14（拍板#31 三级重整：+维修工程师班内一岗两坐席+⑬兜底修复工程师+⑭监控专职工位·十三岗口径）</div></header>
+<div class='sub'>AFK无人值守引擎V1.0 · 07-设计理念专题 · HTML 成品权威件（沿 v1.2 拍板#35 纪律）· v1.0 2026-10-12（业主动议「专门出一个专题说明不同层级的流程图」·HEAD <code>3456b41 后</code>）· 姊妹件：《考题增删改查矩阵》（用例层细则·`01-蓝图/`）· 本文零新机制——只把已落地的四层流程各画一张图，层间交接面写死 · v1.5 2026-10-13（拍板#21/#22 引擎三笔代码更新对表收拢）· v1.6 2026-10-13（⑪翻译官补录+⑫班外优化师上线存照·花名册十一岗+1 工位）· v1.7 落位定案 · v1.8 2026-10-13（拍板#28 岗卡工程 P1·花名册表改由岗卡生成·班外三岗提示词外置读卡·机检三件套上线）· v1.9 2026-10-14（拍板#31 三级重整：+维修工程师班内一岗两坐席+⑮出题面维修与计划增补工程师+⑭监控专职工位·十三岗口径）</div></header>
+
+<section><h2>〇、一句话总纲</h2>
+<p><b>同一台引擎，四层流程各管一段，层间只有两个交接面。</b>用例层管「考题从哪来、谁能动」（增删改查·姊妹件矩阵）；票内层管「一票怎么修」（自愈 ⟲≤3）；班内层管「一夜怎么走」（波→段→收车）；班外层管「修不好怎么办」（维修环+自举飞轮）。层间交接面只有两个：<b>班收车</b>（账本+晨报+病卡交出去）与<b>考题追加</b>（协议唯一路·票级 cap3/切片 cap6）。<b>维修环/引擎维修工程师在班外层——它面前是收了车的整班，不是班内的票。</b></p>
+<blockquote>读图纪律（CONTEXT.md 三词）：每层标注谁在场——<span class='kw'>机械设备</span>（确定性代码）/ <span class='kw'>Agent员工</span>（LLM 调用面）/ <span class='kw'>自然人审核</span>（只有业主能做）。层越往外，机械设备占比越高、Agent员工占比越低。<b>但越往外层，对在场 Agent员工的要求越高——需要更贵的 LLM 模型（E1 strong 档），以及 +RAG 系统垫底（整班证据检索注入）；在场的少而精，是设计取向：班外错不起。</b><span class='small'>（实然注记：E1 strong 档旋钮已在位（model-tier.ts·拍板#8），班外岗现走缺省档；RAG 检索面未建——设计取向与现状如实分列。）</span></blockquote></section>
+
+<section><h2>一、层级总览（一圈套一圈）</h2>
+<div class='flow'>
+<b>班外层</b>（收车之后·维修环+自举飞轮·机械设备为主+自然人深读/拍板）
+│  交接面①：班收车 → 账本 events.jsonl + 晨报七栏 + 病卡
+│
+│   <b>班内层</b>（一夜·段级流水·机械设备调度+Agent员工施工）
+│   │  段0 预检 → 段1 拆单 → 段2 车道(波) → 段2.5 探针门 → 段2.7 功能门 → 段2.8 硬化道 → 段3 回归门 → R13 判定梯 → 收车
+│   │  交接面②：考题追加协议 → 判卷面/切片面（唯一加题路）
+│   │
+│   │   <b>票内层</b>（一票·自愈环·Agent员工施工+机械设备守门）
+│   │   │  预投 → 锁定 → 生成 → 语法门 → 验收(judge-guard 闸) → 自愈⟲≤3 → L3 偏移弹 → 降级链
+│   │   │
+│   │   │   <b>用例层</b>（考题的生灭·增删改查·见姊妹件矩阵）
+│   │   │   │  L1 正本(业主/站2) · L2 判卷面(只增不改不删) · L3 切片面(只增+白名单改) · L4 词汇层(机械设备全权)
+</div>
+<p class='small'>每层的重试预算：票内 ⟲≤3（判据追加 cap3/票）· 班内段级各 ⟲1 + 夜末补考 1（park≤2）· 班外自动修 ≤1 轮（`--loop-budget` 缺省 0=关·同病≥2 转人工）。</p></section>
+
+<section><h2>二、用例层 · 考题的生灭（增删改查）</h2>
+<p>细则=姊妹件《考题增删改查矩阵》（`01-蓝图/考题增删改查矩阵.md`·零代码零判卷语义）；机制母件=<b>W6 对比件 件⑥⑦</b>（切片追加五道机检/考题病修复原语白名单——本层追加与修复两路的设计正本）。本层一句话律：<b>正本层（L1）只有业主/站2 动；判卷面（L2）只增不改不删；切片面（L3）只增+白名单改；词汇层（L4）机械设备全权。</b>层级关系：班次不是存身层——是执行层（考题在班里被执行/复验，班间流转走维修环/重跑，考题生灭仍归本层）。</p>
+<div class='ok'>W7~W11 长跑对本层的优化（W6 件⑥⑦本体零改动·运转环境三处增强）：①追加后的复跑走 evidence/sliceN/roundK/ 逐轮目录（W8 E-1 修①·复跑补证据不混写）；②追加切片参与波内冒烟（W8 D4·cases 加载提前）；③唯一加题路口径扩到票级判卷面（W7 修法A·#11⑤ 修订）+CRUD 收拢成矩阵（W11）。</div>
+<div class='ok'>W12件①（拍板#21·HEAD 08536eb）：上述缺口<b>已闭合</b>——E6 洗字节第二墙定义上移 shared/material-sanitize（llm-fs re-export 保路·#2 先例·station3 守卫要求），四草稿岗素材面全数接入：anchor-draft row / slice-draft red_slices / case-defect failure / qa-agent drift_findings+red_green_history；<b>判据面不洗</b>（specMd 同构边界·broken_case 断言集不可减机检锁 orig）。四岗毒化案+零误伤案各绿·831/831 全绿+drift 基线平。</div></section>
+
+<section><h2>三、票内层 · 一票怎么修（自愈环 ⟲≤3）</h2>
+<div class='flow'>
+<b>预投</b>(拍板#80·机械设备·考题先在盘上) → <b>锁定</b>(judge-guard·#82/83·篡改=红旗终局)
+→ <b>生成</b>(Agent员工·deliver=[target]·W7 修法A 考题只读) → <i>语法门</i>(py/tsc·红=当生成失败)
+→ <b>E10 零提交闸</b>(交付域零变化=红·零LLM) → <b>验收命令</b>(红绿唯一权威 #28②)
+→ 绿 → 收工（defer→硬化道）
+→ 红 → <em>自愈 ⟲≤3</em>(喂报错重写·机械设备编排+Agent员工重写)
+     ├─ ⟲≥2 → <i>L3 偏移弹</i>(采样 drifted?·early_stop 唯一自动项)
+     ├─ 建议加题 → <i>判据追加协议</i>(#11·QA 起草→只加严机检→sha256 重锚·cap3/票·唯一加题路)
+     └─ ⟲尽 → <i>预授权降级链</i>(素材直搬·auto 模式) → 仍红 → <em>park#1</em>（换下一票）
+</div>
+<p class='small'>谁在场：Agent员工（生成/重写）+ 机械设备（门/闸/锁定/编排）。自然人不出场（自决·⟲ 预算内）。</p></section>
+
+<section><h2>四、班内层 · 一夜怎么走（段级流水·各段 ⟲1）</h2>
+<div class='flow'>
+<b>段0 预检</b>(六硬项·零LLM) → <b>段1 站3 拆单</b>(三关+判卷素材冻结入账)
+→ <b>段2 车道</b>(波屏障/就绪制·逐票=票内层·dep-guard 连坐·park≤2)
+→ <b>段2.5 探针门</b>(第二层探针·⟲1·补票环/锚点起草道·红只入账)
+→ <b>段2.7 功能门</b>(切片①·⟲1 自愈/考题病修复道/切片追加·锚点分诊 hold·功能红不烧硬化)
+→ <b>段2.8 硬化道</b>(CRAP∧变异·三钥匙·仅功能绿票)
+→ <b>段3 回归门</b>(切片②·主判·翻案⟲1) → <b>R13 判定梯</b>(NA≥20%∨交互片未执行→FAIL)
+→ <b>收车</b>(夜末全量灯 W8·晨报七栏·病卡/诊断/方案件)
+</div>
+<p class='small'>谁在场：机械设备主导（调度/门/梯/判定）+ Agent员工（施工/审查/自愈）+ 自然人不出场（夜内零停·自决点全入账）。<b>班不会因为卡住自动重跑很多轮</b>——票卡住=park 停车，班到点=收车；整班重跑只在班外（§五）。</p>
+<p class='small'>W13件①（拍板#22·sandboxStaticPatch）：段2.8 的 CRAP∧变异两闸（静态分析闸）<b>不进 docker 容器</b>——docker 档宿主直跑（bind mount 直写文件在场）/ worktree 档仍走影子树（未 syncOut）/ none 档透传零变化；build-lane 两闸注入改道·300 行顶格保持。分类案三档单测+834/834 全绿+docker 档真跑 runs/w13-docker-v1=8/8 整单 PASS（docker 档转正）。</p>
+<p class='small'>W14 M1（拍板#25·2026-10-13 上线·业主站6 追认）：收车半段六件编排独立拉起——班外优化 agent postshift（病卡→诊断→方案件→信号→复盘→深化·每件失败不挡后续）；双模式=手动复盘令+<code>--watch</code> 监听 queue_gate_failed/passed（state 记 offset 防重复）；深化缺席告警置顶进 postshift-summary.md；规格卡红线=<b>零代码写入·零重跑·零判卷触碰</b>·预算独立分账（诊断 ≤5·深化 12）。落位实况（v1.7 定案）：pipeline-lab 收车链件权威位=<b>本仓</b>（引擎仓 Oct 11~12 新版全数在场）；postshift.mjs 2026-10-13 落位入仓（与深读件哈希同源 6f878110）；外层沙盘仓同名件=Oct 8~10 旧版副本待清（防双权威——沙盘版无拍板#74 双协议/#22 cachedTokens 新语义）。</p></section>
+
+<section><h2>五、班外层 · 修不好怎么办（维修环+自举飞轮·自动修 ≤1 轮）</h2>
+<div class='flow'>
+<b>收车四连</b>(nightrun-wrap·病卡 report-issues→诊断 diagnose→方案件 propose-fix→晨报)
+→ FAIL 班 → <b>维修环 fail-loop</b>(`--loop-budget` 缺省 0=关·发车令三要素之一)
+→ 逐班：诊断 force → 编译四闸 → <i>分流 classify</i>
+   ├─ L1 机械类 → <b>repair-auto</b>(预授权·≤30 行/≤5 文件·晨报事后追认)
+   ├─ L2 回归子类(scope⊆上窗施工文件) → <b>repair-auto·regression</b>(引擎测试闸 tsc+vitest·晨报待追认)
+   ├─ L2 新语义 → <b>stop-approval</b>(业主勾选闸·不绕行)
+   └─ 无 lane → <b>rerun-only</b>(重烧红票·绿缓存直通)
+→ <b>重跑</b>(新窗续号·指纹缓存绿直通) → 绿 → 病卡已修✅台账 append
+→ 仍红(同病 FAIL≥2 轮) → <em>停车转人工+深读清单</em>(#84④·机械修复不盲烧)
+→ <b>pi 复盘窗深读</b>(自然人) → 结论含「规则缺口: 是/否」
+   ├─ 是 → <i>齿A 立票接线</i>(rule-gap-ticket·A-LANE 草稿票落 pending·无拍板号不入列队) → 拍板后治产床（#72 双修律）
+   └─ 否 → 修实例结案
+</div>
+<p class='small'>谁在场：机械设备为主（fail-loop 编排/A 域车道·deepread 零 LLM·引擎测试闸）+ 自然人（深读归因/L2 勾选/拍板）。A 域（引擎自身病）只能自然发生——不为考试往引擎放毒（R2-13 §5 诚实边界）。</p></section>
+
+<section><h2>六、层间交接表（谁把什么交给谁）</h2>
+<table>
+<tr><th>从 → 到</th><th>交接物</th><th>纪律</th></tr>
+<tr><td>票内 → 班内</td><td>ticket_verdict / park 事件 + 工作区产物</td><td>⟲≤3 与 park≤2 用尽才上抛（不装绿）</td></tr>
+<tr><td>班内 → 班外</td><td>ledger events.jsonl + 晨报七栏 + 病卡 + queue 终态</td><td>账本 append-only·晨报全量汇报（追认面）</td></tr>
+<tr><td>班外 → 班内</td><td>重跑新班（新窗续号）+ 修复后的引擎/产物</td><td>指纹缓存绿直通（重放等价）·A 域修复过引擎测试闸才晋级</td></tr>
+<tr><td>票内/班内 → 用例层</td><td>判据追加/切片追加（唯一加题路·cap3/cap6）</td><td>只增·重锚·QA 只起草·站6 追认</td></tr>
+<tr><td>用例层 → 票内/班内</td><td>锁定快照（#82/83）+ 复验 + 追加后的新判据</td><td>篡改=红旗终局·判卷零触碰</td></tr>
+</table></section>
+
+<section><h2>七、与既有权威件关系（引用不复制）</h2>
+<li>用例层细则：《考题增删改查矩阵》（`01-蓝图/考题增删改查矩阵.md`·五物种 CRUD 总表）</li>
+<li>词汇权威：`CONTEXT.md`（三词总纲+考题 CRUD 词条）·五物种：`01-蓝图/用例物种速查表.md`</li>
+<li>对照数据：`90-过程/r7-00对照数据口径.md`（每窗一行）·借鉴件实战班数：`90-过程/借鉴件实战台账.md`（齿B·满 3 真班=落地）</li>
+<li>拍板链：#11/#12（追加协议）·#14（W7·T4 修法 A）·#15（W8·冒烟+全量灯）·#16（W9·品味席+双层防御）·#17（W10·docker pilot）·#18（W11 小件）·#19（齿A/齿B）·#75（A 域车道）·#80/#82/#83（预投/锁定）·#84（fail-loop 真值表·v1.2 轨迹）</li>
+</section>
+
+<section><h2>八、Agent员工花名册（十五岗+两工位·按层·拍板#28 岗卡工程后态·v1.10）</h2>
+<p class='small'>判定口径：全仓真实调用 LLM 的岗位（grep chat/budgetedChat 消费面实锚·2026-10-12 基准·v1.6 对表 2026-10-13）。probe-gate/ready-scheduler/hardening-lane/postshift 是<b>工位</b>（组合根·员工坐席·编排器）非员工。权限与 LLM 反相关：越往班外，机械设备占比越高、Agent员工越少（错不起）。<b>v1.8 数据源变更（拍板#28）：本表由岗卡生成——卡=<code>90-过程/岗卡/</code>（一岗一卡·唯一事实源），本表=视图；班外三岗系统提示词已改由脚本运行时读卡（零语义漂移测试守样），机检三件套锁「花名册↔岗卡↔调用面」三方一致（<code>pipeline-lab && npm run check:cards</code>）。<b>本表系统提示词列已改指岗卡（⑨⑩⑪员工卡/⑫工位规格卡）——卡=唯一事实源，本表=视图。</b></b></p>
+<p class='small'>v1.6 对表（2026-10-13）：①补录 <b>⑪A域计划翻译官</b>（compile-plan·拍板#76·真实 LLM 消费岗·前版花名册漏录——v1.5 深读发现）；②<b>⑫班外优化师</b>上线存照（postshift·拍板#25 W14 M1·业主站6 已追认）——编排工位非员工（自身零 LLM），LLM 消费在其六件链的 ⑨诊断/⑩深化 两岗；⑫随表存照供全景，员工计数仍按口径=十一岗。</p>
+<p class='small'>v1.9 对表（2026-10-14·拍板#31 修复体系三级重整）：①新增 <b>维修工程师（班内）</b>一岗两坐席（坐席A 票级@站4车道/坐席B 班次级@判卷门站5·拍板#31①·W15 已落 41010ea——P2 票内岗卡轨立卡另行提请·拍板#28⑤，本表先录岗）；②新增 <b>⑬兜底修复工程师</b>（fallback-repair·拍板#31⑤·员工卡 <code>90-过程/岗卡/13-兜底修复工程师.md</code>）——四级阶梯 L4 班外兜底·final DEF 收编·四道闸·独立分账；③新增 <b>⑭监控专职工位</b>（pi 会话代理宿主修订·拍板#31⑥——pi 会话代理转监控专职只读不写·工位卡 <code>90-过程/岗卡/14-监控专职工位.md</code>）；④员工计数=十三岗（班内 8+维修工程师+班外 ⑨⑩⑪⑬）·工位=⑫⑭ 两座（拍板#31⑤ 原文「十三岗+1工位」=新增一工位增量口径）。</p>
+<p class='small'>v1.10 对表（2026-10-24·拍板#143 双层 harness 对表补漏·W-094 落地）：①补录 <b>⑮出题面维修与计划增补工程师</b>（exam-repair·拍板#35 W16 对比件⑦——v1.9 仅头注提及表体漏行·check-roster 全文包含假阴性已由机检升级堵住·此番补表行）；②新增 <b>⑯计划注记起草工程师</b>（plan-annotation·拍板#35 乙级语义增补道·员工卡 <code>90-过程/岗卡/16-计划注记起草工程师.md</code>——真实 LLM 消费岗花名册+岗卡双漏录由 research 档 §三缺口1 实锚·独立立卡不并入⑮）；③员工计数=<b>十五岗+两工位</b>（班内 8+维修工程师+班外 ⑨⑩⑪⑬⑮⑯）·工位=⑫⑭ 两座；④机检扩面同票落地：check-roster 表行结构断言（岗名+卡锚同行）+check-consumers 反向扫描扩 ts/src（幽灵岗拦截·P2/P3 待卡化在册清单+共享管道白名单显式数组·拍板#143）。对比件=<code>90-过程/research/调研-双层harness全图与岗卡补卡方案-20261024.md</code>。</p>
+<p class='small'>v1.13 对表（2026-10-25·拍板#151② Ⅰ型打包第三批 岗卡收官批 ④⑤⑥⑦⑧五岗卡化·W-104 落地）：①<b>④QA 员工</b>立卡 <code>90-过程/岗卡/04-QA员工.md</code>（QA_SYSTEM·qa-agent.ts）②<b>⑤切片出题员</b>立卡 <code>05-切片出题员.md</code>（SLICE_DRAFT_SYSTEM）③<b>⑥考题检修工</b>立卡 <code>06-考题检修工.md</code>（CASE_FIX_SYSTEM）④<b>⑦锚点定位员</b>立卡 <code>07-锚点定位员.md</code>（ANCHOR_DRAFT_SYSTEM）⑤<b>⑧排程序</b>立卡 <code>08-排程序.md</code>（DECOMPOSE_SYSTEM）——五岗皆 ts 轨构建期转换（卡=源·常量=运行时·零漂移金样五新案守样·先红后绿留痕窗产物）；⑥表内 ④⑤⑥⑦⑧ 五行系统提示词列同票改指岗卡（即上行五行·其余行零回改）；⑦⑧ 两卡 memory_source 接 RAG-0=挂账申报不施工（拍板#151② 原文·另票）；⑧机检同票：ts 待卡化在册清单 5→0 清零·升<b>全量严格</b>（拍板#143 预告兑现——豁免道退场，新增消费面非已卡化/白名单即幽灵岗红）·check:cards 三件套全绿（card-lint 18 卡）。对比件=<code>90-过程/research/调研-双层harness全图与岗卡补卡方案-20261024.md</code>。</p>
+<p class='small'>v1.12 对表（2026-10-25·拍板#151② 岗卡第二批半 维修工程师一岗两坐席卡化·W-103 落地）：①<b>维修工程师</b>一岗两坐席各立一卡（照 ②③ 同文件两卡各自立先例）——坐席A <code>90-过程/岗卡/17-维修工程师坐席A.md</code>（⟲1 票级自愈道·healProbeReds）＋坐席B <code>90-过程/岗卡/18-维修工程师坐席B.md</code>（班次升级道·healProbeRedsShiftLevel·strong 档·SEAT_B_CAP≤3/班）；②维修工程师行系统提示词列改指两卡（原「另行提请」注记随卡化归位·其余行零回改）；③两坐席无专属 SYSTEM 常量——运行时经 regenFile→writeOneFileAssembled:109 与①写码工程师同一 SYSTEM_BOX+CHECKPOINT_CODING_RULE 常量源·两卡 prompt 区逐字镜像·零漂移金样两新案守样（先红后绿留痕窗产物）；④机检同票：ts 待卡化在册清单 7→5（probe-selfheal/probe-gate 移出·卡化一岗移一个）·check:cards 三件套全绿（card-lint 13 卡）。件④档位实勘申报=`90-过程/窗产物/W-103-维修工程师两坐席卡化/04-件④坐席档位机检申报.md`（坐席A 缺省档链/≤2 帽形态出入如实申报不擅改·坐席B strong+SEAT_B_CAP=3 与 #31① 语义一致）。</p>
+<p class='small'>v1.11 对表（2026-10-24·拍板#145 岗卡第二批 P2 票内三岗卡化·W-096 落地）：①<b>①写码工程师</b>立卡 <code>90-过程/岗卡/01-写码工程师.md</code>（SYSTEM_BOX+CHECKPOINT_CODING_RULE 两静态段·构建期转换·零漂移金样守样）；②<b>②对题性审查员</b>立卡 <code>90-过程/岗卡/02-对题性审查员.md</code>（REVIEWER_SYSTEM·品味四查入提示词）；③<b>③偏移采样员</b>立卡 <code>90-过程/岗卡/03-偏移采样员.md</code>（TRACE_SYSTEM·②兼岗同文件两卡各自立）；④表内 ①②③ 三行系统提示词列同票改指岗卡（即上行三行）；⑤机检同票：CONSUMER_RE 增第三缝式分支（call({system…）+ts 待卡化清单 10→7·check:cards 三件套全绿（card-lint 11 卡·本节变更行与 README 登记为主窗代收口补齐件·如实申报）。对比件=<code>90-过程/handoffs/对比流程-W096-岗卡第二批票内三岗-现状vs改后-20261024.md</code>。</p>
+<p class='small'>W12件① 追记（拍板#21）：四草稿岗（④~⑦）素材面已全数接入 E6 洗字节第二墙（shared/material-sanitize·毒化案+零误伤案各绿）——§二 旧「未接」缺口销账。<br>成本口径（拍板#22件②·0ae29bc）：llm.ts 透传 <code>cachedTokens</code>（流式/非流式两字段·834/834 回归绿）——换口后缓存命中首次可入账；<b>实然注记</b>：现行智谱口流式 SSE 路径 cache_read 恒 0、命中间歇性不可依赖（真跑收益≈0·「token 降≥30%」智谱口上判不可达·换口唯一路·业主三选）。</p>
+<table>
+<tr><th>岗</th><th>层</th><th>系统提示词</th><th>上下文盒（宏观→微观）</th><th>权限边界</th><th>输出口径</th><th>预算</th></tr>
+<tr><td>①写码工程师</td><td>票内</td><td>岗卡 <code>90-过程/岗卡/01-写码工程师.md</code>（构建期转换·卡=源·SYSTEM_BOX/CHECKPOINT_CODING_RULE 两静态段·py 兼岗运行时拼接·零漂移金样守样）</td><td>契约面/锚点章节/逐字清单 → 同票已交付 → 基线文件现状 → 本次只写单文件（宏观规范→微观现场）</td><td>只写 target 单文件·考题只读（W7 修法A）·不发明测试缝（4d）·禁区清单</td><td>llm-parts 分段 JSON（K 段·final 末段·fail-closed 解析）</td><td>自愈 ⟲≤3+续写≤2</td></tr>
+<tr><td>②对题性审查员</td><td>票内/段级（审查工位）</td><td>岗卡 <code>90-过程/岗卡/02-对题性审查员.md</code>（构建期转换·REVIEWER_SYSTEM 静态段·W9 品味四查在提示词内·零漂移金样守样）</td><td>ticket_face → artifacts 摘要(ring) → 上轮意见（殿后）</td><td>只能扣绿（打回）·无 red 入边·不产验收命令</td><td>{passed,findings,severe}（[style] 前缀）</td><td>随硬化道 ⟲</td></tr>
+<tr><td>③偏移采样员（②兼岗）</td><td>票内（自愈 ⟲≥2）</td><td>岗卡 <code>90-过程/岗卡/03-偏移采样员.md</code>（构建期转换·TRACE_SYSTEM 静态段·零漂移金样守样·②同文件两卡各自立）</td><td>ticket_face → red_green_history 尾6 → artifacts 环切</td><td>只采样建议·early_stop 唯一自动项·无判卷权</td><td>{drifted,findings,suggested_action}</td><td>每自愈环一发</td></tr>
+<tr><td>④QA 员工（票级判据起草）</td><td>用例层·L2 判卷面</td><td>岗卡 <code>90-过程/岗卡/04-QA员工.md</code>（构建期转换·QA_SYSTEM 静态段·chatFn 直调缝·零漂移金样守样）</td><td>失败明细 → 候选测试草案</td><td>只有起草权·不能改删既有考题·验收命令不动</td><td>qa_*.test.js 草案→判据追加机检→自动晋升</td><td>cap3/票</td></tr>
+<tr><td>⑤切片出题员</td><td>用例层·L3 切片面</td><td>岗卡 <code>90-过程/岗卡/05-切片出题员.md</code>（构建期转换·SLICE_DRAFT_SYSTEM 静态段·chatFn 直调缝·零漂移金样守样）</td><td>红片明细 → ticket_faces → 锚点白名单（逐字选）</td><td>只新增不覆盖·qa-slice- 前缀·断言源=契约≠实现·独立可跑</td><td>{cases[…]}（空稿如实）</td><td>cap6/班</td></tr>
+<tr><td>⑥考题检修工</td><td>用例层·L3（修复道）</td><td>岗卡 <code>90-过程/岗卡/06-考题检修工.md</code>（构建期转换·CASE_FIX_SYSTEM 静态段·chatFn 直调缝·零漂移金样守样）</td><td>崩溃签名 + 原考题 → 修复稿</td><td>原语白名单·断言集不可减（expectText/期望码/id/kind 存活）·违者拒收转追认</td><td>case-fixes.json 按 id 修复稿+undo</td><td>每缺陷一次</td></tr>
+<tr><td>⑦锚点定位员</td><td>班内·站3（补票工位）</td><td>岗卡 <code>90-过程/岗卡/07-锚点定位员.md</code>（构建期转换·ANCHOR_DRAFT_SYSTEM 静态段·chatFn 直调缝·零漂移金样守样·memory_source 接 RAG-0 挂账另票）</td><td>无锚红片 → manifest∪票面 白名单</td><td>候选落点逐字选·白名单机检→自动补票</td><td>锚点候选清单</td><td>cap4/轮</td></tr>
+<tr><td>⑧排程序（解环草稿）</td><td>班内·调度（停滞时）</td><td>岗卡 <code>90-过程/岗卡/08-排程序.md</code>（构建期转换·DECOMPOSE_SYSTEM 静态段·chatFn 直调缝·零漂移金样守样·memory_source 接 RAG-0 挂账另票）</td><td>stuck 票（环/悬空）→ done → 依赖边</td><td>纸面建议零执行权·LLM 无路径权（落盘路径引擎固定·8000 截断）</td><td>markdown《解环方案草稿》（落 attachments）</td><td>停滞时一次</td></tr>
+<tr><td>⑨夜车诊断工程师</td><td>班外（维修环）</td><td>岗卡 <code>90-过程/岗卡/09-夜车诊断工程师.md</code>（运行时读卡·进prompt区三静态段·零漂移金样守样）</td><td>整班证据（宽·浅·tail 截断·密钥零入账）</td><td>只诊断不改码·病卡回写</td><td>诊断 JSON（非法重试）</td><td>预算≤5 次（独立分账）</td></tr>
+<tr><td>⑩复盘深化书记员</td><td>班外（站6 复盘·拍板#81）</td><td>岗卡 <code>10-复盘深化书记员.md</code>（分节模板+重申尾·<code>{{title}}</code> 占位）</td><td>机械证据包预提取（零 LLM）随节注入</td><td>LLM 只做判断不做收集·缺配置=深化缺席（机械四文档照出）</td><td>分节深化文档（节≤1000 字·stop 校验）</td><td>独立预算 12</td></tr>
+<tr><td>⑪A域计划翻译官</td><td>班外（维修环·A域车道·拍板#76）</td><td>岗卡 <code>11-A域计划翻译官.md</code>（只翻译不做主·<b>无记忆为设计——不接 memory_source</b>·防抄历史方案绕闸）</td><td>diagnosis.md 根因表(≤3)+证据清单（engineDeepread 范围锁摘记·facts+callers）</td><td>只翻译零执行·<b>四道机械闸</b>校验（闸A scope锁/闸B锚点在场/闸C L1边界复验/闸D勾选永远 false）·翻译幻觉=rejected 零落盘</td><td>enginePlan.json（steps 结构化·fail-closed）</td><td>每根因 3 次×根因≤3（独立分账·超顶转人工不带病出件）</td></tr>
+<tr><td>⑫班外优化师（<b>编排工位</b>·自身零LLM）</td><td>班外（收车后半段·拍板#25 W14 M1·2026-10-13 上线）</td><td>—（编排器无提示词）·<b>工位规格卡 <code>90-过程/岗卡/12-班外优化师工位.md</code></b>（kind:station·编排六件+三红线）</td><td>只读白名单（queue-events/ledger·三报告·病卡池·红账本）→六件编排：病卡→诊断→方案件→信号→复盘→深化</td><td><b>零代码写入·零重跑·零判卷触碰</b>——产出全部待拍板形态；每件失败不挡后续；班外默认不推卡（推卡须显式 --base-token）；手动复盘令+--watch gate 事件双模式（offset 防重复）</td><td>ws/report/postshift-summary.md（深化缺席告警置顶）+六件产出（diagnosis/方案件/复盘四件/优化建议）</td><td>独立分账（诊断 ≤5·深化 12·与夜车账分离）；LLM 消费归链内 ⑨⑩ 两岗·本座=工位非员工（probe-gate 同款）</td></tr>
+<tr><td>维修工程师（班内·<b>一岗两坐席</b>·拍板#31①）</td><td>班内（坐席A@站4车道·坐席B@判卷门/站5）</td><td>坐席A 岗卡 <code>90-过程/岗卡/17-维修工程师坐席A.md</code>＋坐席B 岗卡 <code>90-过程/岗卡/18-维修工程师坐席B.md</code>（一岗两卡各自立·SYSTEM_BOX+CHECKPOINT_CODING_RULE 同源逐字镜像·零漂移金样守样·拍板#151② W-103）</td><td>坐席A=归因路由+用例明细+邻票接口面（⟲3 接手）；坐席B=跨票上下文盒（涉事票∪前置票落点全文·⟲1 未消升级）</td><td>定向维修非重抽·档位只换模型不换判卷（坐席A default/坐席B strong）·判卷零触碰·升级道不重复入账</td><td>修复落盘+repairLevel 字段账（L2/L3·G1-7 只加字段）</td><td>坐席A ≤2/票·坐席B ≤3/班（独立分账·SEAT_B_CAP）</td></tr>
+<tr><td>⑬兜底修复工程师</td><td>班外（L4 兜底·拍板#31⑤）</td><td>岗卡 <code>90-过程/岗卡/13-兜底修复工程师.md</code>（tier: strong·ctx_volume 窄盒标注）</td><td>enginePlan 医嘱盒（单根因单文件·窄）</td><td>final DEF 收编·四道闸（A域白名单/量≤3/轮≤3/账独立）只收缩不放宽·出题权零触碰·未绿不记修复</td><td>A域工作区修复落盘+L4 账本三件（零新事件型）</td><td>每根因 3 次×根因 ≤3（独立分账·常量防调松）</td></tr>
+<tr><td>⑭监控专职（<b>工位</b>·pi 会话宿主）</td><td>班外（观测面·拍板#31⑥）</td><td>工位卡 <code>90-过程/岗卡/14-监控专职工位.md</code>（kind:station·只读不写）</td><td>监工报告+晨报+queue-events 尾段（宽·浅·只读窗口）</td><td>pi 会话代理转监控专职——<b>只读不写</b>（原会话内顺手修收权·#26 宿主修订随 #31⑥ 生效）；看见即报告（病卡/草稿票/业主）·零判卷触碰零发车</td><td>监工报告/晨检巡检记/账本异常上报（落 90-过程/）</td><td>宿主会话预算（不经引擎 budgetedChat 管道）·越权写入=0 硬指标</td></tr>
+<tr><td>⑮出题面维修与计划增补工程师</td><td>班外（维修环·出题面车道·拍板#35 W16 对比件⑦）</td><td>岗卡 <code>90-过程/岗卡/15-出题面维修与计划增补工程师.md</code>（代码内嵌 EXAM_SYSTEM 逐字镜像·零漂移金样守样）</td><td>考题文件全文+绿样对照（require 素材全文）+诊断根因段（窄盒·一单一批）</td><td>改包非施工——只代际对齐不发明·<b>禁反向迁就</b>（断言/用例数只增不减·机检拒）·站1/2 自检闭环未过不记修复·路径限 pkgDir 内相对·判卷零触碰</td><td>包内考题对齐落盘+_repair-before/ 改前副本+self_heal_retry(repairLevel:'L4')/resolved/llm_build_fail 账本三件（零新事件型）</td><td>每根因 3 次×根因≤3（独立分账·EXAM_*_CAP 常量防调松·strong 档）</td></tr>
+<tr><td>⑯计划注记起草工程师</td><td>班外（维修环·包债回填道·拍板#35 乙级/#143 独立立卡）</td><td>岗卡 <code>90-过程/岗卡/16-计划注记起草工程师.md</code>（代码内嵌 ANNOTATION_SYSTEM 逐字镜像·零漂移金样守样）</td><td>单话题窄盒（topic+evidence+discipline 三字段 JSON·注记全文单段输出）</td><td>只落计划注记零改码零改卷·<b>只增不改</b>已存在=拒收不覆盖·话题白名单清洗防路径逃逸·验收命令集零涉及（红线白名单区=ws/_plan_notes/）</td><td>ws/_plan_notes/&lt;topic&gt;.md 注记落盘（站6 追认可推翻）+defect_raised(runId='plan-annotation')包债登记一件</td><td>budgetedChat budget:null 独立分账（每缺口话题一发·频次由编排面控制·缺省档链）</td></tr>
+</table>
+<p class='small'>v1.4 对表修正（并行窗深读稿·2026-10-12）：①写码工程师<b>一岗四工位</b>——首建（llm-builder）/探针红自愈⟲1（probe-selfheal·TAP YAML 断言明细）/切片修码⟲1（slice-selfheal·G0-1 失败明细）/回归翻案——regenFile 同一入口不同坐席；②E2 会话续传<b>在场</b>（llm-session.ts·拍板#10③·⟲≥2 深修携 SessionDigest·build.ts:196）——「引擎零会话」系 v1.2 口径误推勿引。
+对组织架构类比的修正：①「越上级上下文越多」实为<b>越外层越宽、越内层越深</b>（班外看整班摘要·票内看单票整文件）；②「权限不同」在引擎里刻意做成<b>权限与 LLM 反相关</b>——班外（高层）几乎全机械设备（诊断员预算≤5 还封顶），LLM 集中在票内/用例层的「生成与起草」岗；③所有闸（追加机检/判卷锁定/测试闸/预算）都在<b>机械设备</b>手里，<b>自然人</b>只在正本/勾选/拍板/深读出现——一线员工多而权限小，这就是不洗绿的组织保证。</p></section>
+
+<footer>层级全景 v1.8 · 2026-10-13 · 07-设计理念专题 · HTML 成品权威件（append-only 变更记录见下）</footer>
+<section><h2>版本与变更记录（append-only）</h2>
+<table>
+<tr><td>v1.10</td><td>2026-10-24</td><td>拍板#143 岗卡对表补漏（W-094·research 档 <code>90-过程/research/调研-双层harness全图与岗卡补卡方案-20261024.md</code> §三三缺口）：①§八 表补 ⑮ 行（出题面维修与计划增补工程师·卡=15-·v1.9 头注提及表体缺行=check-roster 全文包含假阴性·机检升级表行断言先红后堵后补录）+⑯ 行（计划注记起草工程师·卡=16-新立·拍板#35 乙级语义增补道独立立卡不并入⑮·plan-annotation.ts 双漏录实锚）；②表内计数注记改十五岗+两工位（班内8+维修工程师+班外⑨⑩⑪⑬⑮⑯·工位⑫⑭）——v1.9 表内十三岗计数与头注矛盾一并修（拍板#143②）；③头注 v1.9 行不回改（只增不改·矛盾实证由本行与 v1.10 注记存照）；④机检扩面同票：check-roster 表行结构断言（岗名+卡锚同行·头注提及不算）+check-consumers 反向扫描扩 ts/src（幽灵岗拦截·P2/P3 待卡化在册清单 10 件+共享管道白名单 6 件显式数组·测试逐项锚定）——先红后绿双案留痕 <code>90-过程/窗产物/W-094-岗卡对表补漏与机检扩面/</code></td></tr>
+<tr><td>v1.8</td><td>2026-10-13</td><td>岗卡工程 P1 落位对表（拍板#28·业主批「准·乙案」）：①§八 加数据源变更注记——花名册表改由岗卡生成（卡=<code>90-过程/岗卡/</code> 一岗一卡·唯一事实源·本表=视图）；②班外三岗（⑨诊断/⑩深化/⑪翻译）系统提示词外置为岗卡·脚本运行时读卡（读卡失败=启动即停·禁静默回退）·<b>提示词正文逐字搬运零语义改动</b>（零漂移金样测试守样·cards-zero-drift）；③机检三件套上线（card-lint/check-roster/check-consumers·防 ⑪ 式漏录复发+幽灵岗）；④⑫工位规格卡同批立卡（kind:station 降配版）；⑤P2（票内三岗 ts 轨）/P3（用例班内五岗）另行提请·RAG 记忆接口=岗卡 memory_source 行已留（未建·另拍）；⑥层级全景 v1.8 同窗对表：§八 标题后态改拍板#28+表行系统提示词列四行改指岗卡（⑨⑩⑪员工卡/⑫工位规格卡·本表=视图卡=源）</td></tr>
+<tr><td>v1.7</td><td>2026-10-13</td><td>落位定案对表（磁盘实锚）：v1.6 所记「迁移落位中·引擎仓内副本退场」系瞬时态——引擎仓 pipeline-lab 已全数恢复（git D 清零·Oct 11~12 新版在场），postshift.mjs 落位入仓（哈希 6f878110 与深读件同源）；权威位=本仓·外层沙盘仓同名旧版副本待清；postshift.mjs 本笔随件提交入仓（W14 M1 台账既载路径·代收口）</td></tr>
+<tr><td>v1.6</td><td>2026-10-13</td><td>§八 花名册十岗→十一岗+1 工位存照（业主动议「更新员工花名册」·班外新 agent 上线对表）：①补录 ⑪A域计划翻译官（compile-plan·拍板#76·真实 LLM 消费岗·v1.5 深读发现前版漏录）；②⑫班外优化师编排工位上线存照（postshift·拍板#25 W14 M1·收车半段六件+watch 双模式·自身零 LLM·零代码写入零重跑零判卷触碰·业主站6 已追认）；③§五 加 W14 编排注记+pipeline-lab 流水线侧沙盘仓落位实况（引擎仓内副本退场·迁移进行中）</td></tr>
+<tr><td>v1.5</td><td>2026-10-13</td><td>拍板#21/#22 引擎三笔代码更新对表（业主动议「agent 有更新先更文档」）：①§二 已知缺口销账——E6 洗字节第二墙四草稿岗接毕（W12件①·08536eb·定义上移 shared/material-sanitize·判据面不洗）；②§四 段2.8 加 W13 B 闸路由分流注记（sandboxStaticPatch·静态闸不进 docker 容器·9339a38·docker 档转正）；③§八 加成本口径注记——llm.ts 透传 cachedTokens（0ae29bc·智谱口流式 cache_read 恒 0 实然·换口唯一路）；④结构修复：v1.4 变更行原误嵌 §八花名册表内，移回本表（正文未动）</td></tr>
+<tr><td>v1.4</td><td>2026-10-12</td><td>§八 对表修正（并行窗深读稿吸收）：写码工程师一岗四工位注记（regenFile 同入口）+E2 会话续传在场修正（拍板#10③·「零会话」系 v1.2 口径误推）+价值序已落对表（W8 D11 valueRankOf·粘贴稿「仍未见机制」已过时）；三处一致项存照（站4/站5 修考题不对称=矩阵逐格吻合·理念① 三动作面=花名册权限列·Pocock 三概念判定=W8 冒烟不冲突）</td></tr>
+<tr><td>v1.3</td><td>2026-10-12</td><td>§〇 读图纪律加句（业主动议）：越往外层对在场 Agent员工要求越高——需更贵 LLM 模型（E1 strong 档）+RAG 系统垫底；少而精=设计取向（班外错不起）·附实然注记（strong 旋钮在位·RAG 待建）</td></tr>
+<tr><th>版本</th><th>日期</th><th>变更</th></tr>
+<tr><td>v1.2</td><td>2026-10-12</td><td>§二 用例层同步：加 W6 对比件 件⑥⑦ 机制母件引用+W7~W11 长跑三处优化注记（逐轮证据/冒烟参与/口径扩展+矩阵）+已知缺口如实留痕（四草稿岗变量盒未接 E6 洗字节·顺风候选）——业主动议「deepread 今天有优化」对表</td></tr>
+<tr><td>v1.1</td><td>2026-10-12</td><td>加 §八 Agent员工花名册（十岗按层·系统提示词/上下文盒/权限/口径/预算全锚·grep 消费面实锚；工位≠员工澄清；权限与 LLM 反相关结论）——业主动议「按层梳理目前有多少 Agent员工」</td></tr>
+<tr><td>v1.0</td><td>2026-10-12</td><td>首版：业主动议「专门出一个专题说明不同层级的流程图」——四层流程各一张图（用例/票内/班内/班外）+层级总览+层间交接表+预算表；零新机制，全部收拢已落地锚点（W7~W11+拍板#19 两齿后态）</td></tr>
+</table></section>
+</div></body></html>

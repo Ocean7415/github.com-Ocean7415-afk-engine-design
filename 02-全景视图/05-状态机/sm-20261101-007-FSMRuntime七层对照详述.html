@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>sm-20261101-007 · FSM Runtime 业内参照 · 两层状态机总卡（Mealy 型 Core＋Runtime 七层对照·含原 006 全部核心内容）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>sm-20261101-007 · FSM Runtime 业内参照 · 两层状态机总卡（Mealy 型 Core＋Runtime 七层对照·含原 006 全部核心内容）</h1>
+<div class="meta"><b>id</b> sm-20261101-007 · <b>kind</b> 状态机卡（总卡·业内参照详述＋机制矩阵＋写口宪法·合并 006） · <b>domain</b> engine · <b>status</b> draft · <b>created_at</b> 2026-11-01 · <b>repo_head</b> 6732949</div>
+<h1>FSM Runtime 业内参照 · 两层状态机总卡（Mealy 型 Core＋Runtime 七层对照·含原 006 全部核心内容）</h1>
+<blockquote>
+<p><strong>怎么读这张卡（读者路径）</strong>：5 分钟＝第一章总表＋1.7 走查＋第二章六台图册；30 分钟＝§14 双矩阵＋各章 N.0；深读＝§12 治理结论＋§13 写口宪法＋§3.3 断言；想挑战＝§16；想落地＝§15。行话随手查＝附录A。</p>
+<p><strong>图例（实然/应然）</strong>：✔实然＝码内事实带 file:line 锚 · △应然＝候拍设计（事件名/L1 actor 字段）· ◐部分或设计差异——冲突以正本码为准。</p>
+<p><strong>目录</strong>：第一章 总论述（1.7 图1·走查）｜第二章 Core（2.0 矩阵·2.4 六台图册·2.5 台账宪法口述）｜第三章 拦截链（3.0·3.2.6 领单流转表·3.3 断言五品种）｜第四章 事件网关｜第五章 实例仓库｜第六章 调度器｜第七章 弹性组件（7.2.6 值守流转表）｜第八章 Saga（8.2.5 挂账流转表）｜第九章 治理底座｜第十章 静态工具｜第十一章 覆盖度｜第十二章 治理结论（四问）｜第十三章 写口宪法｜第十四章 全量矩阵（L2 35＋L1 31）｜第十五章 候票 8 件｜第十六章 开放问题 7 条｜附录A 术语｜附录B 锚清单｜§17 证据尾巴</p>
+<p><strong>两层口径</strong>：L1＝车间流水线（票级·机器为主·ts/src）；L2＝派工台（窗级·91-脚本·管到业主终认）。</p>
+</blockquote>
+<h2>第一章 · 总论述（Mealy 型 Core＋Runtime 七层架构）</h2>
+<h3>1.1 系统定位与 Mealy 型选择</h3>
+<p>本系统为「AI 软件工厂」：自然人业主拍板 → <strong>L1 车间流水线</strong>（机器为主·把立项包变成验收过的代码）＋ <strong>L2 派工台</strong>（窗级·把拍板变成施工窗、管到业主终认）。选 <strong>Mealy 型</strong>：翻格输出由【当前状态＋输入事件】共同决定——同是「▶施工中」，收口自报翻「完工待确认」、宁停翻「⏸挂起」，输出纯看事件与守卫，正是 Mealy 语义。每个唯一 TaskID（L1=工序票/run 批·L2=窗票）对应独立状态机实例。</p>
+<h3>1.2 业内层 × 本厂落点 总表</h3>
+<table><thead><tr><th>业内层</th><th>本厂落点（机制/事件名）</th><th>本卡章节</th></tr></thead><tbody><tr><td>FSM Core 内核</td><td>宪法十对·转移表·词面白名单断言</td><td>第二章</td></tr><tr><td>3.2.1 迁移拦截链</td><td>领单验格闸/体检门/收口申报器/assertStateFace</td><td>第三章</td></tr><tr><td>3.2.2 事件管理层</td><td>单到即派（queue_watcher）/单飞锁/事件账本白名单</td><td>第四章</td></tr><tr><td>3.2.3 持久化层</td><td>写锁/快照三键/账本末态+游标恢复</td><td>第五章</td></tr><tr><td>3.2.4 资源调度层</td><td>翻格开窗（槽位）/优先级列/心跳租约</td><td>第六章</td></tr><tr><td>3.2.5 弹性层 Resilience</td><td>干活自愈环族/挂起补考/同因熔断/预算刹车</td><td>第七章</td></tr><tr><td>3.2.6 补偿事务层</td><td>挂账清偿/挂账随裁/绿灯吊销/业主翻案</td><td>第八章</td></tr><tr><td>3.2.7 可观测层</td><td>收班报/收班判色/收班复盘器/效率账</td><td>第九章</td></tr><tr><td>3.3 静态工具链</td><td>keys 对账断言/LEGACY 映射/钉版闸</td><td>第十章</td></tr></tbody></table>
+<h3>1.3 模块 · 归属 · 一句话别名（词表）</h3>
+<table><thead><tr><th>模块</th><th>归属</th><th>一句话别名</th></tr></thead><tbody><tr><td>State / Event / Transition / Guard / Action</td><td>FSM Core 内核</td><td>有限状态机数学模型</td></tr><tr><td>拦截器、前置后置校验、不变式断言</td><td>Runtime - 迁移拦截链</td><td>切面 / Hook</td></tr><tr><td>事件去重、乱序缓冲、死信</td><td>Runtime - 事件管理层</td><td>事件网关</td></tr><tr><td>快照、乐观锁、实例存储</td><td>Runtime - 持久化层</td><td>实例仓库</td></tr><tr><td>定时器、并发槽 / 信号量、排队队列</td><td>Runtime - 资源调度层</td><td>调度器</td></tr><tr><td>重试、熔断、舱壁、超时</td><td>Runtime - 弹性层 Resilience</td><td>弹性组件</td></tr><tr><td>Saga 补偿动作</td><td>Runtime - 补偿事务层</td><td>业务补偿</td></tr><tr><td>审计、指标、Trace、告警</td><td>Runtime - 可观测层</td><td>治理底座</td></tr><tr><td>可达性检查、版本灰度</td><td>开发配套工具链</td><td>静态校验工具</td></tr></tbody></table>
+<h3>1.4 边界约定四条（与业内模板逐条同构）</h3>
+<ol><li><strong>Guard 属内核，Pre-Check/Invariant/Post-Check 属拦截链</strong>——本厂同构：闸（守卫）焊在迁移边，词面白名单断言（assertStateFace·pi_runner.ts:563）在写口拦截；</li><li><strong>并发槽/熔断/重试不是迁移规则</strong>——槽位主循环（#26）/自愈环（#15）/补考（#23）全部在状态机外包装；</li><li><strong>两种重试范式</strong>——短同步=回喂自愈环⟲≤3（#15）；长周期=停车场显式态＋夜末补考定时自环（#23）——双范式原生落地；</li><li><strong>定时器只投事件，状态机不 sleep</strong>——afk_cron 挂链/queue_watcher 只发事件，pi_runner 轮询循环即事件驱动。</li></ol>
+<h3>1.5 六台状态机与图索引</h3>
+<p>六台图册＝本章 §2.4（图2 窗队列九态·图3 批次运行十态·图4 票级十一态·图5 波次五态·图6 病卡七态·图7 包级账十值）。</p>
+<h3>1.6 阅读路线</h3>
+<p>专业人员：第一章总表 → 感兴趣的层进对应章；厂内窗口：直接按层查本厂机制锚；评审挑战：各章「缺口」行＋§16。</p>
+<h3>1.7 系统上下文、一张票的一生与 W-220 走查（自 006 并入）</h3>
+<p><strong>系统一句话</strong>：这是一间「AI 软件工厂」——自然人业主（审核者）以拍板驱动，两层 harness 协作把拍板变成验收过的代码：<strong>L1＝车间流水线</strong>（机器为主·ts/src·把立项包变成验收过的代码），<strong>L2＝楼上派工台</strong>（窗级管理面·91-脚本·把拍板变成施工窗、把窗管到业主终认）。</p>
+<h3>图1 · 两层系统上下文</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    OWNER["自然人·业主<br/>拍板/终认/翻案"]
+    subgraph L2G["L2 派工台·窗级·91-脚本"]
+        Q["窗队列状态机<br/>九态·宪法十对"]
+        D["派工器 pi_runner·领单闸链"]
+        EX["施工窗·Agent员工·pi 会话"]
+    end
+    subgraph L1G["L1 车间·票级·ts/src"]
+        RUN["run 状态机·十态"]
+        TIC["票级状态机·十一态"]
+        VER["双证验收·站5·探针/功能门"]
+    end
+    OWNER -->|"①拍板"| Q
+    Q -->|"②派工器领单·宪法对1"| D
+    D -->|"③翻格▶＋弹窗"| EX
+    EX -->|"④跑夜车"| RUN
+    RUN --> TIC
+    TIC --> VER
+    VER -->|"⑤交活回执·宪法对2"| Q
+    Q -->|"⑥复考绿＋终认·宪法对4"| OWNER
+</div></div>
+<h3>一张票的一生（L2 视角·八步）</h3>
+<p>①业主看对比件拍板（拍板表记行）→ ②主窗立票（窗队列一行＋任务书过三关＋贴飞书卡）→ ③派工器领单（验格→查撞单→再验单→<strong>体检门</strong>→定档→翻▶＋弹窗）→ ④施工窗跑 L1 夜车（收包→拆单→发车→施工→自愈→双证验收→判分→收车）→ ⑤窗交活（五件套＋收口自报→完工待确认）→ ⑥交活重考闸（考题重跑·绿才送终认）→ ⑦业主终认翻✅（缺考题走人工道；红打回返工环）→ ⑧收班：收班报/判色/复盘器。</p>
+<h3>端到端实例走查（真实案例·W-220·2026-10-31/11-01）</h3>
+<table><thead><tr><th>步</th><th>发生了什么</th><th>卡上坐标</th></tr></thead><tbody><tr><td>1</td><td>拍板#296③ 立票：窗队列回卷元凶勘定（只读取证窗·零写面红线）</td><td>§14 L2 行1-3（拍板落账/立票验单关/立票贴卡）</td></tr><tr><td>2</td><td>spawn 后窗死：巡检僵尸认定（窗死＋申报不完整）→⏸挂起</td><td>宪法对5·§14 L2 行「宁停判死」</td></tr><tr><td>3</td><td>挂账登记：注记「清偿=W-223 收口」候清偿票</td><td>宪法对6（owner 宁停·原因必填）</td></tr><tr><td>4</td><td>清偿票 W-223 交勘定报告＋收口申报完整（accept 全绿零未绿）</td><td>§14 L2 行「交活五件套/交活重考闸」</td></tr><tr><td>5</td><td>拍板#309：挂账行随裁→完工待确认（不锁死⏸不跳级✅·业主令首用）</td><td>宪法对10·§14 L2 行「挂账随裁」</td></tr><tr><td>6</td><td>现态=完工待确认，候业主终认翻✅</td><td>宪法对4</td></tr></tbody></table>
+<p>---</p>
+<h2>第二章 · FSM Core 内核（有限状态机数学模型）</h2>
+<blockquote>
+<p>业内定义：状态机的数学模型，只定义「任务可以怎么变」，不含调度/容错/存储。模块＝State/Event/Transition/Guard/Action 五要素。</p>
+</blockquote>
+<h3>2.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  subgraph L1G["L1 车间·票级 三台半"]
+    RUN["批次运行状态机<br/>十态"]
+    TIC["工序票状态机<br/>十一态"]
+    WAV["波次排期账<br/>五态"]
+    PKG["包级账<br/>十值·码落地候接线"]
+  end
+  subgraph L2G["L2 派工台·窗级 两台"]
+    WIN["窗队列状态机<br/>九态·宪法十对"]
+    SICK["病卡状态机<br/>七态"]
+  end
+  WIN -->|"领单开窗 跑夜车"| RUN
+  RUN --> TIC
+  RUN --> WAV
+  SICK -->|"返工重领"| WIN
+</div></div>
+<p><strong>Core 五要素 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>要素</th><th>L1 车间落点</th><th>L2 派工台落点</th></tr></thead><tbody><tr><td>State</td><td>批次运行十态·工序票十一态·波次五态</td><td>窗队列九态·病卡七态</td></tr><tr><td>Event</td><td>账本事件族（119 型白名单）</td><td>队列变更/定时到点/收口自报/拍板推卡</td></tr><tr><td>Transition</td><td>RUN/TICKET 转移表·rejected 入账</td><td>写口宪法十对（S+actor+Guard→S'）</td></tr><tr><td>Guard</td><td>包导入三关/扣绿闸/硬化双闸/三钥匙</td><td>领单闸链/体检门/定档闸</td></tr><tr><td>Action</td><td>拆单/装备/写码分段/双证切片</td><td>翻格开窗/收口申报/行手术族</td></tr></tbody></table>
+<h3>2.1 harness 第一层（L1·车间）</h3>
+<h4>2.1.1 State · 批次运行状态机（十态）</h4>
+<p><code>ts/src/shared/run-state.ts:19-43</code> ✔——启动→导入中→拆单中→装备中→施工中→探针中→(自愈中→)验收中→汇报中→收车＋跳过边各态→汇报中；收车无出边。</p>
+<h4>2.1.2 State · 工序票状态机（十一态）</h4>
+<p><code>ts/src/shared/ticket-state.ts:21-46</code> ✔——待建/缓存问询/缓存直通·绿/施工中/降级产物/审查·扣绿闸/硬化出关/绿灯·可吊销/红·严重偏题/停车场/终局；23 条合法边（图4）。</p>
+<h4>2.1.3 State · 波次排期账（五态）</h4>
+<p><code>ts/src/queue/queue-ledger.ts:13,18</code> ✔——queued/in_progress/done/superseded/needs_replan；done/superseded 终态，needs_replan 唯一可回炉。</p>
+<h4>2.1.4 Event · 账本事件族</h4>
+<p><code>ts/src/shared/event-types.ts:11-12,54</code> ✔——state_transition/state_transition_rejected/ticket_state_transition/gate_suspend/gate_resume 等白名单事件（详见第四章·119 型）。</p>
+<h4>2.1.5 Transition · 转移表</h4>
+<p>RUN_TRANSITIONS（run-state.ts:32）＋TICKET_TRANSITIONS（ticket-state.ts:47）✔——非法转移＝<code>state_transition_rejected</code>/<code>ticket_state_rejected</code> 入账不抛（ticket-state.ts:119-127）——断言思想的账本版。</p>
+<h4>2.1.6 Guard · 闸族</h4>
+<p>包导入三关（#2·import.ts:34·gates.ts:107,280）→审查·扣绿闸（#19·reviewer.ts:42）→硬化双闸（#20·mutation-gate.ts:227）→三钥匙出关（#21·build-lane.ts:126,150）✔——质量闸链焊在票级边上。</p>
+<h4>2.1.7 Action · 施工与验收动作</h4>
+<p>拆单（#3·split.ts:57）/装备（#5·equipment.ts:29）/写码分段（#14·llm-builder.ts:35）/双证切片（#31·run-slice.ts:251）✔——动作无内置重试，由弹性层（第七章）包装。</p>
+<h4>2.1.8 本章口述</h4>
+<p>一张工序票的一生全在十一态里走：出生先问库房（缓存问询），没存货就进沙箱施工；干完测试绿也不发灯——押给审查员对题；对上题进硬化车间「对坏」；三把钥匙凑齐才发绿灯，而且这灯可吊销。跑偏了判红进停车场，夜末给一次补考机会，同因再犯直接熔断。整个过程每一步都写进行车记录仪（events.jsonl），断了灯也能按账本游标接着跑。</p>
+<h4>2.1.9 缺口（勘误 2026-11-01·拍板#314③）</h4>
+<p>包级账（第六台）<strong>码已落地</strong>——拍板#199·W-137：package-state.ts 十值＋11 边转移表＋拍板号守卫（:12-66）＋package-ledger.ts 五件套账本（192 行）✔。<strong>零调用方闲置</strong>：主流程无写点·候接线方式决策（§12 候办①修订·W-232 讨论件联动）。</p>
+<h3>2.2 harness 第二层（L2·派工台）</h3>
+<h4>2.2.1 State · 窗队列状态机（九态）</h4>
+<p>正本=<code>90-过程/窗队列.md:6</code>＋写口宪法 ✔——探讨中(未批)/待实施(已批)/▶施工中/完工待确认/✅已完成/🔁维修中/⏸挂起＋宪法外词面 🔵待拍板、转人工（候收编·§12）。</p>
+<h4>2.2.2 State · 病卡状态机（七态）</h4>
+<p><code>repair-contract.mjs:23,40</code> ✔——待分诊→诊断→A域→方案件→修复→金丝雀→关（业内名 Incident Management Lifecycle·#47）。</p>
+<h4>2.2.3 Event · 四类驱动事件</h4>
+<p>外部事件＝queue_watcher 队列变更（#28）；定时事件＝afk_cron 挂链（30 分机械＋每小时值守·#305）；人工干预事件＝拍板/终认/推卡；窗自报＝收口申报。</p>
+<h4>2.2.4 Transition · 写口宪法十对</h4>
+<p><code>91-脚本/队列写口.mjs:47-60</code> ✔——每对 {from→to, actor, board}，四员 actor＝dispatcher/window/owner/inspector；十对全表与逐对口述见 §2.5。</p>
+<h4>2.2.5 Guard · 领单闸链</h4>
+<p>验格五闸（#7·pi_runner.ts:2093,2388）→撞单反查（#92 告警）→派发三关（#6）→<strong>会审门四查</strong>（#37·:490-515）→定档闸（#62b）——准入闸链挂在 待实施(已批)→▶施工中 边上。</p>
+<h4>2.2.6 Action · 翻格开窗与行手术</h4>
+<p>markRunning＋spawn（#26/#28）✔；收口申报器（W-130·:1317-1328）；红/⏸行手术（:543-565·fail-closed 词面校验）。</p>
+<h4>2.2.7 本章口述</h4>
+<p>一张窗票的一生在九格里走：业主拍板后立票排队（待实施已批）；派单员巡检领单，过五道资格闸＋开工体检门才翻「施工中」——这一翻开始烧钱；员工干完自己报「完工待确认」，机器按考卷重考，绿了还得业主点头才翻✅；干砸了进返工环；机器巡逻看见不对劲就⏸宁停。⏸今晚起有三条出边——误挂能翻回、挂账能清偿、能随裁，死态变工作态。</p>
+<h4>2.2.8 缺口</h4>
+<p>🔵/转人工游离宪法外（影子态·候收编）；窗队列.md 头注未同步 #301/#309 三出边（§12 候办）。</p>
+<h3>2.3 状态流转表范式（三件套·关键流转统一记法）</h3>
+<blockquote>
+<p><strong>记法总纲</strong>：同一份流转事实三种视图——①<strong>状态流转表</strong>（六列·机读正本·唯一事实源）②mermaid 状态图（人看）③口述（外行）——表改，图与口述跟改。守卫失败＝留在现态记因，不产生迁移；熔断/预算等「修正案层」不进转移表，悬在所有边之上。</p>
+</blockquote>
+<p><strong>范式一 · 六列转移表</strong>（<code>S + Event + Guard → S'</code> 逐行展开）——以通用重试状态机为例：</p>
+<table><thead><tr><th>#</th><th>From 现态</th><th>Event 触发事件</th><th>Guard 守卫</th><th>Action 动作</th><th>To 次态</th><th>出口说明</th></tr></thead><tbody><tr><td>1</td><td>S 执行中</td><td>下游调用失败</td><td>重试额度&gt;0 ∧ 熔断未开</td><td>注册重试定时器</td><td><code>S_RETRYING</code></td><td>进入显式重试态（不 sleep）</td></tr><tr><td>2</td><td><code>S_RETRYING</code></td><td>重试触发事件（定时器到点）</td><td>熔断未开</td><td>执行一次下游调用</td><td><code>S'</code> / <code>S_RETRYING</code></td><td>成功→迁移；失败→额度−1（<strong>自环</strong>）</td></tr><tr><td>3</td><td><code>S_RETRYING</code></td><td>重试触发事件</td><td>额度耗尽</td><td>记死信＋告警</td><td><code>S_RETRY_FAILED</code></td><td>终局·不再自动重试</td></tr><tr><td>4</td><td><code>S_RETRYING</code></td><td>重试触发事件</td><td><strong>熔断打开</strong></td><td><strong>不发起调用</strong>·直接判本次失败</td><td><code>S_RETRYING</code> / <code>S_MANUAL</code></td><td>熔断是 Action 的保护，不是迁移规则</td></tr><tr><td>5</td><td><code>S_RETRY_FAILED</code></td><td>人工修复事件</td><td>人工核账确认</td><td>修复动作</td><td><code>S</code> / <code>S_MANUAL</code></td><td>人工介入道·永不装绿</td></tr></tbody></table>
+<p><strong>范式二 · 状态登记表</strong>（每态一行）：</p>
+<table><thead><tr><th>状态</th><th>类别</th><th>进态凭据</th><th>出边</th><th>白话</th></tr></thead><tbody><tr><td><code>S</code> 执行中</td><td>正常态</td><td>—</td><td>2</td><td>干活的格</td></tr><tr><td><code>S_RETRYING</code></td><td>重试中</td><td>失败＋有额度</td><td>自环×N</td><td>挂闹钟的分身格</td></tr><tr><td><code>S_RETRY_FAILED</code></td><td>异常态</td><td>额度耗尽</td><td>1（人工）</td><td>认输格·候人工</td></tr><tr><td><code>S_MANUAL</code></td><td>人工修复态</td><td>人工介入</td><td>1</td><td>业主/人工的格</td></tr><tr><td><code>S'</code></td><td>终态（成功）</td><td>调用成功</td><td>0</td><td>干完了</td></tr></tbody></table>
+<p><strong>范式三 · mermaid 状态图</strong>（同一份表的画）：</p>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    S --> RETRYING: 调用失败·额度>0
+    RETRYING --> RETRYING: 定时自环·额度-1
+    RETRYING --> OK: 重试成功
+    RETRYING --> FAILED: 额度耗尽
+    RETRYING --> MANUAL: 人工介入
+    FAILED --> MANUAL: 人工核账
+</div></div>
+<p><strong>本厂原生实证 · L1 挂起补考＝教科书长周期重试</strong>：</p>
+<table><thead><tr><th>#</th><th>From 现态</th><th>Event 触发事件</th><th>Guard 守卫</th><th>Action 动作</th><th>To 次态</th></tr></thead><tbody><tr><td>1</td><td>施工中/审查红</td><td>红票裁决 park#1</td><td>预算内修不动</td><td>押停车场·留 FAIL 断点</td><td>停车场</td></tr><tr><td>2</td><td>停车场</td><td>夜末补考定时事件</td><td><strong>同因未复发</strong></td><td>带 FAIL 摘录重试一轮</td><td>施工中</td></tr><tr><td>3</td><td>停车场</td><td>夜末补考</td><td><strong>同因复发</strong></td><td>同因熔断·不再给额度</td><td>终局</td></tr></tbody></table>
+<h3>图2 · L2 窗队列九态与宪法十对边</h3>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> 探讨中未批: 立票
+    探讨中未批 --> 待实施已批: 拍板号落表·owner
+    待实施已批 --> 施工中: 派工器领单·dispatcher·对1
+    施工中 --> 完工待确认: 收口自报·window·对2
+    施工中 --> 维修中: 半截·下一棒锚必填·window·对3
+    施工中 --> 挂起: 巡检宁停·inspector·对5
+    施工中 --> 挂起: 业主宁停·owner·对6
+    完工待确认 --> 已完成: 复考绿＋业主终认·owner·对4
+    挂起 --> 施工中: 误挂恢复·owner·#301·对8
+    挂起 --> 已完成: 挂账清偿·owner·#301·对9
+    挂起 --> 完工待确认: 挂账随裁·owner·#309·对10
+    维修中 --> 待实施已批: 闸4重领·dispatcher·对7
+    已完成 --> [*]
+</div></div>
+<blockquote>
+<p>注：图内态名缩写（探讨中未批=<code>探讨中(未批)</code>·待实施已批=<code>待实施(已批)</code>·施工中=<code>▶施工中</code>·已完成=<code>✅已完成</code>·维修中=<code>🔁维修中</code>·挂起=<code>⏸挂起</code>）。🔵待拍板、转人工两词面<strong>不在宪法内</strong>（影子态·§12 候收编）。✅已完成=终态无出边，勘误走拍板表 append-only。</p>
+</blockquote>
+<h3>图3 · L1 run 十态主线（票级十一态详表见 §13 表B）</h3>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> 启动
+    启动 --> 导入中
+    导入中 --> 拆单中
+    拆单中 --> 装备中
+    装备中 --> 施工中
+    施工中 --> 探针中
+    探针中 --> 自愈中
+    探针中 --> 验收中
+    自愈中 --> 验收中
+    验收中 --> 汇报中
+    汇报中 --> 收车
+    收车 --> [*]
+</div></div>
+<blockquote>
+<p>注：各态→汇报中均有跳过边（如 station3-only 装备中→汇报中）；<strong>挂起不占态</strong>——gate_suspend/gate_resume 成对审计事件＋账本末态＋since 游标判断点（L1 哲学：事件对无死锁）。</p>
+</blockquote>
+<h3>图4 · L1 票级十一态（施工账·正本=ticket-state.ts:21,47）</h3>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> 待建
+    待建 --> 缓存问询: 前置全绿·先问缓存
+    待建 --> 施工中: 无直通·开工
+    待建 --> 缓存直通绿: resume·复跑绿
+    缓存问询 --> 缓存直通绿: 命中·复跑绿
+    缓存问询 --> 施工中: 未命中
+    施工中 --> 审查扣绿闸: 测试绿暂扣
+    施工中 --> 红严重偏题: 跑偏
+    施工中 --> 降级产物: 预授权降级
+    降级产物 --> 审查扣绿闸: 降级同审
+    降级产物 --> 红严重偏题: 修不动
+    审查扣绿闸 --> 施工中: 回喂重写·⟲≤3
+    审查扣绿闸 --> 红严重偏题: 严重偏题
+    审查扣绿闸 --> 硬化出关: 对题绿
+    硬化出关 --> 绿灯可吊销: 三钥匙齐·发灯
+    硬化出关 --> 施工中: 补测回炉
+    硬化出关 --> 停车场: 预算断
+    绿灯可吊销 --> 停车场: 回归翻案·唯一降级
+    红严重偏题 --> 停车场: park#1
+    红严重偏题 --> 终局: park#2
+    停车场 --> 施工中: 夜末补考
+    停车场 --> 终局: 补考不过
+    终局 --> [*]
+</div></div>
+<blockquote>
+<p>注：图内态名缩写（缓存直通绿=<code>缓存直通·绿</code>·审查扣绿闸=<code>审查·扣绿闸</code>·红严重偏题=<code>红·严重偏题</code>·绿灯可吊销=<code>绿灯·可吊销</code>）。缓存直通绿=无出边绿终态。<strong>红线：红永不变绿·绿灯可吊销=唯一降级出边·⟲≤3/park≤2/预算三路守卫不进转移表。</strong>三钥匙=测试绿∧对题绿∧硬化绿。</p>
+</blockquote>
+<h3>图5 · L1 波次五态（排期账·正本=queue-ledger.ts:13,18）</h3>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> queued: 入队·decision_ref过闸
+    queued --> in_progress: 派工开工
+    queued --> superseded: 排期唯一·废旧
+    queued --> needs_replan: 叫停重排·未开工
+    in_progress --> done: 班过闸·终态
+    in_progress --> needs_replan: 继承失败·不装绿
+    needs_replan --> queued: 重排后重入队
+    done --> [*]
+    superseded --> [*]
+</div></div>
+<blockquote>
+<p>注：done/superseded=终态无出边；needs_replan=唯一可回炉态（继承失败 fail-closed 不派工不装绿·重排后回 queued）。</p>
+</blockquote>
+<h3>图6 · L2 病卡七态（维修账·正本=repair-contract.mjs:23,40）</h3>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> 待分诊: 红票立卡
+    待分诊 --> 诊断
+    诊断 --> A域
+    A域 --> 方案件
+    方案件 --> 修复
+    修复 --> 金丝雀: 金丝雀验证
+    金丝雀 --> 关: 验证过·关卡
+    关 --> [*]
+</div></div>
+<blockquote>
+<p>注：七态链=待分诊→诊断→A域→方案件→修复→金丝雀→关（业内名 Incident Management Lifecycle·ITIL 同构·#47·转移表 fail-closed）；修复段回窗队列走🔁重领闭环（§14 L2 返工环行）。</p>
+</blockquote>
+<h3>图7 · L1 包级账十值（施工规划账·正本=package-state.ts:12-66·拍板#199）</h3>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> 方案中
+    方案中 --> 方案毕候拍: 方案定稿
+    方案毕候拍 --> 拆票毕
+    方案毕候拍 --> 废止: 降级
+    拆票毕 --> 考题毕
+    拆票毕 --> 废止: 降级
+    考题毕 --> 打包毕
+    打包毕 --> 机检绿
+    机检绿 --> 候业主拍板
+    候业主拍板 --> 已批: 拍板号闸·owner
+    候业主拍板 --> 废止: 降级
+    已批 --> 站3交接毕: 站3导入闸
+    站3交接毕 --> [*]
+    废止 --> [*]
+</div></div>
+<blockquote>
+<p>注：图内「方案毕候拍」=<code>方案毕(候拍)</code>。十值九主线＋侧终态废止（唯一降级方向·三入边）；站3交接毕/废止=终态无出边；拍板号守卫（候业主拍板→已批 边·非空非候拍才放行）在账本写侧调用方——守卫不进转移表（ticket-state 同款纪律）。<strong>码已落地</strong>（拍板#199·W-137）·零调用方闲置·候接线方式决策（§12 候办①·W-232 联动）。</p>
+</blockquote>
+<h3>2.5 台账与宪法十对口述（自 006 并入）</h3>
+<h4>台账·L1（ts/src）</h4>
+<table><thead><tr><th>台</th><th>态数</th><th>正本</th><th>用途</th></tr></thead><tbody><tr><td>run 级状态机</td><td>10 态</td><td><code>ts/src/shared/run-state.ts:19-43</code></td><td>每次批次运行生命周期：启动→导入中→拆单中→装备中→施工中→探针中→(自愈中→)验收中→汇报中→收车＋跳过边各态→汇报中</td></tr><tr><td>票级状态机</td><td>11 态</td><td><code>ts/src/shared/ticket-state.ts:21-46</code></td><td>每张工序票质量生命周期：待建→缓存问询→(缓存直通·绿｜施工中→审查·扣绿闸→硬化出关→绿灯·可吊销｜降级产物｜红·严重偏题→停车场/终局)</td></tr><tr><td>波次排期账</td><td>5 态</td><td><code>ts/src/queue/queue-ledger.ts:13,18</code></td><td>queued/in_progress/done/superseded/needs_replan</td></tr><tr><td>包级状态</td><td>10 值</td><td>package-state.ts:12-66＋package-ledger.ts（拍板#199·W-137）</td><td>站1/2 段·<strong>码已落地零调用方</strong>·候接线（W-232 联动）</td></tr></tbody></table>
+<p><strong>L1 挂起语义</strong>：无独立态——<code>gate_suspend/gate_resume</code> 成对审计事件＋账本末态＋since(seq) 游标投影判"跑到哪、断在哪"（run-state.ts:11-13 头注·V4 夜车硬门）。</p>
+<h3>L2（91-脚本·窗队列九态＋病卡七态）</h3>
+<p><strong>窗队列态</strong>（正本=<code>90-过程/窗队列.md</code> 状态机行＋写口宪法）：</p>
+<pre><code>探讨中(未批) → 待实施(已批) → ▶施工中 → 完工待确认 → ✅已完成
+▶施工中 → 🔁维修中（半截·候重领）
+任意态 → ⏸挂起（宪法入边 2 条：inspector 宁停 / owner 宁停）
+⏸挂起 → ▶施工中 / ✅已完成（#301）· 完工待确认（#309）——三出边业主道 --board
+特殊词面：🔵待拍板（方向题候裁）· 转人工 —— ⚠ 两态不在宪法十对内（见 §12）</code></pre>
+<p><strong>写口宪法十对</strong>（<code>91-脚本/队列写口.mjs:47-60</code>·责任部件四员：dispatcher/window/owner/inspector·owner(board)=业主道·主窗代录须带拍板号）：</p>
+<table><thead><tr><th>#</th><th>from → to</th><th>责任部件（actor）</th><th>语义</th><th>详细口述解释</th></tr></thead><tbody><tr><td>1</td><td>待实施(已批)→▶施工中</td><td>dispatcher</td><td>派工器领单</td><td>单子躺在窗队列里等（业主已拍板批过）。派单员巡检一圈：资格闸全过（状态对/拍板号在/前置干完/任务书在/路由对），再过开工体检门四查——全绿才翻「▶施工中」弹窗开工。这是全链最重的一格：翻格=开始烧钱，所以闸最多。</td></tr><tr><td>2</td><td>▶施工中→完工待确认</td><td>window</td><td>收口自报</td><td>员工干完活自己交卷：accept 全绿、交活五件套齐、申报落盘——窗自己翻「完工待确认」。注意这只是「自称干完了」，绿不绿要过下一格机器重考（复考闸）＋业主终认才算数。</td></tr><tr><td>3</td><td>▶施工中→🔁维修中</td><td>window</td><td>方向题/维修道</td><td>干到半截干不动了（方向题拿不准推🔵、或收口半截）——窗自己翻「🔁维修中」，下一棒锚必填：接力的人知道从哪接着干，不从头瞎摸。</td></tr><tr><td>4</td><td>完工待确认→✅已完成</td><td>owner(board)</td><td>业主终认</td><td>唯一终认格：机器复考绿了、业主亲自点头（或业主令主窗代录带拍板号）才翻✅。这条对是 W-181 误翻✅之后立的规矩：✅只认业主道，机器和员工都翻不了。</td></tr><tr><td>5</td><td>*→⏸挂起</td><td>inspector</td><td>巡检宁停（僵尸/停更/预算无据）</td><td>巡检员任何时候看见不对劲——窗死申报不完整（僵尸）、会话档停更像死循环、预算刹车没据可算——一律翻⏸候人工。宁停勿装绿：拿不准就停，绝不替窗说「干完了」。</td></tr><tr><td>6</td><td>*→⏸挂起</td><td>owner</td><td>业主宁停</td><td>业主自己叫停（撞号让位/挂账登记/候外部条件）——同样翻⏸，原因必填。与巡检道分开记 actor：谁停的一查便知，翻案权各归各。</td></tr><tr><td>7</td><td>🔁维修中→待实施(已批)</td><td>dispatcher</td><td>闸4 超时重领</td><td>维修票排好了，派工器按闸4超时语义重新领单——翻回「待实施(已批)」把领单闸链（含开工体检门）重新走一遍，修好的当新活派。</td></tr><tr><td>8</td><td>⏸挂起→▶施工中</td><td>owner(board)</td><td>勘误恢复·活窗误挂（#301）</td><td>勘误恢复专用：巡检判死判错了（活窗被误挂——心跳孤儿、盯错探针档），业主核过实锚（会话档还新鲜在写）翻回▶续干。#301 新开·首用 W-216。这条边治「⏸无出边死锁」的活窗半边。</td></tr><tr><td>9</td><td>⏸挂起→✅已完成</td><td>owner(board)</td><td>挂账清偿·业主令（#301）</td><td>挂账清偿专用：这行⏸是挂账（注记写着「清偿=W-X 收口」），W-X 真收口了——业主令下挂账行直接翻✅清账，不用再走一遍终认仪式。#301 新开·首用 W-202/W-219。</td></tr><tr><td>10</td><td>⏸挂起→完工待确认</td><td>owner(board)</td><td>挂账随清偿票完工随裁（#309）</td><td>挂账随裁专用：清偿票 W-X 干到「完工待确认」了，挂账行跟着翻同款态候业主终认——不再死锁⏸也不跳级翻✅。#309 新开·首用 W-220（W-223 勘定报告交了，W-220 随裁）。</td></tr></tbody></table>
+<p><strong>⏸挂起全部触发情形</strong>（今晚六案归类·业主已核）：</p>
+<table><thead><tr><th>触发者</th><th>情形</th><th>今晚实例</th></tr></thead><tbody><tr><td>inspector 巡检</td><td>①僵尸认定（窗死＋申报不完整）②停更分诊（死循环嫌疑·W-148 签名）③窗预算刹车无法核算（#211）</td><td>W-220/W-223 三次·W-223（盯错探针档误判）·W-216</td></tr><tr><td>owner/主窗代录</td><td>④挂账让位（撞号/收敛裁定）⑤挂账登记（清偿=W-X 收口）⑥候外部（候企微重启令等）</td><td>W-219(#298)·W-202/W-217/W-220·W-199(#284①)</td></tr></tbody></table>
+<p><strong>完工待确认三触发</strong>：①施工窗自报（▶→·window 合法边）②缺考题窗型完工（#179·不代写✅）③挂账随裁（#309）。</p>
+<h3>两层设计哲学差异（今晚事故的机制注脚）</h3>
+<table><thead><tr><th></th><th>L1（引擎）</th><th>L2（harness）</th></tr></thead><tbody><tr><td>挂起表达</td><td>无独立态——gate_suspend/resume 事件对</td><td>⏸ 独立状态格（写口宪法管）</td></tr><tr><td>崩溃恢复</td><td>账本末态＋游标投影</td><td>状态格＋写口翻格</td></tr><tr><td>今晚教训</td><td>事件对无死锁</td><td>⏸ 无出边曾死锁五行——#301/#309 补出边后解除</td></tr></tbody></table>
+<p>---</p>
+<h2>第三章 · 迁移拦截链（切面 / Hook · 3.2.1）</h2>
+<blockquote>
+<p>业内定义：紧贴跃迁链路切面注入，不改迁移规则。模块：前置校验、不变式断言、后置校验、异常拦截。</p>
+</blockquote>
+<h3>3.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  subgraph L2C["L2 准入拦截链·领单时"]
+    A1["领单验格闸<br/>五道资格"] --> A2["查撞单<br/>告警不拦"] --> A3["再验单<br/>派发三关"] --> A4["体检门<br/>四查·超时宁停"] --> A5["定档闸<br/>风险三档"]
+  end
+  subgraph L1C["L1 质量拦截链·票级"]
+    B1["收包验货关<br/>三道"] --> B2["对题审查<br/>扣绿闸"] --> B3["硬化双闸<br/>对坏必须FAIL"] --> B4["三钥匙<br/>发绿灯"]
+  end
+</div></div>
+<p><strong>拦截模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>前置校验</td><td>包导入三关（#2·gates.ts:107）＋钉版闸（#65）</td><td>验格五闸（#7）＋审批规格节＋派发三关（#6）</td></tr><tr><td>不变式断言</td><td>判卷守卫对拍 sha（#18·build.ts:73）＋keys 对账</td><td>assertStateFace（:563）＋window_assert（W-088）</td></tr><tr><td>后置校验</td><td>对题审查员扣绿（#19）＋硬化对坏 FAIL（#20）</td><td>收口申报四查（:1317）＋钩子回执注记（#89甲）</td></tr><tr><td>异常拦截</td><td>红票裁决七源同出口（#22·red-ruling.ts:35）</td><td>打回分诊三分类（#49）→返工环（#47）</td></tr></tbody></table>
+<h3>3.1 harness 第一层（L1·车间）</h3>
+<h4>3.1.1 前置校验（Pre-Check）</h4>
+<p>包导入三关（#2·版本闸 ajv/计数闸/死链）＋版本钉版（#65·run-slice.ts:139·R02 拍板#215）✔——校验失败直接拒绝本次事件。<strong>口述</strong>：夜车收包先验三道——版本对吗、数量齐吗、链接死吗；这班用哪一版还要先钉铭牌，指纹不符拒启。</p>
+<h4>3.1.2 不变式断言（Invariant）</h4>
+<p>判卷守卫防篡改（#18·build.ts:73,210·对拍冻结 sha）＋keys 对账断言（STATE_LABELS 失步即 throw·ticket-state.ts:100-103）✔——断言失败=系统逻辑异常。<strong>口述</strong>：考卷开工前封存画押，交卷时对指纹——有人偷改考卷，整场作废。</p>
+<h4>3.1.3 后置校验（Post-Check）</h4>
+<p>对题审查员扣绿闸（#19·reviewer.ts:69,109）＋硬化双闸对坏 FAIL（#20）✔——迁移落地后业务一致性校验。<strong>口述</strong>：测试绿只是入场券——审查员逐条对题防跑偏，硬化车间专挑「只会做对题的绣花枕头」。</p>
+<h4>3.1.4 异常拦截（Exception）</h4>
+<p>红票裁决七源同出口（#22·red-ruling.ts:35,48,57,71）——Action 异常统一路由到停车场/终局分支。<strong>口述</strong>：七种死法一个裁决口——park#1 还有救换票重做，park#2 记账收摊；同一个口出，账好查。</p>
+<h4>3.1.5 缺口</h4>
+<p>可达性/孤岛状态静态检查＝无（§10·§16#6）。</p>
+<h3>3.2 harness 第二层（L2·派工台）</h3>
+<h4>3.2.1 前置校验（Pre-Check）</h4>
+<p>领单验格五闸＋审批规格节＋派发三关（#6/#7·pi_runner.ts:3261-3270）✔——校验失败跳过记因不弃单。<strong>口述</strong>：派单员取单前查五样——状态对吗、拍板号有吗、前置干完吗、任务书在吗、路由对吗；哪道不过记一笔跳过，不扔单。</p>
+<h4>3.2.2 不变式断言（Invariant）</h4>
+<p>assertStateFace 词面白名单（:563·写口闸3·拍板#259①）＋window_assert 不变量＋产物锚（W-088·拍板#135①）✔——拒写非法翻格。<strong>口述</strong>：往队列格子里写字前先断言「这个字在白名单里吗」——W-181 误翻✅之后立的规矩，机器也翻不了业主的格。</p>
+<h4>3.2.3 后置校验（Post-Check）</h4>
+<p>收口申报器四查（申报完整/三键/申报落盘·:1317-1328）＋钩子回执注记（#89甲·:643,774）✔。<strong>口述</strong>：窗进程一退回执直写；交活先查五件套齐不齐——不齐不收。</p>
+<h4>3.2.4 异常拦截（Exception）</h4>
+<p>打回分诊三分类（#49·Bounce Triage）→返工环（#47/#48·repair-contract.mjs）✔。<strong>口述</strong>：考砸先分诊——机械毛病、规矩病、规格病各走各的口，不一股脑打回了事。</p>
+<h4>3.2.5 缺口</h4>
+<p>前置校验的「批什么漂移」检测＝回禀候令（拍板#307⑥·四方向）。</p>
+<h3>3.2.6 关键流转表：领单闸链（六列范式·事件=巡检 tick·现态=待实施(已批) 驻留）</h3>
+<table><thead><tr><th>#</th><th>From 现态</th><th>Event 触发事件</th><th>Guard 守卫</th><th>Action 动作</th><th>To 次态/出口</th></tr></thead><tbody><tr><td>1</td><td>待实施(已批)</td><td>巡检 tick</td><td>状态=待实施(已批)∧拍板号非空</td><td>取单入候选</td><td>入候选</td></tr><tr><td>2</td><td>候选</td><td>闸1 前置检查</td><td>前置✅/完工待确认∧无环</td><td>——</td><td>不过=跳过记因·留驻</td></tr><tr><td>3</td><td>候选</td><td>闸2 任务书存在</td><td>文件在</td><td>——</td><td>拒=记因</td></tr><tr><td>4</td><td>候选</td><td>闸3 路由</td><td>大业务→作业面存在</td><td>routeOf</td><td>拒=记因（fail-closed）</td></tr><tr><td>5</td><td>候选</td><td>闸4 审批规格节</td><td>拍板号交叉核对一致</td><td>——</td><td>不一致=拒发 exit2</td></tr><tr><td>6</td><td>候选</td><td>派发三关</td><td>CHECKER EXIT0</td><td>——</td><td>红=拒发</td></tr><tr><td>7</td><td>候选</td><td>领单体检门四查</td><td>dryrun:只记／enforce:全绿</td><td>reviewGateLogAppend</td><td>红→探讨中(未批)·超时→⏸</td></tr><tr><td>8</td><td>候选</td><td>定档闸</td><td>词表扫改动面定档</td><td>高档(enforce)→⏸</td><td>停车候拍</td></tr><tr><td>9</td><td>候选</td><td>翻格 Action（宪法对1）</td><td>全闸过</td><td>markRunning＋spawn</td><td><strong>▶施工中</strong></td></tr></tbody></table>
+<h3>3.3 断言五品种（自 006 §9 并入）</h3>
+<p><strong>结论</strong>：断言≠泛泛的「代码校验」——校验是大类（可软可硬），断言是其中最硬的子类：一条二值的机器主张（「X 此时必须为真」），假了当场红、exit code 说话，绝不告警了事。在本厂地图里，<strong>断言是闸的牙齿</strong>：§14 矩阵里每个「闸」，判过/不过的判据最终都是一组断言。</p>
+<table><thead><tr><th></th><th>校验/检查（大类）</th><th>断言（硬核子类）</th></tr></thead><tbody><tr><td>输出</td><td>可软：WARN 告警不拦车（撞单反查、锚点漂移 13 行=告警级）</td><td>必硬：假了当场红，exit code 唯一判据，红=打回/拒写/不装绿</td></tr></tbody></table>
+<h3>断言五品种对照（怎么对应上）</h3>
+<table><thead><tr><th>品种</th><th>是什么</th><th>实例（锚）</th><th>挂在本卡矩阵哪一格</th></tr></thead><tbody><tr><td>①行为断言</td><td>断「函数/闸在给定输入下必出给定结果」——selftest 全是这类</td><td>runReviewGate 案92-129（pi_runner.ts:2335-2766）</td><td>每个闸的自证：会审门/复考闸/写口手术全带 selftest</td></tr><tr><td>②同步断言</td><td>断「码与文档/字典不失同步」——漂了当场 throw</td><td>ticket-state.ts:100-103（STATE_LABELS 失步即 throw）·sm-003 keys 对账断言</td><td>状态机↔状态字典↔机制目录对账（本卡 §12/§12 所说投影件漂移即靠它兜底）</td></tr><tr><td>③不变量断言</td><td>断「写之前/收口之前世界仍合规」——fail-closed 拒写</td><td>assertStateFace 词面白名单（pi_runner.ts:563·写口闸3·拍板#259①）·window_assert 不变量＋产物锚（W-088·拍板#135①）</td><td>写口宪法（§2/§13）的牙齿：每对翻格前先过词面断言；交活重考闸挂载件</td></tr><tr><td>④锚点断言</td><td>断「文档里 file:line 锚在现行码里还成立」</td><td>锚点断言 --check（meta-lint 族·漂移=告警级）</td><td>机制目录卡36 锚漂移（:377-394→现行）即它查出</td></tr><tr><td>⑤防假绿断言</td><td>断「断言自己活着」——反着调必须变红才证没坏</td><td>W-162 防假绿断言调反隔离（瘫化词面→转绿=真活→还原复红逐字节一致）</td><td>纪律层：绿才认的前提是断言不会永久绿</td></tr></tbody></table>
+<p><strong>L1 特殊形态</strong>：转移表把断言思想做成账本版——非法转移不抛异常，记 <code>state_transition_rejected</code> 入账（ticket-state.ts:119-127）；合法性一寸不让，红的方式是「入账留痕」而非「中断」。</p>
+<p><strong>对应到本卡地图</strong>：闸（guard）＝断言的集合＋出口映射（会审门四查=4 组断言实跑；复考闸=考题重跑断言＋window_assert）；宪法＝断言的权限版（actor＋词面断言）；绿才认纪律＝断言的结果解释权（认 exit code 不认感觉：NA≠PASS·skip≠green·断言调反必须红）。</p>
+<p>---</p>
+<h2>第四章 · 事件网关（事件管理层 · 3.2.2）</h2>
+<blockquote>
+<p>业内定义：统一管理进入状态机实例的事件——路由、去重、乱序、死信。模块：事件去重、乱序缓冲、死信。</p>
+</blockquote>
+<h3>4.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  S1["队列变更<br/>queue_watcher"] --> GW
+  S2["定时到点<br/>afk_cron 挂链"] --> GW
+  S3["人工拍板/推卡"] --> GW
+  GW["事件网关<br/>路由·去重·乱序·死信"] --> SM["状态机实例<br/>六台"]
+  GW -->|"跳过/非法·记因"| DL["死信账<br/>记因·rejected·审计jsonl"]
+</div></div>
+<p><strong>事件模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>事件路由/溯源</td><td>events.jsonl 119 型白名单（#54·原生事件溯源）</td><td>queue_watcher 防抖 30s 发射（#28·TaskID=窗ID）</td></tr><tr><td>去重/幂等</td><td>账本 seq 严格递增（C-021）</td><td>单飞锁＋queue_mutex 乐观锁（重试上限 3）</td></tr><tr><td>乱序缓冲</td><td>——（单写者无乱序）</td><td>后到秒退（丢弃策略）</td></tr><tr><td>死信</td><td>state_transition_rejected 入账</td><td>跳过记因落盘＋审计 jsonl＋review-gate.jsonl</td></tr></tbody></table>
+<h3>4.1 harness 第一层（L1·车间）</h3>
+<h4>4.1.1 事件白名单与溯源</h4>
+<p>事件账本白名单（#54·EVENT_TYPE_LIST 119 型＋EVENT_LABELS 正本字典·event-types.ts）＋events.jsonl append-only＝<strong>原生 Event Sourcing</strong> ✔。<strong>口述</strong>：119 种事件个个有名有姓，加一种要拍板——账本上不存在「无名事件」。</p>
+<h4>4.1.2 死信（非法/无法消费事件）</h4>
+<p><code>state_transition_rejected</code>/<code>ticket_state_rejected</code> 入账（ticket-state.ts:119-127）＋gate_suspend 无配对挂账（efficiency-risks.ts:26）✔——回放排查有账可查。<strong>口述</strong>：非法事件不当没发生——记「被拒」账，回放时看得见当时想干什么、为什么被拒。</p>
+<h4>4.1.3 缺口</h4>
+<p>死信无独立队列形态（记账式）·事件优先级 L1 无——按需增强（§11 覆盖小结）。</p>
+<h3>4.2 harness 第二层（L2·派工台）</h3>
+<h4>4.2.1 事件路由与乱序（去重）</h4>
+<p>queue_watcher 防抖 30s→发射、后到秒退（#28·单飞互斥）＝乱序丢弃策略；单飞锁＝EventID 去重同构 ✔。<strong>口述</strong>：队列一动等 30 秒再发车（攒一批变更），两个派工器同时抢活——后到的秒退，绝不双开。</p>
+<h4>4.2.2 幂等控制</h4>
+<p>queue_mutex 写口乐观锁（#53·W-092·OPTIMISTIC_RETRY=3·队列写口.mjs:63）✔——防同窗并发事件撕裂。</p>
+<h4>4.2.3 死信管理</h4>
+<p>跳过记因落盘（appendSkipReason·:2555 区）＋审计 jsonl＋review-gate.jsonl ✔——<strong>口述</strong>：领单跳过不是悄悄跳过——哪张票、哪道闸、为什么，逐条落盘可回放；今晚回卷事故能勘定元凶，靠的就是这类账。</p>
+<h4>4.2.4 缺口</h4>
+<p>宪法外两词面（🔵/转人工）的事件无白名单型——收编后补型（§16#1）。</p>
+<h2>第五章 · 实例仓库（持久化层 · 3.2.3）</h2>
+<blockquote>
+<p>业内定义：保障单实例宕机不丢状态。模块：快照、乐观锁、实例存储。</p>
+</blockquote>
+<h3>5.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  SM["状态机实例·翻格"] --> LED["append-only 账本<br/>events.jsonl·审计jsonl"]
+  SM --> SNAP["快照<br/>状态格·快照三键·产物锚"]
+  SNAP -->|"宕机/判死"| REC["恢复<br/>末态+游标·巡检/值守"]
+</div></div>
+<p><strong>持久化模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>实例存储</td><td>events.jsonl 单点入账（C-021·ledger.ts:12）</td><td>窗队列 md 状态格＋产物锚目录</td></tr><tr><td>快照</td><td>账本即流水（无独立快照·重放即重建）</td><td>spawn 快照三键（会话档/窗PID/时间）</td></tr><tr><td>乐观锁</td><td>单写者事件循环（无锁需要）</td><td>queue_mutex 四写点包锁（#53·W-092）</td></tr><tr><td>恢复</td><td>账本末态＋since 游标（V4 硬门）</td><td>巡检判死→核账报告（#64）→值守恢复（#305/#301）</td></tr></tbody></table>
+<h3>5.1 harness 第一层（L1·车间）</h3>
+<h4>5.1.1 实例存储（append-only 账本）</h4>
+<p>events.jsonl 同步单点入账（C-021·拍板#42①·ledger.ts:12）✔——并发 worker 事件逐条完好、seq 严格递增。</p>
+<h4>5.1.2 快照与恢复</h4>
+<p>崩溃后按账本末态＋since(seq) 游标判「跑到哪、断在哪」（run-state.ts:11-13·V4 夜车硬门）＋recoverTicketStates 同票取末笔（ticket-state.ts:136-146）✔。<strong>口述</strong>：L1 不留「挂起格」——停车是一对「挂起/恢复」事件；车再发时读账本末态加游标，断在哪格从哪格接着跑，一步不丢。</p>
+<h4>5.1.3 缺口</h4>
+<p>transition 事件无 actor 字段（崩溃归因只能到态不能到部件）——候票（§15#8）。</p>
+<h3>5.2 harness 第二层（L2·派工台）</h3>
+<h4>5.2.1 实例存储与快照</h4>
+<p>窗队列 md 状态格＋spawn 快照三键（会话档/窗PID/时间·:1317 区）＋产物锚目录（窗产物/W-NNN/）✔。</p>
+<h4>5.2.2 乐观锁与并发保护</h4>
+<p>queue_mutex 四写点包锁（#53·领单/钩子/复考/快照·锁内重读→比对→改→写）＋写前词面断言 ✔。<strong>口述</strong>：四个会写账的地方全走同一扇门（写口），门上两道锁——乐观锁防抢、词面断言防写错字；今晚的回卷事故正是「没走这扇门的直写」造成，事故反过来证明了锁的价值。</p>
+<h4>5.2.3 恢复能力</h4>
+<p>巡检判死→僵尸核账报告（#64·只取证不代写）→值守恢复 ⏸→▶（#305·#301 对）✔。</p>
+<h4>5.2.4 缺口</h4>
+<p>心跳孤儿（领单实例退出无人续租）＝W-189 设计盲区——值守道止损·根治候 W-220 续跑（今晚实证）。</p>
+<h2>第六章 · 调度器（资源调度层 · 3.2.4）</h2>
+<blockquote>
+<p>业内定义：跨多实例协调——并发槽/信号量、排队队列、定时器。不属于单个任务状态机。</p>
+</blockquote>
+<h3>6.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  Q["排队队列<br/>窗队列·优先级列"] --> SLOT["并发槽<br/>max_parallel=5"]
+  CRON["定时器<br/>afk_cron·30分/每小时"] --> SLOT
+  SLOT -->|"槽满排队·空槽唤醒"| WORK["施工窗在跑"]
+  HEART["心跳租约<br/>在跑续租"] -.-> WORK
+  TMO["超时驱逐<br/>闸4重领·判死"] -.-> Q
+</div></div>
+<p><strong>调度模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>并发槽/信号量</td><td>波内受控并发（#25·barrier-loop）</td><td>槽位化主循环（#26·领至槽满）</td></tr><tr><td>排队队列</td><td>就绪制波次（E3·前置✅即解锁）</td><td>窗队列＋优先级列（#179·不抢占）</td></tr><tr><td>定时器</td><td>班闸/波次事件（gate passed/failed）</td><td>afk_cron 挂链＋queue_watcher 事件触发</td></tr><tr><td>超时驱逐/心跳</td><td>预算 hard 收车（#24）</td><td>闸4 超时重领＋心跳租约（W-189）＋判死（W-172）</td></tr></tbody></table>
+<h3>6.1 harness 第一层（L1·车间）</h3>
+<h4>6.1.1 排队队列与就绪调度</h4>
+<p>E3 就绪制/波次调度（#25·ready-queue.ts·barrier-loop.ts·前置✅即解锁·波内受控并发）✔。<strong>口述</strong>：票不排死队——前置干完就就绪，波内几票同时跑但受控，全靠账本说了算。</p>
+<h4>6.1.2 定时器与资源终止</h4>
+<p>夜车预算三路（#24·night-budget.ts·软降档/hard 收车留断点）✔——资源耗尽由调度层收车，状态机只收事件。</p>
+<h4>6.1.3 缺口</h4>
+<p>L1 波次无优先级（就绪即发）——与 L2 优先级列不对齐（§11 平台增强◐）。</p>
+<h3>6.2 harness 第二层（L2·派工台）</h3>
+<h4>6.2.1 并发槽 / 信号量</h4>
+<p>槽位化主循环（#26·max_parallel=5·领至槽满→轮询空槽→再领·pi_runner.ts:2373）✔——<strong>口述</strong>：五条车道，车多排队；每跑完一辆空一条槽，排队的立刻顶上。</p>
+<h4>6.2.2 排队队列与优先级</h4>
+<p>窗队列即排队队列＋优先级列（#179·高/普/低·插队不闯闸·不做抢占）✔——<strong>口述</strong>：急单能插到队首，但该过的闸一道不少；在跑的车绝不拦停。</p>
+<h4>6.2.3 定时器</h4>
+<p>afk_cron 挂链（pi_runner 随链＋wip_scan 30 分＋值守每小时·#305）＋queue_watcher 事件触发（#28·防抖 30s）✔。</p>
+<h4>6.2.4 排队超时驱逐与心跳</h4>
+<p>闸4 超时重领（W-187）＋心跳租约（W-189·leaseTouch）＋巡检判死（W-172 快照年龄守卫）✔——<strong>口述</strong>：在跑的窗由派单员代报平安（心跳）；心跳断了先别判死——值守道核会话档活证（#305·今晚 W-216 心跳孤儿拉锯的教训），真死了才判，判死还有核账报告兜底。</p>
+<h4>6.2.5 缺口</h4>
+<p>不做抢占（在飞▶不打断不杀·候业主另拍）；心跳孤儿根治候 W-220 续跑（§5.2.4）。</p>
+<h2>第七章 · 弹性组件（Resilience · 3.2.5）</h2>
+<blockquote>
+<p>业内定义：包装 Action 外部调用，防雪崩。模块：重试、熔断、舱壁、超时。</p>
+</blockquote>
+<h3>7.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  subgraph SHORT["短同步重试·Action 内"]
+    R1["干活自愈环<br/>分诊→修→复跑·换档坐席"]
+  end
+  subgraph LONG["长周期重试·显式态+定时自环"]
+    P["停车场"] -->|"夜末补考·带FAIL摘录"| W["施工中"]
+    W -->|"同因再犯·熔断"| P
+  end
+  CB["熔断·同因/审批双率"] --> FAST["快速失败"]
+  BK["舱壁·沙箱/作业面"] --> ISO["隔离防挤塌"]
+  TO["超时·宁停不装绿"]
+</div></div>
+<p><strong>弹性模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>重试（短同步）</td><td>回喂自愈环⟲≤3（#15·build.ts:184）</td><td>——（L2 无 Action 内重试）</td></tr><tr><td>重试（长周期）</td><td>停车场＋夜末挂起补考（#23·lane-drain.ts:31）</td><td>闸4 超时重领（W-187）＋值守恢复（#305）</td></tr><tr><td>熔断</td><td>同因熔断（#23·复发零轮）</td><td>审批熔断（#62a·双率越阈·影子缺省）</td></tr><tr><td>舱壁</td><td>票级沙箱（#11）＋载体三级（#68）</td><td>大业务作业面路由（#76②·fail-closed）</td></tr><tr><td>超时</td><td>预算 hard 收车（#24）</td><td>体检门四查宁停＋taskTimeoutMs</td></tr></tbody></table>
+<h3>7.1 harness 第一层（L1·车间）</h3>
+<h4>7.1.1 重试（双范式）</h4>
+<p>短同步＝回喂自愈环⟲≤3（#15·build.ts:184-255·预共享预算·15a 机械分诊/15c 坐席A 换档）；长周期＝停车场显式态＋夜末挂起补考（#23·lane-drain.ts:31,50·带 FAIL 摘录）✔。<strong>口述</strong>：小毛病当场改当场再试，最多三回合；改不好的押进停车场，收班前带着「错题摘录」最后试一次——同一种错犯两回，直接不给机会（同因熔断）。</p>
+<h4>7.1.2 熔断</h4>
+<p>同因熔断（#23·同因复发零轮）✔——快速失败保护下游。</p>
+<h4>7.1.3 舱壁</h4>
+<p>票级沙箱（#11·每票一箱·票毕回搬·补考开新箱＝干净房）＋沙箱三级载体分级（#68·宿主/影树/容器·provider-types.ts:13,22,44）✔——<strong>口述</strong>：一票一屋，谁也别污染谁；屋子分三档，权限跟着档走。</p>
+<h4>7.1.4 超时与背压</h4>
+<p>预算三路（#24·night-budget.ts·软降档→hard 收车留断点）✔。</p>
+<h4>7.1.5 缺口</h4>
+<p>下游级熔断（如 LLM 供应商级）以换档降级（#15c Model Fallback）替代——粒度不同如实标注。</p>
+<h3>7.2 harness 第二层（L2·派工台）</h3>
+<h4>7.2.1 重试</h4>
+<p>闸4 超时重领（W-187·🔁→待实施）＋值守活窗误挂恢复（#301·⏸→▶）＋活窗心跳孤儿续租（#305）✔。</p>
+<h4>7.2.2 熔断</h4>
+<p>审批熔断（#62a·审批熔断.ts:48,85,173·回退率+事故率双率越阈出收紧建议·影子缺省）✔——<strong>口述</strong>：数这个班代拍出错的比例，超线就建议收权——但只建议，动手前必等业主令。</p>
+<h4>7.2.3 舱壁</h4>
+<p>大业务→作业面路由（#76②·routeOf fail-closed）——不同业务隔离不同工作目录 ✔。</p>
+<h4>7.2.4 超时</h4>
+<p>会审门四查超时宁停（REVIEW_GATE_TIMEOUTS·baseline 600s/tsc 300s/reverify 180s/anchor 30s）＋taskTimeoutMs 窗任务超时 ✔——<strong>口述</strong>：体检超时不硬等——宁停⏸候人工，绝不卡死车道。</p>
+<h4>7.2.5 缺口</h4>
+<p>渐进开闸（#52）下 enforce 面仍部分影子（会审门/分级闸翻转候业主令·渐进推进中）。</p>
+<h3>7.2.6 关键流转表：值守恢复与重领（六列范式·L2）</h3>
+<table><thead><tr><th>#</th><th>From 现态</th><th>Event 触发事件</th><th>Guard 守卫</th><th>Action 动作</th><th>To 次态</th></tr></thead><tbody><tr><td>1</td><td>⏸挂起</td><td>值守每小时六查</td><td>会话档新鲜（活证）＋心跳孤儿实锚</td><td>写口 owner --board（#301 对8）</td><td>▶施工中</td></tr><tr><td>2</td><td>⏸挂起（清偿=W-X）</td><td>值守定时清偿链</td><td>W-X 已✅</td><td>写口 owner --board（#301 对9）</td><td>✅已完成</td></tr><tr><td>3</td><td>⏸挂起（清偿=W-X）</td><td>值守定时随裁</td><td>W-X=完工待确认</td><td>写口 owner --board（#309 对10）</td><td>完工待确认</td></tr><tr><td>4</td><td>🔁维修中</td><td>闸4 超时重领</td><td>前置就绪</td><td>重领（闸链含体检门重走）</td><td>待实施(已批)</td></tr><tr><td>5</td><td>▶施工中</td><td>收口自报</td><td>交活五件套齐＋申报落盘</td><td>窗自翻（#89甲钩子/申报器）</td><td>完工待确认</td></tr><tr><td>6</td><td>完工待确认</td><td>复考＋业主终认</td><td>考题重考 exit0＋owner board</td><td>写口翻✅（宪法对4）</td><td>✅已完成</td></tr></tbody></table>
+<h2>第八章 · 业务补偿（Saga · 3.2.6）</h2>
+<blockquote>
+<p>业内定义：正向动作绑定补偿动作，失败按序反向撤销。<strong>本厂设计差异：补偿＝「账本 append＋业主令」人工主导，非自动反向执行</strong>（自动化边界候讨论·§16#7）。</p>
+</blockquote>
+<h3>8.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  subgraph P1["L1 质量补偿"]
+    G1["绿灯·发灯"] -->|"回归翻案·吊销"| C1["停车场·重做"]
+  end
+  subgraph P2["L2 账务补偿·业主令"]
+    G2["⏸挂账登记"] -->|"清偿票收口·随裁"| C2["完工待确认"]
+    G2 -->|"业主令清偿"| C3["✅直接清账"]
+    A3["代拍生效"] -->|"翻案·rollback"| R3["撤销恢复"]
+  end
+</div></div>
+<p><strong>补偿模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>质量补偿</td><td>绿灯吊销（#35·regression-leg·唯一降级出边）</td><td>考砸打回→返工环（#47 闭环）</td></tr><tr><td>换票补偿</td><td>park#1 挂起换票（#22）</td><td>挂账让位（撞号/收敛·owner 宁停）</td></tr><tr><td>挂账-清偿补偿对</td><td>——</td><td>⏸挂账↔随裁（#309）↔清偿翻✅（#301）</td></tr><tr><td>翻案</td><td>——</td><td>业主追认/一键撤回（#40/#45·rollback）</td></tr><tr><td>设计差异</td><td>人工主导补偿</td><td>同左</td></tr></tbody></table>
+<h3>8.1 harness 第一层（L1·车间）</h3>
+<h4>8.1.1 质量补偿</h4>
+<p>绿灯吊销（#35·regression-leg·回归翻案——新片红吊销旧绿灯重走三钥匙）✔——唯一降级出边。<strong>口述</strong>：后面工序的回归考卷红了，一查锚定到前面已发绿灯的票——回头把灯拔了押回停车场重做；发过的灯也敢收回。</p>
+<h4>8.1.2 换票补偿</h4>
+<p>红票裁决 park#1 挂起换票（#22）——撤销当前执行，换票重做 ✔。</p>
+<h3>8.2 harness 第二层（L2·派工台）</h3>
+<h4>8.2.1 挂账-清偿补偿对</h4>
+<p>⏸挂账登记（清偿=W-X 收口）↔ 清偿随裁（#309·⏸→完工待确认·首用 W-220）＋清偿翻✅（#301·W-202/W-219）✔——<strong>口述</strong>：一时干不了的活先挂账压⏸，账上写明「谁收口我清账」；等那位真交了活，挂账行自动跟着翻格——不锁死也不跳级。</p>
+<h4>8.2.2 翻案（Compensation 执行）</h4>
+<p>业主追认/一键撤回（#40·confirm --rollback·event-types.ts:82 owner_confirmed/rejected）＋代拍追认制（#45）✔——<strong>口述</strong>：代理拍板错了不怕——业主一键撤回，账本记一笔翻案，世界恢复原状。</p>
+<h4>8.2.3 流程补偿</h4>
+<p>🔁返工环（#47 病卡七态→修复→金丝雀→关→重走交活）✔。</p>
+<h4>8.2.4 缺口</h4>
+<p>哪些补偿可自动化、哪些必须业主令——边界未成文（§16#7 候讨论）。</p>
+<h3>8.2.5 关键流转表：挂账-清偿-随裁（Saga 三步·补偿对）</h3>
+<table><thead><tr><th>步</th><th>动作</th><th>账本痕迹（宪法对/事件）</th><th>补偿触发</th></tr></thead><tbody><tr><td>1 挂账</td><td>⏸＋注记「清偿=W-X 收口」</td><td>owner 宁停（对6）</td><td>若 W-X 红→挂账行留⏸候再指（不自动撤）</td></tr><tr><td>2 清偿票交活</td><td>W-X→完工待确认</td><td>window 自翻（对2）＋重考闸</td><td>触发随裁条件</td></tr><tr><td>3 随裁</td><td>挂账行 ⏸→完工待确认（#309 对10·owner board）</td><td>写口手术</td><td>业主终认→✅（对4）；翻案→rollback（#40）</td></tr></tbody></table>
+<h2>第九章 · 治理底座（可观测层 · 3.2.7）</h2>
+<blockquote>
+<p>业内定义：审计、指标、Trace、告警、人工干预。</p>
+</blockquote>
+<h3>9.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  LED["事件/审计账<br/>jsonl·台账·latitude-log"] --> AUD["审计·全量留痕"]
+  LED --> MET["指标·效率账/双率/NA率"]
+  LED --> ALM["告警·wip_scan/判死"]
+  AUD --> RPT["晨报/收班报/判定梯"]
+  ALM -->|"IM 推卡"| OWNER["自然人业主<br/>终认·追认·恢复"]
+</div></div>
+<p><strong>观测模块 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>审计</td><td>events.jsonl（全量事件流水）</td><td>审计 jsonl＋latitude-log＋执行台账</td></tr><tr><td>指标</td><td>R13 判定梯（#36·NA 率/片红率）</td><td>效率账（#60）＋熔断双率（#62a）</td></tr><tr><td>Trace</td><td>run 批号＋票 ID 贯穿账本</td><td>会话档＋产物锚＋快照三键</td></tr><tr><td>告警</td><td>探针红/预算线（站内 IM）</td><td>wip_scan WARN（#50）＋判死通报＋值守六查</td></tr><tr><td>汇报</td><td>晨报纯投影（#39）</td><td>收班报三节（#46）＋判定梯判色（#61）</td></tr><tr><td>人工干预</td><td>业主追认（#40）</td><td>终认/勘误恢复/推卡（#44·监工道）＋值守（#305）</td></tr></tbody></table>
+<h3>9.1 harness 第一层（L1·车间）</h3>
+<h4>9.1.1 审计</h4>
+<p>events.jsonl 全量事件流水（append-only·不可篡改）✔——每一次迁移旧态/新态/事件/结果全记。</p>
+<h4>9.1.2 指标与判定</h4>
+<p>R13 判定梯（#36·ladder.ts:13,32·票红/切片红/NA≥20%/无考题=FAIL·UNKNOWN≠HEALTHY）✔。</p>
+<h4>9.1.3 汇报</h4>
+<p>晨报纯投影（#39·morning-report.ts:56,70,284·events.jsonl 全量投影·无独立数据源）✔——<strong>口述</strong>：晨报没有自己的一本账——全部从事件流水现算现投影，账本唯一，报就不会谎。</p>
+<h3>9.2 harness 第二层（L2·派工台）</h3>
+<h4>9.2.1 审计</h4>
+<p>审计 jsonl＋latitude-log（代拍留痕）＋执行台账（append-only）＋review-gate.jsonl ✔。</p>
+<h4>9.2.2 指标</h4>
+<p>班产效率账（#60·效率账解析.ts:35,61,81,85·三源聚合只投影）＋熔断双率 ✔。</p>
+<h4>9.2.3 汇报与判定</h4>
+<p>班次汇报聚合器（#46·三节：代拍清单/候拍池/追认台账·:271）＋班次判定梯（#61·:147,163·班绿=全✅∧零红∧预算全可判·词面锚 :135-140）✔——<strong>口述</strong>：收班机器判色——绿黄红三态，判黄的每一条都有词面锚可回查，不猜不装。</p>
+<h4>9.2.4 告警</h4>
+<p>wip_scan 落差机检（#50·:150,174·僵尸嫌疑/反向落差·WARN 不拦车）＋IM 通知 ✔。</p>
+<h4>9.2.5 Trace</h4>
+<p>会话档＋产物锚＋spawn 快照三键（跨窗追踪三件套）✔。</p>
+<h4>9.2.6 人工干预（带审批流）</h4>
+<p>业主终认（#258 道）＋勘误恢复/挂账清偿（owner board·#301/#309）＋候批推卡（监工道·#306 飞书 IM）＋值守道六查推进（#305·越权只推卡不代答）✔。</p>
+<h4>9.2.7 缺口</h4>
+<p>效率账缺数宁停降黄（缺数不装绿）——数据面扩宽候票（§15 相关）。</p>
+<h2>第十章 · 静态校验工具（开发配套工具链 · 3.3）</h2>
+<blockquote>
+<p>业内定义：开发发布期使用，线上不运行——可达性检查、版本灰度。</p>
+</blockquote>
+<h3>10.0 本层图与机制矩阵</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  CODE["码内正本<br/>转移表·宪法·白名单"] --> CHK["静态校验<br/>对账断言·锚点·meta-lint"]
+  CHK -->|"漂移=红/告警"| DEV["开发期拦截·发布前"]
+  CODE --> VER["版本兼容<br/>LEGACY 映射·钉版闸"]
+</div></div>
+<p><strong>静态工具 × 两层矩阵</strong>：</p>
+<table><thead><tr><th>模块</th><th>L1 车间</th><th>L2 派工台</th></tr></thead><tbody><tr><td>非法跃迁校验</td><td>转移表机器可读＋keys 对账断言</td><td>写口宪法 selftest＋词面白名单</td></tr><tr><td>版本兼容/灰度</td><td>LEGACY_EN_MAP 读取映射（#195）</td><td>投影唯一性（#88）＋状态字典草案（候拍）</td></tr><tr><td>锚点校验</td><td>锚点断言 --check（漂移告警级）</td><td>同一套（机制卡 file:line 全覆盖）</td></tr><tr><td>可达性/孤岛检查</td><td><strong>无</strong>（✘·候票·§16#6）</td><td><strong>无</strong>（同左）</td></tr></tbody></table>
+<h3>10.1 harness 第一层（L1·车间）</h3>
+<h4>10.1.1 非法跃迁校验与对账</h4>
+<p>转移表机器可读（TICKET/RUN_TRANSITIONS）＋keys 对账断言（正本枚举==字典行·sm-003）✔。</p>
+<h4>10.1.2 版本兼容与回滚</h4>
+<p>LEGACY_EN_MAP 读取映射（拍板#195/#198·历史账本一字不动·语义等价）✔。</p>
+<h4>10.1.3 缺口</h4>
+<p>可达性/孤岛/死循环闭环检查器＝无（候票·§16#6）。</p>
+<h3>10.2 harness 第二层（L2·派工台）</h3>
+<h4>10.2.1 词面与锚点静态校验</h4>
+<p>队列行三关（#58·队列行三关.ts:112）＋meta-lint＋锚点断言 --check（漂移=告警级）＋写口宪法 selftest ✔。</p>
+<h4>10.2.2 版本灰度</h4>
+<p>窗卡台投影唯一性（#88·Idempotent Upsert）＋状态字典草案六列（sm-003·候拍）◐。</p>
+<h4>10.2.3 缺口</h4>
+<p>可达性/孤岛状态检查器＝<strong>无</strong>（候票·§16#6）✘。</p>
+<h2>第十一章 · 覆盖度与取舍（模板 §5 对照）</h2>
+<table><thead><tr><th>档</th><th>项</th><th>本厂</th></tr></thead><tbody><tr><td>✅必选（生产底线）</td><td>拦截校验/不变式/幂等/持久化+锁/审计/异常态/基础重试</td><td><strong>全✔</strong>（§3-§5/§7）</td></tr><tr><td>✅强烈推荐</td><td>并发槽/熔断舱壁/驻留告警/Saga 补偿</td><td>槽✔·熔断舱壁✔·驻留告警✔·Saga◐（人工主导）</td></tr><tr><td>🟡平台增强</td><td>事件优先级/事件溯源/人工审批流/静态检查</td><td>优先级◐（L2 有列·L1 无）·溯源✔（L1 原生）·审批流✔·静态检查◐（缺可达性）</td></tr></tbody></table>
+<p><strong>一句话总结</strong>：本厂两层 harness 对 FSM Runtime 参照架构为<strong>高覆盖原生实现</strong>——唯二设计差异（Saga 人工主导·挂起双形态）均为有意取舍，缺口（可达性检查器·L1 actor 字段·🔵收编）已全部入候票（§15/§16）。</p>
+<h2>第十二章 · 状态机治理结论（四问·自 006 并入）</h2>
+<blockquote>
+<p>本章回答原 006 四问：状态机是否新增（12.2 候办）/术语病根（12.3 双名制）/矩阵（§14 全量）/命名（12.4 事件名落册）。</p>
+</blockquote>
+<h4>12.1 四问结论表</h4>
+<table><thead><tr><th>问</th><th>L1（车间）</th><th>L2（派工台）</th></tr></thead><tbody><tr><td>①状态机新增？</td><td><strong>台数不新增</strong>（run10态+票11态+波次5态够用）；唯一挂账=包级10值码已落地（拍板#199·零调用方）——候业主追认十值＋接线方式决策；挂起保持事件对表达不升态</td><td><strong>台数不新增</strong>；但<strong>两态收编</strong>候拍：🔵待拍板、转人工现游离于写口宪法外（无 actor 无合法边=影子态）；窗队列.md 头注状态机行待同步 #301/#309 新三出边</td></tr><tr><td>②术语病根</td><td>双名制：短名不动＋事件名（时点·干什么）做理解面</td><td>同左＋撞车词强制消歧（窗票 vs 工序票·判色 vs 判分）</td></tr><tr><td>③机制对应</td><td>见 §14 L1 矩阵（31 行·闸/驱/驻三类坐标）</td><td>见 §14 L2 矩阵（35 行·宪法十对条条有主）</td></tr><tr><td>④机制命名变更？</td><td>机检短名不改；机制目录卡面加「事件名」栏</td><td>同左；新机制（值守道/监工道）立卡时事件名随卡诞生</td></tr></tbody></table>
+<p><strong>本卡三条新发现（实勘所得）</strong>：</p>
+<ol><li>🔵待拍板、转人工两词面<strong>不在写口宪法十对内</strong>——谁有权翻、翻去哪，无机器可校验的答案（影子态·今晚回卷事故的同族风险）；</li><li><code>wip_scan.py:48</code> 常量名 <code>SEVEN_STATES</code> 实装 <strong>8</strong> 个态（第八态加入后扩了列表没正名）；</li><li>机制总索引卡（2026-10-28 盘点 57 条）已落后 tonight 三台新机器：值守道（#305·双层 LLM 巡检推进）、监工道推卡改飞书（#306）、队列写口宪法本体（W-189）——索引卡失效触发条款「新增机制→补行」已触发。</li></ol>
+<p>---</p>
+<h4>12.2 问一：状态机是否需要新增？</h4>
+<h3>L1 现状 → 判定：<strong>台数不新增，一件转正候拍</strong></h3>
+<ul><li>现状：run10态/票11态/波次5态三台在役且正本清晰；包级10值码已落地（拍板#199·零调用方闲置·候接线决策）（对比件 v1.3 §3.6·账本已由 W-137 落码·候接线）；挂起用事件对表达不设态。</li><li>判定依据：L1 的机制（§14 矩阵）已全部能挂到三台现有状态机的边或驻留态上，无"无家可归"的机制；挂起事件对是<strong>设计优点</strong>（无死锁·游标可重放），不应升格成态。</li><li>候办①：包级10值落拍板转正（第六台）——站1/2 段从此也有机器可校验的排期/状态账。</li><li>候办②：sm-003 六台全景卡把「gate_suspend/resume 事件对不算态」写成显式备注，防后人误"补态"。</li><li><strong>预期效果</strong>：状态机台数稳定；站1/2→站6 全链每段都有机器账；无人再问"L1 挂起在哪"。</li></ul>
+<h3>L2 现状 → 判定：<strong>台数不新增，两态收编＋两处同步候拍</strong></h3>
+<ul><li>现状：窗队列态已从 7 态（拍板#69 立队时）长到 9 态词面（+完工待确认#179、+⏸三出边#301/#309），但：</li></ul>
+<p>  - <strong>🔵待拍板、转人工不在宪法十对内</strong>——无 actor、无合法边、不走写口（推卡道/主窗直改）。它们是游离于机器账之外的"影子态"：翻得对不对全凭人盯，恰是今晚队列回卷事故的同族风险面（无审计直写）。   - <code>90-过程/窗队列.md</code> 头注状态机行（:6）仍是旧 7+1 表述，未同步 #301/#309 新三出边（新语义目前只活在队列写口.mjs 宪法表里）。   - <code>wip_scan.py:48</code> <code>SEVEN_STATES</code> 名旧实八（第八态扩列未正名）。</p>
+<ul><li>候办①：宪法增对收编——🔵待拍板：<code>▶施工中→🔵待拍板 actor=window</code>（方向题推卡）＋<code>🔵待拍板→▶施工中 actor=owner(board)</code>（拍后回格）；转人工：<code>▶施工中→转人工 actor=window</code> ＋ <code>转人工→* actor=owner</code>。增删=拍板级（宪法表头注明文）。</li><li>候办②：窗队列.md 头注状态机行补 #301/#309 三出边＋🔵/转人工两词面（或明写"🔵/转人工=宪法外词面候收编"）。</li><li>候办③：SEVEN_STATES 正名（随下一张在飞 pi_runner/wip_scan 票顺带·零行为变化）。</li><li><strong>预期效果</strong>：九态条条有宪法对、次次翻格有审计——影子态清零；头注/卡面/码三方一致，新会话不再读到三个版本的窗队列状态机。</li></ul>
+<p>---</p>
+<h4>12.3 问二：术语病根怎么解决最好（双名制方案）？</h4>
+<h3>现状（L1/L2 同病三症）</h3>
+<ol><li><strong>比喻名不含时点</strong>：会审门/拆单机/扣绿闸/停车场/收割器——说了"像什么"没说"何时触发"（会审门立项原名「图纸会审门」·W-123）；</li><li><strong>缩写外文名</strong>：wip_scan/pickDispatch/gate_suspend/run-slice——机器友好人不友好；</li><li><strong>两层撞车词</strong>：票（窗队列票 vs 工序票）、三关（全厂四个：包导入/任务书/队列行/派发复跑）、判定梯（判票 vs 判班）、补考复考（挂起补考 vs 交活重考）、翻案（绿灯吊销 vs 业主撤回）、环（自愈环 vs 返工环）、授权面（票单 vs 窗单）——sm-001 卡自己都撞过名（叫「票生命周期」画的实是窗队列 8 态）。</li></ol>
+<p><strong>约束（为什么不能直接改名）</strong>：机检词面锚焊死——班次聚合器判班黄靠「会审门红」词面（班次汇报聚合器.ts:135-140）、写口宪法靠态名中文字面、meta_lint/队列行三关靠态词面。改名=打断机检+历史账本语义漂移。</p>
+<h3>方案（L1/L2 同方）：双名制，只加不改</h3>
+<ul><li><strong>短名不动</strong>（机检锚·代码符号名·文档锚全部保留）；</li><li><strong>加事件名理解面</strong>：公式＝<strong>【时点·干什么】</strong>。L1 时点词：收包时/发车时/施工时/出事时/验收时/判分时；L2 时点词：立票时/领单时/干活时/交活时/收班时/巡逻时。尾字定类型：门/闸=不过不放行·环=返工循环·钩=时点挂钩·报/账=产出留痕·器=周期机器；</li><li><strong>撞车词强制消歧对</strong>：窗票 vs 工序票·收包验货关 vs 立票验单关·交卷判分梯 vs 收班判色梯·挂起补考 vs 交活重考·绿灯吊销 vs 业主撤回·干活自愈环 vs 返工环·票单授权面 vs 窗单授权面；</li><li><strong>使用规则</strong>：首现双写「领单体检门（会审门）」；机检/代码继续短名；跨层引用必带时点词。</li></ul>
+<h3>预期效果</h3>
+<p>口述可懂（名字即业务故事）、机检零扰（短名原样）、跨层不歧义（撞车词各有其名）、新会话按名定位（事件名=状态机坐标的记忆化）。</p>
+<p>---</p>
+<h4>12.4 问四：机制命名变更（事件名落册）？</h4>
+<h3>L1 现状与判定</h3>
+<ul><li>现状：机制目录 35 条 L1 条目名＝比喻名/业内名混排（拆单机/扣绿闸/三钥匙出关/停车场）；码符号名英文（pickDispatch 类比物·run-slice 等）。</li><li>判定：<strong>码与文档短名一律不改</strong>；机制目录卡面加「事件名」栏（本卡 §14 L1 矩阵"事件名"列即草案：收包验货关/拆单排产/考卷封存/发装备/就绪发车/干活自愈环族/三钥匙发灯/绿灯吊销/红票裁决/双证验活族/交卷判分梯/晨报…）。</li><li>预期效果：目录从"考据名册"变"坐标地图"——看到事件名即知在 run/票级状态机哪条边上。</li></ul>
+<h3>L2 现状与判定</h3>
+<ul><li>现状：16+ 条 L2 条目名同病；且今晚新上三台机器尚无卡：值守道（#305·建议事件名<strong>每小时值守巡检</strong>）、监工道推卡道（#306·建议事件名<strong>候批推卡道</strong>）、队列写口宪法（W-189·建议事件名<strong>翻格宪法</strong>——它本身不是机制卡但是矩阵的"边法权"正本，候补一张纪律卡）。</li><li>判定：短名不改；卡面双名化（机制名＋事件名两栏）；<strong>新机制立卡时事件名随卡诞生</strong>（立法于源头，不再事后补名）；会审门卡 36 锚漂移候卡窗（pi_runner.ts:377-394→现行 :391-421 区＋W-214 再漂·W-208 时效注记已挂账）。</li><li>预期效果：机制目录"补行"后与今晚实况对齐；每个机制的卡面自带状态机坐标，回答"这是做什么状态机对应的事件"不再需要深读。</li></ul>
+<p>---</p>
+<h2>第十三章 · 两层写口宪法（自 006 §8 并入）：L1 能照写，语义差半边</h2>
+<h3>与 L2 宪法的三点本质差异（实勘）</h3>
+<ol><li><strong>写者结构</strong>：L2=多方（4 actor）写一个 md 文件——宪法管准入防误翻防回卷；L1=单进程单写者 append-only（C-021·拍板#42①·appendFileSync 单点入账 ledger.ts:12）——不存在「谁有权写」，只存在「谁在写」→ L1 宪法 actor 列=<strong>责任部件归属</strong>，非权限。</li><li><strong>合法性半边已在码</strong>：L1 from→to 合法性已由 RUN/TICKET_TRANSITIONS 机器校验（非法→<code>state_transition_rejected</code> 入账不抛·ticket-state.ts:119-127）——即「合法性半部宪法」已有，缺「actor 归属半部」：transition 事件 payload 现仅 <code>{ticketId, from, to}</code> 无 actor。</li><li><strong>无 board 列</strong>：L1 账本无业主直写面（业主输入在包/档），不设 L2 式 --board。</li></ol>
+<h3>表 A · run 级十态写口</h3>
+<p>写者唯一=run-slice 主控（stage 边界过 sm 推进）·主线九边＋跳过边各态→汇报中（station3-only 短路）；挂起不占态=gate_suspend/gate_resume 事件对（ledger.ts:189,197·run-slice.ts:265 浏览器取证段首用）。</p>
+<h3>表 B · 票级十一态逐边宪法（草案·候拍·与 §14 L1 矩阵同批边——本表=宪法视图（归属＋口述），§14=机制视图（五列））</h3>
+<blockquote>
+<p><strong>实然/应然分界（必读）</strong>：合法性正本=ticket-state.ts:47 转移表（✔实然·码内逐边机器校验·非法=state_transition_rejected 入账）；「责任部件（actor）」列与口述列=本卡分析推断（△应然——码内 transition 事件尚无 actor 字段·落码候票 §15#8）；事件名全卡均为候拍。若本表与转移表冲突，以转移表为准。</p>
+</blockquote>
+<table><thead><tr><th>#</th><th>from → to</th><th>责任部件（actor）</th><th>语义</th><th>详细口述解释</th></tr></thead><tbody><tr><td>1</td><td>待建→缓存问询</td><td>build-lane（指纹问询 #9）</td><td>前置全绿先问缓存</td><td>这张票排到窗口了，先别急着叫师傅干活——先问一嘴库房：「这活上回是不是干过？」前置票全绿了才有资格问这一嘴；问完拿着答覆走下一格。</td></tr><tr><td>2</td><td>待建→缓存直通·绿</td><td>build-lane（resume 直通）</td><td>上轮已绿·复跑绿才直通</td><td>库房说「干过，上回还是验过绿的」。但口说无凭——重跑一遍考卷，还绿才放行直通。免生成不免验收：活可以少干一遍，试一场不能少考。</td></tr><tr><td>3</td><td>待建→施工中</td><td>build-lane（派工开工）</td><td>无直通·正常开工</td><td>库房说没干过（或者复跑不绿），那就正常开工——把票装进专属干净沙箱，师傅领着装备信封进箱干活，别家碎事听不见。</td></tr><tr><td>4</td><td>施工中→审查·扣绿闸</td><td>build 道（对题审查员 #19）</td><td>测试绿暂扣不发灯</td><td>师傅说干完了，测试也绿了——但车间规矩：测试绿不发灯。先押着，等对题审查员逐条对题：干的是不是题面上要的？防「跑得快但跑偏了」。</td></tr><tr><td>5</td><td>降级产物→审查·扣绿闸</td><td>build 道（预授权降级链 #12）</td><td>降级产物同审</td><td>这张票没走标准路子（保底法子降级干出来的），出身降级不豁免验收——一样押去对题审查，审得过才算数。</td></tr><tr><td>6</td><td>审查·扣绿闸→施工中</td><td>build 道（回喂自愈环 #15·⟲≤3）</td><td>review_findings 回喂重写</td><td>审查员挑出毛病，写着意见打回炉——师傅照单子改，改完再送审。最多来回三轮，防无限打磨；三轮还不过就走别的出口，不跟一张票耗到天亮。</td></tr><tr><td>7</td><td>审查·扣绿闸→红·严重偏题</td><td>red-ruling（#22）</td><td>严重偏题且预算内修不动</td><td>审查员认定这不是小毛病，是方向性跑偏，预算内修不回来了——判红票送裁决，不再回炉耗预算。红就是红，红永不变绿。</td></tr><tr><td>8</td><td>审查·扣绿闸→硬化出关</td><td>hardening-lane（接力）</td><td>对题绿·进硬化</td><td>对题也绿了，放行下一道——硬化车间。这里专门「对坏」：好考卷要 PASS，坏考卷必须 FAIL，两样都过才算真结实，防「只会做对题的绣花枕头」。</td></tr><tr><td>9</td><td>硬化出关→绿灯·可吊销</td><td>hardening-lane（硬化双闸 #20）</td><td>对绿 PASS∧对坏 FAIL=发灯</td><td>硬化验收过，三把钥匙（测试绿∧对题绿∧硬化绿）凑齐，正式发绿灯——但这灯叫「可吊销」：后面切片回归要是红了，这灯会被回头拔掉，发过的灯也敢收。</td></tr><tr><td>10</td><td>硬化出关→施工中</td><td>hardening-lane</td><td>不合格回写补测</td><td>硬化车间挑出毛病（比如考题是摆设、变异杀不死），打回施工段补测重做——回炉不算出关，三把钥匙差一把都别想亮灯。</td></tr><tr><td>11</td><td>硬化出关→停车场</td><td>预算刹车（#24）</td><td>夜车预算断</td><td>夜车预算烧到线了——软的先降档省着烧，烧到 hard 线就硬收车：票押进停车场留个断点，账本记清楚断在哪，明晚接着来，不硬撑不装完。</td></tr><tr><td>12</td><td>红·严重偏题→停车场/终局</td><td>red-ruling（#22 七源同出口）</td><td>park#1 挂起换票 / park#2 终局</td><td>红票的死法有七种，但裁决口只有一个：park#1=押进停车场换张票重做（还有救）；park#2=终局（没救了，记账收摊）。同一个口出，账好查。</td></tr><tr><td>13</td><td>停车场→施工中</td><td>lane-drain（挂起补考 #23）</td><td>夜末补考一轮·同因熔断</td><td>夜快收班了，给停车场里押着的票最后一次机会——带着上次 FAIL 的摘录重考一轮，让它「知道错在哪」再试；同一原因第二次犯，直接不再给机会（同因熔断）。</td></tr><tr><td>14</td><td>停车场→终局</td><td>red-ruling</td><td>终局</td><td>补考也没过（或者没资格补考）——终局，账本记死。不装绿、不复活、不留尾巴，明早晨报里如实报。</td></tr><tr><td>15</td><td>绿灯·可吊销→停车场</td><td>regression-leg（回归翻案 #35）</td><td>新片红吊销旧绿灯·唯一降级出边</td><td>后面切片的回归考卷红了，一查锚定到这张已发绿灯的票——回头把它的绿灯拔了，押回停车场走翻案腿重做。这是全状态机唯一的降级出边：绿灯可吊销，发过的灯也敢收回。</td></tr></tbody></table>
+<h3>表 C · 波次五态写口</h3>
+<p>写者=queue-runner（#25）·QUEUE_TRANSITIONS（queue-ledger.ts:18）·gate passed/failed 落 queue-events 行车记录仪（sm-002）。</p>
+<h3>修正案层（不进转移表的守卫）</h3>
+<p>红永不变绿 · ⟲≤3 · park≤2 · 预算三路——守卫红线悬于转移表之上，非法边即使有部件身份也过不了合法性半部宪法。</p>
+<h3>候票（已入 §15 第 8 项）</h3>
+<p>账本 transition 事件 payload 增 actor 字段——预期效果：崩溃恢复归因到部件（断在哪一棒）、复盘 G3「哪一层本该拦住」按 actor 直查账、机制矩阵 actor 列有码级正本；历史账本缺 actor=legacy 只读不猜（兼容 LEGACY_EN_MAP 先例）。</p>
+<p>---</p>
+<h2>第十四章 · 全量机制矩阵（迁移边视图·自 006 §6 并入）</h2>
+<h3>方法论：机制在状态机上的坐标只有三种</h3>
+<ul><li><strong>闸（guard）</strong>：挂在迁移边上，过才放行——坐标=（边·出口映射）；</li><li><strong>驱（driver）</strong>：合法边的执行者/写态者——坐标=（边·actor）；</li><li><strong>驻（resident）</strong>：驻留在某态期间跑的服务——坐标=（态·周期·出口只告警不翻格）。</li></ul>
+<h3>L2 矩阵（窗队列九态 × 机制·35 行·末列=类型＋口述）</h3>
+<table><thead><tr><th>迁移边/驻留态</th><th>actor</th><th>机制（现行名·业内名）</th><th>事件名（候拍）</th><th>类型/详细口述解释</th></tr></thead><tbody><tr><td>探讨中(未批)→待实施(已批)</td><td>owner</td><td>拍板落票（拍板表·无对比件不拍板）</td><td>拍板落账</td><td>驱——业主看完对比件点头，拍板行记进账本灵感才毕业成票；无对比件不拍板。</td></tr><tr><td>→待实施(已批) 驻留</td><td>主窗</td><td>任务书三关＋审批规格节（#6·Dispatch Contract Gate）</td><td>立票验单关</td><td>闸——派工单写好先机检三道：批什么拍板号/预算帽/授权动作面，单子不合格不发。</td></tr><tr><td>立票后</td><td>主窗</td><td>队列行三关＋窗卡台投影（#58/#88·Intake Format Gate/Projection Uniqueness）</td><td>立票贴卡</td><td>闸＋驱——窗队列贴飞书公告栏前再拦一遍病行，病行当场打回立票人，不让病进门。</td></tr><tr><td>候批驻留</td><td>主窗＋机械设备</td><td>审批卡异步道（#44·Async Approval Workflow·approval_poll）</td><td>候批回执道</td><td>驻——走审批的票挂审批卡，轮询回执落表＋交叉核对后才可领；批没下来单子不动。</td></tr><tr><td>待实施→▶施工中（资格·前置）</td><td>dispatcher</td><td>前置闸＋完工待确认让坑（#27·Dependency Gate with Slot Release）</td><td>前置就绪·让坑</td><td>闸——前置✅或完工待确认=就绪；成环全不领；完工待确认让坑（第八态·前置票可先开工·终认走人工道）。</td></tr><tr><td>待实施→▶施工中</td><td>dispatcher</td><td>pickDispatch 五闸（#7·Claim Gate Chain·状态/前置/任务书/路由/拍板号核对）</td><td>领单验格闸</td><td>闸——领单先验资格：状态/拍板号/前置/任务书/路由五道，哪道不过跳过记因不弃单。</td></tr><tr><td>同上（链内软闸）</td><td>dispatcher</td><td>领地交叠反查（#92·Overlap Check·告警不拦）</td><td>领单查撞单</td><td>闸(软)——两窗要改同一文件=撞单，喊一嗓子提醒影响面不拦车，收口时注意回归。</td></tr><tr><td>同上</td><td>dispatcher</td><td>任务书派发三关复跑（#6·Dispatch Contract Gate）</td><td>领单再验单</td><td>闸——发车前派工单机检再跑一遍，防立票之后单子被改坏。</td></tr><tr><td>同上</td><td>dispatcher</td><td><strong>会审门</strong>（#37·Pre-spawn Review Gate·四查·dryrun/enforce·红→探讨中·超时→⏸）</td><td><strong>领单体检门</strong></td><td>闸——开工前四查：基线绿吗/类型过吗/锚点在吗/假设验吗；红=退回探讨中·超时=⏸，现影子只记不拦。</td></tr><tr><td>同上</td><td>dispatcher</td><td>风险分级/分级闸（#62b·Risk-based Approval Tiering·AFK_TIER_GATE）</td><td>领单定档闸</td><td>闸——这单危险吗？词表扫改动面定高中低档=定谁有权批；高档(enforce)停车候业主。</td></tr><tr><td>同上（执行体）</td><td>dispatcher</td><td>markRunning＋spawn（#26/#28·Worker Pool/Change-triggered Dispatcher·槽位主循环/事件触发）</td><td>翻格开窗</td><td>驱——全闸过完才翻▶弹施工窗；翻格=开始烧钱，所以排在所有闸后面。</td></tr><tr><td>▶驻留</td><td>dispatcher</td><td>心跳租约（W-189·Heartbeat Lease·leaseTouch）</td><td>干活力续租</td><td>驻——派单员代在跑窗报平安（touch 心跳）；心跳断了会被巡逻当僵尸，故须续租。</td></tr><tr><td>▶驻留</td><td>window</td><td>方向题闸（#43·Direction-question Interlock·🔵推卡停）</td><td>拿不准停车请示闸</td><td>闸——方案级分歧不猜不硬干：推卡🔵候拍→停，永不装绿，拍板回来接着干。</td></tr><tr><td>▶驻留</td><td>window</td><td>任务书授权面（#42·Pre-authorized Autonomy Scope·L2 侧）</td><td>单内自决·越面推卡</td><td>驻——单上写了能自己定的才自己定（留痕候追认）；越面推卡候批，不自作主张。</td></tr><tr><td>▶驻留</td><td>inspector</td><td>wip_scan 落差机检（#50·Stale-row Scanner·反向落差/僵尸嫌疑）</td><td>半小时巡逻</td><td>驻——每半小时查在途窗健康：两本账对不上/窗该动没动，WARN 告警不拦车。</td></tr><tr><td>▶驻留</td><td>supervisor</td><td>监工道推卡（#275/#283·Notifier·#306 改飞书 IM）</td><td>候批推卡道</td><td>驻——候批卡直推业主飞书手机：只发现+催办不代答；恢复清偿归值守道，分界面不重活。</td></tr><tr><td>▶→完工待确认</td><td>window</td><td>收口五件套＋收口申报器（#57·Closing Checklist Protocol·W-130）</td><td>交活五件套</td><td>驱——交活交五件：台账/总览/专题表/深读时效/借鉴台账；五件不全=没交完，申报器不收。</td></tr><tr><td>▶驻留（收口兑底）</td><td>dispatcher</td><td>收据员＋收割器（#29·Watchdog/Reaper·含 29a 判死快照年龄守卫）</td><td>回执兑底收割</td><td>驻——detached 回执＋▶行三查收割：产物驱动收口不依赖窗退出；判死前先验快照新鲜度（新窗 skip 不误杀）。</td></tr><tr><td>完工待确认→✅已完成</td><td>owner</td><td><strong>复考闸</strong>（#38·Post-completion Exam Gate·考题库重跑·绿才认 #87）＋window_assert（W-088）</td><td><strong>交活重考闸</strong></td><td>闸——自称干完不算，机器按考题库重考+终态断言，exit code 唯一判据；考绿才送业主终认。</td></tr><tr><td>（缺考题分支·#179）</td><td>window</td><td>考题库匹配缺题→记完工待确认不代写✅</td><td>没考卷不装绿</td><td>闸——这窗型没配考卷：不代写考题不代写✅，记完工待确认让坑（前置可开工），终审走业主。</td></tr><tr><td>▶→🔁维修中</td><td>window</td><td>打回分诊三分类（#49·Bounce Triage）</td><td>考砸分诊</td><td>驱——考砸先分诊三岔：机械毛病/规矩病/规格病各有去处，不一股脑打回了事。</td></tr><tr><td>🔁→待实施(已批)</td><td>dispatcher</td><td>闸4 超时重领（W-187）</td><td>返工重领</td><td>驱——维修票候重领：超时派单员重领，闸链（含体检门）重走一遍。</td></tr><tr><td>🔁驻留</td><td>window</td><td>病卡维修环七态＋fail-loop 八岔（#47/#48·Incident Lifecycle/Repair Loop Classifier）</td><td>返工环</td><td>驻——返工不是糊涂账：立病卡七态走流程，fail-loop 八岔分类，修完重走交活。</td></tr><tr><td>*→⏸挂起</td><td>inspector</td><td>僵尸认定/停更签名分诊（#63·Stall Signature Triage·W-148）/预算刹车无据（#211）</td><td>宁停判死</td><td>闸——窗死申报不完整/停更像死循环/预算没据——翻⏸宁停候人工，绝不代写✅。</td></tr><tr><td>⏸→▶ / ⏸→✅ / ⏸→完工待确认</td><td>owner</td><td>宪法三出边（#301/#309）</td><td>误挂恢复/挂账清偿/挂账随裁</td><td>驱——⏸不再是死态：判错挂了翻回▶；挂账清了翻✅；清偿票到完工待确认就随裁。</td></tr><tr><td>⏸驻留</td><td>duty+LLM</td><td>值守道双层（#305·Watchdog＋LLM Patrol·duty_monitor 30分机械＋LLM 值守窗每小时六查推进）</td><td>值守巡检推进</td><td>驻——机械兜底30分零判断动作＋LLM值守窗每小时六查：合法边推进、越权只推卡候批。</td></tr><tr><td>⏸驻留（核账）</td><td>值守/人工</td><td>核账处置报告（#64·Audit Disposition Report·只读取证报告器）</td><td>僵尸核账报告</td><td>驻——⏸僵尸行只取证实盘＋复算命令清单·四节报告；零状态改写翻态人工，绝不代写✅。</td></tr><tr><td>完工待确认驻留</td><td>owner</td><td>业主终认（#258 道）</td><td>终认</td><td>驱——终认是业主的格：机器只呈绿考卷，翻不翻✅业主说了算。</td></tr><tr><td>收班（跨态）</td><td>dispatcher</td><td>班末 drain（W-147）/班次汇报（#46·Shift Report Aggregator）/班次判定梯（#61·Three-state Verdict Ladder）/审批熔断（#62a·Circuit Breaker）/效率账（#60·Usage Accounting）</td><td>收班放行/收班报/收班判色/收班复盘器/收班工时账</td><td>驻＋报——收班四件事：挂起的放行一轮/出三节日报/判绿黄红/数代拍双率出收权建议（只建议不动手）。</td></tr><tr><td>跨态</td><td>owner＋代拍窗</td><td>代拍与追认制（#45·Delegated Decision with Ratification）</td><td>代拍·批量追认·翻案</td><td>制度——禁区六项停车候拍；授权面内细节代拍＋批量追认；翻案=confirm --rollback 推翻。</td></tr><tr><td>新闸上线</td><td>制度</td><td>渐进开闸生命周期（#52·Shadow-mode Rollout Protocol）</td><td>渐进开闸</td><td>制度——新闸缺省 dryrun 只记不拦→观察一班→业主令才 enforce；误拦回退也入账（会审门=首例）。</td></tr><tr><td>翻格全程</td><td>写口</td><td>领地断言＋队列写锁（#53·Territory Assertion + Single-writer Mutex）</td><td>写锁·断言</td><td>底座——sha256 禁改清单＋withQueueLock 四写点包锁（领单/钩子/复考/快照）；写前词面断言拒非法翻格。</td></tr><tr><td>发车前（L1 入口）</td><td>dispatcher</td><td>版本钉版（#65·Build Pinning·R02 拍板#215）</td><td>钉版闸</td><td>闸(底座)——开工前把「这班用哪一版」钉成五栏指纹铭牌；缺钉版/指纹不符=拒启。</td></tr><tr><td>考务（日常/收班）</td><td>考务</td><td>班外评测与留出核账（#66·Holdout Eval＋Locked Final Exam·考题分家）</td><td>班外评测·留出终考</td><td>驻——考卷三本分家：班外题库日跑涨留跌撤（撤回零自动执行）＋留出清单锁柜终考；题库/清单业主逐笔点定。</td></tr><tr><td>（游离）</td><td>owner/window</td><td>🔵待拍板、转人工——<strong>宪法外</strong></td><td>——</td><td>⚠候收编——两态没进宪法：谁有权翻、翻去哪无机器答案（影子态），候票收编。</td></tr></tbody></table>
+<p><strong>矩阵验证结论</strong>：宪法十对条条有主（每条合法边恰一个有权 actor）；机制无一挂空（每个 L2 机制都能落到某条边或驻留态）；唯一的坐标空洞就是 🔵/转人工。</p>
+<blockquote>
+<p><strong>对账补行（2026-11-01）</strong>：#27/#29/#44/#45/#52/#53/#63/#64/#65/#66 十条补入（#63 并入宁停判死行）——机制目录 L2 侧全量覆盖；值守道/监工道/心跳租约/写口宪法为目录外新机制（候补卡·§15#4）。</p>
+</blockquote>
+<h3>L1 矩阵（run 十态 × 票级十一态 × 波次五态·与 L2 五列同款·31 行·末列=类型＋口述）</h3>
+<blockquote>
+<p>actor 列=<strong>责任部件</strong>（码内单写者·差异见 §13：L1 无越权问题只有归属问题）。迁移边列前缀：<code>run:</code>=run 级·<code>票:</code>=票级·<code>波:</code>=波次。</p>
+</blockquote>
+<table><thead><tr><th>迁移边/驻留态</th><th>actor</th><th>机制（现行名·业内名）</th><th>事件名（候拍）</th><th>类型/详细口述解释</th></tr></thead><tbody><tr><td>run:启动→导入中</td><td>导入闸（station3-import）</td><td>包导入三关（#2·Input Validation Pipeline·版本/计数/死链）</td><td>收包验货关</td><td>闸——夜车收立项包先验三道：版本对吗/数量齐吗/链接死吗，hardFails 拒收。</td></tr><tr><td>run:导入中驻留（红时）</td><td>导入闸</td><td>包级三关修复环⟲≤3（#59·Post-rejection Triage）</td><td>拒收修复环</td><td>驻——验货不过三岔分诊：机械毛病当场补/规矩病打回两岗/规格病只转不修，最多三轮。</td></tr><tr><td>run:导入中→拆单中</td><td>拆单机（split）</td><td>拆单机（#3·DAG Batching·Kahn 波次）</td><td>拆单排产</td><td>驱——一大包拆成工序票，拓扑排序分波，波内受控并发。</td></tr><tr><td>run:拆单中/验收中驻留</td><td>两岗编制（岗卡 P1/P2）</td><td>拆票打包师/考题起草师（#51·Producer Agent Roles·出题权冻结）</td><td>拆票打包岗·考题起草岗</td><td>驻——拆票打包师把包拆成票打装备；考题起草师起草考卷；出题权冻结在开工前，业主只拍横比件。</td></tr><tr><td>run:拆单中驻留</td><td>判卷冻结（judge-guard）</td><td>判卷素材冻结＋施工前锁定（#4·Integrity Anchoring·#13 素材预投 Pre-provisioning 折叠于此）</td><td>考卷封存</td><td>驱——施工前把判卷素材 sha256 存照画押：防考卷被偷改，验收时对拍；非落点素材先预投，LLM 写不出的不让它写。</td></tr><tr><td>run:装备中</td><td>装备（equipment）</td><td>五槽装备信封（#5·Work-Order Contract）</td><td>发装备</td><td>驱——每票一个全套装备信封：代码/规范/上下文配给装好再发车。</td></tr><tr><td>波:queued→in_progress</td><td>queue-runner</td><td>E3 就绪制/波次调度（#25·DAG Scheduling·queue-ledger 五态）</td><td>就绪发车</td><td>驱——前置✅即解锁发车不分红绿；排期账五态有转移表，非法入账不抛。</td></tr><tr><td>票:待建→缓存问询/缓存直通·绿</td><td>build-lane（指纹问询）</td><td>指纹问询/缓存直通（#9·Memoization with Revalidation）</td><td>干活前查缓存</td><td>闸——上轮干绿过的活先问缓存，复跑还绿才直通；免生成不免验收。</td></tr><tr><td>run:施工中驻留</td><td>build-lane＋dep-guard</td><td>票级沙箱（#11·Bulkhead+Sandbox）＋依赖连坐（#10·Cascading-failure Guard）</td><td>每票一箱·连坐</td><td>驻——每票专属沙箱干净房；前置挂起则自己不开工（零 LLM 连坐）。</td></tr><tr><td>run:施工中驻留</td><td>沙箱（发车令选档）</td><td>沙箱三级载体分级（#68·Strategy + Fail-closed Resolution）</td><td>干活载体选档</td><td>驻——宿主/影树/容器三档载体发车令选档，权限随档定；未知拒启，容器缺位如实降级。</td></tr><tr><td>票:待建→施工中</td><td>build-lane</td><td>派工开工</td><td>开工</td><td>驱——无缓存直通正常开工，师傅进箱干活。</td></tr><tr><td>run:施工中驻留（LLM 边界）</td><td>build 道</td><td>变量盒协议（#1·Command/Contract·variable-box.ts:12,31,60）</td><td>分段交接盒</td><td>驻——跨 LLM 边界结构化交接：盒内皆数据、字段序=缓存卫生；工人与 LLM 之间递的全是盒子不是散话。</td></tr><tr><td>票:施工中→审查·扣绿闸</td><td>build 道（reviewer）</td><td>对题审查员（#19·Quality Gate）＋判卷守卫防篡改（#18·Tamper-proof Judge）</td><td>对题审查·防偷改</td><td>闸——测试绿扣着不发灯：对题审查员逐条对题；验收前对拍冻结指纹防篡改考卷。</td></tr><tr><td>票:施工中驻留</td><td>build 道</td><td>分段 JSON（#14·Structured Output）＋回喂自愈环⟲≤3（#15·Bounded Retry）＋偏移采样弹（#16·Drift Detector）＋零提交预闸（#17·Fail-fast No-op）</td><td>干活自愈环族</td><td>驻——红→机械分诊→修→复跑最多三轮；跑偏早停、零提交直接红，都不劳 LLM 猜。</td></tr><tr><td>票:降级产物→审查·扣绿闸</td><td>build 道</td><td>预授权降级链（#12·Graceful Degradation）</td><td>降级同审</td><td>驱——保底法子降级干出来的，出身降级不豁免验收，一样送审。</td></tr><tr><td>票:审查·扣绿闸→施工中</td><td>build 道</td><td>回喂重写（#15·Bounded Retry）</td><td>回炉重写</td><td>驱——审查意见打回重写改完再送审，来回最多三轮防无限打磨。</td></tr><tr><td>票:审查·扣绿闸→红·严重偏题</td><td>red-ruling</td><td>红票裁决（#22·Unified Failure Adjudication）</td><td>严重偏题裁定</td><td>驱——方向性跑偏预算内修不动，判红送裁决不回炉耗预算。</td></tr><tr><td>票:审查·扣绿闸→硬化出关</td><td>hardening-lane</td><td>硬化接力</td><td>进硬化</td><td>驱——对题绿放行硬化车间，专门「对坏」：坏考卷必须 FAIL。</td></tr><tr><td>票:硬化出关→绿灯·可吊销</td><td>hardening-lane（mutation-gate）</td><td>硬化双闸（#20·Mutation-calibrated Quality Bar）＋三钥匙出关（#21·Multi-signal Sign-off）</td><td>三钥匙发灯</td><td>闸——测试绿∧对题绿∧硬化绿三钥匙齐才发灯；对绿 PASS 还要对坏 FAIL。</td></tr><tr><td>票:硬化出关→施工中</td><td>hardening-lane</td><td>不合格回写补测</td><td>补测回炉</td><td>驱——硬化挑出毛病打回施工段补测，回炉不算出关。</td></tr><tr><td>票:硬化出关→停车场</td><td>预算刹车（night-budget）</td><td>R03 预算三路（#24·Budget Brake）</td><td>预算刹车</td><td>闸——软的先降档省着烧，hard 线硬收车押停车场留断点明晚续。</td></tr><tr><td>票:停车场→施工中</td><td>lane-drain</td><td>挂起补考＋同因熔断（#23·Retry-once + Circuit Breaker）</td><td>挂起补考</td><td>驱——夜末带 FAIL 摘录重考一轮；同因第二次犯直接不给机会（同因熔断）。</td></tr><tr><td>票:停车场→终局</td><td>red-ruling</td><td>终局（park#2）</td><td>终局</td><td>终态——没救了记账收摊，不装绿不复活不留尾巴。</td></tr><tr><td>票:绿灯·可吊销→停车场</td><td>regression-leg</td><td>切片②回归翻案（#35·Regression Overturn·唯一降级出边）</td><td>绿灯吊销</td><td>驱——后面切片回归红了，回头拔已发绿灯押回停车场走翻案腿；唯一降级出边。</td></tr><tr><td>run:探针中/验收中</td><td>verify（station5）</td><td>起服守卫（#30·Environment Guard）＋双证切片（#31·Two-witness Verification）＋探针门（#32·Contract Probe Gate）＋功能门（#33·Locate→Heal→Rerun）＋切片出题员（#34·Exam Draft &amp; Repair）</td><td>双证验活族</td><td>闸——起服守卫先过（环境病=NA），页面证+接口证两证齐，探针打真实端点，红片定位修复重跑。</td></tr><tr><td>run:验收中→汇报中</td><td>判定梯（ladder）</td><td>R13 判定梯（#36·Aggregate Health Verdict·UNKNOWN≠HEALTHY）</td><td>交卷判分梯</td><td>闸——票红/切片红/NA≥20%/无考题=FAIL；UNKNOWN≠HEALTHY 不猜健康。</td></tr><tr><td>run:汇报中驻留</td><td>晨报/追认</td><td>晨报纯投影（#39·Event-sourcing Projection）＋业主追认（#40·HITL+Saga）＋丙级规格修正（#41·Spec Amendment Channel）＋票单授权面（#42·Pre-authorized Autonomy Scope）</td><td>晨报·业主追认</td><td>驻＋驱——晨报纯投影无独立数据源；confirmed/rejected 业主说了算，可一键撤回。</td></tr><tr><td>run:→收车</td><td>run-slice 主控</td><td>收车（无出边·L1 终态）</td><td>收车</td><td>终态——run 生命周期终点；断点恢复靠账本末态+游标，不靠状态格。</td></tr><tr><td>票:全生命周期</td><td>状态机本体</td><td>票级状态机 11 态（#8·Lifecycle FSM·ticket-state.ts:21,47）</td><td>工序票施工账</td><td>底座——合法转移表·非法入账不抛·账本恢复=唯一事实源（本表全部票：边的承载台）。</td></tr><tr><td>run:全程</td><td>ledger</td><td>事件账本白名单（#54·Event Sourcing with Fixed Schema·119 型白名单）</td><td>行车记录仪</td><td>底座——append-only 事件型白名单，加型须拍板；历史英文码 LEGACY 读取映射。</td></tr><tr><td>run:全程（横切）</td><td>全部件</td><td>红先绿后（#55·Red-before-Green）＋fail-closed（#56·Fail-safe）＋同构快照/改前快照断言（#80·Snapshot Diff Assertion）</td><td>红线守卫</td><td>底座——沙盒跑屏先红证病再绿证修；未知≠通过宁停不装绿；改共享面先拍改前快照、diff 断言零漂移。</td></tr></tbody></table>
+<p><strong>矩阵验证结论</strong>：L1 机制全部能挂到 run 边或票级边上；L1 的"闸"密度集中在 施工→审查→硬化→绿灯 一段（质量闸链），对应 L2 的闸密度集中在 领单→体检→定档 一段（准入闸链）——<strong>两层同构：前门体检＋后门重考</strong>（卡36 已考据）。</p>
+<blockquote>
+<p><strong>对账补行（2026-11-01）</strong>：#1/#8/#13/#51/#54/#55/#56/#68/#80 九条补入（#13 折叠于考卷封存行）——机制目录 L1 侧（含折叠子机制）全量覆盖；#29a 判死快照年龄守卫在 L2 侧宁停判死行。</p>
+</blockquote>
+<h3>两层同构对照（镜像记忆表）</h3>
+<table><thead><tr><th>语义</th><th>L1（车间·票级）</th><th>L2（派工台·窗级）</th></tr></thead><tbody><tr><td>前门体检</td><td>收包验货关（包导入三关）</td><td>领单体检门（会审门）</td></tr><tr><td>后门重考</td><td>交卷判分梯（R13）</td><td>交活重考闸（复考闸）</td></tr><tr><td>出事分诊</td><td>拒收修复环/红票裁决</td><td>考砸分诊/返工环</td></tr><tr><td>熔断</td><td>同因熔断（#23）</td><td>收班复盘器（审批熔断 #62a）</td></tr><tr><td>授权</td><td>票单授权面（latitude）</td><td>窗单授权面（任务书）</td></tr><tr><td>挂起</td><td>事件对 gate_suspend/resume（无态）</td><td>⏸ 独立态（宪法管）</td></tr></tbody></table>
+<p>---</p>
+<h2>第十五章 · 候票清单（自 006 §11 并入·全部候拍板号）</h2>
+<table><thead><tr><th>#</th><th>候票</th><th>层</th><th>量级</th><th>依据</th></tr></thead><tbody><tr><td>1</td><td>宪法收编 🔵待拍板/转人工（增对＋actor 定档＋selftest）</td><td>L2</td><td>小票（码+拍板）</td><td>§12·影子态风险</td></tr><tr><td>2</td><td>窗队列.md 头注状态机行同步 #301/#309 三出边＋🔵/转人工注记</td><td>L2</td><td>勘误件</td><td>§12·头注滞后</td></tr><tr><td>3</td><td>sm-001 卡正名「窗票生命周期」＋重绘 v2（九态＋宪法边＋actor 标注）</td><td>L2</td><td>卡窗</td><td>§12 撞车实证</td></tr><tr><td>4</td><td>机制总索引卡补行：值守道/监工道推卡道/队列写口宪法＋会审门卡 36 锚更新（失效触发条款已触发）</td><td>两层</td><td>卡窗补行</td><td>§12·#305/#306/W-189</td></tr><tr><td>5</td><td>机制目录双名化：全卡面加「事件名」栏（草案=本卡 §14 两矩阵事件名列）＋话术规范补两层对照节</td><td>两层</td><td>文档小票</td><td>§12/§12</td></tr><tr><td>6</td><td>sm-003 备注补「gate_suspend/resume 事件对不算态」＋包级 10 值落拍板转正</td><td>L1</td><td>备注行＋拍板</td><td>§12</td></tr><tr><td>7</td><td>wip_scan.py SEVEN_STATES 正名（随在飞票顺带·零行为）</td><td>L2</td><td>顺带件</td><td>§12 发现 2</td></tr><tr><td>8</td><td>账本 transition 事件 payload 增 actor 字段（makeTicketStateMachine/run sm 注入 stage 名·历史账本缺 actor=legacy 只读不猜沿 LEGACY_EN_MAP 先例）</td><td>L1</td><td>小票（码+拍板）</td><td>§13·归因可查</td></tr></tbody></table>
+<p>---</p>
+<h2>第十六章 · 开放问题（自 006 §12 并入·给专业评审的挑战入口）</h2>
+<table><thead><tr><th>#</th><th>问题</th><th>张力</th><th>现状</th></tr></thead><tbody><tr><td>1</td><td>🔵待拍板/转人工怎么收编宪法</td><td>影子态（无 actor 无边）vs 收编要新增对＋定 actor（拍板级）</td><td>候票 §15#1</td></tr><tr><td>2</td><td>L1 transition 事件要不要补 actor 字段</td><td>崩溃归因可查 vs 改事件 payload 兼容历史账本</td><td>候票 §15#8·历史账本 legacy 只读不猜</td></tr><tr><td>3</td><td>双名制（事件名）会不会卡机检</td><td>人读可懂 vs 机检词面锚焊死（判班黄靠「会审门红」四字）</td><td>方案=短名不动只加层·候票 §15#5</td></tr><tr><td>4</td><td>包级 10 值何时转正第六台状态机</td><td>账本已落码（拍板#199）·站1/2 段零调用方 vs 接线设计成本</td><td>候票 §15#6</td></tr><tr><td>5</td><td>⏸ 触发情形还会长吗（今晚已六案）</td><td>宁停道越用越多 vs 出边只有三条</td><td>观察·值守道数据积累候裁</td></tr><tr><td>6</td><td>FSM 静态可达性/孤岛状态检查器（L1 转移表＋L2 宪法的外部静态分析）</td><td>业内模板 3.3 缺口 vs 收益（状态机小·手检尚可）</td><td>§10 新发现·候票</td></tr><tr><td>7</td><td>Saga 自动补偿边界（哪些补偿可机器自动反向·哪些保持业主令）</td><td>自动化效率 vs 人工主导安全（#301/#309 现行全业主令）</td><td>§10 设计差异·候讨论</td></tr></tbody></table>
+<p>---</p>
+<h2>附录A · 术语对照（白话＋业内名·合并版）</h2>
+<table><thead><tr><th>术语</th><th>白话一句话</th><th>业内名</th></tr></thead><tbody><tr><td>拍板</td><td>业主看完对比件点头，决策入 append-only 账本</td><td>Human-in-the-loop Decision</td></tr><tr><td>对比件</td><td>给业主做决策的现状 vs 改后对照报告</td><td>Decision Brief</td></tr><tr><td>立票</td><td>把拍板登记成窗队列一行（待实施(已批)）</td><td>Work Item Creation</td></tr><tr><td>任务书</td><td>派工单：批什么/预算帽/授权面/假设清单</td><td>Work-Order Contract</td></tr><tr><td>三关</td><td>派工单的机检验三道</td><td>Input Validation Pipeline</td></tr><tr><td>会审门</td><td>开工前体检四查（领单后弹窗前）</td><td>Pre-spawn Review Gate（Shadow Mode）</td></tr><tr><td>dryrun/enforce</td><td>影子（只记不拦）→实拦（真拦）</td><td>Shadow Mode → Enforce（渐进开闸/Progressive Rollout）</td></tr><tr><td>分级闸</td><td>扫改动面定风险档＝定谁有权批</td><td>Risk-based Approval Tiering</td></tr><tr><td>复考闸</td><td>自称干完不算，机器按考卷重考</td><td>Post-completion Exam Gate</td></tr><tr><td>绿才认</td><td>只认机器 exit code，不认自称与感觉</td><td>Green-only Acceptance（NA≠PASS）</td></tr><tr><td>宁停</td><td>拿不准就停车候人工，绝不装绿</td><td>Fail-safe Stop</td></tr><tr><td>窗票/工序票</td><td>窗票=窗队列一行（L2）；工序票=拆单产物（L1）——同厂两个「票」</td><td>Work Order vs Process Ticket</td></tr><tr><td>写口宪法</td><td>谁有权把状态翻成什么（唯一写入口＋转移对）</td><td>State Transition Constitution / Write Port</td></tr><tr><td>病卡/返工环</td><td>红票维修流程（七态）</td><td>Rework Loop / Incident Lifecycle</td></tr><tr><td>值守道/监工道</td><td>值守=定时巡检推进（机械＋LLM 双层）；监工=候批推卡催办</td><td>Watchdog ＋ Notifier</td></tr><tr><td>代拍/追认</td><td>授权面内代理决定，事后批量追认、可一键撤回</td><td>Delegated Decision ＋ Ratification（Saga Compensation）</td></tr><tr><td>锚点</td><td>文档里指向码位置的 file:line 证据</td><td>Source Anchor</td></tr><tr><td>断言</td><td>二值机器主张，假了当场红（五品种见第三章 3.3）</td><td>Assertion（fail-loud check）</td></tr><tr><td>候拍</td><td>等业主拍板号才动工的候选事项</td><td>Pending Approval</td></tr><tr><td>守卫</td><td>同事件下的分支路由判断，只选分支不拒事件</td><td>Guard（FSM Core）</td></tr><tr><td>拦截器</td><td>跃迁前后切面逻辑，不改迁移规则</td><td>Interceptor/Hook（Runtime）</td></tr><tr><td>事件溯源</td><td>账本记全量事件，状态可重放重建</td><td>Event Sourcing（L1 events.jsonl 原生）</td></tr><tr><td>舱壁</td><td>不同下游/任务的资源隔离，防一处挤塌全局</td><td>Bulkhead（票级沙箱同构）</td></tr><tr><td>死信</td><td>无法消费的事件单独落账，支持回放排查</td><td>Dead Letter（本厂=记因账/rejected 账）</td></tr></tbody></table>
+<h2>附录B · 正本锚清单（本卡全部 file:line 汇总）</h2>
+<p>L1：run-state.ts:19-43 · ticket-state.ts:21-46,47-61,100-103,119-127,136-146 · queue-ledger.ts:13,18 · queue-runner.ts:16 · ledger.ts:12,139,189,197 · event-types.ts:11-12,54 · variable-box.ts:12,31,60 · import.ts:34 · gates.ts:107,112,280 · split.ts:57,255,264 · judge-guard.ts:76 · equipment.ts:29,132 · build.ts:73,129,137,165,184-255,205,274 · build-lane.ts:63,80,89-91,126,150 · selfheal-triage.ts:57,94 · reviewer.ts:42,69,109,127,147,205 · hardening-lane.ts:209 · mutation-gate.ts:227 · red-ruling.ts:35,48,57,71 · lane-drain.ts:31,50 · night-budget.ts · ladder.ts:13,32,38 · morning-report.ts:56,70,284 · run-slice.ts:139,265,266 · provider-types.ts:13,22,44 · spec-amendment.ts · types.ts:185-207 · efficiency-risks.ts:26 · 班外评测跑.mjs:105,126 · 留出核账跑.mjs:88。 L2：队列写口.mjs:47-63 · pi_runner.ts:490-515,517-541,543-565,563,643,774,1317-1328,2093,2388,2555,3240-3361 · hook_receipt_clerk.mjs:110 · queue_watcher.mjs · window_card_sync.mjs:654 · 队列行三关.ts:112 · wip_scan.py:48,150,174 · repair-contract.mjs:23,40 · 审批熔断.ts:48,85,173 · 风险分级.ts:33,79,116 · 效率账解析.ts:35,61,81,85 · 班次汇报聚合器.ts:135-140,147,163,271 · approval_poll.mjs · 核账处置报告.mjs:44,57,103,130 · supervisor.mjs · duty_monitor.mjs · 派发书三关校验.mjs · 窗队列.md:6 · 00-机制总索引卡.md §2。</p>
+<h2>§17 · 证据尾巴</h2>
+<ul><li>参照框架＝业主提供 FSM Runtime 模板（对话在案 2026-11-01）；</li><li>全部落锚实勘于 repo_head 6732949（各章 H4 内联）；</li><li>合并源＝sm-20261101-006（四问分析·双矩阵 35/31 行·两层宪法·断言五品种·六台图册·转史档）；</li><li>本卡 draft 候核候拍——正本冲突以码与窗队列.md 为准；mermaid 图渲染目检候浏览器恢复（结构自检已 PASS）。</li></ul>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/05-状态机/sm-20261101-007-FSMRuntime七层对照详述.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

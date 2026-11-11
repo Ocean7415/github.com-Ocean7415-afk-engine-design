@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>红票事件树全景 v2 · 票层级 × 用例层级 · AFK无人值守引擎V1.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  pre.mono-json { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; }
+  table.tt th { white-space: nowrap; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-12 space-y-12">
+
+<!-- ═══════════════ 头部 ═══════════════ -->
+<header class="space-y-3">
+  <h1 class="font-serif text-3xl">红票事件树全景 <span class="text-slate-400 text-xl">票层级 × 用例层级（as-built 实然版 · v2 排版）</span></h1>
+  <p class="text-sm text-slate-500">2026-10-16 深读 · 2026-10-17 重排（内容零改·排版换 architecture-review 式）· 基线 <code class="bg-stone-200 rounded px-1">repo_head f36a3ab</code> · 深读分级 <b>Verify</b>（纯磁盘核账·20 件 P0 全读）· verdict PASS（定向）</p>
+  <div class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
+    <span><span class="inline-block w-3 h-3 bg-red-600 rounded-sm align-middle"></span> 红源 / 终局 final</span>
+    <span><span class="inline-block w-3 h-3 bg-amber-500 rounded-sm align-middle"></span> 守卫·分支·挂起（park/hold）</span>
+    <span><span class="inline-block w-3 h-3 bg-emerald-600 rounded-sm align-middle"></span> 绿出口</span>
+    <span><span class="inline-block w-3 h-3 bg-blue-500 rounded-sm align-middle"></span> 机械设备（零 LLM）</span>
+    <span><span class="inline-block w-3 h-3 bg-purple-500 rounded-sm align-middle"></span> Agent员工（LLM 调用面）</span>
+    <span><span class="inline-block w-3 h-3 deep-box rounded-sm align-middle"></span> 深色=树根/关键落点</span>
+    <span><code class="bg-stone-200 rounded px-1">file:line</code> 源码锚点</span>
+  </div>
+  <div class="bg-white border border-stone-200 rounded-lg p-4 text-sm space-y-2 border-l-4 border-l-red-600">
+    <p class="font-semibold">结论先行（三条）：</p>
+    <p>① 票层级「红票」= 施工红 / 对题红 / 回喂重写红 / 硬化红 / 连坐红 / 车道异常红 / 翻案红 <b>七源同出口</b>——全部经 <code>makeRedRuling</code> 走 R05 停车场：<code>red → park#1 → 补考一轮 → park#2=final（DEF 晨报追认）</code>；唯一例外=篡改红旗（<b>fail-closed 终局</b>，不进⟲环不进降级链）。</p>
+    <p>② 用例层级「红」<b>不判票死</b>：探针红只入账（红≥2 开缺陷单·R15 streak 立 DEF），自愈⟲1 → 坐席B 升级 → 补票环三闸，未消=<b>整单 PASS\*</b> 带星追认；切片①功能红=<b>硬化挂起</b>（宁停不烧变异）；切片②红=<b>回归翻案⟲1</b>（吊销已绿灯重挣）或整单 FAIL。</p>
+    <p>③ 两层红绿权威同源=<b>验收命令 exit code</b>（#28②）；任何机制「扣绿不加红」——机械设备管判卷与守卫，Agent员工只管修复，自然人审核只出现在 final/追认/翻案清单。</p>
+  </div>
+</header>
+
+<!-- ═══════════════ §0 全链总览 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§0 · 全链段落总览——两棵树挂在哪</h2>
+  <p class="font-mono text-xs bg-stone-50 border border-stone-200 rounded p-2">组合根 run-slice.ts（294 行全读·段2 起于 :208）· 锚 run-slice.ts:171-281 · 读法提醒（拍板#36）：本图全部停在<b>票层级</b>与<b>用例层级</b>——往上是波/批次与班次，不在本图展开</p>
+  <pre class="mermaid">
+flowchart TB
+  S0["段0 · 入夜门禁 R02<br/>六硬项·拦不烧钱（run-slice.ts:120-136）"] --> S1["段1 · 站3 导入·三关·拆单·装备<br/>探针编译＋五槽装备＋R12 覆盖闸（:138-168）"]
+  S1 --> S2["段2 · 站4 施工车道 runBuildLane<br/>波屏障/就绪制·⟲≤3·park/补考（:210-234）"]
+  S2 --> TK["票层级三棵树<br/>自愈环⟲≤3（§3）· 三钥匙出关（§4）· R05裁决＋补考（§2）"]
+  S2 --> UC["用例层级三棵树<br/>探针判卷门（§5.1）· 切片①功能门（§5.2）· 切片②翻案（§5.3）"]
+  TK --> FIN["收车 · R13 三态判定梯 → 报告（§6）<br/>PASS / PASS* / FAIL"]
+  UC --> FIN
+  classDef tk fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef uc fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class TK tk
+  class UC uc
+  class FIN deep
+  </pre>
+</article>
+
+<!-- ═══════════════ §1 状态机 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl">§1 · 票级状态机（十一态·R17 前半）——树的骨架</h2>
+    <span class="text-xs text-slate-600 border border-slate-300 rounded-full px-2 py-1 shrink-0">shared/ticket-state.ts 全读</span>
+  </div>
+  <p class="text-sm text-slate-700">守卫（⟲≤3 / park≤2 / 预算三路）<b>不进转移表</b>，由调用方持计数器决定走哪条边。所有转移入账 <code>ticket_state_transition</code>，非法转移入账 <code>ticket_state_rejected</code> 不抛（自决留痕可追认）。</p>
+  <pre class="mermaid">
+stateDiagram-v2
+  [*] --> queued
+  queued --> cache_check: 前置全绿·入指纹问询
+  queued --> building: 无缓存直通
+  queued --> cache_skip: resume 直通
+  cache_check --> cache_skip: 命中且复跑绿
+  cache_check --> building: miss／复跑红按 miss 重烧
+  building --> reviewing: 测试绿暂不发灯（扣绿闸）
+  building --> red: 施工红（红源①）
+  building --> degraded: 降级产物
+  degraded --> reviewing: 降级产物也过审
+  degraded --> red
+  reviewing --> building: findings 回喂重写
+  reviewing --> red: 对题红（红源②）
+  reviewing --> hardening: 对题绿放行
+  hardening --> passed: 双闸过发灯（唯一入边）
+  hardening --> building: 不合格回写补测
+  hardening --> parked: 预算断挂起（park from 投影）
+  passed --> parked: 回归翻案吊销绿灯（唯一出边）
+  red --> parked: R05 park#1
+  red --> final: park#2／补考仍红
+  parked --> building: 夜末补考重试
+  parked --> final: 终局
+  cache_skip --> [*]
+  final --> [*]
+  </pre>
+  <table class="tt w-full text-xs border border-slate-200">
+    <thead><tr class="bg-stone-100 text-left uppercase tracking-wider text-slate-500"><th class="p-2">自态</th><th class="p-2">合法出边</th><th class="p-2">语义（锚 ticket-state.ts:52-68）</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-mono font-semibold">queued</td><td class="p-2 font-mono">cache_check / building / cache_skip</td><td class="p-2">前置全绿入问询；无缓存直通；resume 直通</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">cache_check</td><td class="p-2 font-mono">cache_skip / building</td><td class="p-2">命中且复跑绿=skip；篡改/复跑红=按 miss 重烧（build-lane.ts:138-158）</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">building</td><td class="p-2 font-mono">reviewing / red / degraded</td><td class="p-2">测试绿暂不发灯（扣绿闸）→审查；红→red；降级→degraded</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">degraded</td><td class="p-2 font-mono">reviewing / red</td><td class="p-2">降级产物也过审（hardening-lane.ts:96-98）</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">reviewing</td><td class="p-2 font-mono">building / red / hardening</td><td class="p-2">findings 回喂重写 / 对题红 / 对题绿放行硬化</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">hardening</td><td class="p-2 font-mono">passed / building / parked</td><td class="p-2">双闸过发灯 / 不合格回写补测 / 预算断挂起（park from 投影）</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">passed</td><td class="p-2 font-mono">parked</td><td class="p-2"><b>唯一降级出边</b>=回归翻案吊销绿灯（#54件③）；<b>唯一入边=hardening</b></td></tr>
+      <tr><td class="p-2 font-mono font-semibold">red</td><td class="p-2 font-mono">parked / final</td><td class="p-2">R05 停车场裁决（§2）</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">parked</td><td class="p-2 font-mono">building / final</td><td class="p-2">夜末补考重试 / 终局</td></tr>
+      <tr><td class="p-2 font-mono font-semibold">cache_skip / final</td><td class="p-2">（无出边）</td><td class="p-2">终态</td></tr>
+    </tbody>
+  </table>
+  <div class="bg-red-50 border border-red-300 rounded p-3 text-sm"><b>红线（转移表硬保证）：</b><code>red</code> 无 →reviewing/hardening 边——审查员与硬化段<b>永不把红变绿</b>；<code>passed</code> 唯一入边=hardening（测试绿只能进 reviewing，直跳 passed 被拒）；降级不降权（判卷照走、篡改红旗照终局）。</div>
+</article>
+
+<!-- ═══════════════ §2 票级红票事件树 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§2 · 票层级 · 红票总事件树（七源 → R05 裁决 → 补考 → 终局）</h2>
+  <p class="text-sm text-slate-700">「红票」= 票级状态机进入 <code>red</code> 态。七类来源共用同一出口 <code class="bg-stone-100 rounded px-1">makeRedRuling（red-ruling.ts:37-66）</code>。</p>
+
+  <h3 class="font-serif text-lg">2.1 红从哪来——七源树 <span class="text-xs text-slate-400 font-sans">入口：build-lane.ts:109-249 runTicket（main/drain 两相位同函数）</span></h3>
+  <pre class="mermaid">
+flowchart TB
+  ROOT["一张工单进入车道 runTicket<br/>build-lane.ts:109-249"]
+  ROOT --> RS["resume 直通（:120·上轮已绿）"]
+  ROOT --> CC["指纹缓存问询（:138-158）<br/>ADR-0003：命中免生成不免验收"]
+  ROOT --> DG["连坐红·红源⑤（:167-172·dep-guard）<br/>前置票 parked/final→零 LLM 直接进红票裁决<br/>「不施工」不是「判绿」"]
+  CC -->|"复跑绿"| CS["cache_skip 直通·零 LLM"]
+  CC -->|"miss/复跑红"| BT["→ building 正常施工（:156-158）"]
+  BT --> R1["红源① 施工红<br/>verdict=FAIL·七子分支见 §3"]
+  BT --> R6["红源⑥ 车道异常红（:244-249）<br/>LLM 流/内部错误·隔离单票·屏障不倒<br/>V1 夜车卡死回归件实锚"]
+  BT --> TK3["verdict=PASS → 三钥匙出关（§4）<br/>测试绿只是入场券"]
+  TK3 --> R2["红源② 对题红"]
+  TK3 --> R3["红源③ 回喂重写红"]
+  TK3 --> R4["红源④ 硬化红"]
+  ROOT --> R7["红源⑦ 翻案红<br/>regression-leg.ts:137-143<br/>切片②红锚定已 passed 票·重做仍红<br/>phase=drain→⟲1 用尽直接终局"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef green fill:#f0fdf4,stroke:#16a34a,color:#166534;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class R1,R2,R3,R4,R5,R6,R7 red
+  class RS,CS green
+  class ROOT deep
+  </pre>
+  <table class="tt w-full text-xs border border-slate-200">
+    <thead><tr class="bg-stone-100 text-left uppercase tracking-wider text-slate-500"><th class="p-2">分支</th><th class="p-2">锚</th><th class="p-2">账本事件</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2">resume 直通</td><td class="p-2 font-mono">build-lane.ts:120</td><td class="p-2 font-mono">resume_direct</td></tr>
+      <tr><td class="p-2">指纹缓存问询</td><td class="p-2 font-mono">build-lane.ts:138-158</td><td class="p-2 font-mono">ticket_cache_hit · ticket_cache_reverify_red</td></tr>
+      <tr><td class="p-2">连坐红（红源⑤）</td><td class="p-2 font-mono">build-lane.ts:167-172 · dep-guard.ts:16-20</td><td class="p-2 font-mono">ticket_dep_dead</td></tr>
+      <tr><td class="p-2">车道异常红（红源⑥）</td><td class="p-2 font-mono">build-lane.ts:244-249 · red-ruling.ts:68-76</td><td class="p-2 font-mono">ticket_lane_exception</td></tr>
+      <tr><td class="p-2">翻案红（红源⑦）</td><td class="p-2 font-mono">regression-leg.ts:137-143</td><td class="p-2 font-mono">（§5.3）</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="font-serif text-lg">2.2 R05 红票裁决——七源同一出口 <span class="text-xs text-slate-400 font-sans">red-ruling.ts:37-66 · park.ts:24-36</span></h3>
+  <pre class="mermaid">
+flowchart TB
+  RED["任何红源触发裁决<br/>sm.to red → park.onRed 计数+1<br/>（轮数跨腿保留·宁严不松）"]
+  RED -->|"park#1 ∧ phase=main"| P1["挂起·换下一票（R05 停车场）<br/>ticket_parked parkRound:1<br/>revival 唯一路=夜末补考 或翻案/续跑"]
+  RED -->|"park#2 ∨ 补考仍红 ∨ 主循环超限"| FIN["终局失败——DEF 待晨报追认<br/>park_limit_reached<br/>自然人审核接手·引擎不再返工"]
+  TAMPER["例外 · 判卷素材篡改<br/>（任何环内被 judge-guard 拦下）"] --> FIN2["篡改红旗——fail-closed 终局<br/>judge_tamper_red<br/>不进⟲环·不进降级链·不可自愈豁免<br/>红绿权仍归验收命令（#28② 零触碰）"]
+  BUD["例外 · 预算硬触顶（R03）<br/>build.ts:47-50,180-183,211-214"] --> NOTE["预算红≠质量红<br/>实然：车道端无 budgetTripped 消费方<br/>FAIL 仍经 redRuling 入停车场<br/>靠 budgetStopped 闸住 drainParked（build-lane.ts:272）"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  class FIN,FIN2 red
+  class P1,NOTE amber
+  </pre>
+
+  <h3 class="font-serif text-lg">2.3 夜末补考——挂起票最后一轮 <span class="text-xs text-slate-400 font-sans">lane-drain.ts:30-57 · build-lane.ts:272 · park.ts:37-44</span></h3>
+  <pre class="mermaid">
+flowchart TB
+  D0["主循环收尾 → drainParked<br/>takeParked 按入列序（前置先重试）·拍板③ 仅重试一轮"]
+  D0 -->|"budget.isHardTripped"| SKIP["预算收车——不再领票<br/>挂起票保持 parked 过夜（resume 侧兜底）"]
+  D0 -->|"M6 同因熔断命中（lane-drain.ts:15-27）"| M6["零轮终局（定向收缩·比一轮更严）<br/>协议病／无正本／连坐复发"]
+  D0 -->|"值得重考"| RT["重考带第一轮 FAIL 摘录（W15 2.5）<br/>night_retry_started ＋ firstFailExcerpt<br/>把抽奖变带证据重考·parked→building"]
+  RT -->|"重试绿"| REV["复活——重走施工/三钥匙全链"]
+  RT -->|"重试仍红（=park#2）"| FIN["终局 final（DEF·晨报追认）"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class FIN,FIN2 red
+  class SKIP,M6 amber
+  class D0 deep
+  </pre>
+</article>
+
+<!-- ═══════════════ §3 自愈环 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§3 · 票层级 · 站4 自愈环 ⟲≤3 完整分支树（施工红的子分支全集）</h2>
+  <p class="text-sm text-slate-700">权威 <code class="bg-stone-100 rounded px-1">station4-build/build.ts（300 行全读）</code>。⟲≤3 是<b>守卫</b>：首建、对题回喂、CRAP/变异回写共享同一预算（C-027）；⟲第 3 轮换坐席A 接手（换档定向修·非重抽）。</p>
+  <pre class="mermaid">
+flowchart TB
+  IN["buildTicket 入口 · auto 分槽（build.ts:148-157）<br/>M1 正本预检：copy 槽但包内无正本 → 回落 llm 道（97ms 判死实证）"]
+  IN --> COPY["copy 槽（确定性施工员·零 LLM·build.ts:286-299）<br/>artifacts 直搬 → 素材增补 → 锁定 → 验收一次定红绿（⟲环不适用）"]
+  IN --> LLM["LLM 槽 · ⟲≤3 循环（build.ts:168-273）<br/>maxAttempts=min(3, attemptsBudget)<br/>施工前 lockJudgeSnapshot 锁判卷素材（#83）"]
+  COPY -->|"验收绿"| COK["PASS → 三钥匙"]
+  COPY -->|"验收红"| CRED["FAIL → 施工红（红源①）"]
+  COPY -->|"篡改"| CTAM["红旗终局（build.ts:294）"]
+  LLM -->|"每轮入口·预算硬触顶"| BTP["本票中止（budgetTripped·build.ts:180-183）"]
+  LLM -->|"生成失败 ∧ 分段不完整 ∧ 预算未触顶"| SEG["续写式修复一次（只续接不重猜·build.ts:189-202）<br/>成功→继续验收；失败→落回整卷重猜旧路"]
+  LLM -->|"生成失败·其他"| FB["feedback=一行原因 → 下一轮整卷重猜（:203-219）<br/>预算触顶中的 err≠质量红：不进反馈环直接收车"]
+  LLM -->|"生成「成功」但交付域零变化"| E10["E10 零提交闸——fail-closed 直接红（:204-209）<br/>不进审查不进自愈环·闸交付域非判卷域（拍板#4）"]
+  LLM -->|"生成成功"| ACC["验收 runAcceptanceGuarded<br/>判卷前素材哈希校验（:212·篡改→judge_tamper_red 终局）"]
+  SEG --> ACC
+  ACC -->|"exitCode=0"| OK["施工绿 → self_heal_resolved → 三钥匙（§4）"]
+  ACC -->|"exitCode≠0"| TRI["机械分诊 classifyFailure（L1·零 LLM·五类病谱<br/>build.ts:234-259 · selfheal-triage.ts:57-99）"]
+  TRI -->|"缺 __init__.py"| INIT["补建空包标记 → 立即复跑验收（:84-90）"]
+  TRI -->|"缺第三方依赖（ModuleNotFoundError 非标准库）"| REQ["requirements 追加一行 ＋ replayInstall 重放 → 复跑（:91-121）"]
+  TRI -->|"分段协议/断言键错位/形态不匹配"| RR["机械可辨但无确定性补丁 → 归因路由回喂<br/>形态不匹配=书病嫌疑（修不动=班外维修环证据）"]
+  TRI -->|"other 语义病"| RICH["纯 LLM 富回喂（:251-264）<br/>回喂盒=用例明细表＋机械注记＋失败输出保头尾＋previous_attempt＋判卷锁定警告＋implCtx"]
+  INIT -->|"复跑绿"| OK
+  INIT -->|"复跑仍红"| RR
+  LLM -->|"⟲≥2"| L3["L3 偏移采样（缺省 dynamic·build.ts:265-268）<br/>early_stop=唯一自动项 → 采样判偏移即转红（宁停不装绿）"]
+  LLM -->|"⟲3 尽 ∧ builder=auto ∧ 有正本"| DEG["M5 降级链（build.ts:271-276·degrade-chain.ts:19-58）<br/>copy 直搬 ＋ 验收重跑（DEC 留痕·晨报追认）"]
+  DEG -->|"验收绿"| DOK["降级 PASS（degraded:true·过审走 degraded→reviewing）"]
+  DEG -->|"验收红/篡改"| DRED["FAIL／红旗终局（降级不豁免篡改·hardening-lane.ts:84）"]
+  LLM -->|"⟲尽 ∧ 无素材可降级"| NOMAT["无米不降级——自动立 A 域草稿票（degrade-chain.ts:33-43）<br/>落盘 changes/pending/A-DRAFT-缺正本.md（自然人审核：候拍板号）"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef green fill:#f0fdf4,stroke:#16a34a,color:#166534;
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef llm fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class CRED,E10,CTAM,DRED,NOMAT red
+  class COK,OK,DOK green
+  class BTP amber
+  class SEG,FB,RICH,REQ llm
+  class IN deep
+  </pre>
+  <table class="tt w-full text-xs border border-slate-200">
+    <thead><tr class="bg-stone-100 text-left uppercase tracking-wider text-slate-500"><th class="p-2">分支</th><th class="p-2">锚</th><th class="p-2">账本事件</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2">auto 分槽 / M1 正本预检</td><td class="p-2 font-mono">build.ts:148-157</td><td class="p-2 font-mono">slot_assigned · asset_predeploy</td></tr>
+      <tr><td class="p-2">LLM 生成（⟲≥2 携 SessionDigest 红绿史#10·⟲≥3 坐席A 接手 repairTier default #31①）</td><td class="p-2 font-mono">build.ts:184-188</td><td class="p-2 font-mono">self_heal_retry（repairLevel L2·seatA?）</td></tr>
+      <tr><td class="p-2">续写式修复</td><td class="p-2 font-mono">build.ts:189-202 · llm-continuation.ts</td><td class="p-2 font-mono">llm_files_written（note:seg-repair）</td></tr>
+      <tr><td class="p-2">整卷重猜回喂</td><td class="p-2 font-mono">build.ts:203-219</td><td class="p-2 font-mono">llm_build_fail</td></tr>
+      <tr><td class="p-2">E10 零提交闸</td><td class="p-2 font-mono">build.ts:204-209</td><td class="p-2 font-mono">llm_build_fail（zero-submission）</td></tr>
+      <tr><td class="p-2">验收绿 / 机械分诊</td><td class="p-2 font-mono">build.ts:213-224 · selfheal-triage.ts</td><td class="p-2 font-mono">self_heal_resolved · self_heal_mechanical（L1）· ticket_verdict</td></tr>
+      <tr><td class="p-2">缺依赖重放安装</td><td class="p-2 font-mono">selfheal-triage.ts:91-121</td><td class="p-2 font-mono">runtime_install</td></tr>
+      <tr><td class="p-2">M5 降级链 / 无米不降级</td><td class="p-2 font-mono">build.ts:271-283 · degrade-chain.ts</td><td class="p-2 font-mono">slot_degraded · llm_build_fail（出题缺正本）</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<!-- ═══════════════ §4 三钥匙 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§4 · 票层级 · 三钥匙出关树（测试绿 ∧ 对题绿 ∧ 硬化绿才发灯）</h2>
+  <p class="text-sm text-slate-700">权威 <code class="bg-stone-100 rounded px-1">night-shift/hardening-lane.ts（220 行全读）</code>。红线：本段<b>永不把红变绿</b>——只在验收命令已绿的票上工作；回喂重写与首建<b>共享同一 ⟲≤3</b>（THREE_KEY_FEEDBACK_MAX=3）。三段式缺省开（拍板#50）：对题绿即停（DEFERRED），硬化归段2.8 硬化道。</p>
+  <pre class="mermaid">
+flowchart TB
+  G0["测试绿（验收命令 exit=0）进入出关段<br/>build-lane.ts:194 · hardening-lane.ts:210-227"]
+  G0 --> REV["reviewing · 对题闸（扣绿闸·Agent员工审查·:92-141）<br/>降级产物先落 degraded 态再进审查（降级也过审）"]
+  REV -->|"审查过"| HARD["hardening · 硬化闸（:143-201）"]
+  REV -->|"findings 非 severe ∧ 轮次≤3"| FB["回喂重写（吃同一 ⟲ 预算·:129-135）<br/>rebuild 带 initialFeedback·G2-7 增量重审携 priorFindings"]
+  FB -->|"重建绿"| REV
+  FB -->|"重建后验收红"| R3["红源③ 回喂重写红（:131-134）"]
+  REV -->|"severe 严重偏题 ∨ ⟲尽"| SDG["trySevereDegrade 预授权降级兜底（拍板#80②·:116-127）"]
+  SDG -->|"素材在册 ∧ 未降级过 ∧ 验收绿"| DOK["降级产物过审（degraded → 回 reviewing）PASS*"]
+  SDG -->|"素材缺/已降级仍偏题/验收红/篡改"| R2["红源② 对题红——审查员不装绿（fail-closed·:84,124-127）"]
+  HARD -->|"进入即查预算"| HP["硬化段预算断 → park from:hardening（非红票·hold·:149-153）<br/>测试已绿不重烧·恢复由账本投影（拍板#44①）·补考照常重试"]
+  HARD -->|"CRAP 双闸不过"| CW["回写补测 ≤3 → 回对题闸重审（:155-172）"]
+  CW -->|"⟲尽 仍不合格 / 补测后验收红"| R4["红源④ 硬化红（:158-169）"]
+  HARD -->|"变异闸 StrykerJS（:174-197）"| MG["全杀 PASS → passed（vcache.record 指纹入库）<br/>DEFERRED（非 JS/无 stryker.conf）→ 留痕不装绿不拦死<br/>FAIL 有存活 ∧ ≤3 → 补断言回写 → 回 reviewing"]
+  MG --> PASS["三钥匙全绿 → passed"]
+  MG -->|"FAIL ∧ ⟲尽"| R4
+  G0 -.->|"三段式 deferHardening=true（缺省·:213-219）"| DEF["对题绿即停 · 票驻留 reviewing（DEFERRED）<br/>不 record vcache（resume 不认功能绿·如实重烧）<br/>硬化归段2.8 hardenLeg · 功能门红时即挂起对象（§5.2）"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef green fill:#f0fdf4,stroke:#16a34a,color:#166534;
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class R2,R3,R4 red
+  class PASS,DOK green
+  class HP,DEF amber
+  class G0 deep
+  </pre>
+  <div class="text-xs text-slate-500 space-y-1 font-mono">
+    <p>📎 review_requested · review_findings · review_passed · review_degraded · review_degrade_red</p>
+    <p>📎 mutation_deferred · ticket_parked（from:hardening）</p>
+  </div>
+</article>
+
+<!-- ═══════════════ §5 用例层级 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§5 · 用例层级 · 事件树（探针 / 切片①功能门 / 切片②翻案）</h2>
+  <p class="text-sm text-slate-700">用例层级三种「红」三种待遇——<b>探针红只入账</b>（不判票死）、<b>切片①红挂硬化</b>、<b>切片②红翻案或整单 FAIL</b>。定位底座共用 <code>slice-triage.ts</code> / <code>red-attribution.ts</code>（票落点/测试文件逐字匹配·引擎不猜落点）。</p>
+
+  <h3 class="font-serif text-lg">5.1 第二层探针 · 判卷门 <span class="text-xs text-slate-400 font-sans">night-shift/probe-gate.ts:87-187 · station4-build/probe-selfheal.ts</span></h3>
+  <pre class="mermaid">
+flowchart TB
+  P0["runProbes（机械执行·契约探针 8 族·probe-gate.ts:89-95）"]
+  P0 -->|"探针跑失败（非考题红）"| H1["诚实入账不判票死（:90-94）"]
+  P0 -->|"TAP↔manifest 漂移"| H2["站3 双闸②——只入账不判卷（:97-99）"]
+  P0 -->|"红累计≥2"| H3["开缺陷单（:100-101）"]
+  P0 -->|"fail＞0 ∧ builder≠copy（copy 票确定性无自愈）"| SH["自愈 ⟲1（施工质量红·:108-121）<br/>locateRedTargets 定位：probe.file 直取／module 归属票／literal_in_src 按 paths 锚逐票——无锚=unresolved"]
+  SH -->|"无锚/无归属票"| UL["逐条入账不静默——probe_red_unlocatable<br/>「回站1/2 补 paths」（C-030 书病）"]
+  SH -->|"有归属文件"| RG["regenFile 定向重生成（红名＋TAP 断言明细回喂）→ 复跑探针（:117-133）"]
+  RG -->|"⟲1 未消"| SB["坐席B 升级（W15 2.1·拍板#31①·:123-136）<br/>班次级维修道：跨票接口面盒＋strong 档<br/>SEAT_B_CAP=3 次/班·盒带涉事票∪blockedBy 前置落点全文"]
+  SB -->|"仍未消 ∧ manifest 在场"| BF["补票环三闸（轮闸 round＜1 · 量闸 ≤CAP · R03 账闸·:139-179）<br/>覆盖缺失红 → 合成工单 → 回站4 再施工"]
+  BF -->|"无锚红 ∧ 轮闸内 ∧ 起草道开"| DRAFT["锚点起草道：Agent员工起草候选落点 → 白名单机检 → 并入补票（:143-150）"]
+  BF -->|"synth＞0 ∧ round＜1"| SYN["合成票＋迷你探针 → 第二趟 runBuildLane（deferHardening 透传）→ 镜像并稿 → 复跑探针（:152-172）"]
+  BF -->|"round≥1（轮闸用尽）"| EX["backflow_exhausted——差量转站6追认清单（:173-176）"]
+  BF -->|"manual＞0（无锚不猜）"| MAN["站6追认清单（自然人审核·:177-179）"]
+  P0 -->|"收口 · R15 红账本（:182-186）"| RL["跨轮 streak／转绿清零／达阈立 DEF<br/>探针红只入账不判票死——整单层面兑现为 PASS*（§6）"]
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef llm fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class H1,H2,H3,UL,EX,MAN,RL amber
+  class SH,RG,SB,SYN,DRAFT llm
+  class P0 deep
+  </pre>
+
+  <h3 class="font-serif text-lg">5.2 切片①功能门（硬化之前·模仿真人点一遍） <span class="text-xs text-slate-400 font-sans">station5-verify/functional-gate.ts:80-191 · stage27.ts 装配</span></h3>
+  <pre class="mermaid">
+flowchart TB
+  V0["verifyApp 全片执行（复跑逐轮证据目录·不混写·:85-89）<br/>defer 票（三段式驻留 reviewing 者）为分诊对象"]
+  V0 -->|"红片＞0"| HS["自愈钩子 ⟲1（copy 班也传·W15 2.2 补盲·:83-101）<br/>healSliceReds：定位 → 归属票 regenFile → 全片重跑"]
+  HS -->|"定位无锚/悬空/缺端"| UL["slice_red_unlocatable（source:slice1）逐条入账——引擎不猜落点<br/>三锚形态：ticketId 直取／ticketIds 跨票多锚（全部在册·缺端 fail-closed）／files 匹配票落点"]
+  V0 -->|"NA 片 ∧ 考题病签名（脚本自身崩≠app 红）"| CD["考题病修复道（:103-116）<br/>QA 起草＋原语白名单机检（正本字节不动·副本覆盖）→ 重跑一次<br/>NA 位不作数·病单回写站2"]
+  V0 -->|"app 不可达（apiOk=false）∧ 可修归因"| BS["启动自愈 ⟲1（:118-130）<br/>missing_module／boot_argv／boot_env → 定向重生成归属票 → 重跑<br/>port／no_signal 不进本道（无显式修复证据——不猜）"]
+  V0 -->|"门绿判定 = 红片 0 ∧ apiOk（拍板#54件④·NA≠PASS）"| GG["放行硬化道（段2.8·仅功能绿票·:132-133,186-188）"]
+  V0 -->|"仍红 ∧ 悬空嫌疑（triage 有 notes）"| SD["切片判据追加道（W6 件⑥·缺省 on·:145-161）<br/>QA 起草 → 五道机检 → 副本只增 → 重跑一次<br/>晋升生效本轮·正本冻结——站6 晨报追认"]
+  V0 -->|"门不绿"| HOLD["硬化挂起 triageHoldTickets（功能红不烧变异·宁停不烧·:162-176）<br/>红片锚点全实→精确子集挂起肇事票；任一无锚/悬空→全体兜底挂起（不猜）<br/>functional_gate_hold → 站6 追认清单（不进 ParkRegistry·变异预算零烧）"]
+  V0 -->|"app 不可达（全 NA）"| HALL["门不绿灯 → 全体 defer 票硬化挂起（NA≠PASS·九轮实锚封死·:177-185）"]
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef green fill:#f0fdf4,stroke:#16a34a,color:#166534;
+  classDef llm fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class UL,HOLD,HALL amber
+  class GG green
+  class HS,CD,BS,SD llm
+  class V0 deep
+  </pre>
+
+  <h3 class="font-serif text-lg">5.3 切片② E2E · 回归翻案（⟲1·循环③） <span class="text-xs text-slate-400 font-sans">night-shift/regression-leg.ts:66-237 · run-slice.ts:270-281</span></h3>
+  <pre class="mermaid">
+flowchart TB
+  S2R["切片②红片（主判·终局口径·run-slice.ts:272-278）"]
+  S2R -->|"红片=0／无翻案入口／builder=copy"| KEEP["维持现判（:198-201）"]
+  S2R -->|"预算硬触顶"| SKIP["翻案轮跳过（⟲1 账闸·烧飞照刹）→ 切片②维持 FAIL（:205-208）"]
+  S2R -->|"锚点定位"| LOC["locateOverturnTargets（锚点 × 已绿 双条件·共用 slice-triage·:68-86）"]
+  LOC -->|"无锚/悬空"| FAIL["slice_red_unlocatable（source:slice2）→ 整单维持 FAIL 终局（如实上转·不猜·:213-219）"]
+  LOC -->|"锚到未绿票（本轮未发过三钥匙绿）"| HUM["「未绿不翻」——如实上转人工（:74-77,100-105）"]
+  LOC -->|"锚到已 passed 票（被硬化段改坏嫌疑）"| OV["吊销绿灯：passed → parked（回归翻案·唯一降级出边·:90-121）<br/>原因码 redSlices 强制·缺=非法翻案被拒 · regression_overturned"]
+  OV --> RE["building 定向重做（带翻案回喂·attemptsBudget=3）<br/>重走三钥匙全链（不经 defer·重挣绿必须当场走完唯一入边·:122-166）"]
+  RE -->|"PASSED"| OKK["翻案重挣绿 → vcache.record → 全片重跑（slice2 前缀覆写取证·⟲1·:147-161）"]
+  RE -->|"PARKED（硬化段预算断）"| HOLDP["park.hold → 挂起（park from 投影恢复·:162-175）"]
+  RE -->|"重做仍红（⟲1 用尽）"| R7["红源⑦ 翻案红 → redRuling（phase=drain）→ 终局 final（:137-143）"]
+  S2R -->|"翻案零修复（reworked=0）"| FAIL2["切片②维持现判——FAIL 终局（⟲1 用尽·如实·:232-236）"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef green fill:#f0fdf4,stroke:#16a34a,color:#166534;
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class FAIL,R7,FAIL2 red
+  class OKK green
+  class SKIP,HOLDP amber
+  class S2R deep
+  </pre>
+</article>
+
+<!-- ═══════════════ §6 判定梯 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§6 · 整单三态判定梯 R13——红票与用例红在此汇成一句结论</h2>
+  <p class="text-sm text-slate-700">权威 <code class="bg-stone-100 rounded px-1">station5-verify/ladder.ts:32-56</code>（纯函数·不碰账本不碰盘）。切片②主判；切片①红/挂起票只作<b>双遍归因注记</b>（红绿权零触碰）。</p>
+  <pre class="mermaid">
+flowchart TB
+  L["ladder.ts judgeOverall（纯函数）"]
+  L -->|"票红 ∨ 切片②红 ∨ 无切片题（第三层未执行不装绿）<br/>∨ 交互片未真执行 ∨ NA 占比≥20%"| F["FAIL（报告＋rule 说明·overall_verdict 入账）"]
+  L -->|"险梯全过 ∧ 探针红＞0"| PS["PASS* 带星——晨报置顶追认（拍板④·治「33 红在场照样 PASS」稀释病·自然人审核）"]
+  L -->|"零 FAIL ∧ 探针零红 ∧ NA＜门槛 ∧ 交互片全执行"| P["PASS（attended 模式发放行单·夜车放行闸）"]
+  classDef red fill:#fef2f2,stroke:#dc2626,color:#991b1b;
+  classDef amber fill:#fffbeb,stroke:#d97706,color:#92400e;
+  classDef green fill:#f0fdf4,stroke:#16a34a,color:#166534;
+  class F red
+  class PS amber
+  class P green
+  </pre>
+  <table class="tt w-full text-xs border border-slate-200">
+    <thead><tr class="bg-stone-100 text-left uppercase tracking-wider text-slate-500"><th class="p-2">判定</th><th class="p-2">条件（短路序）</th><th class="p-2">去向</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-bold text-red-700">FAIL</td><td class="p-2">票红（buildAllPass=false，含预算收车/就绪停滞不装绿）∨ 切片②红 ∨ 无切片题 ∨ 交互片未真执行 ∨ NA 占比≥20%</td><td class="p-2">报告＋rule 说明；overall_verdict 入账</td></tr>
+      <tr><td class="p-2 font-bold text-amber-700">PASS*</td><td class="p-2">险梯全过 ∧ 探针红＞0</td><td class="p-2">带星晨报置顶追认——自然人审核</td></tr>
+      <tr><td class="p-2 font-bold text-emerald-700">PASS</td><td class="p-2">零 FAIL ∧ 探针零红 ∧ NA＜门槛 ∧ 交互片全执行</td><td class="p-2">attended 模式发放行单（夜车放行闸）</td></tr>
+    </tbody>
+  </table>
+  <div class="bg-stone-100 border border-stone-300 rounded p-3 text-sm"><b>NA≠PASS</b>：NA 只是门槛内可容忍（环境原因无法判定），绝不是通过（ladder.ts:6）。切片①功能红（§5.2 挂起）与翻案注记随 rule 尾巴带出（doublePassNote），不改变三态本身。</div>
+</article>
+
+<!-- ═══════════════ §7 守卫 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§7 · 横切守卫与红线（所有树的公共约束）</h2>
+  <table class="tt w-full text-xs border border-slate-200">
+    <thead><tr class="bg-stone-100 text-left uppercase tracking-wider text-slate-500"><th class="p-2">守卫</th><th class="p-2">规则</th><th class="p-2">锚</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-semibold">红绿权（#28②）</td><td class="p-2">验收命令 exit code 是红绿唯一权威；任何机制「扣绿不加红、红只入账」；四级通用·任何层级不得二次立法</td><td class="p-2 font-mono">CONTEXT.md · ladder 头注</td></tr>
+      <tr><td class="p-2 font-semibold">篡改红旗（#82/#83）</td><td class="p-2">判卷素材施工前锁定（file+sha256）；篡改=fail-closed 终局——不进⟲环不进降级链不可自愈豁免，<b>降级不豁免</b></td><td class="p-2 font-mono">build.ts:103-118 · judge-guard.ts</td></tr>
+      <tr><td class="p-2 font-semibold">预算三路（R03）</td><td class="p-2">maxLlmCalls / maxCostUsd / hardStopAtMin；软降档 softRatio 0.8；续腿四条件（真增量 acc 清零·签名相同=原地打转=真停）；预算红≠质量红</td><td class="p-2 font-mono">night-budget.ts:133-190 · lane-stop.ts:16-40</td></tr>
+      <tr><td class="p-2 font-semibold">⟲ 预算共享（C-027）</td><td class="p-2">首建＋对题回喂＋CRAP/变异回写共享 ≤3；坐席A 独立分账 ≤2/票（#31①）；坐席B ≤3/班；探针/切片/启动自愈各 ⟲1（调用方保证）</td><td class="p-2 font-mono">build.ts:168 · hardening-lane.ts:24 · probe-selfheal.ts:139</td></tr>
+      <tr><td class="p-2 font-semibold">停车场（R05）</td><td class="p-2">park≤2·轮数跨腿保留；补考仅一轮（拍板③）；M6 同因熔断三类零轮（协议病/无正本/连坐复发——定向收缩非加松）</td><td class="p-2 font-mono">park.ts:6-14 · lane-drain.ts:15-27</td></tr>
+      <tr><td class="p-2 font-semibold">连坐（dep-guard）</td><td class="p-2">前置 parked/final → 依赖票零 LLM 直接红票裁决——「不施工」不是「判绿」</td><td class="p-2 font-mono">dep-guard.ts:5-20</td></tr>
+      <tr><td class="p-2 font-semibold">E10 零提交</td><td class="p-2">交付域零变化=零产出 → fail-closed 直接红（不进审查不进自愈环）</td><td class="p-2 font-mono">build.ts:204-209</td></tr>
+      <tr><td class="p-2 font-semibold">install 连红（G2-6）</td><td class="p-2">install 失败武装后连续 3 票红=环境缺位实锤 → 收车进汇报（budget_final_stop·cause:install_consecutive_red）</td><td class="p-2 font-mono">lane-stop.ts:41-77</td></tr>
+      <tr><td class="p-2 font-semibold">不装绿</td><td class="p-2">NA≥20% FAIL / 无切片题 FAIL / 交互片 NA FAIL / 就绪制 stalled 不析取 PASS / DEFERRED 不 record vcache</td><td class="p-2 font-mono">ladder.ts:38 · build-lane.ts:111,276</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<!-- ═══════════════ §8 证据 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§8 · evidence 契约（deepread 流水 · 可复算）</h2>
+  <pre class="mono-json bg-stone-50 border border-stone-200 rounded p-4 overflow-x-auto">{
+  "tier": "Verify（定向）",
+  "anchor": { "repo_head": "f36a3abd25cfae452281865209ed848e51b25baf", "boundary_frozen": true },
+  "ledger": "disk-self",
+  "covered_files": { "total": 23, "read": 23,
+    "p0_source": [
+      "ts/src/station4-build/build.ts[300行全读]", "ts/src/night-shift/red-ruling.ts[75]",
+      "ts/src/night-shift/park.ts[52]", "ts/src/night-shift/lane-drain.ts[63]",
+      "ts/src/night-shift/dep-guard.ts[22]", "ts/src/night-shift/probe-gate.ts[188]",
+      "ts/src/station4-build/probe-selfheal.ts[197]", "ts/src/station5-verify/slice-selfheal.ts[141]",
+      "ts/src/station5-verify/slice-triage.ts[66]", "ts/src/station5-verify/ladder.ts[75]",
+      "ts/src/station4-build/selfheal-triage.ts[136]", "ts/src/station4-build/degrade-chain.ts[61]",
+      "ts/src/night-shift/build-lane.ts[300]", "ts/src/night-shift/night-budget.ts[195]",
+      "ts/src/night-shift/lane-stop.ts[93]", "ts/src/station5-verify/functional-gate.ts[144]",
+      "ts/src/shared/ticket-state.ts[全读]", "ts/src/station5-verify/stage27.ts[74]",
+      "ts/src/night-shift/hardening-lane.ts[220]", "ts/src/night-shift/regression-leg.ts[237]",
+      "ts/src/run-slice.ts[294]"
+    ],
+    "docs": ["CONTEXT.md", "90-过程/handoffs/立项与W0交接-20261011.md", "90-过程/research/修复体系四级阶梯-用例票班内班外-20261014.md"],
+    "partial": [] },
+  "not_read_with_reason": {
+    "reviewer.ts/verify.ts/mutation-gate.ts/crap-gate.ts/case-defect.ts/slice-draft.ts": "P1——事件树只消费其出口形状（passed/severe/findings、SliceVerdict、DEFERRED 等），形状已从消费方逐字核对",
+    "barrier-loop.ts/ready-scheduler.ts/lane-resume.ts": "P1——调度细节，事件树分支不依赖（仅波屏障/就绪制停滞两个因子进 buildAllPass）",
+    "queue-runner.ts/queue-ledger.ts/morning-report.ts/run-finish.ts": "P2——班层级与报告面，超出本题「票层级＋用例层级」边界",
+    "l3-sample.ts/impl-context.ts/llm-continuation.ts": "P1——只取 early_stop/回喂盒字段级事实（已定向 rg 核锚）"
+  },
+  "graph": null,
+  "notes": "纯磁盘核账（未用图谱）。发现①注释-实然漂移：BuildTicketOutcome.budgetTripped 自述「调用方不再 park」（build.ts:48-49），但 rg 全仓仅 build.ts+测试引用该旗标，build-lane 对 FAIL 无预算红专门分支——预算红票实然仍走红票裁决入停车场，靠 budgetStopped 闸住 drainParked（build-lane.ts:272）兜住。发现②设计参照件（四级阶梯·锚 1bf2b32）与现 HEAD（f36a3ab）之间已落 W15/W16 多件（坐席A/B、M1/M5/M6、切片翻案、考题病/判据追加道）——本图以 HEAD 源码为准。",
+  "verdict": "PASS(定向)"
+}</pre>
+  <div class="bg-amber-50 border border-amber-300 rounded p-3 text-sm"><b>反向校验命令</b>（复用判定：先 <code>git diff f36a3ab..HEAD --name-only -- ts/src</code>，无漂移直接复用；有漂移只重跑漂移件）：
+    <br><code>rg -n "park.onRed" ts/src/night-shift/red-ruling.ts</code> ·
+    <code>rg -n "budgetTripped" ts/src -g '!*.test.ts'</code>（应仅 build.ts 两处）
+    <br><code>rg -n "SEAT_B_CAP|BACKFLOW_TICKET_CAP|NA_RATIO_GATE|THREE_KEY_FEEDBACK_MAX|INSTALL_RED_LIMIT" ts/src</code>（五帽值）
+    <br><code>rg -n "TICKET_TRANSITIONS" -A 14 ts/src/shared/ticket-state.ts</code>（转移表逐字）</div>
+</article>
+
+<!-- ═══════════════ §9 站6四拆/RAG 真跑验证四件清偿（2026-10-18 追加） ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">§9 · 站6四拆/RAG 真跑验证四件（B4）——2026-10-18 全清偿实锚 <span class="text-xs text-slate-400 font-sans">拍板#59 码件窗·已追认关窗（AFK-APPROVE-001）·本节=状态追加·正文零改</span></h2>
+  <p class="text-sm text-slate-600">四件对应 §2/§3 之外的班外链（⑫工位）与 RRM 机检面——班外链事件树：病卡→诊断→方案件→信号→复盘→<b>建议对账（第七件）</b>→深化（<span class="inline-block w-3 h-3 bg-amber-500 rounded-sm align-middle"></span> closed 闸）→业主报告聚合。四件真跑验证已全清偿，逐件实锚如下：</p>
+  <table class="tt w-full text-xs border border-slate-200">
+    <thead><tr class="bg-stone-100 text-left uppercase tracking-wider text-slate-500"><th class="p-2">件</th><th class="p-2">实跑形态</th><th class="p-2">实锚与产物</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-semibold">① --loop-root 实跑</td><td class="p-2">同一工作区（q-ws-v0w）只变环状态双路径对照：拦截路径（queue-59-r3-r2·running）深化节 <b>NA</b>（「环未 closed——深化挂 closed 闸（拍板#59①）」）·放行路径（queue-51·closed:true）深化 <b>落盘</b>（8 节零 NA·预算 12 实耗 8 调用）+同名 .html 并存自动生效——闸判定在 env 之前·对照变量唯一</td><td class="p-2 font-mono">postshift.mjs:38 deepenGate · 台账 2026-10-18 真跑笔</td></tr>
+      <tr><td class="p-2 font-semibold">② 聚合件实盘</td><td class="p-2">真实样本双态装配：v0w（PASS）判<b>绿</b>·v1w（FAIL+8 票 final park）判<b>停车</b>（final 优先于红·宁停如实）——真 contract runtime 五栏全渲染；后接线 postshift 执行面（每班必出·业主报告步）</td><td class="p-2 font-mono">render-owner-report.mjs · out/owner-report-实盘-{绿态,停车态}.html</td></tr>
+      <tr><td class="p-2 font-semibold">③ 真关环环报</td><td class="p-2">fail-loop 对真班绿根 queue-51（V0W·finalReds=0·gate_passed 在盘·原班 manifest）真关环——<b>state closed=true</b>+环报两件同闸同发（md 正本+.html 追认版）·退码 0·零 LLM 零新车——closed 转移唯一入口真实链路实证</td><td class="p-2 font-mono">fail-loop.mjs:199 closeLoop · ts/queue-51/repair-loop-state.json</td></tr>
+      <tr><td class="p-2 font-semibold">④ --graph 生产档</td><td class="p-2">首条真 RRM 档全链路 PASS 退码 0——入域真连命中（classifyFailure·ts 锚）+域外 W3 SKIP-DOMAIN 双路径实证；实盘抓真边界：pipeline-lab/scripts 为图基建内建硬排（重建 5608 节点验证不可覆）→机检域按锚点路径精确化（ts/ 前缀照查·图外如实 SKIP 不装检完）</td><td class="p-2 font-mono">rrm_lint.py --graph · 90-过程/research/维修记录-拍板59引擎码件四件-20261018.md</td></tr>
+    </tbody>
+  </table>
+  <div class="bg-blue-50 border border-blue-300 rounded p-3 text-sm"><b>后继落码（同窗顺延·同一拍板#59 编排图内）</b>：聚合件接线 postshift 执行面（业主报告步·真跑五栏齐）+ 第七件建议对账（reconcile-suggestions.mjs·deepread Verify 前置 8/8 PASS·复发/消失两态机判·采纳列留空候站6回流·深化缺席照账）——⑫⑩两卡挂账字样已清偿（check:cards 三绿）。留候如实：⑩注入（改 LLM 输入面=预算面变化另步）·采纳态回流（站6 闭环数据）。</div>
+  <div class="bg-amber-50 border border-amber-300 rounded p-3 text-sm"><b>反向校验命令</b>（复用判定：先 <code>git diff 2b314f6..HEAD --name-only -- pipeline-lab 91-脚本</code>）：
+    <br><code>node ts/../pipeline-lab/scripts/fail-loop.mjs --manifest runs/manifest-w16-b-v0.json --ts-dir ts --queue-root ts/queue-51 --loop-budget 1</code>（幂等重跑·应 status=green 退码 0）
+    <br><code>cat ts/queue-51/repair-loop-state.json</code>（closed:true·updatedAt 2026-10-18）
+    <br><code>python 91-脚本/rrm_lint.py --graph "90-过程/research/维修记录-拍板59引擎码件四件-20261018.md"</code>（PASS 退码 0·W3 SKIP 注记在）
+    <br><code>node pipeline-lab/scripts/render-owner-report.mjs --morning ts/runs/q-ws-v1w/report/morning-report.json --out /tmp/o.html</code>（终态=停车）</div>
+  <p class="text-xs text-slate-400">evidence：台账 2026-10-18 四笔（码件/复核/实盘/真跑）·commit 链 e1ed56c→2b314f6+6163c9d/8a17242 · 测试基线 pipeline-lab 297/294+3 既有红（contract-lock 跨仓依赖·与本窗无关）·ts 1065/1065·tsc 0 错</p>
+</article>
+
+<footer class="text-center text-xs text-slate-400 pt-4 space-y-1">
+  <p>AFK无人值守引擎V1.0 · 90-过程/research · 红票事件树全景 v2 排版（票层级 × 用例层级）· 内容=2026-10-16 深读实然件（repo_head f36a3ab·零改）· 排版=2026-10-17 architecture-review 式重排（原文件保留不动）· <b>§9=2026-10-18 追加（B4 真跑验证四件清偿实锚·append-only 存照）</b></p>
+  <p>深读口径 Verify · 本件为实然梳理件（不新增拍板点）· 话术：机械设备=确定性代码 · Agent员工=LLM 调用面 · 自然人审核=拍板/追认 · 红线：判卷语义一寸不动·只加严不加松</p>
+</footer>
+
+</main>
+</body>
+</html>

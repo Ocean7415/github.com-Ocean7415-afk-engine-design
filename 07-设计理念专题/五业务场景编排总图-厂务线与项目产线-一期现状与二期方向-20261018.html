@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<!-- meta: window=W-007 type=理念分析 status=verified verdict=对话分析（不涉拍板·行动项候批） -->
+<title>五业务场景编排总图 · 厂务线与项目产线（一期现状 vs 二期方向）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1120px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:18px 0 8px;color:#1d2330}
+p,li{font-size:14px}code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+blockquote{border-left:3px solid #4a7dbe;background:#eef3fa;padding:8px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px;color:#41506b}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}th,td{border:1px solid #e4e7ee;padding:6px 9px;vertical-align:top}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.tag.purple{background:#f3e8ff;color:#6b21a8}.tag.blue{background:#e8f0fb;color:#2b5fa8}.tag.green{background:#e9f7ee;color:#2e7d4f}.tag.red{background:#fdeceb;color:#b03a34}.tag.amber{background:#fef3c7;color:#92400e}.tag.dark{background:#0f172a;color:#fff}
+.small{color:#8a90a0;font-size:12.5px}
+.fb{display:inline-block;border:1px solid #e4e7ee;border-radius:8px;padding:5px 10px;margin:3px;font-size:12.5px;background:#fff;vertical-align:middle}
+.fb.pi{border-color:#d8c7f0;background:#faf5ff}.fb.eng{border-color:#a8c4e8;background:#eff6ff}.fb.human{border-color:#94a3b8;background:#0f172a;color:#fff}
+.farr{color:#8a90a0;font-size:15px;margin:0 2px}.fline{margin:6px 0}
+</style>
+</head>
+<body>
+
+<h1>五业务场景编排总图 · 厂务线与项目产线 <span class="small">一期现状（谁开窗/谁自动） vs 二期方向</span></h1>
+<p class="small">理念分析件 · 2026-10-18 · v2 增补 §六-§八（数据落盘与长期记忆/飞书表格/未来优化）· 07-设计理念专题 · 素材源=本日深读（站12流程包 113 件 P0/P1 全读）＋引擎拍板表 #40-#70＋执行台账＋W16/班内维修窗/知识基建三交接件＋B1 实测 research＋L2 E2E 真班（W-011）· 业主令「5 种编排写清楚＋一期谁用 PI 开窗谁用引擎＋二期怎么做更好」</p>
+
+<h2>§0 一句话总纲</h2>
+<blockquote><b>两条产线、五个场景、三种执行者</b>：项目产线（造客人的 APP）的站1/2 是 <b>PI 开窗</b>（L1 子窗·您在场）、站3-6 是<b>引擎全自动</b>（夜车·已放量实证）；厂务产线（造工厂自己）的全部分措都是 <b>PI 开窗</b>（人开/队列领单），今天起有了 L2 无人值守首班。<b>二期主线＝把五个场景的「重活半自动」升成「机械验收闭环的全自动」</b>，人退到两个集中时点（集中拍板＋晨间追认）。</blockquote>
+<ul>
+<li><b>两条产线共用一套记忆地基</b>：账本层（append-only 永不涂改）/状态层（可回改·飞书投影）/知识层（绿出口写入闸·status 门禁）/卷宗层（过程档案）——管理口径见 §六-§八。</li>
+</ul>
+
+<h2>§一 五场景总览矩阵</h2>
+<table>
+<tr><th style="width:13%">场景</th><th style="width:20%">一期编排（谁干什么）</th><th style="width:17%">PI 开窗做的</th><th style="width:15%">引擎做的</th><th style="width:15%">人（自然人审核）</th><th>二期主攻</th></tr>
+<tr><td><b>① 厂务·新建</b><br/><span class="small">造新工具/新流程件</span></td><td>对比件/派发书→拍板→PI 子窗施工→selftest→commit（<b>L2 工具层白名单内·已真班</b>）</td><td><b>全部</b>（本日三新件实证：spawn_window/pi_runner/approval_push）</td><td>不参与（自举边界·引擎不造引擎工具）</td><td>拍板＋目验</td><td>meta_lint＋状态不变量机检（收尾件）</td></tr>
+<tr class="small"><td><b>② 厂务·修复</b><br/><span class="small">修 AFK 引擎 bug</span></td><td>病卡/晨检红→深读取证→修法对比件→拍板→PI 维修窗→四关＋真班重放→追认</td><td><b>全部</b>（深读/施工·人开窗首验）——#63 判卷快照先例</td><td><b>真班重放</b>（用夜车验证夜车·唯一自举交汇）＋病卡自动立卡</td><td>拍修法＋追认</td><td><b>最大果子</b>：ts 码件窗入白名单＋四关固定节＋链式重放＋implement-spec 式并发</td></tr>
+<tr><td><b>③ 厂务·优化</b><br/><span class="small">优化引擎/流程</span></td><td>审计/复盘→优化对比件→拍板→PI 窗→评估判据→固化</td><td><b>全部</b>——RAG 调优（0.512→0.738 达标线）先例</td><td>runs 数据源供复盘＋94 库消化结论</td><td>拍板＋追认</td><td>自举飞轮闭环：优化建议→机械立票→审批卡→自实施（rule-gap-ticket 已建·候 #68③ 演示）</td></tr>
+<tr class="small"><td><b>④ 项目·新建</b><br/><span class="small">新 APP 从零</span></td><td><b>站1/2 十步全开</b>（HITL·A窗＋L1 子窗）→交件包→<b>站3-6 夜车全自动</b>→晨报追认（拍板#45 新项目包）</td><td><b>站1/2 全部</b>：样品窗/A窗定稿/B1B2 调研（L1 已实证）/综合分析件/原型/圆桌/V1→V2/交件归档</td><td><b>站3-6 全部</b>：导入闸→拆单→装备→施工→自愈→切片验证→判定梯→晨报（放量 7 包 V0R-V6R 实证）</td><td>拍板（对比件/verdict）＋追认＋push</td><td>切片器 RRM 升级施工（#64 已批候）＋⑰交付文档员（#56 候拍）＋规划会集中拍板常态化</td></tr>
+<tr><td><b>⑤ 项目·修复</b><br/><span class="small">修已交付 APP</span></td><td><b>修复包快道</b>（#45：根因定位→修复清单即票·免切票→修复包模板）→夜车<b>修复班次 Vn.1</b>（回归门防弄坏）</td><td>站1/2 快道三件（diagnosing-bugs 定根因→修复清单→设计书-修复包模板）</td><td>夜车重跑＋回归门＋红账本/翻案环自动</td><td>晨检问题确认＋修复包拍板</td><td>检查单→修复清单机械化＋修复包快道 L1 子窗化</td></tr>
+<tr class="small"><td><b>⑥ 项目·优化</b><br/><span class="small">优化已交付 APP</span></td><td><b>优化包</b>（#45：deepread 定点读码强制在先＋基线声明＋只拆变更范围票＋回归清单转切片考题）→夜车增量契约</td><td>站1/2 优化包编制（deepread 在先）</td><td>夜车增量班次（ajv 验增量契约）＋回归门</td><td>优化范围拍板</td><td>基线声明/增量契约机械化＋回归清单转考题自动化</td></tr>
+</table>
+<p class="small">注：业主口径的五场景＝①②厂务（新建/修复）＋④⑤⑥项目（新建/修复/优化）；③厂务优化并入本表凑齐三×二对称。厂务场景的「新建/修复/优化」对象＝AFK 引擎与工具链自身（ts/src、91-脚本、93/94 库、流程文档）。</p>
+
+<h2>§二 项目产线三场景编排（④⑤⑥）</h2>
+<h3>2.1 共同骨架：站1/2（PI）与站3-6（引擎）的分界线＝交件包</h3>
+<div class="figwrap">
+<div class="fline"><span class="fb human">业主：拍板/追认/push</span><span class="farr">→</span><span class="fb pi">站1/2 规划（PI 开窗·HITL·您在场）<br/>样品窗/A窗/B1B2调研/综合分析/原型/圆桌/设计书/交件归档</span><span class="farr">→</span><span class="fb eng">交件包（契约+考题+设计书·出题权冻结）</span><span class="farr">→</span><span class="fb eng">站3-6 夜车（引擎全自动·无人值守）</span><span class="farr">→</span><span class="fb human">晨报追认</span></div>
+<p class="small" style="margin:6px 0 0">三场景只在<b>站1/2 段的编制</b>不同（下表）；<b>站3-6 段完全同一台引擎</b>——判卷全自动、红绿零 LLM 裁决。</p>
+</div>
+<h3>2.2 三场景站1/2 编制差异（拍板#45 三包编制）</h3>
+<table>
+<tr><th style="width:14%">场景</th><th>站1/2 编排链（PI 开窗）</th><th style="width:28%">与十步全开的差异</th></tr>
+<tr><td><b>④ 新建</b><br/>（新项目包）</td><td>样品窗 P-S1 → A窗需求定稿＋七位能力开关 → B1/B2 调研（L1 可见子窗）→ <b>综合分析件 P-A3.5（#50）</b> → 决策收口 → 原型 → 技术栈定案 → 设计书 V1 → 圆桌 V2（⟲≤3）→ 备份 → 交件归档（四闸 #48）</td><td>＝十步全开（基准形态）</td></tr>
+<tr><td><b>⑤ 修复</b><br/>（修复包·Vn.1）</td><td><b>快道三件</b>：diagnosing-bugs 根因定位 → 修复清单即票（免切票）→ 设计书-修复包模板 → 交件归档（四闸）</td><td>免 wayfinder/research/deepread/原型/grilling/样品窗；回归清单转切片考题随包</td></tr>
+<tr><td><b>⑥ 优化</b><br/>（优化包）</td><td>Step1-2 照走 → <b>Step4 换引擎：deepread 定点读码强制在先</b> → 变更范围票 → 回归清单转切片考题 → 设计书-优化包模板 → 交件归档（四闸）</td><td>只拆变更范围票；深化普查不入本班；codebase-design 接缝设计</td></tr>
+</table>
+<h3>2.3 站3-6 段（引擎·三场景共用同一台）</h3>
+<p>导入闸（版本闸2.0/签收单三章/切片考题锚点）→ 拆单（波次依赖图）→ 装备（五槽/probes/考题编译）→ 站4 施工（builder 主槽＋copy 槽＋自愈环⟲≤3＋对题闸「只扣绿永不放红」＋硬化道 CRAP/变异）→ 站5 验证（起服守卫→切片①功能门→切片②E2E→回归翻案→R13 判定梯 PASS/PASS*/FAIL）→ 站6（晨报七栏＋机器自决五栏＋收车四连反投班次表/病卡）。<b>修复/优化包的增量特性</b>：增量契约 ajv 验过、回归门保「不许弄坏的既有功能」、修复班次记 Vn.1。</p>
+
+<h2>§三 厂务线场景编排（①②③）</h2>
+<h3>3.1 共同骨架：L1/L2 双拉起＋任务书闸＋方向题闸（拍板#69/#70·本日落地）</h3>
+<div class="figwrap">
+<div class="fline"><span class="fb human">业主：对比件批「准」→拍板号（对话或审批卡手机批）</span><span class="farr">→</span><span class="fb eng">窗队列「待实施(已批)」</span><span class="farr">→</span><span class="fb pi">pi_runner 领单（L2·白名单）或 A窗拉起（L1·在场）</span><span class="farr">→</span><span class="fb pi">pi 子窗按任务书施工（四关自跑·方向题→推卡🔁）</span><span class="farr">→</span><span class="fb eng">收口五件套＋状态反投</span><span class="farr">→</span><span class="fb human">晨间看账/追认</span></div>
+<p class="small" style="margin:6px 0 0">与站3-6 的两个交汇点：<b>验证交汇</b>＝ts 码件改完发真班重放班（夜车验证夜车·#63/#64 先例）；<b>生效交汇</b>＝新引擎代码随下一次正式发班生效。<b>不直接接站3-6</b>：夜车吃项目交件包，不吃厂务任务书（自举边界·施工队不改自己的考卷）。</p>
+</div>
+<h3>3.2 三场景编排差异</h3>
+<table>
+<tr><th style="width:14%">场景</th><th>编排链（PI 开窗）</th><th style="width:30%">实证锚</th></tr>
+<tr><td><b>① 新建</b><br/>（新工具/新件）</td><td>对比件/派发书→三关机检→拍板→<b>L2 领单</b>（工具层在白名单）→pi 子窗施工（selftest 先行）→收口五件套→commit</td><td>本日三新件（spawn_window v4/pi_runner/approval_push）＋W-011 E2E 真班（标记件带四键元数据）</td></tr>
+<tr><td><b>② 修复</b><br/>（修引擎 bug）</td><td>病卡/晨检红→<b>深读取证 Verify+Auditor</b>（先读后聊·#69①）→修法对比件→拍板→<b>pi 维修窗</b>（班内/班外任务书·四关自跑）→<b>真班重放验证</b>→追认关窗</td><td>#63 判卷快照（深读两份→四案→验收四关绿→真班零幽灵）；W16 派班失败三连修</td></tr>
+<tr><td><b>③ 优化</b><br/>（优化引擎/流程）</td><td>审计/复盘报告（14 轮优化建议/架构审查）→优化对比件→拍板→pi 窗施工→<b>评估判据达标线</b>（不达标如实不上线）→固化三同步</td><td>RAG 调优（0.512→0.738·达标线 0.75/0.70 拍板#64）；体量拆件清偿（#63 验收窗）</td></tr>
+</table>
+<p class="small">厂务特有纪律：ts/src 码件=四关（tsc/vitest/lint/体量）＋drift＋真班重放；知识件=rrm_lint 0 错误＋status=verified；方向题=推审批卡🔁停（#70③ 三模板固定节）；红线=判卷语义/出题权/预算三路零触碰。</p>
+
+<h2>§四 一期「谁开窗」总账（PI vs 引擎 vs 人）</h2>
+<table>
+<tr><th style="width:22%">环节</th><th style="width:14%">执行者</th><th>说明</th></tr>
+<tr><td>项目站1/2 全部（含样品窗/调研/分析件/原型/圆桌/设计书）</td><td><span class="tag purple">PI 开窗</span></td><td>L1 可见子窗（B1 演示）＋A 窗常驻；HITL·您在场拍板</td></tr>
+<tr><td>项目站3-6（拆单/装备/施工/自愈/验证/晨报）</td><td><span class="tag blue">引擎全自动</span></td><td>夜车·放量 7 包实证；人只晨报追认</td></tr>
+<tr><td>厂务新建（工具/文档/脚本）</td><td><span class="tag purple">PI 开窗</span>（L2 白名单·可无人）</td><td>本日三新件＋W-011 真班</td></tr>
+<tr><td>厂务修复（ts 码件）</td><td><span class="tag purple">PI 开窗</span>（人开窗首验·<b>不在 L2 白名单</b>）</td><td>#63 先例：深读→修法→四关→真班重放</td></tr>
+<tr><td>厂务优化</td><td><span class="tag purple">PI 开窗</span></td><td>评估判据达标线门禁</td></tr>
+<tr><td>项目修复/优化的站1/2 快道</td><td><span class="tag purple">PI 开窗</span></td><td>修复包/优化包编制（#45）</td></tr>
+<tr><td>拍板/追认/push</td><td><span class="tag dark">人</span></td><td>集中两时点：规划会/审批卡＋晨间15分钟</td></tr>
+</table>
+<p class="small">一句话：一期现状＝<b>引擎只干了项目产线的站3-6</b>；厂务线全部、项目产线的站1/2 全部＝PI 开窗（人开或 L2 领单）。二期就是把「PI 开窗」里可机械验收的部分逐步交给队列+判卷机械。</p>
+
+<h2>§五 二期工程方向（五场景怎么做更好）</h2>
+<h3>5.1 场景各自的二期编排（增量件）</h3>
+<table>
+<tr><th style="width:14%">场景</th><th>二期编排增量</th><th style="width:22%">前置/依赖</th></tr>
+<tr><td><b>④ 项目·新建</b></td><td>①切片器 RRM 升级施工（#64 已批：上线线 0.75/兜底 0.70）②⑰交付文档员（#56 候拍·机械骨架+LLM 人话+机检）③规划会集中拍板常态化（审批卡）④B1/B2 深度硬字段机检化（对比件⑤候拍 #70站12侧）</td><td>切片器施工→出题面升级；审批台已实证</td></tr>
+<tr><td><b>⑤ 项目·修复</b></td><td>①晨检/病卡→修复清单<b>机械草稿</b>（翻译权仍在 A窗·只起草）②修复包快道 <b>L1 子窗化</b>（diagnosing-bugs 子窗自动定位）③回归清单转考题自动化</td><td>病卡表已有（#43）；A-DRAFT 台账销账进度</td></tr>
+<tr><td><b>⑥ 项目·优化</b></td><td>①基线声明/增量契约<b>模板机械化</b>（口径已定 #42）②deepread 定点读码产物自动转变更范围票草案③回归清单→切片考题转译器</td><td>三包编制已立（#45）</td></tr>
+<tr><td><b>① 厂务·新建</b></td><td>meta_lint（三键头+状态不变量·小件）＋飞书窗卡台+回写桥（候业主定 app/位置）＋白名单窗型扩容</td><td>#69/#70 全链已真班</td></tr>
+<tr><td><b>② 厂务·修复</b></td><td><b>二期最大果子</b>：ts 码件窗入 L2 白名单——任务书四关固定节（子窗自跑四关全绿才收口）＋链式真班重放触发＋发班报备自动化＋implement-spec 式前沿工单并发（多子窗并行·合并子代理汇总）</td><td>#63 四关纪律＋#64 重放先例＋implement-spec 已装库</td></tr>
+<tr><td><b>③ 厂务·优化</b></td><td>自举飞轮转起来：深读结论规约行（#68①已落）→rule-gap-ticket 机械立票（已建）→<b>审批卡推批（#69③ 已建）</b>→机械代录→自实施→借鉴件台账第五件——**建议→立票→修→验全环零人搬运**（端到端演示=窗队列 W-005）</td><td>#68 三改动码面就位；演示候跑</td></tr>
+</table>
+<h3>5.2 共性基建件（跨场景复用·建议二期统筹）</h3>
+<ul>
+<li><b>判卷机械化清单化</b>：厂务任务书 accept 一律改写为「可机械判定」条目（测试/机检/计数）——任务书质量门槛=三关校验+对照系矩阵（#52②）；</li>
+<li><b>飞书窗卡台＋回写桥</b>（收车四连的厂务镜像）：状态自动反投·审批回流——候业主定 app/位置；</li>
+<li><b>meta_lint</b>：三键头+状态不变量（探讨中无拍板号/非探讨中缺拍板号=违例 WARN）——#69⑤ 挂账；</li>
+<li><b>知识闭环</b>：94 RAG（0.738）＋93 病卡＋双图谱——厂务修复的「先查同病史」接线（班外维修入口·#59②）；</li>
+<li><b>预算与报备</b>：AUTO_BUDGET_LINE=100 万/窗·超帽🔁宁停；发班报备→台账事件+晨报（自动化）。</li>
+</ul>
+<h3>5.3 二期原则（五场景通用·红线不变）</h3>
+<ul>
+<li><b>判卷面机械、出题权人</b>：凡能写成 exit code/机检计数的判据→机械；方向对错/需求变更→人；</li>
+<li><b>拍板集中两时点</b>：规划会（当面/审批卡）＋晨间 15 分钟（追认+新卡）——其余时间人离场产线自转；</li>
+<li><b>白名单渐进</b>：先轻后重（工具层→文档层→调研层→<b>ts 码件窗</b>），每扩一类先真班三班再固化；</li>
+<li><b>fail-closed 三不</b>：永不装绿·永不停等·永不静默放弃；方向题推卡🔁·超时超帽🔁如实；</li>
+<li><b>push 业主亲自</b>；探讨中→已批永不自动化。</li>
+</ul>
+
+<h2>§六 数据落盘与长期记忆（一期现状）</h2>
+<p>记忆分四层：账本层（给机器查的底账）· 状态层（现在到哪了）· 知识层（维修员的大脑）· 卷宗层（过程档案）——各层载体、写入闸与读者如下：</p>
+<table>
+<tr><th style="width:12%">层</th><th style="width:30%">载体（落盘位置）</th><th>装什么</th><th style="width:14%">谁写</th><th style="width:14%">谁读</th><th style="width:12%">生命周期</th></tr>
+<tr><td><b>账本层</b><br/><span class="small">给机器查的底账</span></td><td>runs/〈班次〉/events.jsonl（事件白名单 115 型·append-only）· 90-过程/执行台账.md · 拍板记录表.md（两表：引擎/站12）· 核账发现台账.md</td><td>谁在哪步干了什么/判定/费用/决策/发现</td><td>引擎各站＋各窗（白名单内·fail-closed）</td><td>续跑判定/晨报渲染/复盘/核账开工</td><td>永久 append-only（涂改=终局）</td></tr>
+<tr><td><b>状态层</b><br/><span class="small">现在到哪了</span></td><td>窗队列.md（厂务·#69）· 进度总览.md · 飞书班次表/病卡表（投影）</td><td>五场景任务当前态</td><td>各窗＋机械回写（收车四连·pi_runner）</td><td>业主手机/晨报/runner 领单</td><td>随任务闭环</td></tr>
+<tr><td><b>知识层</b><br/><span class="small">维修员的大脑</span></td><td><b>班内</b>：93-班内兜底知识库（病卡 RRM·verified only）＋app 代码图谱；<b>班外</b>：94-班外经验库RAG（research 45 件·legacy 降权 0.85＋RRM 轨）＋引擎双图（afk-engine-ts＋仓根图）；另有 92-痛点库（面试提炼）</td><td>病根/修法/选型/方法论/规则缺口</td><td><b>绿出口写入闸</b>（#59②：closed＋追认才许写·红班零写入·票内不读 RAG）</td><td>班内维修员开工首查 / 班外诊断前读 / 深读取证</td><td>长期·status 门禁（非 verified 不入索引·#59③）</td></tr>
+<tr><td><b>卷宗层</b><br/><span class="small">过程档案</span></td><td>90-过程/handoffs（对比件+交接书+任务书）· research（深读/调研档）· 窗产物目录 · 包源正本（提交版本文件·唯一持久正本）· runs/班次 ws（<b>易失·每班清区</b>）· pi 会话档（JSONL·持久实证 F6）· _快照/</td><td>全过程证据链</td><td>各窗</td><td>深读取证/审计/复盘</td><td>留档·冷归档另议</td></tr>
+</table>
+<div class="figwrap">
+<div class="fline"><span class="fb human">业主拍板</span><span class="farr">→</span><span class="fb">拍板表（账本）</span><span class="farr">→</span><span class="fb">窗队列（状态）</span><span class="farr">→</span><span class="fb pi">子窗施工</span><span class="farr">→</span><span class="fb">产物＋台账（账本）</span><span class="farr">→</span><span class="fb eng">绿出口闸（closed+追认）</span><span class="farr">→</span><span class="fb eng">93/94 知识层</span><span class="farr">→</span><span class="fb pi">维修员开工首查</span><span class="farr">→</span><span class="fb pi">修下一班</span></div>
+<div class="fline"><span class="fb eng">夜车</span><span class="farr">→</span><span class="fb">events.jsonl（账本）</span><span class="farr">→</span><span class="fb human">晨报（人看）</span><span class="farr">＋</span><span class="fb eng">病卡自动建卡（知识）</span><span class="farr">＋</span><span class="fb">班次表反投（状态）</span></div>
+</div>
+<p><b>写入闸三零</b>：红班零写入 · 未追认零写入 · 票内不读 RAG（抄作业红线·#59②）。<b>检索消费三模式</b>（痛点02§6·选型判据=「开工时构造得出 query 吗」）：①全量读——台账/队列（未知的未知）②过滤检索——94 RAG（已知的已知·#64 metadata 预过滤）③图谱精查——符号/调用链（#57①）。</p>
+
+<h2>§七 飞书表格怎么管（一期现状）</h2>
+<table>
+<tr><th style="width:14%">表</th><th style="width:14%">一行=</th><th>关键列/机制</th><th style="width:18%">谁写</th><th style="width:14%">谁读</th></tr>
+<tr><td><b>班次表</b><br/><span class="small">工单表演化·#43</span></td><td>一个班次</td><td>班次ID/包ID/包型/拍板号/状态机（收件箱→待实施→施工中→过闸✅/FAIL⛔/维修中🔁）/轮数·WBS摘要/终局红票/晨报链接/诊断链接——<b>收车四连自动反投</b></td><td>人建卡＋桥自动回写</td><td>业主手机/规划会</td></tr>
+<tr><td><b>病卡表</b></td><td>一个病</td><td>病ID/域A引擎·B书·C施工/来源班次/根因/置信度/状态机——收车链自动建卡</td><td>收车链＋维修工程师流转</td><td>业主/维修员</td></tr>
+<tr><td><b>用例库表</b><br/><span class="small">#43 新建</span></td><td>一道考题资产</td><td>C-KEY/类型四档/考题文件锚点/最近结果——<b>真身留班次文件夹·表只存锚点</b></td><td>桥回写</td><td>站5/出题面</td></tr>
+<tr><td><b>运行流水表</b><br/><span class="small">#43 新建</span></td><td>一次运行</td><td>runId/班次ID/轮/判定/红票数/命中率/晨报链接——只收正式班次</td><td>桥</td><td>业主/复盘</td></tr>
+<tr><td><b>灵感池·待办</b></td><td>一个想法</td><td>状态六值（未分诊/调研中/待拍板/已拍板/later/wontfix）</td><td>人＋分诊</td><td>规划会</td></tr>
+<tr><td><b>AFK审批台</b></td><td>一张审批卡</td><td>五栏＋全文hash＋审批状态（准/改/否）——回程首通 AFK-APPROVE-001</td><td>机械起草＋业主批＋机械代录回拍板表</td><td>业主手机/代录链</td></tr>
+<tr><td><b>（候建）AFK窗卡台</b><br/><span class="small">#69②</span></td><td>一窗（厂务线）</td><td>窗ID/状态/产物锚/更新——回写桥单向投影·缺省 dry-run</td><td>回写桥</td><td>业主手机</td></tr>
+</table>
+<p><b>管理四原则</b>：①本地=事实源，飞书=单向投影（内容类字段一概不进表·真身留本地文件夹——用例库表先例）；②审批回流是唯一例外方向（事件抄录·#60补 单写者锁）；③刻意不建包表/项目表（状态可由班次推导·表越少反投链越短·#38）；④晨报给人看、账本给机器查、表给业主手机——受众分离。</p>
+<p class="small">一期缺口：收车四连只覆盖项目线——厂务线状态回写靠人；窗卡台候建（#69②）。</p>
+
+<h2>§八 未来怎么优化管理</h2>
+<h3>8.1 短期小件（素材已齐·各候对比件）</h3>
+<ul>
+<li><b>supersedes/superseded_by 进 RRM frontmatter＋94 过滤键</b>——新旧版关系机制化（现状：深度文档更新 v1/v2 无机制·RAG梳理缺口③）；</li>
+<li><b>07-理念专题 HTML 摄入轨道决策</b>——94 建索引 required_exts=[".md"]（build_index.py:54）把理念件<b>静默收不到无报错</b>（缺口⑤实锚）；</li>
+<li><b>92-痛点库归属明确</b>——面试资料库非知识正本，建议明确不入两库（缺口⑥）；</li>
+<li><b>meta_lint 落地</b>（#69⑤）：三键头→metadata_dict→RAG 过滤检索——把本会话规约的 window/type/status 变成可过滤字段；</li>
+<li><b>legacy 45 件锚点漂移登记台账</b>——锚点未校验提示（加提示不加重建）。</li>
+</ul>
+<h3>8.2 中期（需对比件拍板）</h3>
+<ul>
+<li><b>拍板表进检索面</b>（缺口①·最大盲区）：修订链真实存在（#10②→#11 修订·#35/#37 预算顶→#40 废止）但不在任何检索面——语义检索捞到被废止行会当现行法；甲案=不进向量库走机械号查＋命中被修订行强制同链返回（推荐）·乙案=整行成块＋拍板号过滤键；</li>
+<li><b>01-蓝图权威件进摄取范围</b>（缺口②）——班外修引擎查不到设计依据；</li>
+<li><b>窗卡台＋回写桥</b>——厂务线状态反投自动化（对齐项目线收车四连）；</li>
+<li><b>pi 会话档纳入复盘源</b>——今日实证持久（B1/W-011 档在案）；复盘深读可直接引会话档为证据层。</li>
+</ul>
+<h3>8.3 长期（方向性）</h3>
+<ul>
+<li><b>记忆生命周期自动化</b>：TTL/临时→长期晋级/归档——对标设计书 11.3 存储矩阵「每个产物有且只有一个权威存储位」思想，把记忆位也矩阵化；</li>
+<li><b>跨产线统一检索入口</b>：一个 query 查项目＋厂务双线（94 摄取范围扩界后）；</li>
+<li><b>知识采纳率回流闭环</b>：⑩卡「建议采纳率需站6追认回流」——管道不存在（#56 缺口·候⑯/撤编拍板）；</li>
+<li><b>台账升 RRM 档</b>（拍板#52 挂账·候切片器 RRM 新档入库）。</li>
+</ul>
+<div class="small">原则重申：消费模式决定检索选型（痛点02§6）·写入闸永不放松（红班零写入）·单向投影·账本 append-only 永不涂改。</div>
+
+<h2>§九 本件边界</h2>
+<ul>
+<li>本件=理念分析视图（非拍板件）——§五全部行动项**候业主点题后各出对比件**，未拍板不立卡不入列队（#39）；</li>
+<li>一期现状描述以拍板记录表/执行台账/窗队列为准（append-only 权威），本件与其冲突处以权威件为准；</li>
+<li>厂务线一期白名单边界、站1/2 五文件未提交状态等如实沿用 handoff 记载；</li>
+<li>技能事实：implement/implement-spec 已装库（disable-model-invocation=true·人触发）——执行纪律入任务书固定节比依赖 skill 调用更可靠（L2 子窗自动调不到该类 skill）。</li>
+</ul>
+
+<h2>§十 来源锚点</h2>
+<table>
+<tr><th>主张</th><th>锚点</th></tr>
+<tr><td>三包编制（新建全开/优化 deepread 在先/修复快道）</td><td>拍板#45 · 站12包 README 三包技能编制 · 规划段执行手册 §二</td></tr>
+<tr><td>修复班次 Vn.1/包班两级/增量契约</td><td>站12拍板#39/#41/#42 · 话术规范 §2.6</td></tr>
+<tr><td>夜车站3-6 全链</td><td>总岗位映射表 §一/§二 · B1 research（queue-runner/judge-guard/slice 实锚）</td></tr>
+<tr><td>放量实证</td><td>W16 交接 §一（六班全量+效益对照报告 V0R-V6R）</td></tr>
+<tr><td>厂务 L1/L2 双模式</td><td>拍板#69/#70 · research/调研-可见子窗拉起形态-本机实测-B1-20261018.md · E2E 标记=e2e-标记-W011-2100.md</td></tr>
+<tr><td>自举飞轮</td><td>拍板#19/#68 · 对比流程-自举飞轮最小修复-20261018.html</td></tr>
+<tr><td>深度治理/先读后聊</td><td>拍板#52/#69① · 痛点02</td></tr>
+<tr><td>两层维修员/病卡三域</td><td>拍板#52/#56 · 话术规范 §2.7</td></tr>
+<tr><td>implement/implement-spec</td><td>~/.agents/skills/implement(SKILL.md)/implement-spec（disable-model-invocation=true）</td></tr>
+<tr><td>记忆四层/写入闸三零/检索三模式</td><td>拍板#59②（绿出口/红班零写入/票内不读）· 93/94 README · 痛点02 §6 · #64 metadata 预过滤</td></tr>
+<tr><td>飞书表架构/收车四连/刻意不建</td><td>拍板#38/#43 · 话术规范 §2.6/§2.7 · AFK-APPROVE-001（回程首通）</td></tr>
+<tr><td>记忆面三缺口两小项</td><td><code>90-过程/handoffs/handoff-班内班外RAG历史知识梳理-20261018.md</code> §四（全部候对比件拍板）</td></tr>
+<tr><td>三键头规约/pi 会话档持久</td><td><code>90-过程/产物命名与元数据规约.md</code>（#69⑤）· B1 research F6/F7 · 会话目录实锚</td></tr>
+</table>
+
+<p class="small">五业务场景编排总图 · 07-设计理念专题 · 2026-10-18 · 窗=W-007 延伸分析件（行动项候批）· 话术：机械设备/Agent员工/自然人审核 · 旧词对照：夜车=一个里程碑的实施（v1.2 拍板#36）</p>
+</body>
+</html>

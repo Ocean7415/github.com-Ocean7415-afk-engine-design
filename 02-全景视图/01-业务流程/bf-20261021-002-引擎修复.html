@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261021-002 · 业务流程卡 · 引擎修复（大业务→本仓作业面）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261021-002 · 业务流程卡 · 引擎修复（大业务→本仓作业面）</h1>
+<div class="meta"><b>id</b> bf-20261021-002 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 7f51c83 · <b>run_id</b> queue-93-w042</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；复考（交活重考闸·L2）。</p>
+</blockquote>
+<h1>业务流程卡 · 引擎修复（大业务→本仓作业面）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：五类大业务中「治引擎自身坏损」的一类——判卷语义/拉起链/账本/通道等病灶驱动票，路由到<strong>本仓</strong>施工。<strong>为什么存在</strong>：修复与优化必须分流：修复有病灶可循（病卡/维修环/复跑对账）、涉及 <code>ts/</code> 码面时加严（四关固定节+两级判卷门）——加严条款不能误伤优化票，分流是加严的前提。<strong>边界</strong>：靠缺省兜不住语义——修复类票必须显式写第 9 列（缺列旧格式缺省=引擎优化）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>实战：W-015（改包道末轮回滚·ts 码件窗白名单首票）——本类加严条款（四关固定节）首次真票演练</td><td><code>90-过程/执行台账.md:239</code></td></tr><tr><td>2</td><td>实战：W-016（V1 追全绿重放班）与 W-033（隧道B状态误判·cmd 三行段修复）——本类两窗收口</td><td><code>90-过程/执行台账.md:239</code>/<code>:573</code></td></tr><tr><td>3</td><td>病灶入口链：班内 FAIL→维修环 fail-loop（诊断 <code>pipeline-lab/scripts/diagnose.mjs:1</code> 起）→病卡→立票——病灶驱动是本类的立票正门</td><td>本卡定义层/实例层</td></tr></tbody></table>
+<h2>定义层（这个类是什么）</h2>
+<ul><li>枚举正本=<code>BIZ_KINDS</code>（<code>91-脚本/pi_runner.mjs:99</code>·拍板#76①）；本类=<code>"引擎修复"</code>。</li><li>判据：修<strong>引擎自身</strong>的缺陷（判卷语义/拉起链/账本/通道等坏损），非宿主 App、非增量优化（优化走 [bf-20261021-001]）。</li><li>窗队列实例值在第 9 列（<code>parseRows</code> <code>91-脚本/pi_runner.mjs:92</code>·缺列旧格式缺省=引擎优化——<strong>修复类票必须显式写列</strong>，靠缺省兜不住语义）。</li></ul>
+<h2>路由层（派工器怎么路由它）</h2>
+<ul><li><code>routeOf("引擎修复", …)</code> → <code>{ok:true, cwd:repoCwd, lane:"本仓"}</code>（<code>91-脚本/pi_runner.mjs:103</code>·拍板#76②）——与引擎优化同岸，<strong>无需宿主固定节</strong>。</li><li>ts 码件窗加严（#71④ 开闸条款·<code>91-脚本/pi_runner.mjs:87</code> WHITELIST_NOTE）：任务书必须带四关固定节（测试先行跑红才动码＋tsc/vitest/lint/体量自跑全绿才收口）·判卷=胶囊/重放两级门（R-F 梯=<code>91-脚本/rf_ladder.mjs</code>）。</li><li>机检自证：selftest 案6 断言（<code>91-脚本/pi_runner.mjs:528</code>）。</li></ul>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+    BUG[病灶<br/>病卡/FAIL/坏损] --> DIAG[维修环诊断<br/>根因报告]
+    DIAG --> TIK{立票<br/>显式写大业务列}
+    TIK -->|漏写列| DEF[缺省=引擎优化<br/>语义丢失·防]
+    TIK -->|拍板| EN["窗队列 待实施(已批)"]
+    EN --> PI[派工器领单<br/>routeOf→本仓]
+    PI --> TS{涉 ts/ 码面?}
+    TS -->|是| SG[四关固定节加严<br/>测试先行+tsc/vitest/lint/体量]
+    SG --> JV[两级判卷门<br/>胶囊/重放 R-F 梯]
+    TS -->|否| WIN[普通施工窗]
+    JV --> WIN
+    WIN --> ACC[收口复考<br/>✅/🔁]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>病灶</td><td>本类立票的起点：班内 FAIL/病卡/拉起链坏损——与优化类（改进意图）的根本分野=有病灶可循。</td></tr><tr><td>维修环诊断</td><td>病灶入口链第一站（诊断 <code>pipeline-lab/scripts/diagnose.mjs:1</code> 起·拍板#84② 编排）：只读证据出根因报告→病卡——立票有据不瞎修。</td></tr><tr><td>立票显式写列</td><td>修复类必须显式写第 9 列大业务=引擎修复：缺列旧格式缺省=引擎优化（<code>91-脚本/pi_runner.mjs:92</code>）——靠缺省兜不住修复语义（加严条款会漏挂）。</td></tr><tr><td>四关固定节</td><td>ts 码件窗加严条款（#71④·<code>91-脚本/pi_runner.mjs:87</code> WHITELIST_NOTE）：测试先行跑红才动码+tsc/vitest/lint/体量自跑全绿才收口——动引擎码面的四道关。</td></tr><tr><td>两级判卷门</td><td>R-F 梯（<code>91-脚本/rf_ladder.mjs</code>）胶囊/重放两级——修复不改判卷语义，改完还要同包重放对照（立项说明书 §七）。</td></tr><tr><td>普通施工窗</td><td>非 ts 面（文档/cmd 段等）修复走常规窗；W-033 隧道B状态误判即 cmd 三行段实战（<code>90-过程/执行台账.md:573</code>）。</td></tr><tr><td>收口复考</td><td>收口自报 ✅ 先过复考闸（考题库机检·exit code 唯一判据）——修复窗的自检更严：任一红打回 🔁。</td></tr></tbody></table>
+<h2>实例层（现在队列里长什么样）</h2>
+<ul><li>现行 verified 实例：W-015（改包道末轮回滚·ts 码件窗白名单首票实战）/W-016（V1 追全绿重放班）/W-033（隧道B状态误判·cmd 三行段）——均本仓收口。</li><li>病灶入口链：班内 FAIL→维修环 fail-loop（诊断 <code>pipeline-lab/scripts/diagnose.mjs:1</code> 起·拍板#84② 编排锚 <code>pipeline-lab/scripts/nightrun-wrap.mjs:704</code>）→病卡/维修记录→立票（病卡机检=E 系·rrm_lint KINDS 含「病卡/维修记录」）。</li><li>在跑实例：W-004（判卷快照复验班·▶ 留候业主发班令）——修复类常见「候业主认定」停等形态。</li></ul>
+<h2>防重复指针（应然在别处·本卡只画实然）</h2>
+<ul><li>理念版维修/自愈编排=「07-设计理念专题/五业务场景编排总图-…-20261018.html」（场景轴·原图引用不复制）；专题档案归族=<code>90-过程/10-专题档案/02-维修与自愈/</code>。</li><li>状态定义标源=<code>90-过程/窗队列.md</code>；意图回链=<code>01-蓝图/</code>。</li></ul>
+<h2>时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 7f51c83（2026-10-21 现勘）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（rrm_lint 整区 PASS+accept 自检）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261021-002-引擎修复.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

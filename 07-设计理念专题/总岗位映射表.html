@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>总岗位映射表 · 传统软件公司 → AFK 引擎（07-设计理念专题）</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-12 space-y-12">
+
+<!-- ═══════════════ 头部 ═══════════════ -->
+<header class="space-y-3">
+  <h1 class="font-serif text-3xl">总岗位映射表 <span class="text-slate-400 text-xl">传统软件公司 → AFK 引擎</span></h1>
+  <p class="text-sm text-slate-500">源件=同目录《总岗位映射表.md》（2026-10-17 会话映射落档）· 本文为其 HTML 排版版（内容零改·表格还原＋用工形态着色）· 锚点均为 ts/src 磁盘实锚</p>
+  <p class="text-sm text-emerald-700">2026-10-17 增补 <a href="#s3" class="underline">§三 层级×编制总表＋编制盘点结论</a>（业主对话「层级×编制总表 我同意这样」·会话代录拍板#56·.md 源件同步）</p>
+  <p class="text-sm text-emerald-700">2026-10-17 增补 <a href="#s4" class="underline">§四 PRD→可用APP交付链缺口＋建议 Agent员工编制总册</a>（交付链深读调研·<span class="font-semibold">建议项全部待对比件拍板·未拍板不立卡不入列队</span>·.md 源件同步）</p>
+  <div class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
+    <span><span class="inline-block w-3 h-3 deep-box rounded-sm align-middle"></span> 自然人审核（只有业主能做）</span>
+    <span><span class="inline-block w-3 h-3 bg-purple-500 rounded-sm align-middle"></span> Agent员工（LLM 调用面）</span>
+    <span><span class="inline-block w-3 h-3 bg-blue-500 rounded-sm align-middle"></span> 机械设备（确定性代码·零 LLM）</span>
+  </div>
+</header>
+
+<!-- ═══════════════ 一 · 总映射表 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">一 · 总映射表：传统软件公司 → AFK 引擎</h2>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/5">传统角色</th><th class="p-2 w-2/5">引擎对应物</th><th class="p-2 w-1/6">用工形态</th><th class="p-2">锚点</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr class="bg-slate-50"><td colspan="4" class="p-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">决策与需求（站1/2 → 交件包）</td></tr>
+      <tr><td class="p-2 font-medium">业主/客户（拍板、验收签字）</td><td class="p-2">拍板记录、站6 晨报追认（PASS* 带星、DEF 清单、翻案清单、判据追加栏）</td><td class="p-2"><span class="text-xs font-semibold text-white deep-box rounded-full px-2 py-0.5">自然人审核</span></td><td class="p-2 font-mono text-[11px] text-slate-500">ladder PASS* 案 · functional-gate hold 清单</td></tr>
+      <tr><td class="p-2 font-medium">产品经理/需求分析（站1/2）</td><td class="p-2">站1/2 流程站点 → 产物=交件包（需求+考题）</td><td class="p-2"><span class="text-xs border border-slate-400 text-slate-600 rounded-full px-2 py-0.5">自然人+流程</span></td><td class="p-2 font-mono text-[11px] text-slate-500">立项说明书</td></tr>
+      <tr class="bg-slate-50"><td colspan="4" class="p-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">站3 · 拆单与装备</td></tr>
+      <tr><td class="p-2 font-medium">拆单员/排期员</td><td class="p-2">站3 split.ts：需求 → 工单 + 波次（waveList=排期批次）</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">run-slice.ts 段1</td></tr>
+      <tr><td class="p-2 font-medium">架构师/装备工程师</td><td class="p-2">站3 装备面：五槽分槽规则、探针编译、R12 覆盖闸</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">equipment.ts · probes.ts · coverage.ts</td></tr>
+      <tr class="bg-red-50/60"><td colspan="4" class="p-1.5 text-xs font-semibold text-red-700 uppercase tracking-wider">站4 · 开发部（含开发自测）· 判卷对象=单票</td></tr>
+      <tr><td class="p-2 font-medium">开发工程师</td><td class="p-2">站4 builder LLM 槽：写代码、⟲≤3 自愈改 bug</td><td class="p-2"><span class="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-300 rounded-full px-2 py-0.5">Agent员工</span></td><td class="p-2 font-mono text-[11px] text-slate-500">build.ts:168-273</td></tr>
+      <tr><td class="p-2 font-medium">外包/复用拼装</td><td class="p-2">copy 槽（确定性直搬·零 LLM）</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">build.ts:286-299</td></tr>
+      <tr><td class="p-2 font-medium">初级开发 → 高级开发</td><td class="p-2">坐席A（⟲第3轮接手换档修）→ 坐席B（班次级维修·跨票接口面盒·≤3次/班）</td><td class="p-2"><span class="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-300 rounded-full px-2 py-0.5">Agent员工</span></td><td class="p-2 font-mono text-[11px] text-slate-500">selfheal-triage · probe-selfheal.ts:137-195</td></tr>
+      <tr><td class="p-2 font-medium">Code Reviewer / Tech Lead</td><td class="p-2">站4 对题闸 reviewer：审查"是否按需求做"，打回重写/判偏题红</td><td class="p-2"><span class="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-300 rounded-full px-2 py-0.5">Agent员工（审查面）</span></td><td class="p-2 font-mono text-[11px] text-slate-500">reviewer.ts（只出 passed/findings/severe）</td></tr>
+      <tr><td class="p-2 font-medium">测试有效性审查（SDET）</td><td class="p-2">变异闸 StrykerJS（全杀才 PASS）+ CRAP 回写补测</td><td class="p-2"><span class="text-xs text-teal-700 bg-teal-50 border border-teal-300 rounded-full px-2 py-0.5">机械跑·Agent补断言</span></td><td class="p-2 font-mono text-[11px] text-slate-500">mutation-gate.ts · hardening-lane:143-201</td></tr>
+      <tr><td class="p-2 font-medium">监考/考务（防作弊）</td><td class="p-2">judge-guard 封条：考卷施工前锁定，篡改=终局</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">judge-guard.ts</td></tr>
+      <tr class="bg-purple-50/60"><td colspan="4" class="p-1.5 text-xs font-semibold text-purple-700 uppercase tracking-wider">站5 · 独立测试部/QA 部 · 判卷对象=整包应用</td></tr>
+      <tr><td class="p-2 font-medium">测试环境管理/运维</td><td class="p-2">站5 起服：端口守卫、容器化起服、启动失败归因⟲1</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">verify.ts 守卫段 · app-container.ts</td></tr>
+      <tr><td class="p-2 font-medium">功能测试员（手工点点）</td><td class="p-2">切片①功能门：模仿真人点一遍，门绿=红片0∧apiOk</td><td class="p-2"><span class="text-xs text-teal-700 bg-teal-50 border border-teal-300 rounded-full px-2 py-0.5">Agent自愈+机械判定</span></td><td class="p-2 font-mono text-[11px] text-slate-500">functional-gate.ts</td></tr>
+      <tr><td class="p-2 font-medium">E2E 自动化测试</td><td class="p-2">切片②：api/page 切片考题，只读组 ≤6 路并行</td><td class="p-2"><span class="text-xs text-teal-700 bg-teal-50 border border-teal-300 rounded-full px-2 py-0.5">机械设备+浏览器</span></td><td class="p-2 font-mono text-[11px] text-slate-500">verify.ts · slice-parallel.ts</td></tr>
+      <tr><td class="p-2 font-medium">回归测试（reopen 流程）</td><td class="p-2">回归翻案：切片②红 → 吊销已绿灯重做（唯一降级出边）</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">regression-leg.ts:90-121</td></tr>
+      <tr><td class="p-2 font-medium">QA 经理（出口准则）</td><td class="p-2">R13 判定梯：PASS/PASS*/FAIL 三态出口</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">ladder.ts:32-56</td></tr>
+      <tr class="bg-slate-50"><td colspan="4" class="p-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">出题面与管理</td></tr>
+      <tr><td class="p-2 font-medium">QA 测试设计（出题）</td><td class="p-2">站2 出题面（切片考题）+ 站3 探针编译</td><td class="p-2"><span class="text-xs border border-slate-400 text-slate-600 rounded-full px-2 py-0.5">自然人流程+机械</span></td><td class="p-2 font-mono text-[11px] text-slate-500">slice-cases.json</td></tr>
+      <tr><td class="p-2 font-medium">初级 QA（起草新用例）</td><td class="p-2">qa-agent 起草道：起草候选测试，只新增不覆盖、无判卷权、站6 追认</td><td class="p-2"><span class="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-300 rounded-full px-2 py-0.5">Agent员工</span></td><td class="p-2 font-mono text-[11px] text-slate-500">qa-agent.ts</td></tr>
+      <tr><td class="p-2 font-medium">项目经理（预算/排期）</td><td class="p-2">预算三路（maxLlmCalls/maxCost/hardStop）+ park/补考（缺陷挂起流转）+ queue-runner 排班</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td><td class="p-2 font-mono text-[11px] text-slate-500">night-budget.ts · park.ts · queue-runner.ts</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<!-- ═══════════════ 二 · 站4 vs 站5 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">二 · 站4 vs 站5：传统公司的"两个部门"</h2>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border-2 border-red-300 bg-red-50/40 p-4 space-y-2">
+      <p class="font-semibold text-red-700">站4 = 开发部（含开发自测）</p>
+      <ul class="text-sm space-y-1 list-disc list-inside text-slate-700">
+        <li>程序员（builder·<span class="text-purple-700 font-medium">Agent员工</span>）</li>
+        <li>自己改 bug（自愈环⟲≤3·坐席A/B）</li>
+        <li>Code Review（对题闸·reviewer）</li>
+        <li>组件级测试（票面验收·exit code）</li>
+        <li>代码质量关（CRAP/变异闸）</li>
+      </ul>
+      <p class="text-xs text-slate-500 pt-1 border-t border-red-200">判卷对象：<b>单票</b></p>
+    </div>
+    <div class="rounded-lg border-2 border-purple-300 bg-purple-50/40 p-4 space-y-2">
+      <p class="font-semibold text-purple-700">站5 = 独立测试部 / QA 部</p>
+      <ul class="text-sm space-y-1 list-disc list-inside text-slate-700">
+        <li>测试环境组（起服/守卫/容器）</li>
+        <li>功能测试（切片①·模仿真人点）</li>
+        <li>E2E 自动化（切片②）</li>
+        <li>回归测试（翻案⟲1）</li>
+        <li>测试报告+放行建议（R13 判定梯）</li>
+      </ul>
+      <p class="text-xs text-slate-500 pt-1 border-t border-purple-200">判卷对象：<b>整包应用</b></p>
+    </div>
+  </div>
+  <pre class="mermaid">
+flowchart LR
+  OWNER["业主（自然人）<br/>出题·拍板·追认"] -.->|"票面考题（冻结）"| S4
+  OWNER -.->|"切片考题（站2 设计）"| S5
+  subgraph S4["站4 · 开发部（考生）· 判卷对象=单票"]
+    B["builder 写代码<br/>（Agent员工）"] --> SH["自愈环 ⟲≤3<br/>坐席A/B"]
+    B --> RV["对题闸 reviewer<br/>（只扣绿·永不放红）"]
+    B --> ACC["票面验收<br/>exit code"]
+    B --> QG["CRAP/变异闸"]
+  end
+  subgraph S5["站5 · 独立 QA 部（裁判）· 判卷对象=整包"]
+    ENV["起服/守卫/容器<br/>（机械设备）"] --> FG["切片①功能门"]
+    ENV --> E2E["切片② E2E<br/>（零 LLM 断言）"]
+    FG --> LAD["R13 判定梯"]
+    E2E --> LAD
+  end
+  S4 -->|"交付物·syncOut 收货"| S5
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  classDef agent fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef mech fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  class OWNER human
+  class B,SH,RV agent
+  class ACC,QG,ENV,FG,E2E,LAD mech
+  </pre>
+  <p class="text-sm text-slate-700">传统行业"开发自测"与"独立验收测试"的职责分离，引擎里就是站4/站5——但引擎把三件传统公司靠"自觉"的事做成了<b>架构硬保证</b>：</p>
+  <ol class="text-sm space-y-2 list-decimal list-inside text-slate-700">
+    <li><b>裁判考生不同源</b>：传统公司开发自己写代码自己测，容易骗过自己；引擎里站4 施工是 Agent员工、站5 判卷零 LLM（机械设备跑断言）——考生和裁判在架构上就不是一个人。</li>
+    <li><b>出题权分离且冻结</b>：票面考题业主出（UAT 性质·开工前冻结），切片题站2 出（测试部门设计），QA 员工只能追加加严不能改题（qa-agent.ts：只新增不覆盖·新测试只能加红不能洗绿）——对应传统"测试用例评审后不得随意改"的纪律，这里是 sha256 锁死的。</li>
+    <li><b>审查权边界制度化</b>：reviewer.ts 头注"审查员无 red 入边（转移表无 red→reviewing 边）——只能扣住绿灯，永不把验收命令红的票变绿"。传统公司 Tech Lead 理论上能"放过"有问题的代码，引擎里这条路在状态机层面不存在。</li>
+  </ol>
+  <div class="bg-emerald-50 border border-emerald-300 rounded p-3 text-sm">
+    <b>一句话</b>：站4=开发部（Agent员工干活+机械设备把守质量关），站5=独立 QA 部（机械设备判卷+Agent员工只修不判）——传统组织的"职责分离"在引擎里不是管理制度，是<b>调用链和状态机里写死的边</b>（无 red→reviewing 边、passed 唯一入边=hardening、站5 判卷零 LLM）。
+  </div>
+</article>
+
+<!-- ═══════════════ 三 · 层级×编制总表＋编制盘点结论（拍板#56） ═══════════════ -->
+<article id="s3" class="bg-white border border-emerald-300 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">三 · 层级 × 编制总表 ＋ 编制盘点结论 <span class="text-slate-400 text-sm">2026-10-17 · 业主对话「层级×编制总表 我同意这样」· 会话代录拍板#56</span></h2>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/12">层</th><th class="p-2 w-1/3">建议 Agent员工编制</th><th class="p-2 w-1/5">现状</th><th class="p-2">动作</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-medium">票层（站4）</td><td class="p-2">①写码 · ②对题审查 · ③偏移采样（3）</td><td class="p-2">3 在跑 · 0 卡</td><td class="p-2">P2 立卡（在轨）</td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-medium">用例层</td><td class="p-2">④QA员工 · ⑤切片出题员 · ⑥考题检修工（3）</td><td class="p-2">3 在跑 · 0 卡</td><td class="p-2">P3 立卡（在轨）</td></tr>
+      <tr><td class="p-2 font-medium">班内</td><td class="p-2">⑦锚点定位 · ⑧排程序 ＋ 维修坐席A/B（4）</td><td class="p-2">4 在跑 · 坐席卡未立</td><td class="p-2">立卡（在轨）＋ 补考终局红聚类接线（<span class="text-blue-700 font-medium">机械设备</span>）</td></tr>
+      <tr class="bg-purple-50/50"><td class="p-2 font-medium">班外</td><td class="p-2">⑨诊断 · ⑩深化 · ⑪翻译 · ⑬兜底 · ⑮出题面维修 ＋ <b class="text-purple-700">⑯跨班记忆与优化收敛</b>（6）</td><td class="p-2">5 在跑全卡 · ⑯未立</td><td class="p-2">⑯ 出对比件拍板；维修窗入册与否同批拍</td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-medium">不设岗</td><td class="p-2">规格修复 / 采证 / 域别路由 / 装备预检</td><td class="p-2">业主 / <span class="text-blue-700 font-medium">机械设备</span>分账已清</td><td class="p-2">维持（出题权冻结红线 ＋ 零判断哲学）</td></tr>
+    </tbody>
+  </table>
+  <p class="text-sm text-slate-700"><b>盘点结论</b>（调研底稿=深读 14 轮 run 复盘报告 ＋ 7 张岗卡 ＋ 花名册 v1.9 ＋ 拍板表）：</p>
+  <ol class="text-sm space-y-2 list-decimal list-inside text-slate-700">
+    <li><b>唯一真缺岗=⑯ 跨班记忆与优化收敛（班外层）</b>——四个已挂账证据同指一洞：① 14 轮优化建议零回收（⑫六件链止于深化·产出全堆事件归档·无人对账采纳）；② 6/7 张岗卡 memory_source 一致标「(未建)…待拍板」（⑨病卡签名 / ⑩复盘史采纳率 / ⑬⑮书病病根表 / ⑭盯班笔记——五个岗等同一份底层资产）；③ ⑩卡明文「建议采纳率需站6 追认闭环数据回流」，回流管道不存在；④ cross-run-cluster M2 病根表只用于立草稿票，未喂任何维修岗当输入。</li>
+    <li><b>⑯职责</b>：建议采纳台账（填⑩）＋ 病根表分发（填⑨⑬⑮）＋ 同病≥3 轮未采纳自动起草 A-DRAFT 草稿票（填⑫链尾·cross-run-cluster draftClusterTickets 先例）；红线=<b>零判卷触碰 · 零代码写入 · 只产对账件</b>（权限与 LLM 反相关布局）。</li>
+    <li><b>备选降配案</b>：不增员——⑩接 memory_source ＋ ⑫加第七件机械对账；代价=⑩「每班冷启动」单一职责被打破。两案出对比件拍板。</li>
+    <li><b>明确不加 Agent员工 四类</b>：采证扩容（扩 report-deepen.mjs extractEvidencePack·明文哲学「LLM 只做判断不做收集」）；未装备票预检（preflight/slot-assign 机械加固·queue-52 实锚五票白烧约 7.2 万 tokens）；域别判定（repair-domain.mjs detectRepairDomain 已是机械·fail-loop.mjs:546/576 接线在跑）；⑪翻译官无记忆=设计如此（防抄历史方案绕闸·卡11 明文）。</li>
+    <li><b>治理拍板题（与⑯同批）</b>：拍板#52 两层维修员执行载体=pi 会话维修窗（宿主预算·不经引擎 budgetedChat·无岗卡·机检三件套管不到）——先例=⑭监控专职（pi 会话转工位立卡·拍板#31⑥）；立卡入册 or 维持编外＋任务书/回填全落引擎账本，出对比件时一并拍。</li>
+    <li><b>层级模型对齐注记</b>（业主模型 vs 实然）：票层 agent=代码员工 ✓；班内维修=app 施工问题兜底 ✓（拍板#52 任务书制·修实现适配考题·禁改考题禁反向迁就·fail-loop.mjs:156）；班外维修≠只修引擎——repair-domain 三域分流（exam/appdef/engine·nightrun-wrap.mjs:785），班外实辖引擎域（⑨→⑪→engine-repair）＋出题域（⑮）＋兜底域（⑬）三域，岗已齐。</li>
+  </ol>
+  <div class="bg-emerald-50 border border-emerald-300 rounded p-3 text-sm">
+    <b>一句话</b>：员工编制不缺在「干活的手」（四层维修链已闭环），缺在「跨班的脑子」（记忆与回收）——加 ⑯ 一个岗 ＋ <span class="text-blue-700 font-medium">机械设备</span>采证扩容，14 轮报告暴露的循环断裂即闭合。
+  </div>
+  <p class="text-xs text-slate-500 font-mono leading-relaxed">证据锚点：runs/03-里程碑/事件归档 14 轮「复盘-代码优化建议」（每轮「证据不足」39–58 条·14/14 轮重复索要 import 图/覆盖率/重复率）· pipeline-lab/scripts/report-deepen.mjs:39 extractEvidencePack 硬编码两字段 · 岗卡10:17「无跨班记忆（每班冷启动）」 · pipeline-lab/scripts/fail-loop.mjs:121-156 任务书制（拍板#52） · 90-过程/拍板记录表 #31/#35/#52</p>
+</article>
+
+<!-- ═══════════════ 四 · PRD→可用APP交付链缺口＋建议编制总册（2026-10-17 深读·建议项待拍板） ═══════════════ -->
+<article id="s4" class="bg-white border border-amber-300 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">四 · PRD→可用APP 交付链缺口 ＋ 建议 Agent员工编制总册 <span class="text-slate-400 text-sm">2026-10-17 交付链深读调研 · <b class="text-amber-700">建议项全部待对比件拍板</b></span></h2>
+  <div class="bg-amber-50 border border-amber-300 rounded p-3 text-sm">
+    <b>一句话</b>：「造出绿的」主链岗位齐代码通（PRD 交件包 → 站3 三关拆单 → 站4 施工判卷 → 站5 验收起服 → 站6 报告）；缺口在「<b>交</b>」——<b>绿的 ≠ 人工拿起来就能用</b>。调研底稿=<code>90-过程/research/深读档案-交付链实然-PRD到可用APP的岗位与代码缺口-20261017.md</code>
+  </div>
+  <h3 class="font-serif text-lg">4.1 交付链缺口（实锚→落法→用工形态）</h3>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/4">缺口</th><th class="p-2 w-1/3">实锚</th><th class="p-2 w-1/4">落法</th><th class="p-2">用工形态</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-medium">使用文档无人写（README/启动指南）</td><td class="p-2">builder 提示词零文档要求（llm-prompts/llm-builder grep 零命中）·报告/晨报零启动说明章节</td><td class="p-2">交付文档员：机械从 RuntimeSpec 渲染骨架（≈70%）→ agent 补人话 → 机检（三节与契约逐字一致）→ 站6 追认</td><td class="p-2"><span class="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-300 rounded-full px-2 py-0.5">Agent员工（⑰新岗候选）</span>＋机械</td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-medium">交付组装不存在</td><td class="p-2">finish.ts:46-116 只产三报告·syncOut=沙箱回搬（worktree-provider.ts:3）·delivery-snapshot=零提交闸非交付物</td><td class="p-2">交付道机械脚本：.env.example/一键启动/lock 核对（源数据=contract.json RuntimeSpec 免费在库）</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备（不设岗）</span></td></tr>
+      <tr><td class="p-2 font-medium">晨报无交付栏</td><td class="p-2">morning-report 零启动说明（grep 零命中）</td><td class="p-2">机械渲染一栏（入口 URL/端口/启动命令）——追认从「看过程」变「拿可用件」</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-medium">装备判据缺口（吞吐）</td><td class="p-2">queue-52：5 票「未装备」白烧约 7.2 万 tokens</td><td class="p-2">slot-assign 基线固化票判据（优化点 A·已挂账未落）</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">机械设备</span></td></tr>
+      <tr><td class="p-2 font-medium">UX 可用性 / 外部部署</td><td class="p-2">切片①功能门管「功能通」不管「用着顺」；工作区即交付物</td><td class="p-2">业主 UAT 兜底；将来交付外部环境再议</td><td class="p-2"><span class="text-xs font-semibold text-white deep-box rounded-full px-2 py-0.5">自然人审核（设计选择·不设）</span></td></tr>
+    </tbody>
+  </table>
+  <h3 class="font-serif text-lg">4.2 建议 Agent员工编制总册（现行＋建议增删·全层一眼）</h3>
+  <p class="text-xs text-slate-500">口径：<b>员工=真实调用 LLM 的岗</b>（花名册判定口径·grep chat/budgetedChat 消费面实锚）——编制总册里的「岗」全部有 LLM 消费面，不消费 LLM 的进不了名册（=机械设备或工位）；但没有任何一岗是「裸 LLM」——每岗=窄盒提示词＋机械闸＋预算帽＋fail-closed。<b>用工形态列=各岗 LLM 面向×机械配比</b>（权限与 LLM 反相关·越班外机械占比越高「错不起」）。花名册=视图·岗卡=唯一事实源（拍板#28）；「在跑未立卡」=代码已上引擎·岗卡按 P2/P3 轨另行提请；<b class="text-amber-700">建议项未拍板不立卡不入列队</b>。对 §三 的对账注记：班外 ⑯ 行以本节「建议撤编」为准（待拍板）。</p>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/12">层</th><th class="p-2 w-1/5">岗（编号·名）</th><th class="p-2 w-1/4">用工形态（LLM 面向×机械配比）</th><th class="p-2 w-1/6">状态</th><th class="p-2">备注</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-medium" rowspan="4">票层（站4）</td><td class="p-2">① 写码工程师</td><td class="p-2">LLM起草施工（分段JSON·fail-closed解析）＋机械收口（零提交闸＋验收exit code）</td><td class="p-2">在跑·P2 立卡在轨</td><td class="p-2">只写 target 单文件·考题只读</td></tr>
+      <tr class="bg-slate-50"><td class="p-2">② 对题性审查员</td><td class="p-2">LLM审查·只能扣绿（状态机无 red→reviewing 边）</td><td class="p-2">在跑·P2 立卡在轨</td><td class="p-2">打回重写/判偏题红</td></tr>
+      <tr><td class="p-2">③ 偏移采样员（②兼岗）</td><td class="p-2">LLM采样建议·early_stop 唯一自动项·零判卷</td><td class="p-2">在跑·随②立卡</td><td class="p-2">自愈⟲≥2 时采样</td></tr>
+      <tr class="bg-amber-50/60"><td class="p-2 font-semibold text-amber-700">⑰ 交付文档员（候选名）</td><td class="p-2 font-semibold text-amber-700">机械骨架渲染（≈70%）＋LLM人话补充＋机检一致＋站6追认</td><td class="p-2 font-semibold text-amber-700">建议新增·待对比件拍板</td><td class="p-2">只写「怎么用」不写「怎么考」——出题权冻结红线不碰</td></tr>
+      <tr><td class="p-2 font-medium" rowspan="3">用例层</td><td class="p-2">④ QA员工（判据起草）</td><td class="p-2">LLM起草候选测试·判据追加机检→自动晋升·无判卷权</td><td class="p-2">在跑·P3 立卡在轨</td><td class="p-2">只新增不覆盖</td></tr>
+      <tr class="bg-slate-50"><td class="p-2">⑤ 切片出题员</td><td class="p-2">LLM逐字选锚·白名单机检·断言源=契约≠实现</td><td class="p-2">在跑·P3 立卡在轨</td><td class="p-2">qa-slice- 前缀</td></tr>
+      <tr><td class="p-2">⑥ 考题检修工</td><td class="p-2">LLM修复稿·原语白名单＋断言集不可减机检（禁放松）</td><td class="p-2">在跑·P3 立卡在轨</td><td class="p-2">修复道·违者拒收转追认</td></tr>
+      <tr><td class="p-2 font-medium" rowspan="3">班内</td><td class="p-2">⑦ 锚点定位员</td><td class="p-2">LLM逐字选落点·白名单机检→自动补票</td><td class="p-2">在跑·P3 立卡在轨</td><td class="p-2">无锚红片补票</td></tr>
+      <tr class="bg-slate-50"><td class="p-2">⑧ 排程序（解环草稿）</td><td class="p-2">LLM纸面草稿·落盘路径引擎固定·零执行权</td><td class="p-2">在跑·P3 立卡在轨</td><td class="p-2">停滞时一次</td></tr>
+      <tr><td class="p-2">维修工程师（坐席A/B）</td><td class="p-2">机械归因路由＋LLM定向修（换档不换判卷）</td><td class="p-2">在跑·立卡在轨</td><td class="p-2">拍板#31①/#52·A票级/B班次级·deepread 任务书制</td></tr>
+      <tr><td class="p-2 font-medium" rowspan="6">班外</td><td class="p-2">⑨ 夜车诊断工程师</td><td class="p-2">LLM诊断（JSON·非法重试）·零写入·预算≤5</td><td class="p-2">在册</td><td class="p-2">只诊断不改码·病卡回写</td></tr>
+      <tr class="bg-slate-50"><td class="p-2">⑩ 复盘深化书记员</td><td class="p-2">机械证据包预提取＋LLM只判断（节≤1000字）</td><td class="p-2">在册</td><td class="p-2">memory_source 改指建议台账（见 §三）</td></tr>
+      <tr><td class="p-2">⑪ A域计划翻译官</td><td class="p-2">LLM翻译·四道机械闸（幻觉=rejected零落盘）</td><td class="p-2">在册</td><td class="p-2">无记忆=设计（防抄历史方案绕闸）</td></tr>
+      <tr class="bg-slate-50"><td class="p-2">⑬ 兜底修复工程师</td><td class="p-2">LLM修复·医嘱窄盒（单根因单文件）＋四闸只收缩</td><td class="p-2">在册</td><td class="p-2">final DEF 收编·A域白名单</td></tr>
+      <tr><td class="p-2">⑮ 出题面维修与计划增补工程师</td><td class="p-2">LLM对齐修复·禁反向迁就机检（断言/用例只增不减）</td><td class="p-2">在册</td><td class="p-2">fail-loop exam 道已接线</td></tr>
+      <tr class="bg-red-50/60"><td class="p-2 font-semibold text-red-700">⑯ 跨班记忆与优化收敛</td><td class="p-2">—（见撤编案）</td><td class="p-2 font-semibold text-red-700">建议撤编·待拍板</td><td class="p-2">#57 知识基建（双图谱+93库）＋⑫第七件机械对账件代之</td></tr>
+      <tr><td class="p-2 font-medium" rowspan="2">工位（非员工）</td><td class="p-2">⑫ 班外优化师</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">零LLM编排（LLM消费在链内⑨⑩·工位非员工）</span></td><td class="p-2">在册</td><td class="p-2">编排六件＋第七件「建议对账」（机械·建议待拍板）</td></tr>
+      <tr class="bg-slate-50"><td class="p-2">⑭ 监控专职</td><td class="p-2"><span class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 rounded-full px-2 py-0.5">零LLM只读（宿主会话·不经budgetedChat管道）</span></td><td class="p-2">在册</td><td class="p-2">只读不写·越权写入=0 硬指标</td></tr>
+      <tr><td class="p-2 font-medium">不设岗</td><td class="p-2">规格修复/采证扩容/域别路由/装备预检/交付组装</td><td class="p-2"><span class="text-xs font-semibold text-white deep-box rounded-full px-2 py-0.5">机械设备·自然人审核（零LLM）</span></td><td class="p-2">—</td><td class="p-2">出题权冻结红线＋零判断哲学</td></tr>
+    </tbody>
+  </table>
+  <div class="bg-amber-50 border border-amber-300 rounded p-3 text-sm">
+    <b>编制算术</b>：现行员工 <b>14</b>（①~⑧＋维修工程师＋⑨⑩⑪⑬⑮）＋建议新增 ⑰ －建议撤编 ⑯（#56 提案未立卡）＝终态 <b>15 岗＋2 工位</b>——两笔变更各自独立对比件拍板，未拍板前编制仍按 14+2 执行。
+  </div>
+  <p class="text-xs text-slate-500 font-mono leading-relaxed">证据锚点：90-过程/research/深读档案-交付链实然-PRD到可用APP的岗位与代码缺口-20261017.md（附录A 五条反向校验命令）· contract/types.ts:39-44 RuntimeSpec · finish.ts:46-116 · runs/03-里程碑/事件归档/2026-10-16-queue-52-V1W/report/efficiency-report.md</p>
+</article>
+
+<footer class="text-center text-xs text-slate-400 pt-4 space-y-1">
+  <p>AFK无人值守引擎V1.0 · 07-设计理念专题 · 总岗位映射表（HTML 排版版）· 源件=同目录总岗位映射表.md · 映射会话=2026-10-17（锚点=ts/src 磁盘实锚·repo_head 8732cba 附近）· §三=2026-10-17 编制盘点（拍板#56）· §四=2026-10-17 交付链缺口与编制总册（建议项待拍板）</p>
+  <p>话术：机械设备=确定性代码 · Agent员工=LLM 调用面 · 自然人审核=只有业主能做的事 · 红线：判卷语义一寸不动 · 红绿权=验收命令 exit code（#28②）· 本表=映射视图，岗卡（90-过程/岗卡/）=唯一事实源（拍板#28）</p>
+</footer>
+
+</main>
+</body>
+</html>

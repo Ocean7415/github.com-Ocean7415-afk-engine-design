@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261103-001 · 数据流 v2 · 知识库RAG（建库→检索→生成→评估→外考→回流 六链·2026-11-03）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261103-001 · 数据流 v2 · 知识库RAG（建库→检索→生成→评估→外考→回流 六链·2026-11-03）</h1>
+<div class="meta"><b>id</b> df-20261103-001 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-11-03 · <b>repo_head</b> e170067 · <b>supersedes</b> df-20261021-005</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>v2 缘起（拍板#333·2026-11-03·主窗代产）</strong>：df-005（2026-10-21·repo_head 0cb1d3d）停在「裸向量+双轨分派」时代——其后四条新流未画：①检索四通道缺省编排（#141/#118）②外考链（W-190~215·#264）③93→94 回灌桥（W-125·#170 C1）④process 轨（W-091·#140）；另 eval 主尺已翻 prod 双报（W-240·#321③）。本件=重画全链·v1 保留作历史正本。</p>
+</blockquote>
+<h1>数据流 v2 · 知识库RAG（建库→检索→生成→评估→外考→回流 六链·2026-11-03）</h1>
+<blockquote>
+<p><strong>本卡管什么</strong>：94-班外经验库RAG 子系统的知识流动全链——谁把知识喂进索引（建库链）、问题怎么变成候选块（检索链）、候选块怎么变成答案（生成链）、分数怎么出炉（评估链·内考+外考）、账怎么回流（回流链）。</p>
+<p><strong>业内定位</strong>：RAG Reference Architecture 的数据面视图（Ingestion→Retrieval→Generation→Evaluation pipeline + feedback loop）。</p>
+</blockquote>
+<h2>总图 · 六链全景（v2）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  subgraph IN["①建库链（build_index.py·增量）"]
+    S1["知识源四路<br/>10-专题档案+02-全景视图(engine)<br/>95-公共库(common)<br/>93病卡(app·回灌桥缺省关)"]:::src
+    S2["过程面五类件(process)<br/>拍板表/台账/窗队列/任务书/收口报告"]:::src
+    S1 --> G1["闸门：样例排除·draft拒入<br/>rrm-lint ERROR拒收"]
+    G1 --> G2{"双轨+process 三轨分派<br/>rrm_chunker.py:70 档位口"}
+    G2 -->|RRM轨·缺省句窗800/80| E1["句窗嵌入缓存<br/>embed_cache_rrm_{指纹}"]
+    G2 -->|legacy轨·0.85降权标| E2["IngestionCache<br/>按层分键_{指纹}"]
+    G2 -->|process轨·表格行+H2节·帽4000| E3["process嵌入缓存"]
+    E1 & E2 & E3 --> IDX["VectorStoreIndex 落盘<br/>storage/index（4067块·11-03实勘）<br/>null契约：失败不入索引·退出码非零"]
+  end
+  subgraph RET["②检索链（query_engine.py:1428 retrieve_for_query·CLI缺省:1841）"]
+    Q["问题（维修员/组查询--repair/eval prod轨）"] --> C1["结构路：命中块→引用图PPR→枢纽夹逼→top-N血缘块"]
+    Q --> C2["向量路：engine+common双段先滤后取"]
+    Q --> C3["BM25词面路：jieba+保词正则·process语料门"]
+    C1 & C2 & C3 --> R1["RRF融合k=60（融合后不设线）"]
+    R1 --> R2["rerank精排 bge-v2-m3"] --> R3["结构配额降尾（护栏②）"]
+    R3 --> BLK["make_block ≤1500字候选块<br/>出处行带§节名·弱命中/档龄头行"]
+  end
+  BLK --> GEN["③生成链：ANSWER_PROMPT_TMPL单一事实源<br/>（B4注入防御·答不知实·带出处）"] --> ANS["答案+出处"]
+  subgraph EVAL["④评估链（eval/run_eval.py）"]
+    ANS --> J1["内考20题：prod轨主数字∥bare控制列双报<br/>四票recall/grounded/answer_rel/ctx_prec<br/>judge_version尺指纹随件（W-126）"]
+    J1 --> RES["eval/results/ 窗号前缀件<br/>现款基线：prod=0.550/bare=0.625"]
+    EXT["⑤外考链：ext_fetch→storage_ext沙盒索引<br/>→ext_metrics（零LLM·考卷隔离#264）"] --> RESX["external-*结果件<br/>C-MTEB 0.7048·MLDR-zh句窗0.7399·RGB 97-98/100"]
+  end
+  RES & RESX --> FB["⑥回流链：hit_log→升降级候选清单<br/>病题→场景卷R1-R5·核账发现台账<br/>对表数据→拍板表（带尺版本引用）"] --> S1
+  classDef src fill:#eef3fa,stroke:#4a7dbe,color:#2b5fa8;
+</div></div>
+<h2>与 df-005（v1）的四条差分</h2>
+<table><thead><tr><th>#</th><th>v1（10-21）缺失/过时</th><th>v2 现款</th><th>依据</th></tr></thead><tbody><tr><td>1</td><td>建库=双轨（RRM 节切+legacy）</td><td><strong>三轨</strong>：RRM 句窗缺省（800/80·section 逃生口）+legacy+process（帽 4000）·93 回灌桥第四源缺省关</td><td>W-227·#321②·W-125·W-091</td></tr><tr><td>2</td><td>检索=裸向量直取</td><td><strong>四通道缺省编排</strong>（结构∥词面∥向量→RRF→rerank→配额）+优化四档全缺省关+语料门</td><td>#141/#118·#165/#131/#138</td></tr><tr><td>3</td><td>eval 单轨裸奔</td><td><strong>prod/bare 双轨双报</strong>+judge_version 指纹+饱和度机检+<strong>外考四基准独立链</strong>（storage_ext 沙盒·零 LLM）</td><td>W-184/240·#256①/#321③·W-190~215·#264</td></tr><tr><td>4</td><td>无 GPU/显存面</td><td>外考嵌入工厂显存帽自动生效（cap=14GB·W-215）+产线 build 同源消费</td><td>W-196/215</td></tr></tbody></table>
+<h2>节点与边登记（增量·对账 00-节点与边总登记表）</h2>
+<table><thead><tr><th>节点</th><th>类型</th><th>说明</th><th>锚</th></tr></thead><tbody><tr><td>93-班内兜底知识库</td><td>数据源（app 层·缺省关）</td><td>回灌桥开闸才入池</td><td>wardcard_bridge.py:50-55</td></tr><tr><td>process 五类件</td><td>数据源（process 层）</td><td>文件级白名单·仅显式口可达</td><td>settings.py:175-195</td></tr><tr><td>RRM 句窗档</td><td>分块产物</td><td>window_part+section 三键（W-253 回捞定位面）</td><td>rrm_chunker.py:262-275</td></tr><tr><td>storage_ext/</td><td>沙盒索引</td><td>外考专用·不入 kb_sources（#264 永久语义）</td><td>eval/ext_index.py</td></tr><tr><td>judge_version</td><td>元数据键</td><td>尺版本指纹随 results 落盘</td><td>calibration_gate.py</td></tr></tbody></table>
+<p><strong>失效触发回看</strong>：W-253 回捞档落地收口→②检索链/③生成链追笔；翻缺省候拍落拍→总图缺省标注更新。</p>
+<p><strong>tags</strong>：专题化·知识库RAG·数据流卡·四通道编排·外考链（拍板#119·首位=阶段词组⑤）</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261103-001-知识库RAG数据流v2.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

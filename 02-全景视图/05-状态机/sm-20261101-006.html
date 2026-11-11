@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>图版件 · 两层状态机×机制对照矩阵 · sm-20261101-006</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, useMaxWidth: false, padding: 8, nodeSpacing: 40, rankSpacing: 40 }, themeVariables: { fontSize: "14px" } });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .redline { background:#fef2f2; border:1px solid #dc2626; }
+  .shuo { background:#fffbeb; border-left:4px solid #d97706; }
+  .term { background:#f0f9ff; border-left:4px solid #0284c7; }
+  code { font-size: 0.85em; }
+  .mermaid { overflow-x: auto; }
+  .mermaid svg { height: auto; }
+  .mermaid svg .nodeLabel, .mermaid svg .edgeLabel, .mermaid svg .label,
+  .mermaid svg foreignObject div, .mermaid svg foreignObject span { font-size: 14px !important; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+<header class="space-y-2">
+  <h1 class="font-serif text-3xl">两层状态机 × 机制对照矩阵 <span class="text-slate-400 text-xl">图版件 · 3 图 · sm-20261101-006</span></h1>
+  <p class="text-sm text-slate-500">2026-11-01 · 基准 <code class="bg-stone-200 rounded px-1">6732949</code> · 状态 <code class="bg-stone-200 rounded px-1">draft 候核候拍</code> · 正本=同目录 <code class="bg-stone-200 rounded px-1">sm-20261101-006-…-分析.md</code>（本 html 仅图版·表格与论证以 md 为准）</p>
+  <div class="deep-box rounded-lg p-3 text-sm text-slate-100">本图版主旨：一图看清两层 harness——L1 车间流水线（票级·机器为主）与 L2 派工台（窗级·管到业主终认）各自的状态机、守卫闸与宪法边。</div>
+  <p class="text-xs text-slate-500">图例：✔实然＝码内事实带 file:line 锚 · △应然＝本卡新增设计候拍（事件名/actor 归属）——冲突以正本码为准。</p>
+</header>
+
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">图1 · 两层系统上下文 <span class="text-slate-400 text-sm">业内名：Two-layer Harness Overview</span></h2>
+  <p class="text-sm">一句话：业主拍板进 L2 派工台，派工器开施工窗，窗里跑 L1 车间夜车，活干完回 L2 重考、业主终认。</p>
+<pre class="mermaid text-sm">
+flowchart LR
+  OWNER["自然人业主<br/>拍板·终认·翻案"]
+  subgraph L2G["L2 派工台·窗级"]
+    Q["窗队列<br/>九态·宪法十对"]
+    D["派工器<br/>领单闸链"]
+    EX["施工窗<br/>Agent员工"]
+  end
+  subgraph L1G["L1 车间·票级"]
+    RUN["跑批状态机<br/>十态"]
+    TIC["工序票状态机<br/>十一态"]
+    VER["双证验收<br/>两证齐才过"]
+  end
+  OWNER -->|"①拍板"| Q
+  Q -->|"②领单·对1"| D
+  D -->|"③翻格开窗"| EX
+  EX -->|"④跑夜车"| RUN
+  RUN --> TIC
+  TIC --> VER
+  VER -->|"⑤交活回执·对2"| Q
+  Q -->|"⑥重考+终认·对4"| OWNER
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：拍板＝业主点头入账 · 领单＝派工器取单开窗 · 翻格＝队列状态翻「施工中」 · 夜车＝L1 流水线跑一批 · 交活回执＝窗退出即写回执 · 对N＝写口宪法第 N 对。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：业主看完对比件点头（拍板）。主窗把拍板登记成窗队列一行。派工器巡检领单，资格闸和体检门全过，翻格开窗。施工窗里跑 L1 夜车：收包、拆单、发车、施工、自愈、双证验收、判分、收车。窗退出写交活回执，机器按考卷重考，绿了才送业主终认翻✅。业主全程只出现在两头：开头拍板、结尾终认——中间全是机器和 Agent 员工，但每一步都有账。</div>
+  <p class="text-xs text-slate-500">锚：队列写口.mjs:47-60（宪法十对）｜业内对照：Factory Two-layer Harness｜变式：L1↔L2 前门体检/后门重考同构｜<span class="redline rounded px-1">红线：✅只认业主道</span></p>
+</section>
+
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">图2 · L2 窗队列九态与宪法十对边 <span class="text-slate-400 text-sm">业内名：Guarded Lifecycle FSM · Write Port</span></h2>
+  <p class="text-sm">一句话：九个状态格、十条合法翻格边，每边唯一有权翻格人；⏸挂起今夜起有三条出边，不再是死态。</p>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+  [*] --> 探讨中未批: 立票
+  探讨中未批 --> 待实施已批: 拍板号落表
+  待实施已批 --> 施工中: 派工器领单·对1
+  施工中 --> 完工待确认: 收口自报·对2
+  施工中 --> 维修中: 半截·锚必填·对3
+  施工中 --> 挂起: 巡检宁停·对5
+  施工中 --> 挂起: 业主宁停·对6
+  完工待确认 --> 已完成: 重考绿+终认·对4
+  挂起 --> 施工中: 误挂恢复·对8
+  挂起 --> 已完成: 挂账清偿·对9
+  挂起 --> 完工待确认: 挂账随裁·对10
+  维修中 --> 待实施已批: 闸4重领·对7
+  已完成 --> [*]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：宪法对＝唯一有权翻格人＋合法边（写口.mjs:47-60）· owner＝业主道（代录须拍板号）· inspector＝巡检宁停道 · 对8/9/10＝301/309 号新出边 · 🔵待拍板/转人工＝宪法外影子态（候收编）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：一张窗票从「探讨中」起步，业主拍板号落表才变「待实施(已批)」。派工器领单翻「施工中」——这一翻开始烧钱，所以前面闸最多。干完自己报「完工待确认」，机器重考绿了、业主点头才翻✅；干砸了翻「🔁维修中」等重领；机器巡检发现不对劲就翻「⏸挂起」宁停。今晚之前⏸是死态（挂一行锁一行）；今夜补了三条出边：判错挂了翻回去、挂账清了翻✅、清偿票到完工待确认就跟着翻——死态变工作态。</div>
+  <p class="text-xs text-slate-500">锚：队列写口.mjs:47-60·窗队列.md:6｜业内对照：Lifecycle FSM (Guarded)｜变式：L1 无挂起态＝事件对表达｜<span class="redline rounded px-1">红线：✅无出边·翻格必过写口</span></p>
+</section>
+
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">图3 · L1 跑批十态主线 <span class="text-slate-400 text-sm">业内名：Pipeline Stage FSM · run-state</span></h2>
+  <p class="text-sm">一句话：每次跑批的十个阶段，直线管线＋各态可跳到汇报；挂起不占态，用事件对表达。</p>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+  [*] --> 启动
+  启动 --> 导入中
+  导入中 --> 拆单中
+  拆单中 --> 装备中
+  装备中 --> 施工中
+  施工中 --> 探针中
+  探针中 --> 自愈中
+  探针中 --> 验收中
+  自愈中 --> 验收中
+  验收中 --> 汇报中
+  汇报中 --> 收车
+  收车 --> [*]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：导入中＝收包验货 · 拆单中＝大包拆工序票 · 装备中＝发装备信封 · 施工中＝写码+自愈 · 探针中＝打真实端点 · 验收中＝双证验活 · 汇报中＝出晨报 · 收车＝终态。跳过边：各态可直接跳「汇报中」（如只做导入的短跑批）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：夜车一发车先收包验货，合格就拆成一张张工序票、排成波次；发装备、进沙箱施工；写完打探针验收——探针红了先进自愈车间修一轮，修好再验收；验收过出晨报、收车。中途若要停车（比如预算到线），不占状态格：账本里记一对「挂起/恢复」事件，车再发时按账本末态加游标，精确知道断在哪一格接着跑。</div>
+  <p class="text-xs text-slate-500">锚：run-state.ts:19-43（十态+转移表）·ticket-state.ts:21-46（票级十一态·详表见 md §8 表B）｜业内对照：Pipeline Stage FSM｜变式：挂起=gate_suspend/resume 事件对｜<span class="redline rounded px-1">红线：非法转移=入账 rejected 永不静默</span></p>
+</section>
+
+<section class="deep-box rounded-lg p-4 text-sm text-slate-100 space-y-1">
+  <p class="font-semibold">尾注 · 同构轴</p>
+  <p>L1↔L2 前门体检（收包验货关↔领单体检门）＋后门重考（交卷判分梯↔交活重考闸）同构镜像；差异半边＝挂起表达（L1 事件对 vs L2 独立状态格）。</p>
+  <p class="text-slate-300 text-xs">锚点验证：2026-11-01 基准 6732949 实勘（队列写口.mjs:47-60·run-state.ts:19-43·ticket-state.ts:21-46）。正本=同目录 sm-20261101-006-…-分析.md；本 html=图版件。</p>
+</section>
+
+<footer class="text-xs text-slate-400 border-t border-stone-200 pt-3">sm-20261101-006 图版件 · 2026-11-01 · 落盘=02-全景视图/05-状态机/ · 全文正本=同名 md</footer>
+</main>
+</body>
+</html>

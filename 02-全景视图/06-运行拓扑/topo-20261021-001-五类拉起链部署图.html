@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>topo-20261021-001 · 部署图 · 运行拓扑首图（五类拉起链＋凭据会话位）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>topo-20261021-001 · 部署图 · 运行拓扑首图（五类拉起链＋凭据会话位）</h1>
+<div class="meta"><b>id</b> topo-20261021-001 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-11-03 · <b>repo_head</b> e170067 · <b>run_id</b> w251</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；复考（交活重考闸·L2）。</p>
+<p><strong>变更注记（v2 增密·W-251·拍板#334·2026-11-03）</strong>：repo_head 01c1d9a→e170067 重锚；增量段=<strong>print 静默壳拉起形态</strong>（拍板#318·W-236·施工子窗节点补双形态）＋<strong>定时链现役道清单</strong>（afk_cron.cmd 23 行实勘·15 道挂链——「巡逻四连」旧貌刷新·见 §增量段）。</p>
+</blockquote>
+<h1>部署图 · 运行拓扑首图（五类拉起链＋凭据会话位）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：画全引擎在业主机器上的常驻/触发面——双击、计划任务自启、30 分钟巡逻、事件驱动、常驻桥接五类拉起链+凭据会话位清单。<strong>为什么存在</strong>：引擎是「跑在业主真机上的多进程系统」，哪个进程谁拉起、凭据放哪，必须一张图可查（W-041 计划任务动作经 Get-ScheduledTask 实勘入图·<code>90-过程/执行台账.md:583</code>）。<strong>边界</strong>：本图只画进程拓扑不复制模块语义（pi_runner 收口细节归 mk-001）；五链启停动作=业主亲自（安全红线）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>实勘入图：W-041 计划任务动作实勘=Get-ScheduledTask 现查 wscript.exe afk_cron_hidden.vbs（<code>:1</code> 调 afk_cron.cmd 隐藏窗）+TimeTrigger 30min——图上「拉起链2」节点全部实锚</td><td><code>90-过程/执行台账.md:583</code></td></tr><tr><td>2</td><td>巡逻四连实勘：afk_cron.cmd 巡逻链=approval_poll --go→window_card_sync→pi_runner --auto --loop --max-hours 4→window_card_sync</td><td><code>91-脚本/afk_cron.cmd:4</code></td></tr><tr><td>3</td><td>本窗活例：W-043 施工窗即「拉起链3」的产物（30 分钟巡逻→pi_runner 领单→可见施工窗）——拓扑图上的链路每天都在跑</td><td>本卡部署图（拉起链3）</td></tr></tbody></table>
+<blockquote>
+<p><strong>TL;DR</strong>：引擎在业主机器上的常驻/触发面全景——<strong>双击、计划任务自启、30 分钟巡逻、事件驱动、常驻桥接</strong>五类拉起链，外加凭据会话位清单（全 gitignore）。全部节点=实然在役件（as-built·2026-10-21 实勘：计划任务动作经 wscript 调 afk_cron_hidden.vbs→afk_cron.cmd）。</p>
+</blockquote>
+<h2>部署图（mermaid）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+    subgraph 业主动作面
+        U[业主]
+        CMD1["AFK派工台-启停.cmd<br/>[1]启动 [2]停止 [5]并行数 [6]隧道"]
+        CMD2["AFK桥接-启停.cmd<br/>桥接常驻启停/隧道开关"]
+    end
+
+    subgraph 拉起链1_双击
+        CMD1 -->|schtasks enable+run| TASK
+        CMD2 -->|拉起| BRIDGE
+    end
+
+    subgraph 拉起链2_计划任务自启
+        TASK["计划任务「AFK厂务派工」<br/>TimeTrigger 30min 循环<br/>AtLogOn 触发器=afk_autostart.ps1 开关"]
+        VBS["wscript afk_cron_hidden.vbs<br/>（隐藏窗·afk_cron_hidden.vbs:1）"]
+        TASK --> VBS --> CRON
+    end
+
+    subgraph 拉起链3_30分钟巡逻
+        CRON["afk_cron.cmd 巡逻四连<br/>（afk_cron.cmd:4-7）"]
+        POLL["approval_poll --go<br/>审批代录"]
+        SYNC1["window_card_sync<br/>投影飞书"]
+        RUNNER["pi_runner --auto --loop<br/>--max-hours 4<br/>领单拉窗 spawn_window"]
+        SYNC2["window_card_sync<br/>投影飞书"]
+        CRON --> POLL --> SYNC1 --> RUNNER --> SYNC2
+        RUNNER -->|拉起| WIN["施工子窗·双形态·拍板#318<br/>print=wscript 静默壳（缺省）<br/>interactive=可见可追问"]
+    end
+
+    subgraph 拉起链4_事件驱动
+        QE[("queue-events.jsonl<br/>夜车 gate 事件流")]
+        POST["postshift --watch<br/>监听 gate 事件<br/>（源锚见清单行4）"]
+        QE -->|queue_gate_failed/passed| POST --> REP["班后复盘件<br/>（待拍板形态·零改码）"]
+    end
+
+    subgraph 拉起链5_常驻
+        BRIDGE["afk_bridge.mjs 常驻<br/>飞书流式监听+回发"]
+        WECOM["afk_wecom_callback<br/>微信客服回调端点<br/>127.0.0.1:8423"]
+        TUNNEL["cloudflared 隧道B<br/>内网穿透<br/>.bridge-tunnel.json"]
+        BRIDGE --> WECOM
+        TUNNEL -->|公网回调| WECOM
+        BRIDGE -->|任务转派| PI1["pi 一次性会话<br/>（接线员分诊）"]
+    end
+
+    subgraph 凭据会话位_全gitignore
+        C1["afk_bridge_sessions.json<br/>（飞书会话映射）"]
+        C2["cookies/<br/>（企微登录态·.gitignore:33）"]
+        C3["afk_dispatch_config.json<br/>（本地配置·不入 git）"]
+        C4["ts/.env<br/>（密钥三键·不入 git）"]
+    end
+    BRIDGE -.读写.-> C1
+    WECOM -.凭据.-> C2
+    RUNNER -.配置.-> C3
+</div></div>
+<p><strong>节点详注表</strong>（主干节点逐个·做什么/边界/锚点）：</p>
+<h2>节点详注（主干节点逐个）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>AFK派工台-启停.cmd</td><td>业主双击面 [1]启动 [2]停止 [5]并行数 [6]隧道：启停与自启开关由业主亲自执行（安全红线·代理出件不代跑·拍板#76⑥）；母本=仓内桌面版 cmd。</td></tr><tr><td>计划任务「AFK厂务派工」</td><td>系统级触发器：TimeTrigger 30min 循环+AtLogOn 触发器（afk_autostart.ps1 开关四态·taskName 定义锚 91-脚本/afk_autostart.ps1:5）——引擎无人值守的时间心脏。</td></tr><tr><td>afk_cron_hidden.vbs</td><td>隐藏窗包装：wscript 调它再拉 afk_cron.cmd（锚 91-脚本/afk_cron_hidden.vbs:1·实勘 Get-ScheduledTask）——巡逻窗不闪屏但窗关=巡逻停。</td></tr><tr><td>afk_cron.cmd 定时链</td><td>30 分钟巡逻体（锚 91-脚本/afk_cron.cmd 全文 23 行·现役 15 道清单见 §增量段）：审批代录→投影→监工→催办→对拍→值守→哨兵→清场→看门狗→派工→投影→对账→经验落盘，顺序固定；日志 .dispatch-cron.log。</td></tr><tr><td>pi_runner --auto --loop</td><td>巡逻链的干活核心：--max-hours 4 预算帽（单轮夜车窗）·--spawn-mode 拉起形态开关（缺省 print=.spawn-mode.txt 读面·#158/W-108）领单拉窗（领单闸/路由/复考语义归 mk-001·本图只画位置）。</td></tr><tr><td>施工子窗（print=静默壳/interactive=可见）</td><td>拉起链3 的终点产物：pi --auto·<strong>双形态</strong>（拍板#318）：print 道位=wscript 静默壳完全静默（夜车/无人值守）；interactive 道位=可见工作台（拍板#70① 零变）——拓扑上它独立成窗，收口回执走钩子道/轮询道（时序见 sq-20261021-002）。</td></tr><tr><td>queue-events.jsonl（事件源）</td><td>拉起链4 的触发源：夜车 gate 事件流（queue_gate_failed/passed）——事件驱动链让「班后复盘」不依赖人想起复盘。</td></tr><tr><td>postshift --watch</td><td>事件消费者（锚 pipeline-lab/scripts/postshift.mjs:8 触发声明·<code>:231</code> 判定）：监听 gate 事件→班后复盘件（待拍板形态·零改码零重跑零判卷触碰）。</td></tr><tr><td>afk_bridge.mjs 常驻</td><td>拉起链5 的主体：飞书流式监听+接线员分诊+回发（收发分离/通道抽象语义归 mk-012）——进程生命周期=桥接生命周期，断线自动重启。</td></tr><tr><td>cloudflared 隧道B</td><td>公网回调入口：企微回调需要公网可达，cloudflared 内网穿透+状态文件 .bridge-tunnel.json——隧道开关在业主桥接启停 cmd。</td></tr><tr><td>凭据会话位（C1-C4）</td><td>四位全 gitignore（拍板#90/#93 P0·cookies/ 在 <code>.gitignore:33</code>）：飞书会话映射/企微登录态/派工配置/ts 密钥三键——真实凭据不进 git/飞书/文档正文。</td></tr></tbody></table>
+<h2>五类拉起链清单（文字投影·机读）</h2>
+<table><thead><tr><th>#</th><th>链</th><th>触发者</th><th>链路</th><th>实锚</th></tr></thead><tbody><tr><td>1</td><td><strong>双击</strong></td><td>业主</td><td>AFK派工台-启停.cmd（[1] 启动=启用计划任务+立即触发一轮+飞书投影·[2] 停止·[5] 并行数·[6] 隧道）/ AFK桥接-启停.cmd（桥接常驻启停）</td><td>两 cmd 桌面 GBK 份+仓内母本</td></tr><tr><td>2</td><td><strong>计划任务自启</strong></td><td>Windows 任务计划</td><td>「AFK厂务派工」TimeTrigger 30min 循环；AtLogOn 触发器由 <code>91-脚本/afk_autostart.ps1</code>（开关四态 on/off/toggle/status·taskName 定义 afk_autostart.ps1:5·拍板#76⑥）增删</td><td>计划任务动作=wscript.exe afk_cron_hidden.vbs（实勘 Get-ScheduledTask）</td></tr><tr><td>3</td><td><strong>30 分钟巡逻</strong></td><td>afk_cron.cmd</td><td>现役 15 道挂链（全文 23 行实勘·见 §增量段清单）：approval_poll → queue_watcher(detached) → window_card_sync → supervisor → wip_scan → 对拍机检 → duty_monitor → 队列哨兵 → 清场巡检 → watchdog_llm → pi_runner --auto --loop --max-hours 4 --spawn-mode → window_card_sync → 窗卡台对账 → 经验落盘（日志 .dispatch-cron.log·关窗=停巡逻）</td><td>afk_cron.cmd 全文 23 行（2026-11-03 实勘）</td></tr><tr><td>4</td><td><strong>事件驱动</strong></td><td>queue-events gate 事件</td><td>postshift --watch 监听 <code>queue_gate_failed/queue_gate_passed</code>（<code>pipeline-lab/scripts/postshift.mjs:8</code> 触发声明·<code>pipeline-lab/scripts/postshift.mjs:231</code> 判定）→班后复盘件（零代码写入零重跑零判卷触碰）</td><td>pipeline-lab/scripts/postshift.mjs</td></tr><tr><td>5</td><td><strong>常驻</strong></td><td>afk_bridge.mjs</td><td>飞书流式监听→接线员分诊（闲聊直答/任务转派 pi 一次性会话）→回发手机；企微族（wecom_callback 绑 127.0.0.1:8423+family 客服拉取循环）；cloudflared 隧道B 内网穿透（公网回调入口）</td><td>AFK桥接-启停桌面版.cmd 状态文件清单（.bridge-*.json 族）</td></tr></tbody></table>
+<h2>增量段（拉起形态与定时链实勘·W-251·拍板#334·2026-11-03）</h2>
+<h3>1. print 静默壳拉起形态（拍板#318·W-236·2026-11-01 落码）</h3>
+<p>施工子窗拉起双形态（spawn_window --spawn-mode·afk_cron.cmd:17-19 开关段）：</p>
+<table><thead><tr><th>形态</th><th>道位</th><th>拉起链</th><th>语义</th></tr></thead><tbody><tr><td><strong>print（缺省·完全静默）</strong></td><td>夜车/无人值守</td><td>pi_runner → spawn_window print 分支 → <code>wscript.exe //nologo &lt;vbs副本&gt; &lt;批&gt;</code> → <code>WScript.Shell.Run &lt;批&gt;, 0, False</code>（0=隐藏窗·False=异步发射即 0）</td><td>真静默：桌面零弹窗零窗钮（拍板#100「拉窗可见」在 print 道位由业主令修订·interactive 零触碰）·跑完自退落日志+会话档</td></tr><tr><td><strong>interactive（可见）</strong></td><td>围观/追问</td><td>pi_runner → spawn_window interactive 分支 → PS Start-Process -NoExit</td><td>可见工作台可追问（拍板#70①/#100 语义零变）</td></tr></tbody></table>
+<p>形态单源三件：vbs 本体=<code>91-脚本/afk_spawn_hidden.vbs:1</code>（一行 ASCII·运行时落 %TEMP% 副本防中文路径）·print 拉起命令串纯函数=<code>91-脚本/spawn_window.ts:98-101</code>·形态开关 afk_cron.cmd:16-19（<code>.spawn-mode.txt</code> 读面·缺/空/非 interactive 回落 print·#158/W-108）。详设=mk-002 增量段。</p>
+<h3>2. 定时链现役道清单（afk_cron.cmd 全文 23 行实勘·2026-11-03·15 道挂链）</h3>
+<table><thead><tr><th>行</th><th>道</th><th>命令词面（GBK 解码）</th><th>备注</th></tr></thead><tbody><tr><td>:4</td><td>审批代录道</td><td><code>approval_poll.mjs --go</code></td><td></td></tr><tr><td>:6</td><td>队列观察道</td><td><code>start "" /b node queue_watcher.mjs</code>（detached）</td><td>W-116/拍板#168 治首启轮卡死</td></tr><tr><td>:7</td><td>投影道（前）</td><td><code>window_card_sync.mjs</code></td><td></td></tr><tr><td>:8</td><td>监工道</td><td><code>supervisor.mjs --go</code></td><td></td></tr><tr><td>:9</td><td>超时催办道</td><td><code>python -X utf8 wip_scan.py --check-feishu</code></td><td></td></tr><tr><td>:11</td><td>班前对拍道</td><td><code>对拍机检.mjs --selftest</code></td><td>W-176/拍板#247·告警级不拦车</td></tr><tr><td>:12</td><td>值守道</td><td><code>duty_monitor.mjs --go</code></td><td>拍板#304·巡检推进挂链</td></tr><tr><td>:13</td><td>队列哨兵道</td><td><code>队列哨兵.mjs --go</code></td><td></td></tr><tr><td>:14</td><td>清场巡检道</td><td><code>清场巡检.mjs --go</code></td><td>W-242/W-238 批2/3 落码</td></tr><tr><td>:15</td><td>LLM 看门狗</td><td><code>call watchdog_llm.cmd</code></td><td></td></tr><tr><td>:17-19</td><td>形态开关段</td><td><code>AFK_SPAWN_MODE</code> 读 <code>.spawn-mode.txt</code></td><td>缺省 print·#158/W-108</td></tr><tr><td>:20</td><td><strong>派工主道</strong></td><td><code>pi_runner.mjs --auto --loop --max-hours 4 --spawn-mode %AFK_SPAWN_MODE%</code></td><td>领单拉窗核心</td></tr><tr><td>:21</td><td>投影道（后）</td><td><code>window_card_sync.mjs</code></td><td></td></tr><tr><td>:22</td><td>窗卡台对账道</td><td><code>窗卡台对账.mjs</code></td><td></td></tr><tr><td>:23</td><td>经验落盘道</td><td><code>经验落盘.mjs --cron-scan --since 2026-10-31</code></td><td>W-188/拍板#261</td></tr></tbody></table>
+<blockquote>
+<p>实勘口径：<code>wc -l</code>=23 行（:5/:10/:16 为 rem 注释行·不含独立道）；道数=15（含开关段非道不计）——「巡逻四连」（67e5b04 期旧貌·:4-7）系 v1 期快照已扩容，本节即现役全量清单。</p>
+</blockquote>
+<h2>凭据会话位（真实凭据不进 git·拍板#90/#93 P0）</h2>
+<table><thead><tr><th>位</th><th>内容</th><th>防线</th></tr></thead><tbody><tr><td><code>91-脚本/afk_bridge_sessions.json</code></td><td>飞书会话映射</td><td>桥接私有件（不入投影不入文档正文）</td></tr><tr><td><code>cookies/</code></td><td>企微登录态（扫码落盘）</td><td>.gitignore:33</td></tr><tr><td><code>im-*</code></td><td>企微设备码/登录流中间件</td><td>.gitignore:34</td></tr><tr><td><code>91-脚本/afk_dispatch_config.json</code></td><td>派工本地配置（含通道段）</td><td>.gitignore 专行</td></tr><tr><td><code>ts/.env</code>（*.env 全族）</td><td>密钥三键（Token/Secret/AESKey）</td><td>.gitignore 首段</td></tr><tr><td><code>96-运行态/</code></td><td>常驻运行态残件</td><td>.gitignore:35</td></tr></tbody></table>
+<h2>边界注记（实然口径）</h2>
+<ul><li>施工子窗=<strong>双形态</strong>（拍板#318）：print 道位=wscript 静默壳完全静默（夜车缺省）·interactive 道位=可见工作台（拍板#70①·不治不藏）；pi_runner 轮询保底与退出钩子两道并行为收口感知（观察期·拍板#89③）——收口机制细节归 pi_runner 模块卡（03-模块卡/mk-20261021-001）·本图只画进程拓扑不复制其语义；</li><li>图中「拉起链2→3」串联实然：计划任务只负责把 afk_cron.cmd 拉起，巡逻四连在其窗内顺序执行，窗关=巡逻停（afk_cron.cmd title 声明）。</li></ul>
+<h2>从哪测</h2>
+<p>静态：读 afk_cron.cmd/afk_autostart.ps1/两启停 cmd 对照本图节点；动态（业主面·非代理）：<code>Get-ScheduledTask -TaskName "AFK厂务派工"</code> 看 Actions/Triggers；桥接在役看 <code>.bridge.log</code> 尾部。</p>
+<h2>参数与预算</h2>
+<p>本图纯文档零运行时零预算；巡逻链预算帽=pi_runner --max-hours 4（单轮夜车窗·afk_cron.cmd:20 实锚）；五链启停动作=业主亲自（安全红线：危险命令只出文本）。</p>
+<h2>时效</h2>
+<p>基准=仓 head e170067（2026-11-03·W-251 对账批复勘：afk_cron.cmd 23 行全文实勘+静默壳形态入图+双形态边界注记）；上一基准 01c1d9a（2026-10-21 W-041·计划任务实勘+链路成员逐件对照）；失效触发=本卡头 frontmatter「失效触发」键。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/06-运行拓扑/topo-20261021-001-五类拉起链部署图.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

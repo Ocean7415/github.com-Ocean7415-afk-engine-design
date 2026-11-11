@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-009 · 模块卡 · 判卷追认（confirm）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-009 · 模块卡 · 判卷追认（confirm）</h1>
+<div class="meta"><b>id</b> mk-20261021-009 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 67e5b04 · <b>run_id</b> queue-93-w040</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；翻案（绿灯吊销 L1／业主撤回 L2）。</p>
+</blockquote>
+<h1>模块卡 · 判卷追认（confirm）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：给业主一个「翻案口」——晨报五栏机器自决清单逐条可追认（owner_confirmed）或推翻（owner_rejected·须带 reason），推翻还可执行撤销令（--rollback）。<strong>为什么存在</strong>：机器自决快但非圣旨，Owner 追认环让「机器先走、人可翻案」闭环（头注·锚 ts/src/confirm.ts:1）。<strong>边界</strong>：两者只入账不自动改码；推翻后差量处置走既有补票环与下一轮 resume；只追加账本永不涂改。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>定形：晨报五栏机器自决+逐条可推翻的落账端接线（decide 纯函数=清单×意向→事件序列）</td><td>本卡实现概览（锚 ts/src/confirm.ts:27）</td></tr><tr><td>2</td><td>立规：W6 件② 拍板#12——--rollback 推翻并执行撤销令（逐条现场 sha 校验→逆操作→rollback_applied 入账）</td><td>本卡实现概览（executeRollback 调用点锚 ts/src/confirm.ts:90）</td></tr><tr><td>3</td><td>纪律实证：缺 reason 拒绝（可推翻≠可含糊）+文件面撤回不洗绿（判据面回退→下轮指纹失效重烧）</td><td>本卡实现概览</td></tr></tbody></table>
+<h2>接口</h2>
+<p>CLI：<code>npm run confirm -- --workspace &lt;ws&gt; [--list] [--ok all|&lt;ticketId&gt;]... [--reject &lt;ticketId&gt; --reason "..."] [--rollback]</code>。 核心导出 decide（锚 ts/src/confirm.ts:27）——晨报决策清单×业主意向→追认/推翻事件序列。</p>
+<h2>实现概览</h2>
+<p>Owner 追认环接线（头注·锚 ts/src/confirm.ts:1）：晨报五栏机器自决清单逐条可推翻的落账端。语义：owner_confirmed=追认（可批量 all）·owner_rejected=推翻（须带 reason——可推翻≠可含糊·缺 reason 拒绝）；两者只入账不自动改码，推翻后差量处置走既有补票环与下一轮 resume。 输入 loadReport 读晨报（锚 ts/src/confirm.ts:19·缺/损坏即抛不装）；main（锚 ts/src/confirm.ts:50）入账 Ledger；--rollback（W6 件②·拍板#12）：推翻并执行撤销令——逐条现场 sha 校验→逆操作→rollback_applied 入账（executeRollback 调用点锚 ts/src/confirm.ts:90）；文件面撤回不洗绿：判据面回退→下轮指纹失效重烧。纪律：只追加账本（永不涂改）。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    MR[晨报<br/>五栏机器自决清单] --> LR[loadReport 读入<br/>缺/损坏即抛不装]
+    LR --> D{decide<br/>清单×意向}
+    D -->|ok all/逐条| OC[owner_confirmed<br/>追认·可批量]
+    D -->|reject| OR[owner_rejected<br/>须带 reason·缺则拒]
+    OC --> LG[append-only 账本<br/>永不涂改]
+    OR --> LG
+    OR -->|附带 --rollback| RB[executeRollback<br/>现场 sha 校验→逆操作]
+    RB --> RA[rollback_applied 入账<br/>判据面回退→指纹失效重烧]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>晨报清单</td><td>追认对象=晨报五栏机器自决清单（每条独立可翻案）——机器先走、人后认，追认不阻塞夜车节奏。</td></tr><tr><td>loadReport</td><td>读入晨报（锚 ts/src/confirm.ts:19）：缺/损坏即抛不装——没有清单就不演追认，杜绝「追认了个空」。</td></tr><tr><td>decide</td><td>纯函数核心（锚 ts/src/confirm.ts:27）：清单×业主意向→追认/推翻事件序列；可测试可重放（confirm.test.ts 直测）。</td></tr><tr><td>owner_rejected</td><td>推翻必须带 reason（可推翻≠可含糊·缺 reason 拒绝）——翻案要留理由，账本上才立得住。</td></tr><tr><td>executeRollback</td><td>撤销令执行（W6 件②·拍板#12·锚 ts/src/confirm.ts:90）：逐条现场 sha 校验→逆操作→rollback_applied 入账；--rollback 需与 --reject 并用（回滚只针对推翻项）。</td></tr><tr><td>不洗绿</td><td>文件面撤回≠判据洗白：判据面回退→下轮指纹失效重烧——推翻后的票下一轮照样重考，翻案不放水。</td></tr><tr><td>append-only 账本</td><td>一切追认/推翻/回滚事件只追加永不涂改（shared/ledger）——追认史=审计史，翻旧账随时可回放。</td></tr></tbody></table>
+<h2>调用方与被调用</h2>
+<p>被调：npm run confirm 脚本（package.json 面）/业主手工追认；decide 的测试在 confirm.test.ts（图谱 trace 产候选 confirm/run-slice·磁盘复核=仅 confirm.ts main 与 confirm.test.ts 两处引用）。 调用：shared/ledger（append-only 账本）·shared/undo-plan（撤销令执行）。</p>
+<h2>从哪测</h2>
+<p>ts/src/confirm.test.ts（decide 纯函数案·node --test 全量跑）；--list 只读列清单零副作用。</p>
+<h2>参数与预算</h2>
+<p>零 LLM 零预算（纯机械落账）；--rollback 需与 --reject 并用（回滚只针对推翻项）；红线不变量=判卷语义零触碰（追认不入判卷·晨报对比可见效果）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 67e5b04（2026-10-21·W-040 核对）；失效触发=晨报 schema/账本事件型/撤销令语义改动（看 ts/ 面 git log+执行台账）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-009-判卷追认-confirm.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<!-- meta: window=W-007 type=理念分析 status=verified verdict=对话分析（账目实锚·不涉拍板） -->
+<title>三层验证门 · 真班贵慢粗账目对比 · 引擎 vs 传统直接编程的抗幻觉优势</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1100px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+blockquote{border-left:3px solid #4a7dbe;background:#eef3fa;padding:8px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px;color:#41506b}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}th,td{border:1px solid #e4e7ee;padding:6px 9px;vertical-align:top}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.tag.blue{background:#e8f0fb;color:#2b5fa8}.tag.red{background:#fdeceb;color:#b03a34}.tag.green{background:#e9f7ee;color:#2e7d4f}.tag.amber{background:#fef3c7;color:#92400e}.tag.dark{background:#0f172a;color:#fff}
+.small{color:#8a90a0;font-size:12px}
+.fb{display:inline-block;border:1px solid #e4e7ee;border-radius:8px;padding:5px 10px;margin:3px;font-size:12.5px;background:#fff;vertical-align:middle}
+.fb.pi{border-color:#d8c7f0;background:#faf5ff}.fb.eng{border-color:#a8c4e8;background:#eff6ff}
+.fb.g1{border-color:#94a3b8;background:#f1f5f9}.fb.g2{border-color:#a8c4e8;background:#eff6ff}.fb.g3{border-color:#b8dcc4;background:#f2faf5}
+.farr{color:#8a90a0;font-size:15px;margin:0 2px}.fline{margin:6px 0}
+</style>
+</head>
+<body>
+
+<h1>三层验证门 · 真班贵慢粗账目对比 <span class="small">引擎 vs 传统 Claude Code / pi 直接编程的抗幻觉优势</span></h1>
+<p class="small">理念分析件 · 2026-10-18 · v2 增补 §三 站点4（开发部抗幻觉机械逐件对照）· 07-设计理念专题 · 账目源=执行台账/交接件实测（37 万 token/27 调用/145 分钟/Σ228.5 万均为真班实锚）· 业主问「重放为什么贵慢粗·能否对比」＋「这也是引擎相对传统直接编程的优势」</p>
+
+<h2>§0 一句话总纲</h2>
+<blockquote><b>传统 Claude Code / pi 直接做程序＝大模型写＋大模型自述＋人肉兜底</b>——判卷权在模型手里，装绿/幻觉靠人抓；<b>AFK 引擎＝大模型写＋机械判卷＋人只看判定梯</b>——判卷权从模型手里拿走，变成 exit code/考题 hash/判定梯这些<b>可复算的法律</b>。差异不在"谁家模型写码更强"（都是大模型写），在<b>"信不信它说自己写对了"</b>。本件用真账说明：为什么这条路上"验证"贵慢粗到必须分三层，以及为什么这个分层本身就是引擎的护城河。</blockquote>
+
+<h2>§一 真班重放贵慢粗：真账对比</h2>
+<table>
+<tr><th style="width:16%">维度</th><th style="width:26%">四关门（tsc/vitest/lint/体量）</th><th style="width:30%">真班重放（V1 链实测）</th><th>胶囊测试（拟建·cassette 回放）</th></tr>
+<tr><td><b>钱</b></td><td class="small"><b>0 token</b>（零 LLM）</td><td class="small"><b>~37 万 token/次</b>＝27 次 LLM 调用（班内维修窗交接实账）；另：queue-52 五票未装备白烧 7.2 万；W16 六班全量累计 Σ228.5 万逐笔入账</td><td class="small"><b>0 token</b>（LLM 响应已录制回放）</td></tr>
+<tr><td><b>时长</b></td><td class="small">分钟级</td><td class="small"><b>145 分钟</b>链静默（W16 实锚）＋串行排队（红线7：前班未终局不发下班）——多链 r2/r3 排满整晚</td><td class="small">分钟级</td></tr>
+<tr><td><b>确定性</b></td><td class="small">确定（1 个已知口径守卫竞态 flaky·单跑绿）</td><td class="small"><b>不确定</b>——builder 是大模型：同样改动两次重放，红票可能不同（工单5/8＝"生成质量概率族"实锚）</td><td class="small">确定（录制响应 sha256 冻结）</td></tr>
+<tr><td><b>粒度</b></td><td class="small">单文件/单模块·直接点名行号</td><td class="small"><b>整引擎一把梭</b>：一行 judge-guard 改动也要跑完整 V1+V3 两包</td><td class="small">单管道段/单站（改哪测哪）</td></tr>
+<tr><td><b>失败归因</b></td><td class="small">直接</td><td class="small"><b>间接且贵</b>：红的是 APP 工单，病因可能是引擎改动、也可能是生成方差——幽灵哈希案经 Verify＋Auditor 两轮深读才定位"快照多方写无主"，<b>归因成本＞修复成本</b></td><td class="small">直接点名管道段/断言</td></tr>
+<tr><td><b>能跑多勤</b></td><td class="small">每次提交</td><td class="small">只在里程碑（修完/切版前）——改动与发现之间隔几小时到几天，回归在窗口里裸奔</td><td class="small">每次提交</td></tr>
+<tr><td><b>独有价值</b></td><td class="small">静态/单元边界</td><td class="small"><b>测"真生成"</b>：胶囊回放旧响应，永远验证不了"改 prompt/判定策略对<b>真实生成质量</b>的影响"；也唯有它能暴露"真实 LLM 输出喂进下一站会不会炸"（API 漂移/格式方差/分段边界——痛点01 族）</td><td class="small">测"管道逻辑"（录制响应喂全链·各站衔接断言）</td></tr>
+</table>
+<p class="small">结论：贵＝真生成必须重跑；慢＝串行+真生成耗时；粗＝全包粒度＋生成方差污染归因。三者同源——<b>LLM 在回路里</b>。所以重放不能砍（真生成质量唯有它能验），也不能常跑（贵慢）——中间必须补一层确定性门。</p>
+
+<h2>§二 三层验证门（缺的中间层＝胶囊）</h2>
+<div class="figwrap">
+<div class="fline"><span class="fb g1"><b>第一层 · 提交门</b>：四关<br/>tsc 0＋vitest 1086＋lint 0＋体量&lt;300＋drift<br/>秒-分钟级·0 token·每次提交必跑</span><span class="farr">→</span><span class="fb g2"><b>第二层 · 集成门</b>（拟建·引擎的"切片②"）：<br/>cassette 回放"迷你夜车"：录制 LLM 响应固定喂全链<br/>分钟级·0 token·确定·断言各站事件流/判定/产物</span><span class="farr">→</span><span class="fb g3"><b>第三层 · 里程碑门</b>：真班重放<br/>真生成全链·EXIT=0/零幽灵/判定梯<br/>小时级·真金·切版前/大改动必跑</span></div>
+<p class="small" style="margin:6px 0 0">站5 测 APP 又快又准的原因＝它有切片②这层确定性中间门；<b>引擎 world 现在四关直接跳重放，中间是空的</b>。补法＝真班跑一次 <code>CASSETTE=record</code> 录制全部 LLM 请求/响应对（fixtures/cassettes 至今 0——深读窗交接 §四4 已挂·从 0 到 1），之后胶囊按 judge-guard 思路 sha256 冻结。</p>
+</div>
+<p><b>胶囊的诚实边界</b>：回放的是<b>过去的 LLM 响应</b>——验证"管道逻辑"，不验证"真实生成质量"；换模型/改 prompt 后须重录。两者互补不互替：胶囊管确定性回归，重放管真实效果。</p>
+
+<h2>§三 站点4 · 开发部的抗幻觉机械（逐件对照）</h2>
+<p>三层门是“验证视角”；补上施工视角的<b>站点4</b>才完整——传统直接编程里没有对应物，因为站4 的每道机械都指向一个具体幻觉类型。站4＝传统公司的开发部，<b>判卷对象＝单票</b>（站5 才是整包）：</p>
+<table>
+<tr><th style="width:20%">站4 部件</th><th style="width:22%">机械机制</th><th style="width:22%">治什么幻觉</th><th>锚点</th></tr>
+<tr><td><b>builder 主槽</b>（分段JSON协议）</td><td>分段输出＋fail-closed 解析＋机械重切＋容错提取</td><td>格式幻觉/长码截断/超限塞段</td><td class="small">痛点01 四层治理·build.ts:168-273</td></tr>
+<tr><td><b>变量盒 SYSTEM_BOX＋素材锚</b>（#63补案甲）</td><td>首建读预投素材进盒（≤6000字符）＋逐字令“禁止另起炉灶”</td><td>词表漂移/命名另起炉灶</td><td class="small">buildVariableBox·工单3 实证</td></tr>
+<tr><td><b>copy 槽</b>（#64案乙）</td><td>确定性直搬·零 LLM（保底文件完整可跑）</td><td>确定性票的生成方差</td><td class="small">judgeLane=copy·真班过闸实证</td></tr>
+<tr><td><b>票面验收</b>（考题只读）</td><td>exit code 判定·考题 sha256 冻结（judge-guard）·NA≠PASS</td><td><b>装绿</b>（说做完了/测试跳过）</td><td class="small">judge-guard.ts·skip 记账</td></tr>
+<tr><td><b>自愈环 ⟲≤3＋坐席A/B</b>（#52）</td><td>探针红自愈→第3轮坐席A换档→班次级坐席B（跨票接口面盒·≤3次/班）</td><td>红票无人管·无限烧钱</td><td class="small">selfheal-triage·probe-selfheal.ts:137-195</td></tr>
+<tr><td><b>对题闸 reviewer</b></td><td>审查“是否按需求做”·<b>状态机无 red→reviewing 边（只能扣绿永不放红）</b></td><td>需求理解偏/偏离题目</td><td class="small">reviewer.ts（总岗位映射表 §二）</td></tr>
+<tr><td><b>硬化道</b>（CRAP/变异·回写补测≤3）</td><td>变异全杀才 PASS·断言集不可减</td><td>空心绿/弱测试</td><td class="small">mutation-gate.ts·hardening-lane:143-201</td></tr>
+<tr><td><b>三钥匙绿灯</b></td><td>测试绿 ∧ 对题绿 ∧ 硬化绿——判定形式化</td><td>判定含糊/口径漂移</td><td class="small">话术规范 §2.6</td></tr>
+<tr><td><b>预算三路＋park/补考</b></td><td>maxLlmCalls/maxCost/hardStop＋缺陷挂起流转</td><td>烧穿/死循环</td><td class="small">night-budget.ts·park.ts</td></tr>
+</table>
+<p><b>站4 与 §一 贵慢粗的关系</b>：自愈环⟲≤3 正是重放成本的主要构成（每张红票×轮次×builder 调用）；而 copy 槽/素材锚/变量盒恰是<b>降本件</b>（#64 两案后工单3/工单0 双过闸·概率族收敛）。即站4 的机械既是抗幻觉闸，也是成本阀门。</p>
+<div class="figwrap">
+<div class="fline"><span class="fb pi">任务票（考题冻结）</span><span class="farr">→</span><span class="fb pi">builder 写码（分段JSON·变量盒·素材锚）</span><span class="farr">→</span><span class="fb eng">票面验收 exit code</span><span class="farr">→</span><span class="fb pi">红→自愈⟲≤3（坐席A/B）</span><span class="farr">→</span><span class="fb pi">对题闸 reviewer</span><span class="farr">→</span><span class="fb pi">硬化道 CRAP/变异</span><span class="farr">→</span><span class="fb eng">三钥匙绿灯→晋升</span></div>
+<p class="small" style="margin:6px 0 0">紫色=Agent员工（写码/修复/审查）· 蓝色=机械设备（判卷/晋升）· 每道箭头都是“不信任上一环”的机械校验。</p>
+</div>
+
+<h2>§四 为什么这套三层门＋站4 是引擎相对「传统直接编程」的优势</h2>
+<h3>4.1 结构对比：判卷权在谁手里</h3>
+<div class="figwrap">
+<div class="fline"><b>传统 Claude Code / pi 直接做程序：</b><span class="fb">大模型写码</span><span class="farr">→</span><span class="fb">大模型自述"完成了"</span><span class="farr">→</span><span class="fb">人肉 review 兜底（LLM 审 LLM 或人看·不系统·不可复算）</span></div>
+<div class="fline"><b>AFK 引擎：</b><span class="fb">大模型写码</span><span class="farr">→</span><span class="fb eng">票面验收 exit code（零 LLM）</span><span class="farr">→</span><span class="fb eng">对题闸（状态机无 red→reviewing 边·只能扣绿永不放红）</span><span class="farr">→</span><span class="fb eng">站5 双证＋判定梯（PASS/PASS*/FAIL）</span><span class="farr">→</span><span class="fb human">人只看判定梯（可复算）</span></div>
+</div>
+<p>公平说明：Claude Code / pi <b>也能跑测试</b>——差异不是"有测试 vs 没测试"，是<b>"测试是不是法律"</b>：①考题与实现分离且开工前冻结（judge-guard sha256 锁·篡改=终局）②判卷权形式化（reviewer 状态机无 red 入边·判卷零 LLM）③失败处置有上限有动作（自愈⟲≤3/宁停/停车场·红账本 2 轮复发自动升级）④全链 receipts（events.jsonl 115 型白名单·跳过也记账·run_interrupted 留痕）⑤NA≠PASS（没测到≠通过）。这五条在直接编程里靠"人自觉"，在引擎里是<b>架构硬保证</b>——不是管理制度，是调用链和状态机里写死的边。</p>
+<h3>4.2 幻觉类型对照：传统方式靠人抓 vs 引擎机械拦（含站4 逐件）</h3>
+<table>
+<tr><th style="width:18%">幻觉类型</th><th>传统直接编程（Claude Code/pi 裸用）</th><th>AFK 引擎（机械拦截面）</th></tr>
+<tr><td><b>装绿</b><br/><span class="small">声称做了没做/测试跳过</span></td><td>自述可信·人肉 diff 兜底——<b>人=判卷器，不可扩展不可复算</b></td><td>票面验收 exit code＋skip 记账＋NA≠PASS——<b>机器判定</b></td></tr>
+<tr><td><b>定位错</b><br/><span class="small">改错文件/错因</span></td><td>人肉排查（成本随仓库大小线性涨）</td><td>锚点契约（file:line 逐字）＋对题闸＋deepread 先读后聊</td></tr>
+<tr><td><b>API/用法漂移</b></td><td>跑一半炸或上线炸</td><td>探针＋切片跑红即拦（首战 21 条考题实证）</td></tr>
+<tr><td><b>需求理解偏</b></td><td>对话里反复纠</td><td>出题权冻结：考题开工前 sha256 锁＋对题闸"按需求做"审查</td></tr>
+<tr><td><b>越界改</b><br/><span class="small">改了不该改的</span></td><td>diff 人看（常漏）</td><td>禁动清单＋worktree 隔离＋契约锚点归属</td></tr>
+<tr><td><b>静默放弃</b><br/><span class="small">任务没完成就不提</span></td><td>无人知道</td><td>fail-closed 三不＋run_interrupted 事件＋晨报如实列剩余</td></tr>
+</table>
+<p class="small">每行右侧全是<b>机械面</b>（exit code/状态机/hash/白名单）——这就是"判卷权从模型手里拿走"的具体形态。</p>
+
+<h2>§五 厂务线如何继承这套优势（ts 码件的三层门＋站4）</h2>
+<p>引擎仓改引擎（厂务修复/优化）时，判卷面<b>天然已存在</b>：四关＋1086 条测试＋真班重放——全是零 LLM 机械件。所以厂务线抄这套作业的成本最低，只缺中间层（§二胶囊）和形式化梯（R-F）：</p>
+<table>
+<tr><th style="width:18%">厂务判定梯（拟·R-F）</th><th>机械判据</th></tr>
+<tr><td><b>PASS</b></td><td>四关全绿 ∧ 胶囊全绿 ∧ 重放 EXIT=0 ∧ 快照零幽灵 ∧ 事件白名单零新增</td></tr>
+<tr><td><b>PASS*</b>（带星）</td><td>四关＋胶囊全绿 ∧ 重放候跑（挂晨报·下一班补）</td></tr>
+<tr><td><b>FAIL</b></td><td>任一红 → 按任务书分诊（机械缺陷🔁修／语义回拍板／判据问题出证）</td></tr>
+</table>
+<p>这就是 ts 码件窗敢入 L2 白名单的钥匙：现在不敢让子窗自动改 ts，是因"四关绿"覆盖有盲区；有了<b>胶囊门（快而确定）＋重放门（慢而全真）</b>两级机械判卷，白名单才有判卷底气——子窗改码→四关＋胶囊自动跑→绿才收口→重放夜里链式→晨报追认。<b>第一步顺风件</b>：下次真班 <code>CASSETTE=record</code> 录一批（fixtures/cassettes 从 0 到 1——深读窗交接 §四4 已挂）。</p>
+
+<h2>§六 边界（诚实项）</h2>
+<ul>
+<li>机械判卷治"装绿/漂移/越界/静默"，<b>治不了"测试本身写错了"</b>——所以任务书判据冻结＋业主批判据仍是闸门（出题权在人）；</li>
+<li>测试覆盖不到的行为盲区依旧盲（四关/胶囊是必要非充分）——真班重放与概率族观察价值不变；</li>
+<li>胶囊回放旧响应：换模型/改 prompt 后须重录；重放的非确定性使"单次红"须按概率族口径处置（重放可消化·不一次定罪）；</li>
+<li>传统方式若配齐"冻结考题＋机械判定梯"也能近似——本件主张的差异是<b>系统化程度</b>（五条架构硬保证 vs 人自觉），不是能力有无。</li>
+</ul>
+
+<h2>§七 来源锚点</h2>
+<table>
+<tr><th>主张</th><th>锚点</th></tr>
+<tr><td>37 万 token/27 调用/145 分钟/概率族</td><td>班内维修窗交接 §〇/§二（queue-59-…r2 链·7527b8a）· W16 交接 §一</td></tr>
+<tr><td>Σ228.5 万/7.2 万白烧</td><td>W16 交接 §一（预算对账脚本化勘误）· 知识基建 handoff（queue-52 未装备）</td></tr>
+<tr><td>幽灵哈希归因成本</td><td>#61补/#63 · 深读档 Verify+Auditor（research/引擎自举优化/）</td></tr>
+<tr><td>对题闸只扣绿/考题冻结/红账本/NA≠PASS</td><td>reviewer.ts 状态机 · judge-guard.ts sha256 · 拍板#36 红账本 · 话术规范 §2.6「NA≠PASS」</td></tr>
+<tr><td>cassette 从 0 到 1</td><td>深读窗交接 §四4 · llm桩三案（#62-64 链）</td></tr>
+<tr><td>四关口径/1086 测试/体量</td><td>执行台账 2026-10-17~18 各笔 · 深读窗交接 §二</td></tr>
+<tr><td>fail-closed 三不/收口五件套</td><td>拍板#70③/#20+#68② · AGENTS.md 路由</td></tr>
+<tr><td>站4 逐件（builder/copy槽/变量盒/自愈坐席AB/对题闸/硬化道/三钥匙/预算三路）</td><td>build.ts:168-273 · 痛点01 四层治理 · #63补案甲（素材锚进盒）· #64案乙（copy直搬）· 总岗位映射表 §二 · 话术规范 §2.6（三钥匙）</td></tr>
+</table>
+
+<p class="small">三层验证门 · 07-设计理念专题 · 2026-10-18 · 窗=W-007 延伸分析件（行动项候批：cassette 录制顺风件/胶囊对比件/R-F 梯）· 话术：真班重放=用夜车跑金标准包验证引擎改动 · 判卷零 LLM=红绿只认 exit code 与机检·不认模型自述</p>
+</body>
+</html>

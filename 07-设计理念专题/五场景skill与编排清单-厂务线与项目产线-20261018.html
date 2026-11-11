@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<!-- meta: window=W-007 type=理念分析 status=verified verdict=对话分析（不涉拍板·行动项候批） -->
+<title>五场景 skill 与流程编排清单 · 厂务线与项目产线（PI 开窗全景）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.tag.purple{background:#f3e8ff;color:#6b21a8}.tag.blue{background:#e8f0fb;color:#2b5fa8}.tag.green{background:#e9f7ee;color:#2e7d4f}.tag.dark{background:#0f172a;color:#fff}
+.small{color:#8a90a0;font-size:12px}
+.yes{color:#2e7d4f;font-weight:700}.mid{color:#92400e}.no{color:#c0c6d0}
+</style>
+</head>
+<body>
+
+<h1>五场景 skill 与流程编排清单 <span class="small">厂务线（新建/修复/优化）＋项目产线（新建/修复/优化）· PI 开窗全景</span></h1>
+<p class="small">清单件 · 2026-10-18 · 07-设计理念专题 · 姊妹件=《五业务场景编排总图》（场景级编排·本件下沉到 skill 级）· 素材源=站12流程包深读＋拍板表 #36-#70＋执行台账＋规划段执行手册＋技能库实盘（~/.agents/skills 63 个）· 标记：●=必用 ◐=按需/可选 —=不用</p>
+
+<h2>§0 总纲：两阶段 × 两产线 × 承载原则</h2>
+<ul>
+<li><b>每个场景都拆两阶段</b>：<b>规划阶段</b>（想清楚+拍板·PI 会话）与<b>执行阶段</b>（干活·PI 子窗或引擎）；</li>
+<li><b>承载原则</b>：流程编排在<b>模板和表</b>（可机检可版本化），技能只在取证/辩论/执行循环处用——「模板承载＞skill 承载」（skill 会漂移·模板有机检）；</li>
+<li><b>项目产线的执行阶段＝站3-6 引擎</b>（不是 skill·builder 槽+机械判卷）；厂务线的执行阶段＝pi 子窗（native 工具＋任务书固定节）；</li>
+<li><b>implement / implement-spec 已装库</b>但标 disable-model-invocation（只能人手动触发）——L2 子窗自动调不到，执行纪律已文字化进任务书固定节（拍板#70③·方向题闸同款思路）。</li>
+</ul>
+
+<h2>§一 skill × 五场景矩阵总表</h2>
+<table>
+<tr><th style="width:22%">skill（按功能分组）</th><th>④项目·新建</th><th>⑤项目·修复</th><th>⑥项目·优化</th><th>①厂务·新建</th><th>②厂务·修复</th><th>③厂务·优化</th></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">取证 / 研究</td></tr>
+<tr><td>deepread（深读四步流水）</td><td>◐ Step4 金标准</td><td class="no">—（快道免）</td><td class="yes">● Step4 强制在先</td><td class="yes">● 先读后聊</td><td class="yes">● Verify+Auditor</td><td class="yes">●</td></tr>
+<tr><td>research（一手信源调查）</td><td class="yes">● Step2/4</td><td class="no">—</td><td>◐ 按需</td><td>◐ 联网时</td><td>◐</td><td>◐ 业内方案</td></tr>
+<tr><td>codebase-memory（MCP 图谱）</td><td>◐</td><td>◐</td><td class="yes">● 深度普查</td><td class="yes">● 查符号</td><td class="yes">● 追调用链</td><td class="yes">●</td></tr>
+<tr><td>tabbit（浏览器·壳页兜底）</td><td colspan="6">◐ B1 联网撞人机验证时</td></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">辩论 / 需求</td></tr>
+<tr><td>grilling / grill-with-docs</td><td class="yes">● Step1/3</td><td class="no">—（快道免）</td><td>◐ Step1-2 照走</td><td>◐ 对话形态</td><td>◐</td><td>◐</td></tr>
+<tr><td>wayfinder（制图·一票一会话）</td><td class="yes">● Step2</td><td class="no">—</td><td>◐</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>domain-modeling（术语→CONTEXT/ADR）</td><td class="yes">● Step3</td><td class="no">—</td><td>◐</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>to-questionnaire（悬置决策转问卷）</td><td colspan="6">◐ 全场景按需（P-X5）</td></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">综合 / 规划产物</td></tr>
+<tr><td>to-spec（综合 spec）</td><td class="yes">● Step6</td><td class="no">—</td><td>◐</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>to-tickets（切票）</td><td class="yes">● Step7</td><td class="no">—（修复清单即票）</td><td class="yes">● 只拆变更范围票</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>spec-architect（设计书模板）</td><td class="yes">● Step8 十三章</td><td class="no">—（用修复包模板）</td><td class="no">—（用优化包模板）</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>codebase-design（深模块/接缝）</td><td class="yes">● Step6/7</td><td class="no">—</td><td class="yes">● 接缝设计</td><td>◐</td><td>◐</td><td>◐</td></tr>
+<tr><td>to-work-packages（方案→工作包·大任务装袋）</td><td colspan="6">◐ 大任务先行时（P-X10 联动）</td></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">原型</td></tr>
+<tr><td>superdesign（C1 前端 UI）</td><td class="yes">● 前端位开</td><td class="no">—</td><td>◐</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>prototype（C2 LOGIC 走查）</td><td class="yes">● 状态模型拿不准时</td><td class="no">—</td><td>◐</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>archify（华丽成图·备选）</td><td colspan="6">◐ 备选（#19 后 C2 主用 Mermaid 手写）</td></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">执行</td></tr>
+<tr><td>tdd（红绿循环）</td><td>◐（票面语义）</td><td>◐</td><td>◐</td><td class="yes">● selftest 先行</td><td class="yes">● 测试先行跑红才动码</td><td class="yes">●</td></tr>
+<tr><td>diagnosing-bugs（根因定位）</td><td class="no">—</td><td class="yes">● 快道第一件</td><td>◐</td><td class="no">—</td><td class="yes">● 根因定位</td><td>◐</td></tr>
+<tr><td>implement（执行循环纪律·人触发）</td><td class="no">—（站3-6 用引擎）</td><td class="no">—</td><td class="no">—</td><td>◐ 纪律参考</td><td>◐ 纪律参考</td><td>◐ 纪律参考</td></tr>
+<tr><td>implement-spec（多子代理并发编排·人触发）</td><td colspan="6">◐ <b>二期参考架构</b>：任务图+前沿工单并发+worktree+合并子代理（映射 L2 多窗并发·候二期二步）</td></tr>
+<tr><td>setup-pre-commit / resolving-merge-conflicts / migrate-to-shoehorn</td><td colspan="6">◐ 工程按需（厂务线 ts 码件窗候白名单后适用）</td></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">收口 / 交接</td></tr>
+<tr><td>handoff / claude-handoff（交接书）</td><td class="yes">● Step9</td><td class="yes">●</td><td class="yes">●</td><td class="yes">● 收尾</td><td class="yes">●</td><td class="yes">●</td></tr>
+<tr><td>retro（会话收尾）</td><td colspan="6">◐ 全场景按需（Step5 后＋会话收尾）</td></tr>
+<tr><td>code-review（收工双轴审查）</td><td colspan="6">◐ 厂务线收口按需（项目线站1/2 圆桌人审代替）</td></tr>
+<tr><td colspan="7" style="background:#f6f8fa;font-weight:700">横切（教学/路由/写作）</td></tr>
+<tr><td>ask-matt（路由）/ spec-tutor / wait-what / teach（教学弹窗）</td><td colspan="6">◐ 概念不懂随时（规划段执行手册 §八）</td></tr>
+<tr><td>writing-for-agents（给 agent 的文档标准）</td><td colspan="6">◐ 写任务书/AGENTS/规则时</td></tr>
+<tr><td>triage / loop-me / grill-me / improve-codebase-architecture / setup-ts-deep-modules / writing-beats·fragments·shape / scaffold-exercises / migrate-to-shoehorn</td><td colspan="6">— 未接线或按需（如实列出·候二期评估是否接线）</td></tr>
+</table>
+
+<h2>§二 流程编排件（非 skill·模板与机检·同样是编排的一部分）</h2>
+<table>
+<tr><th style="width:26%">编排件</th><th>④新建</th><th>⑤修复</th><th>⑥优化</th><th>①厂务新建</th><th>②厂务修复</th><th>③厂务优化</th></tr>
+<tr><td>决策对比件（P-X9·七段）</td><td>◐ 流程变更</td><td>◐</td><td>◐</td><td class="yes">● 拍板前置</td><td class="yes">● 拍板前置</td><td class="yes">● 拍板前置</td></tr>
+<tr><td>派发书/任务书模板＋三关校验（#49）</td><td class="yes">● 发窗前</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td></tr>
+<tr><td>窗队列＋状态机（#69）</td><td class="no">—（项目走交件包/夜车）</td><td class="no">—</td><td class="no">—</td><td class="yes">● 领单/反投</td><td class="yes">● 领单/反投</td><td class="yes">● 领单/反投</td></tr>
+<tr><td>roundtable-precheck＋三 persona 圆桌</td><td class="yes">●</td><td class="no">—（快道免圆桌）</td><td class="yes">●</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>一键交件自检四闸（#48）</td><td class="yes">● 交件</td><td class="yes">●</td><td class="yes">●</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td>真班重放（回归验证）</td><td class="no">—（夜车即首跑）</td><td class="yes">● 回归门</td><td class="yes">● 回归门</td><td class="no">—</td><td class="yes">● ts 码件必跑</td><td>◐ 按改动面</td></tr>
+<tr><td>93/94 库＋rrm_lint＋rule-gap-ticket</td><td class="no">—</td><td class="yes">● 病卡回喂</td><td>◐</td><td>◐</td><td class="yes">● 病卡+图谱工序（#65）</td><td class="yes">● 结论入库</td></tr>
+<tr><td>wip_scan / rulegap_scan / meta_lint(候)</td><td colspan="6" class="yes">● 厂务线全场景（项目线不扫）</td></tr>
+<tr><td>收口五件套（#20+#68②）＋快照.ps1</td><td colspan="6" class="yes">● 全场景收尾</td></tr>
+</table>
+
+<h2>§三 ④ 项目·新建（新项目包·十步全开）</h2>
+<div class="figwrap">
+<pre class="mermaid">
+flowchart TD
+  S05["0.5 样品窗 P-S1<br/>pi 真造产出物·三件交付"] --> S1["1 定方向<br/>grilling·Destination 五问"]
+  S1 --> S1B["1.5 七位能力开关 #18"]
+  S1B --> S2["2 制图建需求单<br/>wayfinder + research 子代理"]
+  S2 --> S3["3 追问×N<br/>grill-with-docs + domain-modeling"]
+  S3 --> S4["4 调研<br/>research + deepread + 图谱"]
+  S4 --> G52{"B1 必跑闸 #52"}
+  G52 -->|"齐"| S25["2.5 综合分析件 P-A3.5 #50<br/>横比矩阵·无分析件不拍板"]
+  S25 --> PA(["业主拍板"])
+  PA --> S3C["3 决策期收口<br/>CONTEXT/ADR"]
+  S3C --> S4B["4 原型定稿<br/>C1 superdesign / C2 Mermaid #19"]
+  S4B --> S5["5 技术栈定案+设计书V1<br/>P-A4 + spec-architect 模板"]
+  S5 --> S6["6 圆桌 V2 ⟲≤3<br/>precheck + 三persona"]
+  S6 --> S7["7 备份快照"]
+  S7 --> S8["8 交件归档+四闸 #48"]
+  S8 --> S85["8.5 修复窗 P-G5 #51<br/>FAIL分诊⟲≤3"]
+  S85 --> S9["9 交接 handoff<br/>→ 站3-6 夜车（引擎全自动）"]
+  classDef pi fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef gate fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class S05,S1,S1B,S2,S3,S4,S25,S3C,S4B,S5,S6,S85,S9 pi
+  class G52,G52B gate
+  class PA human
+</pre>
+</div>
+<table>
+<tr><th style="width:10%">阶段</th><th style="width:16%">步</th><th>干什么</th><th style="width:26%">skill / 机检</th><th style="width:18%">产物</th></tr>
+<tr><td rowspan="3">规划<br/>（PI·您在场）</td><td>0.5 样品窗</td><td>真造最终产出物·判据前灌</td><td>P-S1（pi 直造）</td><td>样品+判据集+审核记录</td></tr>
+<tr><td>1-3 需求</td><td>Destination→制图→追问</td><td>grilling→wayfinder→grill-with-docs→domain-modeling</td><td>map/CONTEXT/ADR</td></tr>
+<tr><td>4-2.5 调研</td><td>金标准+外部→综合横比</td><td>research＋deepread＋codebase-memory→P-A3.5</td><td>research/*.md＋分析件</td></tr>
+<tr><td rowspan="3">规划<br/>（PI）</td><td>4 原型</td><td>UI/逻辑走查</td><td>superdesign＋prototype LOGIC（C2 Mermaid #19）</td><td>ui-*/logic-*.html</td></tr>
+<tr><td>5-7 成书</td><td>技术栈→spec→切票→设计书</td><td>to-spec＋codebase-design→to-tickets→spec-architect 模板</td><td>spec/票集/设计书 V1</td></tr>
+<tr><td>圆桌-8 收口</td><td>评审⟲≤3→备份→交件四闸</td><td>roundtable-precheck＋三 persona→快照.ps1→一键交件自检</td><td>设计书 V2＋提交版本文件</td></tr>
+<tr><td>执行<br/>（引擎）</td><td>站3-6 夜车</td><td>拆单→装备→施工→自愈→验证→晨报</td><td><b>引擎（非 skill）</b>·queue-runner</td><td>APP＋晨报</td></tr>
+<tr><td>收尾</td><td>9 交接</td><td>总交接＋下一棒</td><td>handoff</td><td>交接文档</td></tr>
+</table>
+
+<h2>§四 ⑤ 项目·修复（修复包·快道三件·Vn.1）</h2>
+<div class="figwrap">
+<pre class="mermaid">
+flowchart LR
+  A["晨检/晨报问题<br/>（人确认）"] --> B["① 根因定位<br/>diagnosing-bugs"]
+  B --> C["② 修复清单即票<br/>（免切票）"]
+  C --> D["③ 设计书-修复包模板"]
+  D --> E["交件归档·四闸 #48"]
+  E --> F["夜车修复班次 Vn.1<br/>站3-6 引擎·回归门防弄坏"]
+  F --> G(["晨报追认"])
+  classDef pi fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef eng fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class B,C,D pi
+  class E,F eng
+  class A,G human
+</pre>
+</div>
+<table>
+<tr><th style="width:12%">阶段</th><th style="width:22%">步</th><th>干什么</th><th style="width:26%">skill / 机检</th><th>产物</th></tr>
+<tr><td>规划（PI）</td><td>检查单确认</td><td>业主晨检问题记录</td><td>晨报/病卡表</td><td>检查单</td></tr>
+<tr><td>规划（PI）</td><td>快道①根因定位</td><td>晨检截图→假设→验证</td><td><b>diagnosing-bugs</b></td><td>根因结论</td></tr>
+<tr><td>规划（PI）</td><td>快道②③修复清单即票＋成书</td><td>免切票·免 wayfinder/research/deepread/原型/grilling/样品窗</td><td>设计书-修复包模板</td><td>修复清单＋设计书</td></tr>
+<tr><td>规划（PI）</td><td>交件归档</td><td>四闸</td><td>一键交件自检（#48）</td><td>提交版本文件</td></tr>
+<tr><td>执行（引擎）</td><td>夜车修复班次 Vn.1</td><td>修复票施工＋回归门（不许弄坏既有）</td><td><b>引擎</b>·回归翻案环</td><td>APP Vn.1＋晨报</td></tr>
+</table>
+
+<h2>§五 ⑥ 项目·优化（优化包·增量班次）</h2>
+<div class="figwrap">
+<pre class="mermaid">
+flowchart LR
+  A["优化需求"] --> B["Step1-2 照走<br/>grilling/wayfinder"]
+  B --> C["Step4 换引擎<br/>deepread 定点读码·强制在先"]
+  C --> D["变更范围票<br/>to-tickets 只拆变更"]
+  D --> E["回归清单→切片考题"]
+  E --> F["设计书-优化包模板"]
+  F --> G["交件·四闸"]
+  G --> H["夜车增量班次<br/>增量契约 ajv·回归门"]
+  H --> I(["晨报追认"])
+  classDef pi fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef eng fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class B,C,D,E,F pi
+  class G,H eng
+  class A,I human
+</pre>
+</div>
+<table>
+<tr><th style="width:12%">阶段</th><th style="width:22%">步</th><th>干什么</th><th style="width:26%">skill / 机检</th><th>产物</th></tr>
+<tr><td>规划（PI）</td><td>Step1-2 照走</td><td>定方向＋制图</td><td>grilling/wayfinder</td><td>Destination/map</td></tr>
+<tr><td>规划（PI）</td><td>Step4 换引擎</td><td><b>deepread 定点读码强制在先</b>（动刀前）</td><td><b>deepread</b>＋codebase-memory</td><td>定点深读档</td></tr>
+<tr><td>规划（PI）</td><td>变更范围票</td><td>只拆变更范围·深化普查不入本班</td><td>to-tickets＋codebase-design 接缝</td><td>票集＋回归清单</td></tr>
+<tr><td>规划（PI）</td><td>成书</td><td>基线声明＋增量条款</td><td>设计书-优化包模板</td><td>设计书（增量）</td></tr>
+<tr><td>规划（PI）</td><td>交件归档</td><td>增量契约 ajv 验过＋四闸</td><td>一键交件自检</td><td>提交版本文件</td></tr>
+<tr><td>执行（引擎）</td><td>夜车增量班次</td><td>变更票施工＋回归门</td><td><b>引擎</b></td><td>APP Vn＋晨报</td></tr>
+</table>
+
+<h2>§六 ① 厂务·新建（造新工具/新流程件）</h2>
+<div class="figwrap">
+<pre class="mermaid">
+flowchart LR
+  A["想法/业主令"] --> B["灵感池 P-X8<br/>30秒一行"]
+  B --> C["先读后聊取证<br/>deepread + 图谱"]
+  C --> D["对比件 P-X9<br/>七段·现状vs改后"]
+  D --> E(["业主拍板#N"])
+  E --> F["任务书/派发书<br/>+三关校验 #49"]
+  F --> G["L2 pi_runner 领单<br/>spawn 可见子窗"]
+  G --> H["施工<br/>native 工具+selftest 先行"]
+  H --> I["收口五件套<br/>台账/队列/meta"]
+  I --> J(["晨间看账"])
+  classDef pi fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef eng fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class G,H,I pi
+  class F eng
+  class A,B,C,D pi
+  class E,J human
+</pre>
+</div>
+<table>
+<tr><th style="width:12%">阶段</th><th style="width:20%">步</th><th>干什么</th><th style="width:26%">skill / 机检</th><th>产物</th></tr>
+<tr><td>规划（PI）</td><td>想法入池</td><td>灵感池 P-X8</td><td>灵感池模板</td><td>池行</td></tr>
+<tr><td>规划（PI）</td><td>先读后聊</td><td>定边界→图谱/源码取证（#69① 强制）</td><td><b>deepread</b>＋codebase-memory</td><td>深读档/取证结论</td></tr>
+<tr><td>规划（PI）</td><td>对比件</td><td>七段现状 vs 改后</td><td>决策对比报告模板（P-X9）</td><td>对比件 html</td></tr>
+<tr><td>规划（PI·人）</td><td>拍板</td><td>「准」→拍板号落表</td><td>拍板记录表（#60补 单写者）/审批卡</td><td>拍板#N</td></tr>
+<tr><td>规划（PI）</td><td>任务化+入队</td><td>任务书＋三关→队列「待实施(已批)」</td><td>派发书三关校验（#49）</td><td>队列行</td></tr>
+<tr><td>执行（PI·可无人）</td><td>L2 领单施工</td><td>pi_runner→spawn 可见子窗→selftest 先行</td><td>pi_runner＋spawn_window（#70）</td><td>新件＋log</td></tr>
+<tr><td>收口（PI）</td><td>五件套</td><td>台账/队列✅/meta 三键头</td><td>收口五件套＋wip_scan</td><td>台账笔＋✅</td></tr>
+</table>
+
+<h2>§七 ② 厂务·修复（修 AFK 引擎本身）</h2>
+<div class="figwrap">
+<pre class="mermaid">
+flowchart LR
+  A["病卡/晨检红"] --> B["深读取证<br/>Verify+Auditor 两级"]
+  B --> C["codebase-memory 图谱<br/>查符号·追调用链·爆炸半径"]
+  C --> D["修法对比件 P-X9"]
+  D --> E(["业主拍板#N"])
+  E --> F["维修任务书<br/>班内/班外+三关"]
+  F --> G["pi 维修窗施工<br/>四关自跑·测试先行跑红才动码"]
+  G --> H["真班重放验证<br/>夜车验夜车"]
+  H --> I["93/94 病卡 RRM 写入<br/>rrm_lint 0 错误"]
+  I --> J(["追认关窗"])
+  classDef pi fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef eng fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class B,C,D,F,G pi
+  class H eng
+  class A,E,J human
+  class I eng
+</pre>
+</div>
+<table>
+<tr><th style="width:12%">阶段</th><th style="width:20%">步</th><th>干什么</th><th style="width:26%">skill / 机检</th><th>产物</th></tr>
+<tr><td>规划（PI）</td><td>病入账</td><td>病卡表/红账本自动立卡</td><td>收车链（引擎）</td><td>病卡</td></tr>
+<tr><td>规划（PI）</td><td>深读取证</td><td>Verify（边界/覆盖账）→不够再 Auditor</td><td><b>deepread</b>（四步流水）</td><td>深读档（规约行必填 #68①）</td></tr>
+<tr><td>规划（PI）</td><td>图谱三查</td><td>查符号/追调用链/爆炸半径</td><td>codebase-memory 双图（#57①）</td><td>调用链锚点</td></tr>
+<tr><td>规划（PI·人）</td><td>修法拍板</td><td>修法对比件→「准」</td><td>决策对比模板</td><td>拍板#N</td></tr>
+<tr><td>执行（PI）</td><td>维修窗施工</td><td>任务书固定节：开工查图→测试先行跑红才动码→<b>四关自跑</b>→方向题闸</td><td>维修任务书模板＋四关</td><td>修复 diff</td></tr>
+<tr><td>执行（引擎）</td><td>真班重放</td><td>旧交件包回归验证（改引擎验引擎）</td><td><b>夜车</b>·queue-runner</td><td>重放班账</td></tr>
+<tr><td>收口（PI）</td><td>知识写入</td><td>93/94 病卡 RRM（绿出口闸）＋五件套</td><td>rrm_lint＋94 入库</td><td>病卡 RRM</td></tr>
+</table>
+
+<h2>§八 ③ 厂务·优化（优化引擎/流程）</h2>
+<div class="figwrap">
+<pre class="mermaid">
+flowchart LR
+  A["审计/复盘/优化建议<br/>14轮报告/架构审查/RAG梳理"] --> B["机械立票<br/>rule-gap-ticket（规约行）"]
+  A --> C["优化对比件 P-X9"]
+  B --> D(["业主拍板·达标线"])
+  C --> D
+  D --> E["pi 窗施工<br/>评估脚本先行"]
+  E --> F["评估判据达标线验收<br/>（不达标如实不上线）"]
+  F --> G["固化三同步<br/>拍板表+蓝图+ADR/借鉴件台账"]
+  G --> H(["94 入库+晨报"])
+  classDef pi fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef eng fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  class A,B,C,E,G pi
+  class F,H eng
+  class D,H human
+</pre>
+</div>
+<table>
+<tr><th style="width:12%">阶段</th><th style="width:20%">步</th><th>干什么</th><th style="width:26%">skill / 机检</th><th>产物</th></tr>
+<tr><td>规划（PI）</td><td>优化建议源</td><td>审计报告/复盘/架构审查/深读规约行</td><td>improve-codebase-architecture（按需）·rule-gap-ticket（机械立票 #68）</td><td>建议票/对比件</td></tr>
+<tr><td>规划（PI·人）</td><td>拍板＋达标线</td><td>「准」＋评估判据数值（不达标如实不上线）</td><td>拍板记录表</td><td>拍板#N＋达标线</td></tr>
+<tr><td>执行（PI）</td><td>施工</td><td>评估脚本先行→改→达标</td><td>按对象（RAG eval/四关/专项机检）</td><td>优化产物</td></tr>
+<tr><td>收口（PI）</td><td>固化三同步＋入库</td><td>拍板表＋蓝图/规约＋ADR·94 增量入库（--rebuild 一次）·借鉴件台账</td><td>rrm_lint/eval 工具链</td><td>三处落点＋库更新</td></tr>
+</table>
+
+<h2>§九 横切件（五场景共用）</h2>
+<table>
+<tr><th style="width:24%">横切</th><th>内容</th></tr>
+<tr><td>治理三件</td><td>拍板记录表（append-only·#60补 单写者）· 对比件强制（#36）· 窗队列状态机（#69·探讨中不可领单）</td></tr>
+<tr><td>机检族</td><td>派发书三关校验（#49）· roundtable-precheck · 契约三关 · 移交预检 · 一键交件自检（#48·回归锚） · 术语体检 · wip_scan · rulegap_scan · meta_lint（候）</td></tr>
+<tr><td>记忆四层</td><td>账本（runs/台账/拍板表）· 状态（队列/进度/飞书投影）· 知识（93/94/双图谱·绿出口闸）· 卷宗（handoffs/research/会话档）——见姊妹件《五业务场景编排总图》§六-§八</td></tr>
+<tr><td>话术与安全</td><td>话术规范（结论先行/白话三词）· 安全边界红线 R1-R7（危险命令只出文本/无人值守永不碰 main/push 业主）</td></tr>
+<tr><td>教学横切</td><td>spec-tutor / wait-what / teach / ask-matt（路由）——概念不懂随时</td></tr>
+</table>
+
+<h2>§十 skill 库备注与坑</h2>
+<ul>
+<li><b>implement / implement-spec</b>：disable-model-invocation=true（只能人手动触发）——L2 无人值守子窗<b>自动调不到</b>；执行纪律已文字化进任务书固定节（#70③ 同款思路）。implement-spec 的「任务图＋前沿工单并发＋worktree＋合并子代理」是二期 ts 码件窗并发的参考架构；</li>
+<li><b>archify</b>：#19 后 C2 主用 Mermaid 手写单 HTML，archify 退「华丽交互成图」备选；</li>
+<li><b>retro</b>：对齐十步表（README 补行·#45④）；</li>
+<li><b>未接线清单如实</b>：triage/loop-me/grill-me/improve-codebase-architecture/setup-ts-deep-modules/writing-beats·fragments·shape/scaffold-exercises/migrate-to-shoehorn/setup-pre-commit——装了未编排进五场景，候二期逐个评估「接线/不接线/卸载」（候对比件）；</li>
+<li><b>站12包 工具包/skills 为正本</b>：改 skill 后需重跑 setup.ps1 重建符号链接（V1.0分支声明③）。</li>
+</ul>
+
+<h2>§十一 来源锚点</h2>
+<table>
+<tr><th>主张</th><th>锚点</th></tr>
+<tr><td>三包编制差异（新建全开/修复快道/优化 deepread 在先）</td><td>站12拍板#45 · README 三包技能编制 · 规划段执行手册 §二</td></tr>
+<tr><td>十步/窗口链/提示词</td><td>工作流蓝图.md §3/§7 · 执行编成.md §6.2 G0-G8</td></tr>
+<tr><td>C1/C2 工具分工</td><td>拍板#12/#19（Mermaid 手写·archify 备选）</td></tr>
+<tr><td>三关/四闸/回归锚</td><td>拍板#49/#48/#21 · 一键交件自检.mjs 头注</td></tr>
+<tr><td>厂务 L1/L2/方向题闸</td><td>拍板#69/#70 · pi_runner.mjs/spawn_window.mjs/approval_push.mjs · W-011 E2E 标记</td></tr>
+<tr><td>维修固定工序</td><td>拍板#65 · 维修任务书模板-班内/班外（含方向题闸 #70③）</td></tr>
+<tr><td>知识写入闸/规约行</td><td>拍板#59②/#68① · 93/94 README</td></tr>
+<tr><td>深度治理/先读后聊</td><td>拍板#52/#69① · 痛点02</td></tr>
+</table>
+
+<p class="small">五场景 skill 与流程编排清单 · 07-设计理念专题 · 2026-10-18 · 窗=W-007 延伸分析件（行动项候批）· 姊妹件=《五业务场景编排总图》（场景级）· 话术：PI 开窗=pi 会话窗（人开或 L2 领单）· 引擎=站3-6 夜车全自动</p>
+</body>
+</html>

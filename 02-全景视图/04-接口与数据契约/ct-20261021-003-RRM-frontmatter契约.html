@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ct-20261021-003 · 契约卡 · RRM frontmatter 11 键与 rrm_lint 闸</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>ct-20261021-003 · 契约卡 · RRM frontmatter 11 键与 rrm_lint 闸</h1>
+<div class="meta"><b>id</b> ct-20261021-003 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 01c1d9a · <b>run_id</b> queue-93-w041</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>契约卡 · RRM frontmatter 11 键与 rrm_lint 闸</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：定义 RRM（RAG-Ready Markdown）知识卡的 frontmatter 契约——11 必填键+允许附加键+机检检查族（E0-E9/B1）。<strong>为什么存在</strong>：知识件入 RAG 索引的前提是「身世可追溯、格律机械可查」——11 键让每张卡知道自己是谁/谁产的/基于哪个 repo_head，机检闸让「写=断言已验证」（#59②）。<strong>边界</strong>：本卡只投影契约不授权改闸（改闸须业主拍板）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>金标准实物：W-040 首批 13 张模块卡（首卡锚 <code>02-全景视图/03-模块卡/mk-20261021-001-派工器-pi_runner.md:1</code>）——本区格律实物样板</td><td>本卡 TL;DR</td></tr><tr><td>2</td><td>踩坑实证：W-041 施工坑——「有 frontmatter 即按 RRM 检（无才走 legacy 轨）」，视图件只带时效键四要素会炸 E1，故 7 件带全 11 键+四要素附加键</td><td><code>90-过程/执行台账.md:583</code>（W-041 施工坑 a）</td></tr><tr><td>3</td><td>附加键实践：本区各卡「基准/生成式/核对/失效触发」时效键四要素=白名单外附加键（rrm_lint 不检不拒）——契约弹性面</td><td>本卡附加键节</td></tr></tbody></table>
+<h2>接口（11 必填键·<code>91-脚本/rrm_lint.py:38</code>）</h2>
+<table><thead><tr><th>#</th><th>键</th><th>枚举/格式</th><th>语义</th></tr></thead><tbody><tr><td>1</td><td><code>id</code></td><td>全局唯一（E5 目录批量查重）</td><td>卡号（惯例 <code>&lt;前缀&gt;-&lt;日期&gt;-&lt;序号&gt;</code>）</td></tr><tr><td>2</td><td><code>kind</code></td><td>{病卡, 维修记录, 建议条目, 模块卡}（<code>91-脚本/rrm_lint.py:40</code>·W-036 扩入模块卡）</td><td>卡种</td></tr><tr><td>3</td><td><code>domain</code></td><td>{app, engine, exam}（<code>91-脚本/rrm_lint.py:41</code>）</td><td>领域池（93/94/95 分池依据）</td></tr><tr><td>4</td><td><code>status</code></td><td>{draft, verified}（<code>91-脚本/rrm_lint.py:42</code>）</td><td>生命周期（B1 闸判据）</td></tr><tr><td>5</td><td><code>created_at</code></td><td>日期</td><td>建卡日</td></tr><tr><td>6</td><td><code>verified_at</code></td><td>日期</td><td>过闸签发日</td></tr><tr><td>7</td><td><code>repo_head</code></td><td>git short hash</td><td>制卡基线</td></tr><tr><td>8</td><td><code>run_id</code></td><td>自由文本（惯例带窗ID）</td><td>产出批次</td></tr><tr><td>9</td><td><code>anchors</code></td><td>列表·每项 <code>相对路径:行号</code>（E3）</td><td>轨迹锚</td></tr><tr><td>10</td><td><code>tags</code></td><td>列表（可空）</td><td>检索标签</td></tr><tr><td>11</td><td><code>related</code></td><td>列表（可空·E6 查悬空）</td><td>关联卡 id</td></tr></tbody></table>
+<h2>附加键（不检不拒·本区约定）</h2>
+<p>frontmatter 可带白名单外附加键——02-全景视图 各卡按任务书规约追加<strong>时效键四要素</strong>：<code>基准</code>（=repo_head 具体值）/<code>生成式</code>（是/否·本区人工对账制卡=否）/<code>核对</code>（日期）/<code>失效触发</code>（〈拍板#NN/改码〉描述）。rrm_lint 只查 11 必填键缺失（E1），附加键零判定。</p>
+<h2>rrm_lint 检查族（抽验面）</h2>
+<table><thead><tr><th>码</th><th>判据</th><th>后果</th></tr></thead><tbody><tr><td>E0</td><td>无 frontmatter</td><td>非 RRM 档·legacy 轨不适用本检（不入池）</td></tr><tr><td>E1</td><td>11 必填键缺失</td><td>坏档拒收</td></tr><tr><td>E2</td><td>kind/domain/status 枚举外</td><td>坏档拒收</td></tr><tr><td>E3</td><td>锚点非 <code>相对路径:行号</code></td><td>坏档拒收</td></tr><tr><td>E4</td><td>单 H2 节 &gt;2000 字（<code>91-脚本/rrm_lint.py:37</code> 可配）</td><td>坏档拒收</td></tr><tr><td>E5</td><td>id 目录内重复</td><td>坏档拒收</td></tr><tr><td>E6</td><td>related 悬空</td><td>坏档拒收</td></tr><tr><td>E7</td><td>triples 行非四列</td><td>坏档拒收</td></tr><tr><td>E8</td><td>triples 符号不在引擎图限定名</td><td>坏档拒收（--graph 注入时）</td></tr><tr><td>E9</td><td>scope=invariant 档检出未声明领域专名</td><td>拒收+转库指引</td></tr><tr><td>B1</td><td>status=draft</td><td>INDEX-BLOCKED（禁入 RAG 索引·绿驱动写入）</td></tr></tbody></table>
+<h2>检查流水（图示与节点详注）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    IN[知识卡.md 落盘] --> E0{有 frontmatter?}
+    E0 -->|无| LG[legacy 轨<br/>不入 RRM 池]
+    E0 -->|有| E1{E1 11 键全?}
+    E1 -->|缺| BAD[坏档拒收]
+    E1 -->|全| E2{E2 枚举过?}
+    E2 -->|外| BAD
+    E2 -->|过| EX{E3-E9 逐检<br/>锚格式/段长/唯一性/related}
+    EX -->|违| BAD
+    EX -->|全过| B1{B1 status}
+    B1 -->|draft| IB[INDEX-BLOCKED<br/>禁入 RAG 索引]
+    B1 -->|verified| OK[入池 94 检索<br/>「写=断言已验证」]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>E0 frontmatter 判</td><td>分流第一闸：有 frontmatter 即按 RRM 检（W-041 踩坑实证·<code>90-过程/执行台账.md:583</code>）——带时效键四要素而不带 11 键=炸 E1，legacy 轨只属于完全无 frontmatter 的门牌件。</td></tr><tr><td>E1 11 键全?</td><td>身世底线（锚 91-脚本/rrm_lint.py:38）：id/kind/domain/status/时间对/repo_head/run_id/anchors/tags/related——缺一即拒，格律不靠自觉。</td></tr><tr><td>E2 枚举过?</td><td>三枚举（<code>:40</code> kind/<code>:41</code> domain/<code>:42</code> status）：卡种/领域池/生命周期越界即拒——枚举扩容=拍板件（W-036 扩「模块卡」先例）。</td></tr><tr><td>E3-E9 逐检</td><td>格律细检：锚点 <code>相对路径:行号</code> 格式（E3）/单 H2 节 ≤2000 字（E4·帽在 <code>:37</code> 可配）/id 目录唯一（E5）/related 不悬空（E6）/triples 面（E7/E8）/invariant 专名（E9）——目录批量模式 E5/E6 才生效。</td></tr><tr><td>B1 保鲜闸</td><td>现状体的时效机制核心：status=draft→INDEX-BLOCKED——「改 draft=自动失效出池」，代码推进致卡过期时不需要人肉巡检删卡。</td></tr><tr><td>入池 94 检索</td><td>verified 档唯一归宿：build_index 只收 verified（draft 拒入在 _load_source 前移）——「写=断言已验证」（#59②）让 RAG 池里没有未验证的断言。</td></tr></tbody></table>
+<h2>B1 保鲜闸（02 现状体的时效机制）</h2>
+<p><code>build_index</code> 只收 verified 档——代码推进致卡过期时：改 <code>status: draft</code>（自动失效出池）→对账重制→过 rrm_lint 再签 verified。02-全景视图（现状体·向代码对账）靠此闸保鲜，不靠人肉巡检。</p>
+<h2>从哪测</h2>
+<p>单档：<code>python 91-脚本/rrm_lint.py &lt;卡路径&gt;</code>（exit 0=过）；目录批量：<code>python 91-脚本/rrm_lint.py &lt;目录&gt;/</code>（E5/E6 生效）；自检：<code>python 91-脚本/rrm_lint.py --selftest</code>（17 案·W-036 后）。</p>
+<h2>参数与预算</h2>
+<p>rrm_lint 纯静态机检·零 LLM 零预算；原子段帽 2000 字（--max-section 可调）；「verified 才入索引」闸门语义=拍板#58 系+总方案口径·改闸须业主拍板（本卡只投影不授权）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 01c1d9a（2026-10-21·W-041 核对·rrm_lint.py 源码实勘）；失效触发=本卡头 frontmatter「失效触发」键。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/04-接口与数据契约/ct-20261021-003-RRM-frontmatter契约.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261021-009 · 业务流程卡 · 维修环与夜车恢复（红票/半截窗从发现到治好回列·流程/分支视角·as-built）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261021-009 · 业务流程卡 · 维修环与夜车恢复（红票/半截窗从发现到治好回列·流程/分支视角·as-built）</h1>
+<div class="meta"><b>id</b> bf-20261021-009 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 843fa51 · <b>run_id</b> queue-98-w046</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；补考（挂起补考·L1）；熔断（同因熔断 L1／收班复盘器 L2）；挂起（事件对 L1／⏸格 L2·随文标注）。</p>
+</blockquote>
+<h1>业务流程卡 · 维修环与夜车恢复（红票/半截窗从发现到治好回列·流程/分支视角·as-built）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：夜车「红了怎么办、崩了怎么续」——红票从班内三级阶梯（探针⟲1→票级⟲≤3+坐席A→停车场+夜末补考）一路升到班外维修环（L4·诊断→方案件→执行器），修好回列或如实入停车场；断电/半截窗在哪三处断点恢复（班内 resume 指纹门、班级账本投影、窗级快照三键），一张分支图看全。<strong>为什么存在</strong>：模块卡分述三环（mk-011）与发车收车编排（mk-004/005）、时序卡画秒级走线（sq-001），缺「阶梯怎么升、出口怎么分、断点在哪续」的流程/分支视角一图——本卡补。<strong>边界</strong>：本卡只画流程/分支（决策点+阶梯分流+恢复点），时序先后归 [sq-20261021-001] 零复制；三环接口细节归 [mk-20261021-011]；窗外主干归 [bf-20261021-007]。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立规：拍板#31 修复体系三级重整（班内两级维修工+班外兜底收编）——四级阶梯母件（用例级→票级→班次内→班次外）立轴</td><td><code>90-过程/拍板记录表.md:39</code></td></tr><tr><td>2</td><td>班外环内化：拍板#35 W16 维修环引擎内化（fail-loop 编排+包病道定版）→拍板#84 授权制改造（L1 自动/L2 回归子类自动/新语义业主勾选·fail-closed 停车点）</td><td><code>90-过程/拍板记录表.md:47</code> / <code>:103</code></td></tr><tr><td>3</td><td>断点交接底座：拍板#89己 快照三键（会话档/产物锚/窗PID·W-031 落地）——窗级断点恢复的立规锚</td><td><code>90-过程/拍板记录表.md:109</code></td></tr><tr><td>4</td><td>本卡：拍板#98 包C（视图补图三包之三·前置 W-045 已✅自动串行）；活例=W-046 本窗 spawn 快照三键在行（缺 2 键 WARN 如实标缺不谎报齐）</td><td><code>90-过程/拍板记录表.md:119</code></td></tr></tbody></table>
+<h2>定义层（这张图怎么读）</h2>
+<ul><li><strong>四级维修阶梯</strong>（组织轴=机器改错的地方在哪里）：L1 用例级（探针自愈）→L2 票级（⟲环+坐席A）→L3 班次内（停车场/夜末补考/坐席B）→L4 班次外（fail-loop 维修环+兜底道）——每升一层上下文更长、能力更强，低层烧完才升级（母件=<code>90-过程/10-专题档案/02-维修与自愈/修复体系四级阶梯-用例票班内班外-20261014.md</code>·只加严不加松铁律）。</li><li><strong>夜车断点恢复三层</strong>（崩了谁恢复什么）：班内=resume 指纹门（上轮绿免生成不免验收）；班级=账本末态投影 recoverTicketStates（非法转移入账不抛）+绿缓存；窗级=快照三键交接底座（会话档/产物锚/窗PID·缺任一键 WARN 如实标缺）。</li><li><strong>波次状态语义不自立</strong>：状态定义标源=窗队列不变量表（<code>90-过程/窗队列.md:8</code>）·状态卡 [sm-20261021-002]；账本字段契约=[ct-20261021-001]。</li></ul>
+<h2>维修环与夜车恢复主线（mermaid 一幅·阶梯与断点显式）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    PF{"发车闸 factoryPreflight<br/>LLM 配置自检·拍板#74"}
+    PF -->|配置坏| STOP0["发车前停·不烧夜钱"]
+    PF -->|OK| RW["runWrap 发车<br/>queue 派班逐版串行"]
+    RW --> JG{"班内判卷 judgeGate<br/>终局红票≤阈值?"}
+
+    JG -->|过闸| NEXT["终态 done<br/>放下一版·零FAIL才放行"]
+    JG -->|拒闸| L1
+
+    subgraph LANE["班内红票阶梯 L1→L3·红票不罢工"]
+        L1["L1 用例级<br/>探针自愈 ⟲1"] --> L2["L2 票级<br/>⟲≤3 富回喂·第3轮起坐席A"]
+        L2 --> PK["停车场 park≤2<br/>红票挂起·换下一票推进"]
+        PK --> DR["夜末补考 挂起票重试一轮<br/>+M6 同因熔断零轮"]
+        DR -->|仍红=第2次| FIN["终局 final<br/>DEF 单候晨报追认"]
+    end
+
+    JG -->|整班 FAIL·停队列| FL
+
+    subgraph LOOP["班外维修环 L4·拍板#84②"]
+        FL["fail-loop runFailLoop<br/>诊断→编译→分流→执行→重跑"]
+        FL --> CL{"classifyLoopAction<br/>九出口分流"}
+        CL -->|idle 无病不修| HALT["如实停·晨报追认"]
+        CL -->|stop-budget 轮尽| HALT
+        CL -->|deepread 同病≥2轮| DP["停车转人工<br/>+deepread 维修任务书"]
+        CL -->|rerun-only| RR["续号重烧·绿缓存直通"]
+        CL -->|包病| EX["改包岗出题面维修道"]
+        CL -->|repair-auto L1/L2回归| ER["engine-repair A域车道<br/>scope锁+测试闸+git锚"]
+        CL -->|stop-approval L2新语义| M2
+        CL -->|repair-fallback appdef| FB["fallback-repair 兜底<br/>四闸3×3·strong档"]
+        ER --> M1["M1 diagnose<br/>证据白名单只读·出根因报告"]
+        M1 --> M2["M2 propose-fix<br/>方案件三件套候拍板"]
+        M2 -->|业主勾选·审批闸| M3["M3 repair-execute<br/>锚点备份→机械修→金丝雀三级"]
+        M3 -->|金丝雀红| RB["一键回滚·如实入册"]
+        M3 -->|金丝雀全绿| RR2["过闸+自动重跑<br/>nextQueueRoot 续号回列"]
+        FB --> RR2
+    end
+
+    RR --> MOR
+    RR2 --> MOR
+    FIN --> MOR
+    NEXT --> FIN2["终态齐·收车"]
+
+    subgraph CLOSE["收车·四连+班后件"]
+        FIN2 --> MOR["收车段四连<br/>病卡/诊断/方案件/晨报"]
+        MOR --> PS["postshift 班后件<br/>深化挂closed闸"]
+        PS --> MR["晨报七栏<br/>红票/DEF/预算/自决清单"]
+    end
+
+    subgraph RECOVER["◉ 断点恢复点（崩了怎么续·三处显式）"]
+        RS["①班内 resume 指纹门<br/>绿=零LLM跳·漂移=复验"]
+        TKT["②班级账本末态投影<br/>recoverTicketStates"]
+        SNAP["③窗级快照三键·拍板#89己<br/>会话档/产物锚/窗PID"]
+    end
+    RS -.->|断腿再发车| RW
+    TKT -.-> RS
+    SNAP -.->|续棒开窗| RW
+</div></div>
+<h2>节点详注表·上（发车→判卷→班内阶梯→收车·图正下方接续）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>发车闸 factoryPreflight</td><td>发车前工厂侧 LLM 配置自检（拍板#74·<code>pipeline-lab/scripts/nightrun-wrap.mjs:617</code>）：配置坏=发车前停，不烧夜里的钱——夜车经济学第一闸，钱没配好宁可白夜不白烧。</td></tr><tr><td>runWrap 发车</td><td>夜车总编排入口（<code>pipeline-lab/scripts/nightrun-wrap.mjs:153</code>）：queue 派班逐版串行（<code>:184</code> 每班收车段四连顺序固定）——上一版过闸才放下一版，单件异常 warnings 收集不挡后续。</td></tr><tr><td>班内判卷 judgeGate</td><td>班内红绿唯一判据（<code>ts/src/queue/gate.ts:27</code>·真值表=gate.test.ts 背书）：调用点 <code>ts/src/queue/queue-runner.ts:240</code>，过闸记 passed（<code>:244</code>）拒闸记 failed 并停队列 EXIT=1（<code>:247</code>）——判卷语义零触碰红线在此节点。</td></tr><tr><td>L1 用例级·探针自愈</td><td>阶梯第一级：判卷门顺序=第二层探针→自愈⟲1→补票环→红账本（<code>ts/src/night-shift/probe-gate.ts:3</code>），healProbeReds 只对施工质量红定向修（<code>ts/src/station4-build/probe-selfheal.ts:97</code>）——修得最准、轮次最少的一级。</td></tr><tr><td>L2 票级·⟲≤3+坐席A</td><td>阶梯第二级：回喂轮与首建共享同一 ⟲≤3 预算（<code>ts/src/station4-build/build.ts:167</code>·C-027），第 3 轮起坐席A（票级维修工）接手换盒换档（<code>:177</code>·独立分账≤2次/票）——第 3 轮是换人不是重抽奖。</td></tr><tr><td>停车场 park≤2</td><td>L3 班次内：红票不直接 FAIL 离场，onRed 裁决——第 1 次挂起换下一票继续推进，第 2 次=终局 final 出 DEF 单（<code>ts/src/night-shift/park.ts:26</code>）；轮数跨腿保留宁严不松（<code>ts/src/night-shift/park.ts:8</code>）——保吞吐又不无限烧。</td></tr><tr><td>夜末补考+M6 熔断</td><td>停车场挂起票夜末重试一轮（拍板③·<code>ts/src/night-shift/lane-drain.ts:31</code>）；M6 同因熔断=协议病/无正本/连坐复发零轮（<code>:22</code> 分类）——比夜末一轮更严的定向收缩，重跑必再红的票不烧。</td></tr><tr><td>终局 final 与收车</td><td>final DEF 票+连坐 final 全部带根因链上晨报（fail-safe 到人工清单）；收车段四连（病卡/诊断/方案件/晨报·<code>pipeline-lab/scripts/nightrun-wrap.mjs:184</code>）每班顺序固定——「该静则静」子件自带，wrap 零判断。</td></tr><tr><td>postshift 班后件+晨报</td><td>postshift 把「九连的收车半段」独立拉起（<code>pipeline-lab/scripts/postshift.mjs:5</code>），三红线=零代码写入/零重跑/零判卷触碰（<code>:6</code> 头注），深化只对已关环稳定态开放（closed 闸 fail-closed <code>:38</code>）；编排主流程 <code>:59</code>；晨报七栏从账本事件面聚合（<code>ts/src/night-shift/morning-report.ts:2</code>·红票取末笔 verdict 语义+命中率分列）。</td></tr></tbody></table>
+<h2>节点详注表·下（班外维修环 L4→三环→断点恢复·接续）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>维修环入口 fail-loop</td><td>FAIL 班自动接维修环（拍板#84②·接线 <code>pipeline-lab/scripts/nightrun-wrap.mjs:704</code>）：编排主流程 runFailLoop（<code>pipeline-lab/scripts/fail-loop.mjs:233</code>）=诊断→编译→分流→执行→重跑循环至绿或预算尽·fail-closed。</td></tr><tr><td>九出口分流 classifyLoopAction</td><td>纯判定真值表（<code>pipeline-lab/scripts/fail-loop.mjs:30</code>）：idle（无病不修）/stop-budget（轮尽宁停）/deepread（同病≥2轮转人工）/repair-exam（包病）/repair-fallback（appdef）/rerun-only（无档位重烧）/repair-auto L1（机械预授权）/repair-auto L2回归（scope⊆上窗文件+测试闸全量绿）/stop-approval（L2新语义业主勾选不绕行）</td></tr><tr><td>如实停出口</td><td>idle/stop-budget/deepread 三出口共点「如实停」：无病不修、宁停不透支、同病≥2轮停车转人工（<code>pipeline-lab/scripts/fail-loop.mjs:120</code> 产出 deepread 维修任务书·拍板#52 班内/班外维修员按书接手）——机械修复不盲烧。</td></tr><tr><td>rerun-only 重烧回列</td><td>编译 rejected/无档位：预算内重烧·绿缓存直通一次（<code>pipeline-lab/scripts/fail-loop.mjs:30</code>·≥2 轮由 deepread 接住）——重烧不是白烧。</td></tr><tr><td>M1 diagnose</td><td>看病的：readEvidence 证据白名单只读（<code>pipeline-lab/scripts/diagnose.mjs:21</code>·白名单外不碰），主流程出固定四段根因报告（<code>:116</code>·TOP1 回写病卡）——零写代码零重跑·预算缺省 5 次。</td></tr><tr><td>M2 propose-fix</td><td>开方子的：parseDiagnosis 空报告不装方案 fail-closed（<code>pipeline-lab/scripts/propose-fix.mjs:19</code>），出方案件带安全三件套（<code>:88</code>·回退点/金丝雀/预算强制入件）——不修任何东西·勾选才进 M3。</td></tr><tr><td>M3 repair-execute</td><td>动刀的（拍板#71/#72·头注 <code>pipeline-lab/scripts/repair-execute.mjs:1</code>）：executePlan 审批闸→上溯检查步→锚点备份→机械修→金丝雀三级→回滚/过闸→自动重跑（<code>:50</code>）；未勾选不执行·步骤红即回滚·留痕三件套全程。</td></tr><tr><td>engine-repair A域车道</td><td>病根在引擎自身代码时的自动道（头注三红线 <code>pipeline-lab/scripts/engine-repair.mjs:1</code>）：L1 diff≤30 行/禁控制流/≤5 文件，L2 未勾选零动工·scope 越界拒绝·测试闸红=回滚转人工</td></tr><tr><td>fallback-repair 兜底道</td><td>L4 班外兜底执行器（拍板#31⑤·头注 <code>ts/src/night-shift/fallback-repair.ts:1</code>）：四闸只收缩不放宽=根因≤3/班×每根因≤3次+班外独立分账+A域双根白名单，repairTier='strong' 档位只换模型不换判卷。</td></tr><tr><td>断点恢复①班内 resume</td><td>断腿再发车：resume 直通件对上轮已绿票零 LLM 跳过（头注 <code>ts/src/night-shift/lane-resume.ts:1</code>·C-012 指纹门），漂移走复验：绿=诚实跳·红=重跑——免生成不免验收。</td></tr><tr><td>断点恢复②班级投影</td><td>状态重建唯一入口 recoverTicketStates（<code>ts/src/shared/ticket-state.ts:89</code>）：账本末态投影出票态/包态，非法转移入账不抛——崩了从账本重放，不靠人脑记进度（账本契约=[ct-20261021-001]）。</td></tr><tr><td>断点恢复③窗级三键</td><td>半截窗续棒：快照三键底座（<code>91-脚本/spawn_window.mjs:89</code>·拍板#89己）=会话档+产物锚+窗PID，缺任一键 WARN 如实标缺不谎报齐；回滚面配套回滚预演器只出文本不出手（<code>91-脚本/回滚预演.mjs:8</code>·四段=commit清单/改件stat/领地交叠/建议命令）。</td></tr></tbody></table>
+<h2>与封印档案差异（骨架参照 vs 本仓 as-built·以码为准）</h2>
+<ul><li>档案 06 卷 §6.5「层3 对话上下文恢复=我方无会话概念（每票重组装变量盒）」——as-built 已补<strong>窗级</strong>会话档恢复：快照三键交接底座（<code>91-脚本/spawn_window.mjs:89</code>·拍板#89己 2026-10-21 落地），档案封印（2026-10-10）早于此件，以码为准。</li><li>档案 R4-05 §1.1「七出口真值表」——现行 classifyLoopAction（<code>pipeline-lab/scripts/fail-loop.mjs:30</code>）=<strong>九出口</strong>：档案之外新增 repair-exam（包病改包岗出题面·拍板#35）与 repair-fallback（appdef 施工终局红兜底道·<code>ts/src/night-shift/fallback-repair.ts:1</code>）两道域分流。</li><li>档案 06 卷 §6.2「红票不罢工三部曲 park→补考→resume」——码面一致在位（<code>ts/src/night-shift/park.ts:26</code>/<code>ts/src/night-shift/lane-drain.ts:31</code>/<code>ts/src/night-shift/lane-resume.ts:1</code>）且轮数跨腿保留（<code>ts/src/night-shift/park.ts:8</code>），无差异如实记核对行。</li><li>档案 06 卷 §6.1 预算三路熔断+续腿签名——归夜车发车/预算面（本卡只画其维修/恢复视角的「预算尽=stop-budget 出口」），三路闸细节不在本卡展开防越界复制。</li></ul>
+<h2>实例层（主线现在跑着什么）</h2>
+<ul><li>在册 as-built 实证班：queue-40 班全链留痕（<code>runs/.queue-roots/queue-40/queue-events.jsonl:1</code>·dispatched/gate_passed/gate_failed 事件型实物）——判闸两分支（<code>:244</code>/<code>:247</code>）落账可回放。</li><li>实战窗：维修环三环立环拍板链（#28→#35→#71/#72→#84）见 [mk-20261021-011] 事件链；发车/收车编排实战见 [mk-20261021-004]/[mk-20261021-005]；快照三键活例=W-044/W-045/W-046 三窗 spawn 行（W-046 本窗缺 2 键 WARN 如实——三键语义「宁缺不谎报」的现行实证）。</li><li>语义边界：本卡只画流程/分支——三环接口与预算参数归 [mk-20261021-011]，秒级走线归 [sq-20261021-001]，本卡零正文复制。</li></ul>
+<h2>防重复指针（应然在别处·本卡只画实然）</h2>
+<ul><li>维修环三环内部（接口/预算/测试面）=[mk-20261021-011]；发车编排=[mk-20261021-004]；收车编排=[mk-20261021-005]——本卡只画阶梯分流与断点位置。</li><li>秒级时序（发车→票流→判卷→收车先后）=[sq-20261021-001]；窗外主干（渠道→派工→拉窗→🔁兜底）=[bf-20261021-007]；三站窗内主线=[bf-20261021-008]；引擎修复分卡=[bf-20261021-002]；波次状态=[sm-20261021-002]；账本契约=[ct-20261021-001]。</li><li>四级阶梯母件（设计对比件·应然）=<code>90-过程/10-专题档案/02-维修与自愈/修复体系四级阶梯-用例票班内班外-20261014.md</code>；理念版骨架参照（封印史料·只取环节清单）=v1.2 仓「05-TS重构蓝图/深读档案/AFK全流程深度解读/」06 卷+R4-02/R4-05/R4-06——差异见上节，正文零复制。</li></ul>
+<h2>时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 843fa51（2026-10-21 现勘·全锚亲验）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（rrm_lint 全区+render_views 渲染+accept 自检）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261021-009-维修环与夜车恢复.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

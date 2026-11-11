@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261021-005 · 业务流程卡 · App修复（大业务→宿主仓作业面）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261021-005 · 业务流程卡 · App修复（大业务→宿主仓作业面）</h1>
+<div class="meta"><b>id</b> bf-20261021-005 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 7f51c83 · <b>run_id</b> queue-93-w042</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>业务流程卡 · App修复（大业务→宿主仓作业面）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：五类大业务中「治宿主 App 坏损」的一类——起服失败/探活红/功能坏损票，路由到<strong>宿主仓</strong>施工。<strong>为什么存在</strong>：宿主侧病票也要有正门可走，而不是塞进引擎修复混淆验收权——引擎判卷语义<strong>零涉宿主仓</strong>（判卷权冻结在引擎仓红线内），宿主修复以宿主自身测试/探活为准。<strong>边界</strong>：路由面与另两类 App 卡同构（宿主固定节必带·缺宿主 fail-closed <code>91-脚本/pi_runner.mjs:875</code>）；现网实例=零（如实申报·防臆造不预填）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立规：拍板#76① 五类枚举落地——App修复入 <code>BIZ_KINDS</code>（<code>91-脚本/pi_runner.mjs:99</code>）·<code>isAppBiz</code> 判定（<code>:100</code>）</td><td>本卡定义层</td></tr><tr><td>2</td><td>判据锚先行：W-034 冒烟即先记账宿主侧验收面（探活/测试现状）——修复的「坏损对照面」从基线来</td><td>本卡定义层（W-034 实例线 <code>90-过程/窗队列.md:61</code>）</td></tr><tr><td>3</td><td>现网实例=<strong>零</strong>（窗队列大业务=App修复 行数=0·2026-10-21 实勘）——宿主侧病票通道现无专用病卡族，随首票实战再立</td><td>本卡实例层</td></tr><tr><td>4</td><td>机制机检在位：selftest 案6 断言含 App 修复类（<code>91-脚本/pi_runner.mjs:528</code>·未知类型 fail-closed 拒发）</td><td>本卡实例层</td></tr></tbody></table>
+<h2>定义层（这个类是什么）</h2>
+<ul><li>枚举正本=<code>BIZ_KINDS</code>（<code>91-脚本/pi_runner.mjs:99</code>·拍板#76①）；App 类判定=<code>isAppBiz</code>（<code>91-脚本/pi_runner.mjs:100</code>）；本类=<code>"App修复"</code>。</li><li>判据：宿主 App <strong>从已基线态坏损回治</strong>——判据锚=宿主侧验收面（探活/测试现状，W-034 冒烟即先记账此面）；与 App优化（[bf-20261021-004]）分野：修复=回治坏损，优化=增量增强。</li></ul>
+<h2>路由层（派工器怎么路由它）</h2>
+<ul><li><code>routeOf("App修复", hostCwd, …)</code> → 宿主非空=<code>{ok:true, cwd:hostCwd, lane:"宿主仓"}</code>·空宿主=拒发（<code>91-脚本/pi_runner.mjs:103</code>·拍板#76②）。</li><li>宿主仓根=任务书宿主固定节（<code>parseHostRoot</code> <code>91-脚本/pi_runner.mjs:112</code>·拍板#76③）；领单侧 App 缺宿主跳过记因不领（<code>91-脚本/pi_runner.mjs:875</code>·fail-closed）。</li><li>修复类通用纪律随行：验收面以宿主仓自身测试/探活为准（引擎判卷语义<strong>零涉宿主仓</strong>——判卷权冻结在引擎仓红线内）。</li></ul>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    SICK[宿主 App 病票<br/>起服失败/探活红/功能坏] --> BASE{基线在?<br/>W-034 式记账}
+    BASE -->|无基线| BC[先基线化<br/>坏损无对照不修]
+    BASE -->|有| PB{业主拍板<br/>+宿主固定节}
+    PB -->|缺宿主| REJ[fail-closed 拒发<br/>:875]
+    PB -->|齐| RO[routeOf→宿主仓<br/>:103]
+    RO --> WIN[宿主仓施工窗<br/>回治坏损]
+    WIN --> ACC{宿主侧验收<br/>探活/测试}
+    ACC -->|红| FIX[🔁 修到绿]
+    ACC -->|绿| DONE[✅ 收口]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>宿主 App 病票</td><td>本类入口：宿主 App 的坏损症状（起服失败/探活红/功能坏）——注意病票通道现无专用病卡族，随首票实战再立（防臆造不预填）。</td></tr><tr><td>基线在?</td><td>修复的前提：坏损=与基线的偏差，无基线则「坏」无从谈起——先记账后修复（W-034 先例：冒烟即记 git 基线+探活+测试现状）。</td></tr><tr><td>业主拍板+宿主固定节</td><td>三类 App 共同闸：宿主仓根业主显式给（<code>91-脚本/pi_runner.mjs:112</code>·引号含空格兼容=#91②），缺=fail-closed 拒发（<code>:875</code>）。</td></tr><tr><td>routeOf→宿主仓</td><td><code>91-脚本/pi_runner.mjs:103</code>：App修复返回宿主仓 cwd——机检在位（selftest 案6·<code>:528</code>），实例候真票。</td></tr><tr><td>宿主仓施工窗</td><td>施工面=宿主仓根；修复票显式写大业务列（缺列缺省=引擎优化兜不住宿主语义·同 bf-002 教训）。</td></tr><tr><td>宿主侧验收</td><td>修复的红绿权在宿主自身测试/探活——引擎判卷语义零涉宿主仓（判卷权冻结红线）；红则🔁修到绿，绿则✅收口。</td></tr></tbody></table>
+<h2>实例层（现在队列里长什么样）</h2>
+<ul><li>现网实例：<strong>零</strong>（窗队列大业务=App修复 行数=0·2026-10-21 实勘）——如实申报；宿主侧病票通道现无专用病卡族，随首票实战再立（防臆造不预填）。</li><li>宿主仓清单正本=<code>90-过程/宿主仓登记表.md:1</code>；机制机检=selftest 案6（<code>91-脚本/pi_runner.mjs:528</code>）。</li></ul>
+<h2>防重复指针（应然在别处·本卡只画实然）</h2>
+<ul><li>理念版=「07-设计理念专题/五业务场景编排总图-…-20261018.html」（场景轴·原图引用不复制）；状态定义标源=<code>90-过程/窗队列.md</code>。</li></ul>
+<h2>时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 7f51c83（2026-10-21 现勘）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（rrm_lint 整区 PASS+accept 自检）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261021-005-App修复.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

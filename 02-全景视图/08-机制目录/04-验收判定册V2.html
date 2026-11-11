@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>机制卡册④V2 · 验收与判定（分层借鉴稿：harness第一层 票级 × harness第二层 窗级） · AFK无人值守引擎V1.0</title>
+<!--
+id: mc-20261028-004v2
+kind: 机制目录增补稿（候选·应然·分层版）
+domain: engine
+status: draft（候选稿·全册候拍板·一条码未动·V1=04-验收判定册.html as-built 正本不动）
+created_at: 2026-10-28
+updated: 2026-10-28（业主令：按 harness 第一层/第二层分开分析——CC 的 PR↔第一层=票级；CC 的 PR↔第二层=窗（W 编号）/任务包级）
+repo_head: 1feb0f5
+tags: [机制目录, 模式卡, 双层harness, 调研件]
+借鉴来源: Anthropic Claude Code 团队代码评审机制（业主提供文章要点·二手转述·未逐条回原站取证·见文末来源节）
+纪律: 判卷语义零触碰·出题权不碰·预算三路原样·每候选带红线对表·拍板权在业主
+-->
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, useMaxWidth: false, padding: 8, nodeSpacing: 40, rankSpacing: 40 }, themeVariables: { fontSize: "14px" } });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .redline { background:#fef2f2; border:1px solid #dc2626; }
+  .shuo { background:#fffbeb; border-left:4px solid #d97706; }
+  .term { background:#f0f9ff; border-left:4px solid #0284c7; }
+  .draft { background:#f5f3ff; border:1px dashed #7c3aed; }
+  .l1 { background:#eff6ff; border-left:4px solid #2563eb; }
+  .l2 { background:#f0fdf4; border-left:4px solid #16a34a; }
+  code { font-size: 0.85em; }
+  .mermaid { overflow-x: auto; }
+  .mermaid svg { height: auto; }
+  .mermaid svg .nodeLabel, .mermaid svg .edgeLabel, .mermaid svg .label,
+  .mermaid svg foreignObject div, .mermaid svg foreignObject span { font-size: 14px !important; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+<header class="space-y-2">
+  <h1 class="font-serif text-3xl">机制卡册④V2 · 验收与判定（分层借鉴稿：harness第一层 票级 × harness第二层 窗级）</h1>
+  <p class="text-sm text-slate-500">2026-10-28 · 基准 1feb0f5 · mc-20261028-004v2 · 候选稿（draft·分层版）· 正本=04-验收判定册.html（as-built·不动）· 索引=00-机制总索引卡</p>
+  <div class="deep-box rounded-lg p-3 text-sm text-slate-100"><b>这版是什么</b>：把 Claude Code 团队评审链（PR 前/中/后 13 环节）按业主令口径<b>分两层</b>对到本仓——CC 的一个 PR，在本仓第一层对应「<b>一张票</b>」（写码工程师的改动·验收命令判卷），在本仓第二层对应「<b>一个窗（W 编号）/任务包</b>」（施工窗的收口申报·业主审批=合并）。同一 CC 环节在本仓常是「每层各一个实例」。</div>
+  <div class="draft rounded-lg p-3 text-sm"><b>读前必读</b>：V1 册=as-built（只画实然）；本册=应然候选稿（只画可借）。全称口径：harness第一层＝项目APP研发团队（造客人的 APP·审「票」）；harness第二层＝研发部管理层（造和管理团队自身·审「窗/任务包」收口）。候选按层分组：<b class="text-blue-700">harness第一层 票级=候A/候B/候F</b>，<b class="text-green-700">harness第二层 窗级=候C/候D/候E</b>。CC 侧数据引自业主提供文章要点（二手转述·未回原站取证；其自报数字：实质评审评论 16%→54%·合并 PR 翻倍·回退率降 40%+）。</div><p class="text-sm leading-7">---</p>
+</header>
+
+<!-- ============ §0 层级映射口径 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§0 · 层级映射口径：CC 的一个环节，本仓为什么是「一变二」</h2>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：CC 只有<b>一条管道、一个被审单元（PR）</b>；本仓是<b>双层双单元</b>——第一层审「票」（码改动），第二层审「窗」（收口申报=任务包交付）。所以 CC 的每个环节对本仓不是一道题，是<b>两道题</b>：票级怎么审、窗级怎么审——有的两层都有现成实例（自验证/回滚/熔断），有的只有一层有（票级扣绿闸/窗级复考闸），有的两层都没有（投票筛真/审批熔断）。</div>
+<pre class="mermaid text-sm">
+flowchart TB
+  CC["Claude Code 评审链的一个环节<br/>（例：合并前自动审）"] --> L1["harness第一层实例 · 票级<br/>被审对象＝写码工程师的改动<br/>审它的人＝对题审查员/质量门/切片验收<br/>红绿权＝验收命令 exit code"]
+  CC --> L2["harness第二层实例 · 窗级<br/>被审对象＝施工窗收口申报（任务包）<br/>审它的人＝复考闸/核账/追认台账<br/>放行权＝业主✅收口（agent 永不算人头）"]
+  L1 -.->|"票级结果聚成窗级证据<br/>（窗收口带产物锚）"| L2
+  L2 -.->|"翻案打回=票级重开<br/>（判据面回退指纹失效）"| L1
+</pre>
+<div class="term rounded p-3 text-sm"><b>术语白话</b>：<code>票</code>＝第一层最小施工单元，一张票=写码工程师一次交付+一次判卷（约=CC 的一个 PR）；<code>窗</code>＝第二层最小派工单元，一个窗=一次领单施工+一次收口申报（约=CC 的「一批 PR 合起来发一个版本」）；<code>合并</code>在 harness第一层 对应「票过判定梯进晨报追认」，在 harness第二层 对应「业主✅收口入台账」。<b>分层纪律</b>：权限与 LLM 反相关——越往第二层机械设备占比越高、LLM 说话声越小，所以「往 harness第二层 加 AI 审核环节」比往 harness第一层 加要更小心（harness第二层 候选全部要求机械守门）。</div>
+</section>
+
+<!-- ============ §1A harness第一层 票级对照 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§1A · harness第一层 · 票级对照表（CC 环节 → 「一张票」上的对应物）</h2>
+<div class="l1 rounded p-3 text-sm leading-7"><b>本层被审单元</b>：一张票＝写码工程师的一次改动＋验收命令一次判卷。CC 的「PR 前/中/后」在票级对应「<b>生成时/判卷时/追认后</b>」三段。</div>
+<div class="overflow-x-auto"><table class="text-xs w-full border-collapse">
+<thead><tr class="bg-blue-50"><th class="border p-2 text-left">CC 环节</th><th class="border p-2 text-left">票级现状（锚）</th><th class="border p-2 text-left">判定</th></tr></thead>
+<tbody>
+<tr><td class="border p-2"><b>PR前·自验证</b>（AI 自己跑测试/构建/lint·Cherny：≈2-3 倍）</td><td class="border p-2">⟲≤3 自愈环（build.ts:184·红→分诊→修→复跑）＋验收命令唯一判卷＋判卷守卫防篡改（build.ts:210·素材 sha 冻结）——<b>比 CC 更严</b>：票级绿灯只算工人自报，判卷权在命令手里</td><td class="border p-2">✅ 已覆盖（超集）</td></tr>
+<tr><td class="border p-2"><b>PR前·新上下文审核</b>（全新 agent 冷眼审·防带偏）</td><td class="border p-2">对题审查员（reviewer.ts·扣绿闸 #19）与施工<b>共用回喂上下文</b>；⟲烧满仍红的票无冷眼复审</td><td class="border p-2">⚠️ 缺口→<b class="text-blue-700">候A（harness第一层）</b></td></tr>
+<tr><td class="border p-2"><b>PR中·CI</b></td><td class="border p-2">站3 三关（gates.ts:106）＋机检四闸＋vitest 848＋typecheck</td><td class="border p-2">✅ 已覆盖</td></tr>
+<tr><td class="border p-2"><b>PR中·审核三问</b>（达标？兼容？影响面？）</td><td class="border p-2">①达标=对题审查✅；②兼容/③影响面=无显式岗（回归门 run-slice.ts:266 事后兜）</td><td class="border p-2">⚠️ 缺 ②③→<b class="text-blue-700">候A（harness第一层·三问清单）</b></td></tr>
+<tr><td class="border p-2"><b>PR中·投票筛真＋三分类</b>（多数票才报·重要/小/已有）</td><td class="border p-2">红票七源同出口（red-ruling.ts:35·拍板#31）——<b>一源报红即走，无筛真闸</b>；「已有问题」直觉存在于考题病分诊（应用没错是题错·不装红）</td><td class="border p-2">⚠️ 缺口→<b class="text-blue-700">候B（harness第一层）</b></td></tr>
+<tr><td class="border p-2"><b>PR中·安全审查独立道</b></td><td class="border p-2">无（依赖扫描/敏感信息模式扫描缺位）</td><td class="border p-2">❌ 面外→<b class="text-blue-700">候F（harness第一层·低优先）</b></td></tr>
+<tr><td class="border p-2"><b>PR中·风险分级审批</b>（分类器自动分级·0/1/2 人）</td><td class="border p-2">票级授权已有显式面：票面 latitude/escalate 授权面（types.ts:185-207·#42·面内自决留痕候追认/越面推卡）——<b>分级思想已在票契约里</b>，粒度=授权面而非人数档</td><td class="border p-2">✅ 已覆盖（同构·粒度不同）</td></tr>
+<tr><td class="border p-2"><b>合并队列</b>（对最新主干重跑）</td><td class="border p-2">绿缓存＋resume 指纹门「免生成不免验收」（build-lane.ts:63）——漂移即复验</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>灰度发布</b>（flag→内部→稳定）</td><td class="border p-2">旋钮制（slice-append/caseFix·stage27.ts 装配）＋预授权降级链 DEC 留痕</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>PR后·快速回滚＋归因</b></td><td class="border p-2">confirm --rollback（confirm.ts:90·判据面回退·指纹失效重烧「判据一变下轮照样重考」）；复盘归因题缺位</td><td class="border p-2">✅ 回滚已覆盖；⚠️ 归因题→§3 修 V1 卡34</td></tr>
+<tr><td class="border p-2"><b>PR后·问题集→评测集</b></td><td class="border p-2">票级判卷已有等价铁律：出题权冻结＋同包重放对照（立项说明书§七）＋考题病修复道「断言集不可减」（case-defect.ts）</td><td class="border p-2">✅ 已覆盖（票级）——<b>评测集缺口在 harness第二层（见 §1B）</b></td></tr>
+<tr><td class="border p-2"><b>PR后·共享上下文</b>（REVIEW.md·file:line 不许瞎猜）</td><td class="border p-2">票面 acceptance＝owner 意向书；锚点纪律「书作者填·引擎不猜」（slice-cases.ts:12）＋三级锚点定位（#7）</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>PR后·问责</b>（谁合并谁负责）</td><td class="border p-2">红票七源定责（#31）＋坐席A 票级维修分账（build.ts:177）</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>熔断器</b></td><td class="border p-2">M6 同因熔断＝票级零轮（lane-drain.ts:50）＋停车 park≤2（park.ts:26）——<b>票级修错面熔断已有</b></td><td class="border p-2">✅ 已覆盖（修错面·审批面缺口在 harness第二层）</td></tr>
+</tbody></table></div>
+<div class="term rounded p-3 text-sm"><b>票级小结</b>：14 环节中 <b>10 个已有票级实例</b>（多为主要超集）——本仓第一层的「评审」成熟度高于 CC 管道（它没有判卷守卫这种防作弊闸）。票级真缺口只有两个半：<b>冷眼复审（候A）、投票筛真（候B）、安全扫描（候F·面外）</b>。</div>
+</section>
+
+<!-- ============ §1B harness第二层 窗级对照 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§1B · harness第二层 · 窗级/任务包对照表（CC 环节 → 「一个窗」上的对应物）</h2>
+<div class="l2 rounded p-3 text-sm leading-7"><b>本层被审单元</b>：一个窗（W 编号）＝一次领单施工＋一份收口申报（任务包交付）。<b>合并＝业主✅收口入台账</b>——「agent 审批永远不算人头」在本层不是借鉴项，是<b>已立的追认制红线</b>（#151·代拍四件·禁区六项停车候拍）。</div>
+<div class="overflow-x-auto"><table class="text-xs w-full border-collapse">
+<thead><tr class="bg-green-50"><th class="border p-2 text-left">CC 环节</th><th class="border p-2 text-left">窗级现状（锚）</th><th class="border p-2 text-left">判定</th></tr></thead>
+<tbody>
+<tr><td class="border p-2"><b>PR前·自验证</b></td><td class="border p-2">复考闸（pi_runner.mjs:221·收口复跑考题·绿才认✅·缺考题不代写）——<b>窗级自验证已有且 fail-closed</b></td><td class="border p-2">✅ 已覆盖</td></tr>
+<tr><td class="border p-2"><b>PR前·新上下文审核</b></td><td class="border p-2">窗收口的冷眼审=核账/深读窗（另开窗互审·痛点02 治理道）——<b>靠流程不靠机制</b>，无强制触发面</td><td class="border p-2">⚠️ 半覆盖（harness第二层 不新建 LLM 岗·见候A 注记）</td></tr>
+<tr><td class="border p-2"><b>PR中·CI</b></td><td class="border p-2">机检四闸＋岗卡机检三件套（check-roster/card-lint/consumers）＋meta-lint＋rrm_lint</td><td class="border p-2">✅ 已覆盖</td></tr>
+<tr><td class="border p-2"><b>PR中·审核三问</b></td><td class="border p-2">会审门四查（pi_runner.mjs:377-394·领单后 spawn 前·Shadow Mode）——查的是「该不该开窗」不是「收口合不合规」；收口面三问靠收口五件套自报</td><td class="border p-2">⚠️ 部分（收口核账靠流程）</td></tr>
+<tr><td class="border p-2"><b>PR中·投票筛真＋三分类</b></td><td class="border p-2">候拍池/代拍清单（班次汇报聚合器.mjs:271·三态推导）——<b>只聚合不筛真</b>：真问题与小问题一并进候拍池，稀释业主注意力</td><td class="border p-2">⚠️ 缺口→<b class="text-green-700">候B 的 harness第二层 变式（候拍池筛真）</b></td></tr>
+<tr><td class="border p-2"><b>PR中·安全审查独立道</b></td><td class="border p-2">无（凭据红线 #90 是纪律面非扫描面）</td><td class="border p-2">❌ 面外→候F（同 harness第一层）</td></tr>
+<tr><td class="border p-2"><b>PR中·风险分级审批</b>（0/1/2 人·可信名单）</td><td class="border p-2"><b>半套已立</b>：禁区六项停车候拍=「高危必人批」（#151）；禁区外代拍+批量追认=轻量道；可信名单≈在册窗/在册岗。<b>缺的是自动分级器</b>——什么改动进禁区靠约定不靠机器判</td><td class="border p-2">⚠️ 缺口→<b class="text-green-700">候C（harness第二层·会审门挂分级器）</b></td></tr>
+<tr><td class="border p-2"><b>合并队列＋灰度</b></td><td class="border p-2">窗队列前置闸（前置✅才就绪·queue-ledger.ts:166）＋完工待确认让坑＋渐进开闸制（#52·dryrun→观察一班→enforce）</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>PR后·快速回滚＋归因</b></td><td class="border p-2">翻案道（confirm --rollback·业主令）＋回滚预演器（只出文本·回滚预演.mjs:8）＋半截窗留下一棒锚（拍板#69）；归因闸层题缺位</td><td class="border p-2">✅ 回滚已覆盖；⚠️ 归因题→§3 修 V1 卡36</td></tr>
+<tr><td class="border p-2"><b>PR后·问题集→评测集</b></td><td class="border p-2"><b>这是窗级最大缺口</b>：成绩单回写（真班红绿/机检率/返工率）只有汇总数字，没有「评审失手实例库」——漏放红/误报筛真/派工错分不入库，班外 agent 换提示词/换模型无题可考</td><td class="border p-2">❌ 缺口→<b class="text-green-700">候D（harness第二层）</b></td></tr>
+<tr><td class="border p-2"><b>PR后·共享上下文</b></td><td class="border p-2">岗卡一岗一卡（卡=源）＋CONTEXT.md＋窗队列产物锚＋深度文档更新 README 时效评估——「file:line 不许瞎猜」=锚点纪律全程</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>PR后·问责</b></td><td class="border p-2">收口五件套（#20/#68）＋窗队列领单改▶收口改✅填产物锚＋半截必填下一棒——「谁领单谁收口」已立</td><td class="border p-2">✅ 已覆盖（同构）</td></tr>
+<tr><td class="border p-2"><b>熔断器</b>（回退率/事故率→自动收紧审批）</td><td class="border p-2"><b>两层都没有——窗级是本层最大缺口</b>：M6/deepread 熔断都在修错面；派工链审批档位（禁区/非禁区）是静态约定，不随回退率动态收紧。CC 自认未建·称「零人审批前必须补」</td><td class="border p-2">❌ 两家都缺→<b class="text-green-700">候E（harness第二层）</b></td></tr>
+</tbody></table></div>
+<div class="term rounded p-3 text-sm"><b>窗级小结</b>：14 环节中 <b>8 个已有窗级实例</b>。窗级真缺口三个：<b>审批面熔断（候E·两家都缺）、失败评测集（候D·最大缺口）、自动风险分级（候C）</b>——三者恰好构成一条链：候D 出数据 → 候E 用数据收紧 → 候C 定收紧后谁批。<b>harness第二层 分层纪律提醒</b>：harness第二层 候选全部是「机械守门＋LLM 只产候选」形态，对齐权限反相关铁律；harness第二层 <b>不新建</b> LLM 审核岗（候A 的 harness第二层 面=既有核账流程，非新岗）。</div>
+</section>
+
+<!-- ============ §2 候选卡 harness第一层 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§2A · harness第一层 票级候选卡（候A / 候B / 候F）</h2>
+
+<h3 class="font-serif text-lg text-blue-700">候A · 冷眼复审三问（harness第一层·票级）——业内名：Fresh-context Review</h3>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：票⟲自愈烧满仍红、或判卷门放行前抽检，<b>换一个全新上下文的 agent</b>（只喂票面+该票 diff，不带回喂史）按三问审：①达票面目标了吗 ②跟既有系统合得来吗 ③会波及别处吗——只出意见不改码，意见入晨报自决清单候追认。</div>
+<pre class="mermaid text-sm">
+flowchart TB
+  RED["票⟲自愈烧满仍红<br/>（或判卷门放行前抽检）"] --> BOX["换盒：只装票面+该票改动<br/>不带⟲回喂史（防带偏）"]
+  BOX --> Q1{"问一：达到<br/>票面目标了吗"}
+  BOX --> Q2{"问二：跟既有<br/>系统合得来吗"}
+  BOX --> Q3{"问三：会波及<br/>别处吗"}
+  Q1 --> OP["复审意见（只建议）<br/>入晨报自决清单候追认"]
+  Q2 --> OP
+  Q3 --> OP
+  OP -.->|"意见不碰红绿"| JUDGE["判卷权仍在验收命令<br/>（一寸不动）"]
+</pre>
+<div class="term rounded p-3 text-sm"><b>白话</b>：<code>换盒</code>＝新开不带历史对话的 LLM 调用——施工 agent 看了很多轮失败明细容易越修越偏还自我感觉良好；冷眼 agent 只看票面和最终改动，没有被带偏的机会。<b>层位注记</b>：本候选只落 <b>harness第一层 票级</b>；harness第二层 的对应面（窗收口冷眼核账）已有深读窗流程，<b>不新建 harness第二层 LLM 审核岗</b>（权限反相关）。</div>
+<div class="text-xs text-slate-500 rounded p-3"><b>落位锚</b>：station4-build/（reviewer.ts 旁·复用变量盒协议）｜<b>红线对表</b>：判卷零触碰✅·出题权✅·预算⚠️（新 LLM 调用面须拍板分账）｜<b>拍板点</b>：触发时机（仅⟲烧满红？判卷门前抽检比例？）·每票预算帽·意见进晨报哪一栏。</div>
+
+<h3 class="font-serif text-lg text-blue-700 mt-6">候B · 报红投票筛真＋三分类（harness第一层·票级，附 harness第二层 变式）——业内名：N-of-M Voting + Triage Labels</h3>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：票级「建议类发现」（复审意见/偏移采样/机检告警）进晨报自决清单前加筛真闸——2-3 个独立 agent 各判一次「是不是真问题」，多数票才报；报出贴三标：<b>重要</b>（拦收口）/<b>小</b>（入台账不拦）/<b>已有</b>（记病卡不记本票）。<b>七源硬红不投票照旧</b>。</div>
+<pre class="mermaid text-sm">
+flowchart TB
+  F["一个候选发现<br/>（复审意见/偏移采样/机检告警）"] --> V1["独立判官一<br/>是真问题吗"]
+  F --> V2["独立判官二<br/>是真问题吗"]
+  F --> V3["独立判官三<br/>（可选）"]
+  V1 --> MAJ{"多数票：<br/>真问题？"}
+  V2 --> MAJ
+  V3 --> MAJ
+  MAJ -->|"否"| DROP["筛掉·不入晨报<br/>（筛真依据留痕可查）"]
+  MAJ -->|"是"| TAG{"贴标三分类"}
+  TAG -->|"重要"| BLOCK["拦收口·候拍板"]
+  TAG -->|"小"| LEDGER["入台账·不拦车"]
+  TAG -->|"已有"| SICK["记病卡/已知病<br/>不记本票"]
+</pre>
+<div class="term rounded p-3 text-sm"><b>白话</b>：<code>投票筛真</code>＝CC 实证这套把实质评审评论从 16% 抬到 54%——本质是<b>用多数票压掉风格类噪声</b>。<code>已有问题</code>＝历史遗留不这次修——本仓直觉已存在于考题病分诊，候B 推广到全部建议面。<b>harness第二层 变式（候拍池筛真·候拍）</b>：班次汇报聚合器的候拍池/代拍清单同样「只聚不筛」，同一机制在窗级第二实例=聚合器入池前过同一投票闸——<b>业主注意力是 harness第二层 最稀缺资源，筛真的最大受益人是晨报读者</b>。</div>
+<div class="text-xs text-slate-500 rounded p-3"><b>落位锚</b>：harness第一层=红票裁决出口旁（red-ruling.ts:35·只挂建议面）＋harness第二层 变式=班次汇报聚合器（.mjs:271 入池前）｜<b>红线对表</b>：判卷零触碰✅（验收命令红不投票）·只加严✅（只压建议不压硬红）·预算⚠️（每发现 2-3 调用·拍板分账）｜<b>拍板点</b>：投票挂哪些源？判官档位？三分类谁贴？harness第二层 变式是否同批拍。</div>
+
+<h3 class="font-serif text-lg text-blue-700 mt-6">候F · 安全扫描独立道（harness第一层·票级起步）——业内名：Security Scan Lane ·面外低优先</h3>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：AI 审核、安全审查分两道——独立扫描（依赖 CVE 比对＋敏感信息模式：token/key/密码写进码里）红=阻止收口，要么修、要么业主写理由关闭。<b>安全红≠判卷红，两套语义分开记账</b>。</div>
+<div class="text-xs text-slate-500 rounded p-3"><b>落位锚</b>：harness第一层 票级 diff 面（会审门前·独立步）｜<b>红线对表</b>：判卷语义⚠️（须立新事件型·加型须拍板）·「写理由关闭」=业主显式动作✅｜<b>拍板点</b>：扫描器选型（npm audit 级起步）·<b>建议挂起</b>——交付 App 是短命绿场应用，等真实凭据入库事故再启。</div>
+</section>
+
+<!-- ============ §2B 候选卡 harness第二层 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§2B · harness第二层 窗级候选卡（候C / 候D / 候E）——三者构成一条链</h2>
+<div class="l2 rounded p-3 text-sm leading-7"><b>链式关系</b>：<b>候D</b>（失败评测集）产出窗级评审质量数据 → <b>候E</b>（熔断器）读数据自动收紧审批档 → <b>候C</b>（风险分级）定义收紧后「谁批几人」。<b>建议拍板顺序：候D → 候E → 候C</b>（先有账、再装闸、最后定档）；且候C 低档「零人批」开通前，候E 必须先在位——这是 CC 团队自己用教训换来的次序。</div>
+
+<h3 class="font-serif text-lg text-green-700 mt-4">候C · 改动风险分级审批（harness第二层·窗级）——业内名：Risk-tiered Approval</h3>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：会审门加<b>机械分类器</b>读收口申报/改动面自动定档——低（文档/注释/纯内改）=自动全绿即过零人批；中（普通改动+敏感区：判卷面/派工链/凭据面/窗队列）=1 人批；高（判卷语义/红绿权/预算三路/禁区六项）=停车候拍。<b>分级器只定「几个人批」，永远不定「过不过」</b>。harness第一层 对应物=票面授权面（已覆盖·本候选是它的窗级版）。</div>
+<pre class="mermaid text-sm">
+flowchart TB
+  CH["窗收口申报的改动面<br/>（文件清单+diff+票面）"] --> CL["机械分类器<br/>规则+词表匹配·零LLM起步"]
+  CL -->|"低：文档/注释/纯内改"| AUTO["自动化全绿即过<br/>零人批·留痕候追认"]
+  CL -->|"中：普通改动/敏感区"| H1["1 人批<br/>（业主或授权代拍）"]
+  CL -->|"高：判卷语义/红绿权/<br/>预算/禁区六项"| H2["停车候拍·禁区纪律<br/>（代拍制151 对齐）"]
+  AUTO --> KF["指纹失效即重批<br/>（绿缓存同构·免生成不免验收）"]
+  H1 --> KF
+  H2 --> KF
+</pre>
+<div class="term rounded p-3 text-sm"><b>白话</b>：<code>分级不是作者选的</code>＝分类器读改动自动判，防自定低风险；本仓起步用规则+词表机械匹配（禁改清单 sha256/敏感路径词表），不上 LLM。<code>agent 不算人头</code>＝本仓已立且更严（追认制 #151）。<code>绑定 commit 重批</code>＝来了新提交重新批——窗级同构=复考闸+绿缓存指纹失效，候C 把它显式写进审批语义（<b>审批对象=指纹，不是票号</b>）。</div>
+<div class="text-xs text-slate-500 rounded p-3"><b>落位锚</b>：会审门（pi_runner.mjs:377-394·渐进开闸制底座上挂）｜<b>红线对表</b>：判卷零触碰✅·权限反相关✅（级越高人越多）·<b>渐进开闸制强制适用</b>⚠️（先 dryrun 只标级不拦车）｜<b>拍板点</b>：敏感区词表第一版·<b>App 交付包落点改动永不进低档</b>（建议写死）·与候E 的先后绑定。</div>
+
+<h3 class="font-serif text-lg text-green-700 mt-6">候D · 班外评审评测集（harness第二层·窗级）——业内名：Eval-set Flywheel·窗级最大缺口</h3>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：把班外每次「评审失手」（漏放红/误报筛真/派工错分——多数由业主追认推翻件暴露）记成题卡：输入+当时判断+熟悉者给的正确答案；题库 append-only，<b>班外评审 agent 天天机跑过题</b>——换提示词/换模型/改规则先过题，<b>涨了才换、跌了就撤</b>。</div>
+<pre class="mermaid text-sm">
+flowchart TB
+  MISS["班外评审失手实录<br/>（漏放/误报/错分·追认推翻件）"] --> CONF["熟悉者确认<br/>（业主/授权窗·判正确答案）"]
+  CONF --> BANK["题库：输入+当时判断+正确答案<br/>（append-only·只增不改）"]
+  BANK --> DAILY["每日机跑评审 agent 全员过题"]
+  DAILY --> SCORE{"分数"}
+  SCORE -->|"涨"| KEEP["新提示词/新模型保留"]
+  SCORE -->|"跌"| ROLL["撤回上一版<br/>（评审面也 fail-closed）"]
+</pre>
+<div class="term rounded p-3 text-sm"><b>白话</b>：<code>失败变题库</code>＝CC 把每次线上问题做成评审员的考题——把「我觉得新版更好」变成「分数说了算」。本仓 harness第一层 已有等价铁律（出题权冻结+同包重放），候D 是<b>平移到 harness第二层</b>：班外 agent 自己也要被考。窗级为什么最缺：追认推翻件、打回分诊件、复考红都已有事件账（event-types 白名单），<b>数据在、题库面不在</b>——建库成本低。</div>
+<div class="text-xs text-slate-500 rounded p-3"><b>落位锚</b>：90-过程/考题库 邻位＋复考闸选题思路（pi_runner.mjs:221 match_主题含）＋班次汇报聚合器三态推导｜<b>红线对表</b>：判卷零触碰✅（考班外不考 harness第一层）·出题权✅（入库=业主/授权窗确认·引擎不代出题）·预算⚠️（日跑额度拍板）｜<b>拍板点</b>：库址·日跑预算·「熟悉者」定义（建议=收口复核笔业主）。</div>
+
+<h3 class="font-serif text-lg text-green-700 mt-6">候E · 审批面熔断器（harness第二层·窗级）——业内名：Approval Circuit Breaker·两家都没做的件</h3>
+<div class="text-sm leading-7 rounded p-3"><b>一句话</b>：postshift 每班盯两个率——<b>回退率</b>（追认推翻+rollback 占比）与<b>事故率</b>（复考红+新病卡）——任一越阈值，派工链<b>自动收紧</b>：低档停自动过、全部升一档人工批、晨报置顶宣告；连续 N 班回落才放开（放开也要留痕候追认）。<b>只加严方向的自动阀</b>。</div>
+<pre class="mermaid text-sm">
+flowchart TB
+  W["每班收车统计<br/>回退率（推翻+rollback 占比）<br/>事故率（复考红+新病卡）"] --> TH{"越阈值？"}
+  TH -->|"否"| NORM["审批档位维持现状"]
+  TH -->|"是"| TIGHT["自动收紧：低档停自动过<br/>全部升一档人工批·晨报置顶宣告"]
+  TIGHT --> COOL["连续 N 班回落"]
+  COOL -->|"回落达标"| LOOSE["自动放开回原档<br/>（放开也要留痕）"]
+  COOL -->|"仍高"| TIGHT
+  TIGHT -.->|"方向纪律"| ONLY["只加严不加松<br/>（收紧自动·放开留痕候追认）"]
+</pre>
+<div class="term rounded p-3 text-sm"><b>白话</b>：<code>熔断器</code>＝坏消息密度太高时自动调低信任档，不等业主先发现。CC 团队自认未建、靠人盯，且明说「更多代码走向零人审批之前必须先补」——本仓候C 若开「低风险零人批」，<b>候E 就是它的前置闸</b>。<code>本仓近亲</code>＝M6 同因熔断（票级修错面·lane-drain.ts:50）与 deepread 同病≥2 轮停车（fail-loop.mjs:120）——候E 把熔断思想第一次装到<b>审批面</b>。</div>
+<div class="text-xs text-slate-500 rounded p-3"><b>落位锚</b>：postshift 班后件（postshift.mjs:59·成绩单回写数据面已有）→派工链档位（afk_dispatch_config.json）｜<b>红线对表</b>：只加严✅（收紧自动·放开候追认）·判卷零触碰✅·统计零 LLM✅｜<b>拍板点</b>：阈值与观察窗（建议先 dryrun 一班只报数·对齐渐进开闸制）·N 值·与候D 数据面的接线。</div>
+</section>
+
+<!-- ============ §3 V1 修订建议 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§3 · V1 正本六卡逐卡修订建议（分两层·候拍板后随 B1 保鲜闸改·本册不代改）</h2>
+<div class="overflow-x-auto"><table class="text-xs w-full border-collapse">
+<thead><tr class="bg-stone-100"><th class="border p-2 text-left">层</th><th class="border p-2 text-left">V1 卡</th><th class="border p-2 text-left">改哪</th><th class="border p-2 text-left">加什么</th></tr></thead>
+<tbody>
+<tr><td class="border p-2 text-blue-700"><b>harness第一层 票级</b></td><td class="border p-2">卡31 双证切片</td><td class="border p-2">业内对照行</td><td class="border p-2">加「AI self-verification（Cherny：给 AI 验证自己工作的能力≈2-3 倍）」——票级绿灯只算工人自报=该原则加严版；变式加「视觉基线比对（visual regression·覆盖分析 A 档缺口）」</td></tr>
+<tr><td class="border p-2 text-blue-700"><b>harness第一层 票级</b></td><td class="border p-2">卡32 探针门</td><td class="border p-2">变式对照</td><td class="border p-2">加「CC 合并队列（对最新主干重跑）↔ 票级 resume 指纹门+绿缓存（已覆盖·免生成不免验收）」</td></tr>
+<tr><td class="border p-2 text-blue-700"><b>harness第一层 票级</b></td><td class="border p-2">卡33 段2.7 功能门</td><td class="border p-2">业内对照</td><td class="border p-2">加候选指针「报红筛真→04V2 候B（harness第一层 票级）」</td></tr>
+<tr><td class="border p-2 text-blue-700"><b>harness第一层 票级</b></td><td class="border p-2">卡34 回归翻案</td><td class="border p-2">变式+详注</td><td class="border p-2">变式加「CC 审批绑定 commit·新提交重批 ↔ 票级判据面回退指纹失效（已覆盖）」；详注加复盘必答题「这次事故哪一层闸本该拦住但没拦住」（零码·入 postshift 复盘模板）</td></tr>
+<tr><td class="border p-2 text-green-700"><b>harness第二层 窗级</b></td><td class="border p-2">卡35 判定梯</td><td class="border p-2">变式对照</td><td class="border p-2">加「风险分级=审批面的判定梯（低中高·04V2 候C·harness第二层）——聚合分档思想同源：未知不等于健康/低风险不等于零检查」</td></tr>
+<tr><td class="border p-2 text-green-700"><b>harness第二层 窗级</b></td><td class="border p-2">卡36 会审门+复考闸</td><td class="border p-2">详注</td><td class="border p-2">加「CC 可信名单轻量流程 ↔ 禁区外代拍（#151）同构」；候选指针「审批面熔断→04V2 候E·分级器→候C·候拍池筛真→候B 之 harness第二层 变式（均 harness第二层）」</td></tr>
+</tbody></table></div>
+<div class="term rounded p-3 text-sm"><b>修订纪律</b>：全部是「详注/对照/变式」级增补——不改 V1 的图、判定语义、锚点；真码落地哪个候选，对应卡才随 B1 保鲜闸重绘。</div>
+</section>
+
+<!-- ============ §4 红线总对表 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">§4 · 六候选（按层）× 仓红线总对表</h2>
+<table class="text-xs w-full border-collapse">
+<thead><tr class="bg-stone-100"><th class="border p-2">候选（层）</th><th class="border p-2">判卷语义零触碰</th><th class="border p-2">出题权冻结</th><th class="border p-2">预算三路</th><th class="border p-2">只加严不加松</th><th class="border p-2">权限与 LLM 反相关</th></tr></thead>
+<tbody>
+<tr><td class="border p-2 text-blue-700">候A（harness第一层）冷眼复审</td><td class="border p-2 text-center">✅ 意见只进晨报</td><td class="border p-2 text-center">✅ 只读票面</td><td class="border p-2 text-center">⚠️ 拍板新分账</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅ harness第一层 建议岗</td></tr>
+<tr><td class="border p-2 text-blue-700">候B（harness第一层+harness第二层 变式）投票筛真</td><td class="border p-2 text-center">✅ 硬红不投票</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">⚠️ 每发现 2-3 调用</td><td class="border p-2 text-center">✅ 只压建议面</td><td class="border p-2 text-center">✅ 两层都只挂建议面</td></tr>
+<tr><td class="border p-2 text-green-700">候C（harness第二层）风险分级</td><td class="border p-2 text-center">✅ 定人不定过</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅ 零 LLM 起步</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅ 级越高人越多</td></tr>
+<tr><td class="border p-2 text-green-700">候D（harness第二层）评审评测集</td><td class="border p-2 text-center">✅ 考班外不考 harness第一层</td><td class="border p-2 text-center">✅ 入库=业主确认</td><td class="border p-2 text-center">⚠️ 日跑预算</td><td class="border p-2 text-center">✅ 涨留跌撤</td><td class="border p-2 text-center">✅ 分数机械判</td></tr>
+<tr><td class="border p-2 text-green-700">候E（harness第二层）审批熔断</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅ 统计零 LLM</td><td class="border p-2 text-center">✅ 收紧自动·放开候追认</td><td class="border p-2 text-center">✅ 越险越人</td></tr>
+<tr><td class="border p-2 text-blue-700">候F（harness第一层）安全扫描</td><td class="border p-2 text-center">⚠️ 安全红≠判卷红·新事件型须拍板</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅</td><td class="border p-2 text-center">✅ 关闭发现=业主显式</td></tr>
+</tbody></table>
+<div class="redline rounded p-3 text-sm"><b>全册最重的一句话</b>：CC 管道里所有「agent 判定」环节（审核三问/投票/分级）落到本仓，全部停在<b>建议面与流程面</b>——harness第一层 红绿权始终只在验收命令 exit code 手里，harness第二层 放行权始终只在业主✅收口手里（agent 永不算人头）。分层后多一条：<b>harness第二层 候选比 harness第一层 更保守</b>——harness第二层 不新建 LLM 审核岗，全部「机械守门＋LLM 只产候选」，对齐权限反相关铁律。</div>
+</section>
+
+<!-- ============ 时效 ============ -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+<h2 class="font-serif text-xl">时效·来源·防重复</h2>
+<div class="text-xs text-slate-500 rounded p-3 leading-6">
+<b>基准</b>：repo_head 1feb0f5（与 V1 同源·本册零码改·锚点引 V1 册与 deepread 实锚）｜<b>生成式</b>：候选稿（应然·借鉴增补·分层版·非 as-built）｜<b>分层口径</b>：业主令 2026-10-28——CC 的 PR↔第一层票级；CC 的 PR↔第二层窗（W 编号）/任务包级｜<b>失效触发</b>：任一候选拍板落码→对应候选卡转正并入 V1 重绘；CC 侧新实证数据（熔断器建成/评测集效果）→对照表更新｜
+<b>来源诚实声明</b>：CC 侧全部内容引自己主提供的文章要点，属<b>二手转述</b>，未回 anthropic 原文逐条取证；其自报数据（16%→54%·PR 翻倍·回退降 40%+）均为「CC 自报」口径。需一手佐证可开调研窗（security-review 为官方开源 GitHub Action 可直取）｜
+<b>防重复指针</b>：as-built 正本=04-验收判定册.html（六卡）·总账=00-机制总索引卡（57 项·#30-38）·判卷语义=红票事件树 v2·双层定名=教义 20261024·覆盖缺口分析=会话 2026-10-28 deepread（验收域三轴/业界横比/A 档断言力缺口）·CU 取舍=调研-ComputerUse计算机操作技能-20261027｜
+<b>tags</b>：机制目录·模式卡·双层harness·调研件
+</div>
+</section>
+
+</main>
+</body>
+</html>

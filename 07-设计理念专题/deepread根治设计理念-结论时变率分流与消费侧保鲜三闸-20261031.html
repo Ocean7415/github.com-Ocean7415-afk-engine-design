@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- meta: owner: 业主 · next_verify: 2027-01-29 · as_of: 2026-10-31 · status: verified（拍板#326 关键档案点定·D1七条款若落地则本件翻 superseded_by=D1施工件） -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deepread 根治设计理念 · 结论时变率分流与消费侧保鲜三闸（2026-10-31）</title>
+<style>
+  :root{
+    --ink:#1a1f2e; --sub:#5a6478; --bg:#fafbfc; --card:#ffffff; --line:#e3e7ee;
+    --red:#c0392b; --redbg:#fdf0ee; --blue:#1f5fa8; --bluebg:#eef4fb;
+    --green:#1e7d46; --greenbg:#eef8f2; --amber:#9a6700; --amberbg:#fff8e6;
+    --gray:#6b7280; --graybg:#f3f4f6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Source Han Sans SC","Microsoft YaHei",-apple-system,sans-serif;
+       background:var(--bg); color:var(--ink); line-height:1.75; padding:0 0 80px;}
+  .wrap{max-width:960px; margin:0 auto; padding:0 28px;}
+  header{background:linear-gradient(135deg,#16213e 0%,#1f3a5f 100%); color:#fff; padding:48px 28px 40px; margin-bottom:36px;}
+  header .wrap{padding:0;}
+  h1{font-size:27px; font-weight:700; letter-spacing:.5px; margin-bottom:10px;}
+  .subtitle{font-size:14px; opacity:.85; margin-bottom:18px;}
+  .meta{font-size:12.5px; opacity:.75; line-height:1.9; border-top:1px solid rgba(255,255,255,.18); padding-top:14px;}
+  .conclusion{background:var(--amberbg); border-left:5px solid var(--amber); padding:18px 22px; border-radius:0 8px 8px 0; margin-bottom:34px;}
+  .conclusion b{color:var(--amber);}
+  .conclusion p{font-size:15px;}
+  h2{font-size:21px; margin:44px 0 18px; padding-bottom:8px; border-bottom:2px solid var(--line); color:var(--ink);}
+  h2 .no{color:var(--blue); font-weight:800; margin-right:8px;}
+  h3{font-size:16.5px; margin:26px 0 12px; color:var(--blue);}
+  p{margin:10px 0; font-size:14.5px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px 24px; margin:14px 0;}
+  .card.red{border-left:5px solid var(--red); background:var(--redbg);}
+  .card.blue{border-left:5px solid var(--blue); background:var(--bluebg);}
+  .card.green{border-left:5px solid var(--green); background:var(--greenbg);}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px; background:var(--card);}
+  th{background:#1f3a5f; color:#fff; padding:9px 12px; text-align:left; font-weight:600; font-size:13px;}
+  td{padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:#f8fafc;}
+  code{background:var(--graybg); padding:2px 6px; border-radius:4px; font-size:12.5px; font-family:Consolas,monospace; color:#b3305c;}
+  .pill{display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; margin-right:6px;}
+  .pill.red{background:var(--redbg); color:var(--red); border:1px solid #ecc8c2;}
+  .pill.blue{background:var(--bluebg); color:var(--blue); border:1px solid #c5d9ef;}
+  .pill.green{background:var(--greenbg); color:var(--green); border:1px solid #bfdcc9;}
+  .pill.gray{background:var(--graybg); color:var(--gray); border:1px solid var(--line);}
+  .pill.amber{background:var(--amberbg); color:var(--amber); border:1px solid #e8d9ae;}
+  .idea{background:var(--card); border:1px solid var(--line); border-radius:10px; margin:16px 0; overflow:hidden;}
+  .idea .head{background:var(--bluebg); padding:13px 22px; font-size:15.5px; font-weight:700; color:var(--blue); border-bottom:1px solid var(--line);}
+  .idea .head .num{display:inline-block; background:var(--blue); color:#fff; width:26px; height:26px; border-radius:50%; text-align:center; line-height:26px; font-size:14px; margin-right:10px;}
+  .idea .body{padding:16px 22px;}
+  .idea .kv{font-size:13px; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); color:var(--sub);}
+  .idea .kv b{color:var(--ink);}
+  /* 三闸流程图（纯CSS） */
+  .flow{display:flex; align-items:stretch; gap:0; margin:20px 0; flex-wrap:wrap;}
+  .flow .stage{flex:1 1 200px; background:var(--card); border:2px solid var(--green); border-radius:10px; padding:14px 16px; position:relative; min-width:200px;}
+  .flow .stage h4{font-size:14.5px; color:var(--green); margin-bottom:8px;}
+  .flow .stage p{font-size:12.5px; color:var(--sub); margin:4px 0;}
+  .flow .arrow{align-self:center; font-size:22px; color:var(--green); padding:0 10px; font-weight:700;}
+  .flow .fact{border-color:var(--blue);}
+  .flow .fact h4{color:var(--blue);}
+  .flow .fact .arrow{color:var(--blue);}
+  .warn{background:var(--amberbg); border:1px solid #e8d9ae; border-radius:8px; padding:12px 18px; font-size:13.5px; margin:12px 0; color:var(--amber);}
+  .anchorlist{font-size:12.5px; color:var(--sub); background:var(--graybg); border-radius:8px; padding:12px 18px; margin-top:24px; line-height:2;}
+  .toc{font-size:13.5px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 22px; margin-bottom:8px;}
+  .toc a{color:var(--blue); text-decoration:none; margin-right:16px;}
+  .toc a:hover{text-decoration:underline;}
+  .strike{text-decoration:line-through; color:var(--gray);}
+  .new{background:#e8f7ee; color:var(--green); padding:1px 6px; border-radius:4px; font-weight:600;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>deepread 根治设计理念 · 结论时变率分流与消费侧保鲜三闸</h1>
+    <div class="subtitle">七大理念 × 八痛点 × 三闸接线 —— 让深读档案从"读时正确"变成"带保质期的可校验事实"</div>
+    <div class="meta">
+      落盘：2026-10-31 ｜ 性质：设计教义结算档（候拍·零推翻在役机制）｜ 事实源：本仓 10-31 主窗会话六轮实录（教义档过时事故·W-082/W-089 尺病在账）<br>
+      tags: [数据治理, 档案保鲜, deepread, 设计教义, 时序知识] ｜ 关联：数据治理总纲-20261031.md（三层三闸）· 痛点02（纪律必须带接线点）· 教义七（判据元正确性）
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="conclusion">
+  <p><b>病根一句话</b>：deepread 防住了「没读」（覆盖度账本=硬数字），没防住「<b>读了、读的是旧影子</b>」（内容保鲜=软感觉）。产出侧有封印，消费侧裸奔；所有结论被当成同一种保质期。根治 = <b>按结论保质期分流纪律</b>（理念一）＋<b>消费侧闸门化</b>（理念五）＋<b>档案自带保鲜契约</b>（理念七）三位一体——只改 skill 文字必然复发，必须有"不过就拦"的接线点（痛点02 铁律）。</p>
+</div>
+
+<nav class="toc">
+  <a href="#s1">§一 病理</a><a href="#s2">§二 七大设计理念</a><a href="#s3">§三 skill 条款修改对照</a><a href="#s4">§四 三闸接线</a><a href="#s5">§五 根治路径与候拍板题</a><a href="#s6">§六 衔接与诚实边界</a>
+</nav>
+
+<!-- ============ §一 ============ -->
+<h2 id="s1"><span class="no">§一</span>病理：八痛点与 10-31 事故复盘</h2>
+
+<p>2026-10-31 主窗会话实录：第一轮引用 10-24 教义档 §4.2/4.3 缺口清单<b>当作现状</b>，产出"图纸会审门未落／93↔94 无桥／授权面字段缺"等结论；第二轮直读现行码，发现拍板#170（10-26·十一票 W-118~W-128）已把五件缺口中的四件收口。缺口存活期 <b style="color:var(--red)">&lt;48 小时</b>——派工制施工速度使档案时效衰减=窗级。若业主按第一轮清单立票，将重复开已收口的票（撞 W-119/123/125 已落领地——W-216/W-217 撞号事故同族）。</p>
+
+<table>
+  <tr><th style="width:42px">#</th><th>痛点</th><th>机制缺陷</th><th>实证</th></tr>
+  <tr><td>1</td><td><b>消费侧裸奔</b></td><td>复用循环（git diff 圈漂移）只写在"留档"节——管<b>我产出的</b>档案将来怎么保鲜，不管<b>我引用别人的</b>档案时怎么保鲜</td><td>10-31 同一轮：对 RAG 实勘档跑了 diff（25 文件漂移如实申报），对教义档零检查</td></tr>
+  <tr><td>2</td><td><b>铁律1 时态盲区</b></td><td>"B 是事实源"不区分：码面磁盘=当前事实，档案磁盘=历史时点事实——同一块磁盘，读的是不同时刻的影子</td><td>引用教义档字面上没违反铁律1</td></tr>
+  <tr><td>3</td><td><b>结论类型不分流</b></td><td>结构型（调用链·月级）/态势型（缺口·窗级）/瞬变型（运行态·一次真跑）保质期天差地别，skill 一视同仁</td><td>缺口清单半衰期&lt;48h 却允许转引档案锚点</td></tr>
+  <tr><td>4</td><td><b>警告放错层级</b></td><td>局限写在收尾 evidence 小字，正文用肯定句——业主按正文决策，警告等于没发</td><td>10-31 第一轮 evidence 有"系转引未直读"注记，正文仍是"会审门未落"</td></tr>
+  <tr><td>5</td><td><b>账本防"没读"不防"读旧"</b></td><td>覆盖度账本记录磁盘触达下界，但"读了"≠"读的是现行状态"——内容级保鲜无纪律</td><td>deepread 五条铁律全部围绕覆盖度，零保鲜条款</td></tr>
+  <tr><td>6</td><td><b>软约束无接线点</b></td><td>复用循环是"推荐收尾"级——"想起来才做"，复发痛点02 病（纪律没接电·执行率概率连乘衰减）</td><td>同一轮"想起"了 RAG 档案、没"想起"教义档</td></tr>
+  <tr><td>7</td><td><b>未封印档案不可检测</b></td><td>教义档头部只有版本变更记录、无 repo_head——连"一条 diff 查漂移"都跑不了</td><td>元数据规约的 repo_head 要求未罩住"会话结算档"档型</td></tr>
+  <tr><td>8</td><td><b>管理面反证缺位</b></td><td>缺口类主张的反证不在代码 diff 里，在过程账本里（拍板表/窗队列尾部）——skill 不知道要扫</td><td>一次 <code>tail 拍板记录表</code> 即见 #170 收口批，可拦住全部过时结论</td></tr>
+</table>
+
+<div class="card red">
+  <b>病根归一</b>：deepread 的证据体系回答的是"你读了多少"（read/total），从不回答"你读的状态离现在多远"（staleness）。前者有账本可复算，后者靠手感——按本仓"深度=数字"原则（痛点02 §4），<b>保鲜也必须是数字</b>：档案时点戳→漂移文件数→结论保质期，三个都可复算的数字。
+</div>
+
+<!-- ============ §二 ============ -->
+<h2 id="s2"><span class="no">§二</span>七大设计理念（每条：陈述→对症→机制→行业同构）</h2>
+
+<div class="idea">
+  <div class="head"><span class="num">一</span>结论时变率分流 —— 不是所有结论都有同一种保质期</div>
+  <div class="body">
+    <p><b>陈述</b>：调用链不会一夜改变，缺口清单会。把"调用链=站3 机械拆单"（结构事实）和"会审门未落"（态势事实）写进同一种纪律，就是让快变量冒充慢变量。纪律必须按<b>保质期</b>分级，而非按"投入深度"分级——Verify 级对慢变量够用，对快变量照样过期。</p>
+    <table>
+      <tr><th>结论类型</th><th>例</th><th>保质期</th><th>纪律</th></tr>
+      <tr><td><span class="pill blue">结构型</span></td><td>调用链／机制语义／格式契约</td><td>月级</td><td>可转引在档锚点＋抽查复核</td></tr>
+      <tr><td><span class="pill amber">态势型</span></td><td>缺口／未落／缺位／零接线</td><td>窗级~天级</td><td><b>禁止转引</b>·必须本轮直读＋扫管理面尾部</td></tr>
+      <tr><td><span class="pill gray">瞬变型</span></td><td>运行态／竞态／性能数字</td><td>一次真跑</td><td>只进观测附件，禁入结论主句</td></tr>
+      <tr><td><span class="pill green">知识型</span></td><td>病卡／经验／方法论</td><td>长期·可被取代</td><td>引用带 as_of，被取代档标 superseded_by</td></tr>
+    </table>
+    <div class="kv"><b>对症</b>：痛点3 ｜ <b>机制</b>：深读 skill 增"结论类型申明"前置门＋态势型强制重勘 ｜ <b>行业同构</b>：dbt freshness 的 warn_after/error_after 分级阈值；数据仓库冷热分层</div>
+  </div>
+</div>
+
+<div class="idea">
+  <div class="head"><span class="num">二</span>双事实源时态化 —— 磁盘是两个事实源，不是一个</div>
+  <div class="body">
+    <p><b>陈述</b>：<b>码面磁盘=当前事实源；档案磁盘=历史事实源。</b>"B 是事实源"必须时态化：引用任何在档结论（教义档/痛点档/机制卡/深读档案）=引用历史，必须三步——①找档案时点戳（repo_head/created_at）→②跑漂移检查（有封印跑一条 diff；无封印视为历史锚点，引用前本轮直读）→③按结论类型分流（理念一）。</p>
+    <div class="kv"><b>对症</b>：痛点1、2 ｜ <b>机制</b>：铁律1 扩写＋复用循环从"留档推荐"升"消费铁律" ｜ <b>行业同构</b>：Graphiti bi-temporal（事件时间 valid_at vs 摄入时间·"tracking what's true now and what was true before"·arXiv:2501.13956 直取核实）</div>
+  </div>
+</div>
+
+<div class="idea">
+  <div class="head"><span class="num">三</span>证据时点标签 —— 让"哪条是现在的事实"在正文表面可见</div>
+  <div class="body">
+    <p><b>陈述</b>：结论锚点表加一列<b>证据时点</b>，三值：<code>[现行]</code>本轮直读现行码实勘／<code>[转引@10-24]</code>转引档案（必须写明档案时点）／<code>[推断]</code>从相邻事实推断。<span class="strike">[转引] 主张不得作结论主句</span>——只能作背景陈述。读者扫一眼标签就知道哪条敢直接用。</p>
+    <div class="kv"><b>对症</b>：痛点4 前半 ｜ <b>机制</b>：结论锚点表增列＋evidence 契约扩展 ｜ <b>行业同构</b>：RAG 检索结果的 citation+date 惯例；本仓 weak_hit_note 弱命中标注同构（94 query_engine:1319）</div>
+  </div>
+</div>
+
+<div class="idea">
+  <div class="head"><span class="num">四</span>警告内联 —— 警告放附录等于没发</div>
+  <div class="body">
+    <p><b>陈述</b>：凡 evidence.notes 的局限涉及正文关键主张，必须在<b>正文该主张处内联标记</b>（如"会审门未落 ⚠️转引未勘"），不允许只出现在收尾 evidence。规则一句话：<b>警告放正文，不放附录</b>。</p>
+    <div class="kv"><b>对症</b>：痛点4 后半 ｜ <b>机制</b>：收口机检可加 WARN 规则（正文含态势型断言且无内联时点标=WARN） ｜ <b>行业同构</b>：安全通告的 inline advisory 惯例</div>
+  </div>
+</div>
+
+<div class="idea">
+  <div class="head"><span class="num">五</span>消费侧闸门化 —— 复用循环从"推荐"升"铁律"，从产出侧扩到消费侧</div>
+  <div class="body">
+    <p><b>陈述</b>：多会话工作流里没有强制点的纪律执行率是概率连乘（痛点02 铁律）——"想起来才检查"的保鲜必然失效（10-31 实证：同一轮想起 RAG 档案、没想起教义档）。消费侧保鲜必须"不过就拦"：引用在档结论先跑保鲜三步，否则该主张降级为 [转引] 且不得作结论主句。</p>
+    <div class="kv"><b>对症</b>：痛点1、6 ｜ <b>机制</b>：铁律级条款＋收口机检 WARN＋派发书三关可加"引用档案清单"格式关 ｜ <b>行业同构</b>：GitHub required status checks（本仓收口机检自述先例）</div>
+  </div>
+</div>
+
+<div class="idea">
+  <div class="head"><span class="num">六</span>管理面=第二事实源 —— 缺口的反证在账本尾部，不在代码里</div>
+  <div class="body">
+    <p><b>陈述</b>："什么还没做"类主张的关闭记录<b>不在 git diff 里，在过程账本里</b>（拍板表/窗队列/执行台账）。态势型任务收口前必扫管理面尾部 N 行——一条 <code>tail 拍板记录表</code> 即见 #170 收口批。通用化：缺口类调研的反证面=项目管理面（决策日志/工单队列），与代码面同级必修。</p>
+    <div class="kv"><b>对症</b>：痛点8 ｜ <b>机制</b>：深读流水②挖事实增"账本尾部扫描"步＋档案附录加管理面反证命令 ｜ <b>行业同构</b>：dbt sources 声明+lineage（消费依赖必须认领到源）</div>
+  </div>
+</div>
+
+<div class="idea">
+  <div class="head"><span class="num">七</span>档案三契约 —— 保鲜从"每窗人工评估"变"元数据自动执行"</div>
+  <div class="body">
+    <p><b>陈述</b>：档案自带三个契约字段，保鲜不再依赖人想起来——</p>
+    <p>① <b>封印</b>：<code>repo_head</code>＋<code>as_of</code>（凡带码面锚的落盘档必填——治教义档洞：无封印=漂移不可检测）；<br>
+       ② <b>复验</b>：<code>owner</code>＋<code>next_verify</code>（Guru 式·到期机检 WARN；owner 缺位此制退化为形式，故 owner 必填才算 verified）；<br>
+       ③ <b>失效传播</b>：<code>superseded_by: 档案ID</code>（Graphiti 式·过时不删除不静默，追记取代关系——与"台账 append-only·追记不删行"哲学同构）。</p>
+    <div class="kv"><b>对症</b>：痛点5、7 ｜ <b>机制</b>：元数据规约扩围＋rrm_lint 字段检查＋收口五件套④从人工评估升元数据契约 ｜ <b>行业同构</b>：Graphiti validity window＋superseded（直取核实）·Guru verification（知识库来源·立票前补勘）</div>
+  </div>
+</div>
+
+<!-- ============ §三 ============ -->
+<h2 id="s3"><span class="no">§三</span>deepread skill 条款修改对照表（草案·候拍）</h2>
+
+<table>
+  <tr><th style="width:24%">现有条款</th><th style="width:14%">对症痛点</th><th>修改后条款（草案）</th></tr>
+  <tr>
+    <td>铁律1「B 是事实源：磁盘永远优先于索引、图谱、记忆」</td>
+    <td>2</td>
+    <td>扩为：「<b>码面磁盘=当前事实源；档案磁盘=历史事实源</b>。引用任何在档结论前必须跑保鲜三步：找时点戳→跑漂移检查（diff 或 tail 账本）→按结论类型分流。无封印档案的码面锚点一律视为历史锚点，引用前必须本轮直读。」</td>
+  </tr>
+  <tr>
+    <td>前置门·两问（图谱可用？coverage 可用？）</td>
+    <td>3</td>
+    <td>增<b>问三：本任务产出哪些结论类型？</b>——开工声明结构型/态势型/瞬变型配比；含态势型者自动激活管理面扫描与强制重勘纪律。</td>
+  </tr>
+  <tr>
+    <td>四步流水②挖事实</td>
+    <td>8</td>
+    <td>增一步：「<b>管理面尾部扫描</b>（态势型任务必做）：tail 拍板表/窗队列/执行台账尾部 N 行——缺口类主张的反证在账本不在代码。」</td>
+  </tr>
+  <tr>
+    <td>③补深度／④核账（账本只记读了没）</td>
+    <td>5</td>
+    <td>结论锚点表增「<b>证据时点</b>」列（[现行]/[转引@日期]/[推断]）；read.txt 格式不变，主张级溯源另列。</td>
+  </tr>
+  <tr>
+    <td>⑤留档·复用循环（推荐收尾级·只管产出侧）</td>
+    <td>1、6</td>
+    <td>升格独立节「<b>消费保鲜（铁律）</b>」：任何对在档深读产物的<b>结论级引用</b>，先跑保鲜三步；[转引] 主张降级规则＋警告内联规则（理念四）。</td>
+  </tr>
+  <tr>
+    <td>深读解读必含（模块职责/入口/调用链/模式/风险/无图区——全结构型问题）</td>
+    <td>3</td>
+    <td>增一节「<b>态势申明</b>」：本模块当前缺口清单（每条带 as_of＋[现行] 锚）＋保质期声明（"本清单 48h 内有效·过期以账本尾部为准"）。</td>
+  </tr>
+  <tr>
+    <td>evidence 契约 notes（局限放收尾）</td>
+    <td>4</td>
+    <td>增规则：「局限涉及正文关键主张者，必须在正文主张处内联标记 ⚠️；evidence.notes 只作汇总不复述。」</td>
+  </tr>
+</table>
+
+<!-- ============ §四 ============ -->
+<h2 id="s4"><span class="no">§四</span>三闸接线图（不过就拦·与数据治理总纲同构）</h2>
+
+<p>skill 文字是纪律面；真正拦住下一次的靠三个机检接线点（机械设备管数字·Agent员工管内容·自然人审核管拍板）：</p>
+
+<div class="flow">
+  <div class="stage fact">
+    <h4>闸1 · 产出封印闸</h4>
+    <p><b>插点</b>：rrm_lint / 元数据规约</p>
+    <p>凡带码面锚的落盘档，frontmatter 缺 <code>repo_head</code>/<code>as_of</code> = ERROR 拒收</p>
+    <p><b>治</b>：痛点7（未封印档案）</p>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage">
+    <h4>闸2 · 消费时效闸</h4>
+    <p><b>插点</b>：收口机检 / 派发书三关</p>
+    <p>正文含态势型断言且无 [现行] 内联锚 = WARN；引用档案清单缺漂移检查记录 = WARN</p>
+    <p><b>治</b>：痛点1、4、6</p>
+  </div>
+  <div class="arrow">→</div>
+  <div class="stage fact">
+    <h4>闸3 · 检索降权闸</h4>
+    <p><b>插点</b>：94 query_engine 出口</p>
+    <p>命中档按 as_of+repo_head 漂移算 staleness，超阈降权＋候选块打时效标（weak_hit_note 同位）</p>
+    <p><b>治</b>：痛点5（RAG 召回旧档而不知旧）</p>
+  </div>
+</div>
+
+<div class="warn">⚠️ 三闸都是 WARN 级起步（告警不拦车·对齐 wip_scan 惯例）——先观测误报率再议升 ERROR，复考闸/写口闸的 fail-closed 是经真班校准后的升级，不是首版形态（沿拍板#170 escalate 首版只告警先例）。</div>
+
+<!-- ============ §五 ============ -->
+<h2 id="s5"><span class="no">§五</span>根治路径与候拍板题</h2>
+
+<p><b>根治公式</b>：skill 条款修改（纪律面·本文件 §三草案）＋三闸接线（机检面·§四）＋档案三契约（数据面·理念七）——<b>三位一体缺一必复发</b>。只改 skill 文字 = 痛点02"纪律没接电"复发；只装机检不改 skill = Agent员工不知为什么被拦、报错不可解读（对齐 L1 机检话术白话化·拍板#289①先例）。</p>
+
+<table>
+  <tr><th>#</th><th>候拍板题</th><th>落点</th><th>量级</th><th>依赖</th></tr>
+  <tr><td>D1</td><td>deepread skill 七条款修改（§三草案）</td><td>全局 skill 文件</td><td>小·纯文字</td><td>无·可先行</td></tr>
+  <tr><td>D2</td><td>元数据规约扩围：锚点型文档（不限深读档案）必带 repo_head+as_of</td><td>产物命名与元数据规约+rrm_lint</td><td>小</td><td>无·可先行</td></tr>
+  <tr><td>D3</td><td>收口机检 WARN：态势型断言无[现行]锚/引用档案无漂移检查</td><td>收口机检.mjs</td><td>小-中</td><td>D1 定标签语法</td></tr>
+  <tr><td>D4</td><td>94 检索 freshness 降权+时效标</td><td>query_engine 出口（W-113 同位）</td><td>中</td><td>数据治理总纲件4</td></tr>
+  <tr><td>D5</td><td>关键档案 owner+next_verify 复验制</td><td>frontmatter+新机检</td><td>中</td><td>业主指派 owner 面</td></tr>
+</table>
+
+<p>见效顺序：<b>D1+D2 零码纯流程立即可落 → D3 → D4 → D5</b>。D1/D2 落地当天即可防复发（10-31 型事故的全部要素——转引未勘/警告内联/管理面扫描——都在 D1 文字内）。</p>
+
+<!-- ============ §六 ============ -->
+<h2 id="s6"><span class="no">§六</span>衔接与诚实边界</h2>
+
+<div class="card green">
+  <b>不推翻声明</b>：①deepread 五条铁律的覆盖度体系原样保留（防"没读"的硬数字仍是地基，本文件只补防"读旧"的另一半）；②本仓既有保鲜制度全部沿用并升级——时效注记制（W-024~W-073 连环）=理念二的产出侧形态，收口五件套④深读档案时效评估=理念七的前身（从每窗人工评估升为档案元数据契约）；③话术三词不变：机检闸=机械设备、深读代理=Agent员工、skill 修改与三闸升级拍板=自然人审核。
+</div>
+
+<p><b>诚实边界</b>：①本文件基于 10-31 单次事故复盘归纳，八痛点清单是 Scout 级（单案例+机制推演），未做多会话采样验证复发频率；②行业同构中 Graphiti/dbt 为一手直取核实（2026-10-31 curl），Guru verification 为知识库来源未直取（抓取被拦），立票前需补勘；③三闸误报率未实测——WARN 级起步即为此留校准期；④本文件自身遵守理念七：repo_head 已封印（dabface08），若 skill 修改已拍板落地（D1），本文件 §三对照表即被实现取代，status 应翻 superseded_by。</p>
+
+<div class="anchorlist">
+  <b>证据锚点区（file:line·repo_head=dabface08cb661e546954a52d74545a9fe8b0a07）</b><br>
+  ① 10-31 事故链：本会话第一/二轮对话实录（教义档 §4.2/4.3 → 拍板#170 → pi_runner.ts:389 会审门/wardcard_bridge.py:14 桥/派发书模板审批规格节）<br>
+  ② 教义档无封印：<code>07-设计理念专题/自主拍板与打扰治理-*.html</code> 头部无 repo_head 行（rg 零命中实证）·对照封印正样 <code>RAG全链触发机制-20261025.md:7</code>（repo_head: 716576f）<br>
+  ③ 痛点02 铁律：<code>92-痛点说明和解决方案/痛点02-代理核账挖掘不深入与治理.md:40</code>（§4 纪律没接电）<br>
+  ④ Graphiti 时序图谱：github.com/getzep/graphiti README（直取）·arXiv:2501.13956；dbt freshness：docs.getdbt.com/docs/build/sources（直取）<br>
+  ⑤ 时效注记制先例：<code>90-过程/README.md</code> W-024~W-073 各笔；weak_hit_note 同构位：<code>94-班外经验库RAG/query_engine.py:1319</code><br>
+  ⑥ 反向校验：<code>git diff dabface08..HEAD --name-only | wc -l</code>（漂移面）·<code>rg -c "repo_head" 07-设计理念专题/自主拍板与打扰治理-*.html</code>（应为 0）
+</div>
+
+</div>
+</body>
+</html>

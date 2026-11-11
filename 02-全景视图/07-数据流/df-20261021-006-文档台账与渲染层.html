@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261021-006 · 数据流卡 · df-006 文档台账与渲染层（e6.1a-d＋e6.2/e6.3·含人工流）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261021-006 · 数据流卡 · df-006 文档台账与渲染层（e6.1a-d＋e6.2/e6.3·含人工流）</h1>
+<div class="meta"><b>id</b> df-20261021-006 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 0cb1d3d · <b>run_id</b> queue-99-w047</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>数据流卡 · df-006 文档台账与渲染层（e6.1a-d＋e6.2/e6.3·含人工流）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：回答「拍板/台账/面板这些<strong>人工写</strong>的账，和渲染品这种<strong>程序写</strong>的派生件，数据从哪流向哪、谁和谁在同一字段上双写」——边=e6.1a~e6.1d（人工·虚线）＋e6.2/e6.3（登记表编号零漂移）；<strong>e6.1d 双写交汇点=全图唯一人工/程序双写同一字段处，双箭头汇合特标（业主 2026-10-21 拍板画进）</strong>。<strong>边界</strong>：本卡只画数据面。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>e6.1a 实例：拍板#99 落表尾（落号前 grep 表尾在案最高 #98 零撞号·必引对比件=登记表 00 号件）</td><td><code>90-过程/拍板记录表.md:120</code></td></tr><tr><td>2</td><td>e6.1b/c 实例：W-041 收口五件套——执行台账 append 本笔+进度总览窗口表加行（<code>90-过程/执行台账.md:583</code> W-041 行在案）</td><td><code>90-过程/执行台账.md:583</code></td></tr><tr><td>3</td><td>e6.2 防手改实证（W-043）：手改 html 加 HUMAN-EDIT→重跑渲染器→被覆盖还原；touch md 拨新→--check-only 报 stale</td><td><code>91-脚本/render_views.py:251</code></td></tr></tbody></table>
+<h2>§节点与边总览（编号正本=00 登记表·零漂移）</h2>
+<ul><li><strong>节点</strong>：<code>90-过程/拍板记录表.md</code>（e6.1a 写面）、<code>90-过程/执行台账.md</code>（e6.1b）、<code>90-过程/进度总览.md</code>（e6.1c）、N1 窗队列第 5-8 列（<strong>e6.1d 双写交汇点</strong>）、<code>02-全景视图/*.md</code>→同名 <code>.html</code>（N12 派生只读·e6.2）、扫描报告（e6.3）。</li><li><strong>边</strong>：e6.1a~e6.1d 人工虚线边 4 条＋e6.2/e6.3 程序边 2 条，共 6 条。</li></ul>
+<h2>§数据流主线（mermaid·虚线=人工流·e6.1d 双箭头汇合特标）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    OW["业主/拍板窗（自然人）"] -.->|"e6.1a append 拍板行<br/>必引对比件·落号前 grep 防撞号"| PB[("拍板记录表.md<br/>append-only")]
+    AG1["施工窗代理（自然人审核）"] -.->|"e6.1b append 收口五件套①"| TL[("执行台账.md<br/>append-only")]
+    AG1 -.->|"e6.1c 面板更新五件套②"| PZ[("进度总览.md")]
+    subgraph DB["双写交汇点·业主点名特标"]
+      direction LR
+      AG2["施工窗代理<br/>（人工·虚线）"] -.->|"子窗自写 ✅<br/>第5-8列"| N1C[("N1 窗队列<br/>第5-8列")]
+      HK["pi_runner 退出钩子<br/>（程序·实线）"] -->|"钩子兜底直写<br/>exit0→✅/非0→🔁"| N1C
+    end
+    MD[("02-全景视图/*.md<br/>手写正本")] ==>|"e6.2 render_views.py 全量覆盖写<br/>（生成品永不手改）"| HTML["02-全景视图/*.html<br/>N12 派生只读"]
+    RG["rulegap_scan.py"] -.->|"e6.3 只读扫描"| DC[("90-过程文档<br/>扫描报告")]
+</div></div>
+<p><strong>双写交汇点特标说明（e6.1d·业主 2026-10-21 拍板画进）</strong>：上图双写交汇点子图中，人工虚线（子窗代理自写 ✅）与程序实线（pi_runner 钩子兜底）<strong>双箭头汇入同一数据面 N1 第 5-8 列</strong>——全图唯一人工/程序双写同一字段处。<strong>幂等规则</strong>：子窗已写（行已 ✅/🔁/⏸/🔵）则钩子原样返回逐字不变，不覆盖不降级不重复记（拍板#89甲·<code>91-脚本/pi_runner.mjs:353</code>「非 ▶ 态一律原样」幂等行；钩子三案头注=<code>91-脚本/pi_runner.mjs:344</code>；exit0→✅=<code>91-脚本/pi_runner.mjs:361</code>；非0→🔁=<code>91-脚本/pi_runner.mjs:365</code>）。</p>
+<h2>§节点详注（图正下方·每节点做什么/边界/锚点）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>拍板记录表</td><td>业主拍板唯一权威（append-only 只追加不回改）：每拍板行必引对比件路径，落号前 grep 表尾防撞号——e6.1a 人工边，程序零写面。</td></tr><tr><td>执行台账</td><td>窗收口编年账（append-only）：每窗收口本笔=收口五件套①——e6.1b 人工边；<code>90-过程/执行台账.md:583</code> 即 W-041 收口笔实物。</td></tr><tr><td>进度总览</td><td>窗口/专题面板（收口五件套②）：e6.1c 人工边更新窗口表行与专题线加注（抬头=<code>90-过程/进度总览.md:1</code>）。</td></tr><tr><td>N1 第 5-8 列</td><td><strong>双写交汇数据面</strong>：状态/下一棒锚/产物锚/更新四列——子窗代理收口自写 ✅（人工），pi_runner 退出钩子对未写行（▶ 态）兜底直写（程序）；幂等=子窗已写钩子不覆盖（拍板#89甲）。</td></tr><tr><td>02-全景视图/*.md</td><td>手写正本（RRM 卡·agent/RAG 索引源）：e6.2 的读面；本卡族 df-001~006 即其一部分。</td></tr><tr><td>*.html（N12）</td><td>派生只读渲染品：render_views 覆盖写（<code>91-脚本/render_views.py:216</code> html.write_text）——<strong>手改会被下次渲染冲掉</strong>（<code>:251</code> 自测断言「手改痕迹不在渲染后 html」）；双层制=拍板#96（md 正本×HTML 生成品）。</td></tr><tr><td>扫描报告</td><td>rulegap_scan 只读产物（<code>91-脚本/rulegap_scan.py:2</code> 头注：扫专题档缺「规则缺口」行→WARN 清单不拒收）——e6.3 零写文档面。</td></tr></tbody></table>
+<h2>§边明细（e6.1a-d＋e6.2/e6.3·对照登记表 §六 零漂移）</h2>
+<table><thead><tr><th>边</th><th>谁</th><th>读←</th><th>写→</th><th>说明</th></tr></thead><tbody><tr><td>e6.1a</td><td>业主/拍板窗（人工·虚线）</td><td>—</td><td>拍板记录表表尾</td><td>append-only 拍板行（必引对比件；落号前 grep 防撞号）</td></tr><tr><td>e6.1b</td><td>施工窗代理（人工·虚线）</td><td>—</td><td>执行台账表尾</td><td>append-only 收口五件套①</td></tr><tr><td>e6.1c</td><td>施工窗代理（人工·虚线）</td><td>—</td><td>进度总览</td><td>收口五件套②面板更新</td></tr><tr><td>e6.1d</td><td>施工窗代理＋pi_runner 钩子（<strong>双写交汇点</strong>）</td><td>—</td><td>N1 第 5-8 列</td><td>子窗自写 ✅；钩子对未写行兜底直写；幂等=子窗已写钩子原样不覆盖（拍板#89甲）</td></tr><tr><td>e6.2</td><td>render_views.py</td><td>02-全景视图/*.md</td><td>同名 .html 覆盖写（:216）</td><td>手改会被冲掉（:251-257 自测佐证）</td></tr><tr><td>e6.3</td><td>rulegap_scan.py</td><td>90-过程文档</td><td>扫描报告</td><td>只读</td></tr></tbody></table>
+<h2>§纪律线（登记表 §七 落图·本块归属声明+块内纪律）</h2>
+<ul><li>§七 编号纪律线 1-6 中本块无编号线直接归属（线1 投影单向属 e2.x 面=df-002）——全 6 条落图见 df-002/df-004；登记表引言「七条」vs §七 正文实列 6 条差异已在 df-001 如实申报。</li><li>本块自身纪律（显式标注）：<strong>e6.1d 双写幂等</strong>（拍板#89甲·子窗已写钩子不覆盖·见特标说明）；<strong>append-only 两表</strong>（拍板记录表/执行台账只追加不回改）；<strong>HTML 生成品永不手改</strong>（拍板#96 双层制·e6.2 全量覆盖=设计内）；<strong>渲染品不入 RAG 索引</strong>（required_exts=.md·与 df-005 交接纪律）。</li></ul>
+<h2>§防重复指针</h2>
+<ul><li>票状态七态定义=[sm-20261021-001]（标源=窗队列不变量表·本卡只画第 5-8 列数据面不自立状态定义）；RRM frontmatter 契约=[ct-20261021-003]；派工链队列读写=[df-20261021-001]；飞书投影=[df-20261021-002]；索引入池=[df-20261021-005]。</li><li>本卡与 sm-001 分类轴不同：本卡=谁写哪个列的数据面，sm-001=状态语义面——零正文复制。</li></ul>
+<h2>§时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 0cb1d3d（2026-10-21 现勘·锚点 10 处 sed 亲验·e6.1d 幂等行 :353 逐字核对）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物；本卡亦为 e6.2 渲染链产出物之一）</td></tr><tr><td>核对</td><td>2026-10-21（e6.1a-d/e6.2/e6.3 逐条对照登记表 §六·双写交汇点经业主拍板画进在案）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261021-006-文档台账与渲染层.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

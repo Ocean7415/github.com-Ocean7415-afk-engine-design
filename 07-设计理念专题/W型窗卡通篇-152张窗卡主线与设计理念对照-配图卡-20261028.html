@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>W型窗卡通篇 · 152张窗卡主线与设计理念对照</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, useMaxWidth: false, padding: 8, nodeSpacing: 40, rankSpacing: 40 }, themeVariables: { fontSize: "14px" } });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .redline { background:#fef2f2; border:1px solid #dc2626; }
+  .shuo { background:#fffbeb; border-left:4px solid #d97706; }
+  .term { background:#f0f9ff; border-left:4px solid #0284c7; }
+  code { font-size: 0.85em; }
+  .mermaid { overflow-x: auto; }
+  .mermaid svg { height: auto; }
+  .mermaid svg .nodeLabel, .mermaid svg .edgeLabel, .mermaid svg .label,
+  .mermaid svg foreignObject div, .mermaid svg foreignObject span { font-size: 14px !important; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+<header class="space-y-2">
+  <h1 class="font-serif text-3xl">W型窗卡通篇 · 152张窗卡主线 <span class="text-slate-400 text-xl">4 卡 · 20261028</span></h1>
+  <p class="text-sm text-slate-500">2026-10-28 · 数据源=飞书「AFK窗卡台(观察期·双写T1aT1b并行)」全量实拉 152 行（has_more=false·无截断）· 本地窗队列.md 双写源 · tags: [窗卡台, 窗队列, 设计理念对照, 配图卡]</p>
+  <div class="deep-box rounded-lg p-3 text-sm text-slate-100">本册主旨：152 张 W 窗卡=引擎从零到一的施工史——十条脉络铺出「派工链·验收闸·检索线·知识库·状态机」五大能力；本册通篇讲清做了什么、实现了哪些设计理念专题、还缺什么。</div>
+</header>
+
+<!-- 卡1 十大脉络 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡1 · 152张窗卡十大脉络 <span class="text-slate-400 text-sm">业内名：施工窗全史 · 数据=窗卡台全量</span></h2>
+  <p class="text-sm">一句话：143 施工窗＋6 流程窗＋2 深读窗＋1 规约窗，144 已✅、8 张在飞——按时间排成十大脉络。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  SRC["飞书窗卡台·152 张 W 窗卡<br/>施工143/流程6/深读2/规约1<br/>已✅144·在飞8"]
+  SRC --> P1["①流程与班次化基建<br/>W-001~011·窗队列·拉起器"]
+  P1 --> P2["②厂务验证与回滚<br/>W-012~016·cassette·改包回滚"]
+  P2 --> P3["③派工链与通道<br/>W-017~026·五类路由·双通道"]
+  P3 --> P4["④验收复核与AX族<br/>W-027~032·复考闸·快照交接"]
+  P4 --> P5["⑤治病与全景视图<br/>W-033~051·撤回底座·底表"]
+  P5 --> P6["⑥站12优化线<br/>W-052~064·考题起草·密度闸"]
+  P6 --> P7["⑦检索线四批<br/>W-055~115·hybrid·rerank·结构路"]
+  P7 --> P8["⑧收口固化与代拍<br/>W-088~100·申报器·追认制"]
+  P8 --> P9["⑨标定与派工加固<br/>W-101~136·会审门·loop化"]
+  P9 --> P10["⑩状态机与预算<br/>W-137~152·中文正本·分诊"]
+  P10 --> OUT["建成五大能力<br/>派工链·验收闸·检索线<br/>知识库·状态机"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：窗卡＝一张施工工单（一窗一票·领单▶收口✅）｜施工窗＝改代码/落机制的窗｜流程窗＝只改流程不改码｜班次化＝把零散窗口编成有队列有交班的班组｜AX族＝收口自动回执/状态订阅/快照交接三件套（治窗死账活）｜复考闸＝收口✅前按考题库重跑机检·exit code 唯一判据。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：这个厂 ten 个月盖了 152 间房。头三间打地基（窗队列、拉起器、班次交班），接着装质检仪（cassette 录制回放、三层验证门）；然后修「派工流水线」（五类业务自动分流、四个工位并行干活、飞书企微两条传话道）；再装「防作弊闸」（收口前重新考试——复考闸）；中途大扫除（孤儿件收编、文档门牌重排、画全景地图）；然后给图书馆配检索系统（四批改造：混检、精排、结构路、去重）；最后立厂规（代拍追认制、收口申报器、状态机中文正本、花钱刹车）。144 间已验收，8 间还在手上。</div>
+  <p class="text-xs text-slate-500">锚：飞书窗卡台 base=VQ4IbmbWtaxfRGsd1rIc241InIf · table=tblfvvXffnFX1kVg · 152 行实拉（型分布：施工143/流程6/深读2/规约1·状态：✅144/完工待确认2/⏸3/探讨中2/待实施1）｜本地双写源=90-过程/窗队列.md（拍板#69 唯一队列事实源）</p>
+</section>
+
+<!-- 卡2 设计理念映射 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡2 · 设计理念专题 ↔ 窗卡实现映射 <span class="text-slate-400 text-sm">哪个理念被哪些窗变成了真件</span></h2>
+  <p class="text-sm">一句话：07-设计理念专题 18 件里，检索总纲/两层分治/打扰治理/岗位映射四件落地最厚；版本三本账刚破土。</p>
+<pre class="mermaid text-sm">
+flowchart LR
+  subgraph IDEA["设计理念专题（应然）"]
+    I1["检索体系总纲<br/>分层召唤·VCP借鉴"]
+    I2["两层harness分治"]
+    I3["自主拍板与打扰治理"]
+    I4["总岗位映射表"]
+    I5["红票事件树v2"]
+    I6["三层验证门"]
+    I7["站12十步流程"]
+    I8["派工台启停触发链"]
+    I9["版本三本账（候拍）"]
+  end
+  subgraph IMPL["窗卡实现（实然）"]
+    M1["W-055/057/058/066<br/>072/079/080/082<br/>091/093/095/113~115"]
+    M2["W-049/135/152"]
+    M3["W-029/099/124/148"]
+    M4["W-094/096/103/104/128"]
+    M5["W-118/119"]
+    M6["W-012/145"]
+    M7["W-001/053/064/128"]
+    M8["W-037/108/110/112/116/141"]
+    M9["W-144（边复算器）<br/>W-152（在飞）"]
+  end
+  I1 -->|"落地最厚<br/>十几张窗"| M1
+  I2 -->|"双表投影·数据流卡"| M2
+  I3 -->|"代拍制·班次汇报"| M3
+  I4 -->|"岗卡三批+缺位两岗"| M4
+  I5 -->|"事件加型·票契约"| M5
+  I6 -->|"cassette·预算刹车"| M6
+  I7 -->|"考题起草·拆票打包"| M7
+  I8 -->|"触发链五窗加固"| M8
+  I9 -->|"刚破土·大头候拍"| M9
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：VCP 借鉴＝从业界验证过的检索方案抄作业（霰弹枪查询/父子分块/标签失效传播等·W-113~115）｜双层 harness＝项目 APP 研发团队（L1）/研发部管理层（L2）分治｜代拍追认制＝禁区外细节代理先拍、业主事后批量追认、翻案可回滚｜标定夹具＝判卷官上岗前先对答案（W-102/111）｜边复算器＝机械审码第一步（W-144·状态机边一不变 diff 复算）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：设计理念专题是「图纸柜」，窗卡是「施工记录」。对账结果：图书馆图纸（检索总纲）实现得最厚——十几张窗把混检、精排、结构路、去重、霰弹枪查询全装上了；「两层分治」的牌子挂上了（双表投影、数据流卡），但两层的维修车间还没分开（W-152 在飞）；「打扰治理」变成了代拍追认制和班次汇报；岗位图纸 16 个岗基本到齐；唯独自举的图纸（版本三本账）10 月 28 日才画完，只破了两锹土（边复算器＋搬址在飞）。</div>
+  <p class="text-xs text-slate-500">锚：07-设计理念专题/ 目录 18 件实勘｜映射依据=各窗卡主题与产物锚逐行对照（飞书实拉数据）｜检索线窗号簇出自窗卡台「94/检索/RRM/hybrid/rerank/结构」主题族</p>
+</section>
+
+<!-- 卡3 在飞8张 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡3 · 在飞8张：卡在哪、等谁 <span class="text-slate-400 text-sm">状态机视角 · 拍板#211批次+W-150~152</span></h2>
+  <p class="text-sm">一句话：两张完工待确认（等业主翻✅）、一张待实施、两张挂起等前置、两张探讨中候拍、一张挂起被三处依赖。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  A["预算批次·拍板#211<br/>W-145 预算刹车完工待确认<br/>W-148 假▶分诊完工待确认<br/>业主翻✅后解挂两挂起件"]
+  A -->|"确认后解挂"| B["W-146 班产效率账 ⏸<br/>W-147 班末补考+熔断 ⏸<br/>前置W-145同泳道"]
+  C["W-149 班次判定梯<br/>待实施(已批)·可直接开工"]
+  D["三关批次·候拍<br/>W-150 队列行三关·探讨中<br/>W-151 包级修复环·探讨中"]
+  D -->|"拍后才能开工"| E["W-152 班内外维修环解耦 ⏸<br/>被版本三本账步①依赖"]
+  E -->|"收口后"| F["三本账构成物清单<br/>班外栏可填终值"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：完工待确认＝活干完了但缺考题、先记新态等业主看过翻✅（拍板#211 新增态）｜假▶＝队列里标了「在跑」其实窗已经死了（W-125/126 病族）｜分诊＝按会话档停更原因分四类机械路由（限流重探/转续拍/候人工/重排）｜判定梯＝班绿/黄/红纯函数判定（⏸🔁预算触顶=班红）｜维修环解耦＝把修引擎的班外执行器从班内码区搬回 L2 自己家（三关绿在列后挂起待窗）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：手上还有 8 张活。两张已经干完等老板验收（花钱刹车、假死分诊）——老板点头就翻✅；点头之后还有两张被它们堵着的就能解挂开工（效率账、班末熔断）。一张已批待开工（班次判定梯）。两张还停在「探讨中」等老板拍板（进料口三关、包级修复环）——拍完才能去干那张被最多人等着的「维修环搬家」：它不收口，版本三本账的构成物清单就填不了班外那一栏。</div>
+  <p class="text-xs text-slate-500">锚：飞书窗卡台 8 行在飞实拉（W-145/148=完工待确认·W-146/147/152=⏸挂起·W-149=待实施已批·W-150/151=探讨中未批）｜状态机=包四窗 W-137~140 中文正本｜完工待确认态=W-130（引擎#179）立</p>
+</section>
+
+<!-- 卡4 缺口 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡4 · 通篇对账：还缺什么 <span class="text-slate-400 text-sm">窗卡×专题×验收判定册V2 三面合账</span></h2>
+  <p class="text-sm">一句话：五大能力已立，但「尺子管尺子」的闭环没合——版本不 pin、评审面没被考、两层维修没分家、六张评审候选全没拍。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  G1["缺①版本归因链<br/>成绩没pin代码版<br/>涨跌说不清"]
+  G2["缺②尺子管尺子<br/>考题库没留出分割<br/>评审面没被考"]
+  G3["缺③两层维修分家<br/>班外执行器混居班内<br/>W-152未收口"]
+  G4["缺④评审链六候选<br/>冷眼复审/筛真/分级<br/>评测集/熔断全未拍"]
+  G5["缺⑤骨架基类<br/>复制产线仍抄main<br/>自举无母版"]
+  G1 --> FIX["收口在飞8张<br/>→三本账步①②先行<br/>→步③与候D合流<br/>→候E候C绑定拍"]
+  G2 --> FIX
+  G3 --> FIX
+  G4 --> FIX
+  G5 --> FIX
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：pin＝开工前把「用哪版代码/岗卡/考题」钉死进文件，缺了就拒开工｜留出分割＝考题分「日常练兵卷」和「锁柜终考卷」两套｜候A~F＝验收判定册V2 六张借鉴候选卡（Claude Code 评审链）｜基类化＝把两处重复的站序流程提为一份母版｜自举＝引擎用自己造自己的新版本。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：工厂能干活了，但四笔账没清。一、成绩单上只写分数不写「用的哪版机器」——下季度说「效率涨了」，没法证明是新方法还是碰运气；二、考卷平时练兵和出师终考混用一套，考官自己（评审 agent）也从来没人考；三、修产品的车间和修机器的车间还挤在一间房里（W-152 等收口）；四、评审链的六张改进图纸（冷眼复审、投票筛真、风险分级、失败变题库、审批熔断、安全扫描）全在柜子里没拍板。清账顺序：先把手上的 8 张收完，然后给机器钉版本铭牌（pin），再给考卷分家——这一步正好和「失败变题库」是同一件事的两半，合一张对比件拍。</div>
+  <p class="text-xs text-slate-500">锚：缺①=版本三本账候拍件对表②（ts/package.json:4 死值·当日实勘）｜缺②=对表④（考题库3清单无留出·pi_runner.mjs:215-243 复考闸无评审面考题）｜缺③=W-152 ⏸在飞｜缺④=04-验收判定册V2 分层版（候A~F 全 draft未拍·分层不影响此结论）｜缺⑤=对表①（queue-runner.ts:5 spawn 整进程复用·无基类）</p>
+</section>
+
+<section class="deep-box rounded-lg p-4 text-sm text-slate-100 space-y-1">
+  <p class="font-semibold">册尾注 · 同构轴</p>
+  <p>四卡一根轴＝「从图纸到厂房」：卡1 是厂房已建成部分（144/152），卡2 验收图纸兑现率（检索/分治/治理厚·自举薄），卡3 点手上活（8 张·瓶颈=W-145 确认与 W-152 收口），卡4 列欠账清单（尺管尺+版本 pin 是总闸门）。</p>
+  <p class="text-slate-300 text-xs">锚点验证：飞书 152 行全量实拉（2026-10-28·has_more=false）·07-设计理念专题 18 件目录实勘·ts/package.json 等代码锚当日实勘。配套差距深析=同目录《三件对照-差距与待办-20261028.html》。</p>
+</section>
+
+<footer class="text-xs text-slate-400 border-t border-stone-200 pt-3">W型窗卡通篇配图卡 · 2026-10-28 · 落盘目录=07-设计理念专题/ · 数据源=飞书窗卡台全量实拉</footer>
+</main>
+</body>
+</html>

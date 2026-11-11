@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261021-005 · 数据流卡 · df-005 知识库 RAG 数据流（e5.1~e5.3）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261021-005 · 数据流卡 · df-005 知识库 RAG 数据流（e5.1~e5.3）</h1>
+<div class="meta"><b>id</b> df-20261021-005 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 0cb1d3d · <b>run_id</b> queue-99-w047</div>
+<blockquote>
+<p><strong>⚠️ 时效注记（2026-11-03·拍板#333/#346）</strong>：本件已被 v2 supersede——以 <code>df-20261103-001-知识库RAG数据流v2.md</code> 为准（H2 代产·拍板#333）；本件保留作 v1 历史正本不回改。</p>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>数据流卡 · df-005 知识库 RAG 数据流（e5.1~e5.3）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：回答「经验文档怎么变成可检索的向量索引、查询怎么取、评测怎么闭环节」——节点=docs 源文档/N11 RAG 索引库/eval 结果，边=e5.1~e5.3（登记表编号零漂移）。<strong>边界</strong>：本卡只画数据面；RAG 检索质量问题与方案归 92 痛点区。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>W-043 渲染窗 RAG 不受扰冒烟：build_index 增量真跑——HTML 零入池（required_exts=[".md"] 滤图形件）+索引节点数 912（+179=28 卡 v2 增密块数增量）</td><td><code>94-班外经验库RAG/settings.py:1</code></td></tr><tr><td>2</td><td>增量策略实战：ingestion_cache.json 同文本 hash 未变→命中缓存跳过嵌入（「未变块走缓存·禁全量重嵌」拍板#58④）</td><td><code>94-班外经验库RAG/build_index.py:4</code></td></tr><tr><td>3</td><td>查询三用法在案：--rebuild 增量建/更新索引（多源 research+95）、--retrieve 只检索不烧 LLM、完整问答带出处</td><td><code>94-班外经验库RAG/query_engine.py:1</code></td></tr></tbody></table>
+<h2>§节点与边总览（编号正本=00 登记表·零漂移）</h2>
+<ul><li><strong>节点</strong>：docs 源文档（<code>94-班外经验库RAG/docs/</code>+多源：90-过程/10-专题档案·02-全景视图·95-公共经验库-invariant）、N11 RAG 索引库（<code>storage/index/</code>+<code>ingestion_cache.json</code>+<code>ingestion_cache_common.json</code>+<code>embed_cache_rrm.json</code>）、eval 结果落盘（<code>eval/evalset.json</code>+<code>eval/results/</code>）。</li><li><strong>边</strong>：e5.1~e5.3 共 3 条，<strong>全部本地零飞书</strong>。</li></ul>
+<h2>§数据流主线（mermaid）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    DOCS[("docs 源文档<br/>+三源多源注入<br/>90档案/02全景/95公共")] -->|"e5.1 build_index.py<br/>分块+嵌入（required_exts=.md）"| N11[("N11 storage/<br/>index+ingestion_cache.json<br/>+common+rrm 三缓存")]
+    N11 -->|"e5.2 query_engine.py 读 index<br/>检索/问答（带出处层标记）"| Q["查询回答<br/>--retrieve 或完整问答"]
+    Q -.->|"eval 闭环人工/脚本触发"| EV["eval 三脚本<br/>gen_evalset/run_eval/tune_eval"]
+    DOCS -->|"e5.3 eval 读 docs+N11<br/>结果落盘"| EVR[("eval/evalset.json<br/>+results/")]
+    EVR -->|"e5.3 tune 调参回读"| Q
+</div></div>
+<h2>§节点详注（图正下方·每节点做什么/边界/锚点）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>docs 源文档</td><td>知识源面：目录内 docs/+全局三源注入（<code>94-班外经验库RAG/settings.py:1</code> 头注：90-过程/10-专题档案 层=engine＋02-全景视图 层=engine·required_exts=[".md"] 天然滤图形件＋95-公共经验库 层=common）——W-028 拍板#88② 多源不混池。</td></tr><tr><td>N11 RAG 索引库</td><td>落盘四件：storage/index/（向量索引·persist=<code>94-班外经验库RAG/build_index.py:162</code>）+ingestion_cache.json（hash 缓存·<code>94-班外经验库RAG/build_index.py:133</code> persist 行）+ingestion_cache_common.json+embed_cache_rrm.json——增量策略=未变文件命中缓存跳过嵌入（<code>94-班外经验库RAG/build_index.py:4</code> 头注）。</td></tr><tr><td>query_engine.py</td><td>检索与问答入口（<code>94-班外经验库RAG/query_engine.py:1</code> 头注三用法）：--rebuild 增量建/更新、--retrieve 只检索不烧 LLM（≤1500 字候选块·出处带层标记）、完整问答带出处——RAG-0 闭环的消费面。</td></tr><tr><td>eval 三脚本</td><td>gen_evalset.py 生成评测集（<code>94-班外经验库RAG/eval/gen_evalset.py:1</code>）/run_eval.py 跑评（<code>94-班外经验库RAG/eval/run_eval.py:1</code>）/tune_eval.py 调参（<code>94-班外经验库RAG/eval/tune_eval.py:1</code>）——读 docs+N11、结果落 evalset.json+results/，构成 e5.3 闭环节。</td></tr></tbody></table>
+<h2>§边明细（e5.1~e5.3·对照登记表 §五 零漂移）</h2>
+<table><thead><tr><th>边</th><th>程序</th><th>读←</th><th>写→</th><th>明细</th></tr></thead><tbody><tr><td>e5.1</td><td>build_index.py</td><td>docs/ 经验文档（+三源）</td><td>N11：storage/index/（persist:162）+ingestion_cache.json（hash 未变跳过:4-6,133）</td><td>增量建/更新索引</td></tr><tr><td>e5.2</td><td>query_engine.py</td><td>N11 index</td><td>查询回答</td><td>--retrieve/完整问答·RAG-0 闭环·出处带层标记</td></tr><tr><td>e5.3</td><td>eval/gen_evalset·run_eval·tune_eval.py</td><td>docs+N11</td><td>eval 结果落盘</td><td>评测-调参闭环节</td></tr></tbody></table>
+<h2>§纪律线（登记表 §七 落图·本块归属声明）</h2>
+<ul><li>§七 编号纪律线 1-6 中本块<strong>无直接归属边</strong>（零飞书表·线1-6 全不适用）——全 6 条落图见 df-002（线1/2/3）与 df-004（线2/4/5/6）；登记表引言「七条」vs §七 正文实列 6 条差异已在 df-001 如实申报。</li><li>本块自身纪律（显式标注）：<strong>.md 单一入池扩展名</strong>（HTML/生成品不入索引·W-043 冒烟实证 HTML 零入池）——02-全景视图 HTML 渲染品永不污染向量库；<strong>多源不混池</strong>（三源层标记 engine/common 先滤后取·拍板#88②）；<strong>draft 禁入索引</strong>（RRM 卡 B1 保鲜闸·过期卡自动失效出池）。</li></ul>
+<h2>§防重复指针</h2>
+<ul><li>渲染层与索引的关系=[df-20261021-006]（e6.2 渲染品=索引的 .md 上游产物）；夜车账本知识化路径=[df-20261021-003]→90-过程→e5.1 三源注入。</li><li>本卡与 92 痛点区分类轴不同：本卡=数据面（哪个文件流向哪个文件），痛点区=问题与方案面——零正文复制。</li><li>agent 输入输出契约正本=登记表 §〇-A 段（A1-A21·拍板#343 W-259），本卡不重复（RAG 链零 LLM 判断岗·检索栈=机械设备；总图卡=gw-20261103-001）。</li></ul>
+<h2>§时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 0cb1d3d（2026-10-21 现勘·锚点 8 处 sed 亲验）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（e5.1-e5.3 逐条对照登记表 §五·persist/cache 行号亲验一致零漂移）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261021-005-知识库RAG数据流.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

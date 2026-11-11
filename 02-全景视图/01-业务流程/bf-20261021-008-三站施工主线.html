@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261021-008 · 业务流程卡 · 三站施工主线（站3 收货拆单→站4 施工与质量门→站5 验收·as-built）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261021-008 · 业务流程卡 · 三站施工主线（站3 收货拆单→站4 施工与质量门→站5 验收·as-built）</h1>
+<div class="meta"><b>id</b> bf-20261021-008 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 0cb1d3d · <b>run_id</b> queue-98-w045</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；三关（收包验货关 L1／立票验单关·贴卡拦病关·领单再验单 L2）；判定梯（交卷判分梯 L1／收班判色梯 L2）；翻案（绿灯吊销 L1／业主撤回 L2）；自愈环（干活自愈环·L1）。</p>
+</blockquote>
+<h1>业务流程卡 · 三站施工主线（站3 收货拆单→站4 施工与质量门→站5 验收·as-built）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：施工窗拉起后、<strong>窗内</strong>那条主线怎么走——一条票从交付包进站3（收货·import 闸）到拆单、进站4（施工链·质量闸）、进站5（验收·判定梯）、再到判卷追认（confirm）与 queue 账本记态，每站闸门/质量门在哪一张图看全。<strong>为什么存在</strong>：模块卡分述每站内部（mk-006~010），缺「三站怎么串、闸门怎么排」的流程视角一图——本卡补主干。<strong>边界</strong>：窗外主干（渠道→派工→拉窗）归总装卡 [bf-20261021-007]；各站内部细节指针互链零复制；时序秒级走线归 [sq-20261021-001]。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立图：拍板#98 三包批「准」（包B=本卡·序号接续 007→008·前置 W-044 已✅自动串行）</td><td><code>90-过程/拍板记录表.md:119</code></td></tr><tr><td>2</td><td>同系前窗：W-044 包A 五类端到端总装图收口（窗外主干 12 节点·本卡接其「拉窗施工」节点向窗内展开）</td><td><code>90-过程/窗队列.md:70</code></td></tr><tr><td>3</td><td>实战活例：W-045 本窗票——队列行▶施工中（大业务=引擎优化·作业面本仓），即主线「拉窗→窗内三站→收口回写」的现场重演</td><td><code>90-过程/窗队列.md:71</code></td></tr></tbody></table>
+<h2>定义层（这张图怎么读）</h2>
+<ul><li><strong>编排者不是 queue-runner</strong>：叫号循环只 spawn 子进程跑 run-slice（<code>ts/src/queue/queue-runner.ts:77</code>·头注红线「站3 管线零改动」在 <code>ts/src/queue/queue-runner.ts:5</code>）；三站串接的真身=垂直切片全链入口 run-slice——导入（:137）→拆单（:150）→施工车道（:213）→判卷门（:238）→质量门三段式（:251）→切片验收（:264）→判定梯（:277），退出码=整体三态。</li><li><strong>一条主线三级闸</strong>：站3 闸管「包能不能进」（版本/验真/三关），站4 闸管「码做得对不对」（判卷守卫+判卷门+三段式质量门），站5 闸管「App 行不行」（三态分诊+判定梯）——层层拦截，坏货不下游。</li><li><strong>收尾两件不在 run-slice</strong>：判卷追认（confirm·业主翻案口）与 queue 账本记态（排期五态）在班次/队列侧闭环，图末两节点画出接缝。</li><li>单站内部细节归模块卡：站3=[mk-20261021-006]·站4=[mk-20261021-007]·站5=[mk-20261021-008]·追认=[mk-20261021-009]·账本=[mk-20261021-010]。</li></ul>
+<h2>三站主线（一图串读·闸门显式）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    PKG["交付包·出题正本<br/>站1/2 产物"] --> IG{站3 import 闸<br/>版本闸+验真+ajv 关1}
+    IG -->|拒收·Result 坏果| X3["不带病导入·停在站3"]
+    IG -->|过| G23{契约三关 runGates<br/>关2 计数核对+关3 死链}
+    G23 -->|任一硬 FAIL| X3
+    G23 -->|全绿| SGN["签收单三章+搬 sidecar<br/>入班次 ws"]
+    SGN --> SP["拆单两机·零大模型纯函数<br/>①实施清单解析机 ②批次波次机·Kahn"]
+    SP --> RB["业主追加读回+考题面薄度闸<br/>记账不猜落点·薄度告警"]
+    RB --> LN["站4 施工车道<br/>波次循环+指纹缓存+停车场+预算刹车"]
+    LN --> SLOT{自动分槽}
+    SLOT -->|前端/基线票| CP["copy 槽·确定性搬运"]
+    SLOT -->|其余| LM["llm 槽·五槽装备分文件生成"]
+    LM --> HE{⟲自愈环 ≤3}
+    HE -->|未满·红| LM
+    HE -->|满且有素材| DEG["预授权降级切 copy<br/>DEC 留痕晨报追认"]
+    CP --> AG{验收命令·判卷守卫<br/>工作区副本哈希校验}
+    DEG --> AG
+    AG -->|哈希败·篡改| FLAG["篡改红旗<br/>fail-closed 终局"]
+    AG -->|绿/红照判| PG["段2.5 判卷门<br/>二层探针→自愈⟲1→补票环"]
+    PG --> S27{段2.7 质量门三段式<br/>功能门→硬化→回归门}
+    S27 --> V5["站5 切片验收<br/>起服→切片跑考题·双证"]
+    V5 --> TRI{三态分诊·机械}
+    TRI -->|断言败| RED["app 照红·分诊不碰真红"]
+    TRI -->|NA∧崩溃签名| SICK["考题病·不装红不装绿"]
+    TRI -->|过| P1["绿"]
+    SICK --> FX["考题修复道<br/>白名单机检·断言集不可减"]
+    FX --> V5
+    RED --> LD
+    P1 --> LD
+    SICK --> LD
+    LD{判定梯<br/>PASS / PASS* / FAIL<br/>NA 占比≥20% 即 FAIL}
+    LD -->|FAIL| QL["queue 账本记态<br/>needs_replan·停队列"]
+    LD -->|PASS / PASS*| MR["晨报五栏机器自决"]
+    MR --> CF{"判卷追认 confirm<br/>decide 清单×业主意向"}
+    CF -->|owner_confirmed| LG["ledger 追认入账<br/>append-only 永不涂改"]
+    CF -->|owner_rejected·须 reason| UN["撤销令·sha 校验逆操作<br/>判据面回退指纹失效重烧"]
+    UN --> LG
+</div></div>
+<h2>节点详注表·上（站3 收货拆单→站4 施工·图正下方接续）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>交付包→import 闸</td><td>主线入口=出题正本交件包；importPackage 收包验真+版本闸+ajv 关1（<code>ts/src/station3-import/import.ts:34</code>·Result 坏果即拒），编排调用（<code>ts/src/run-slice.ts:137</code>）——不带病导入，细节归 [mk-20261021-006]。</td></tr><tr><td>契约三关 runGates</td><td>关2 计数核对（端点/表/LLM 调用点四组集合比对）+关3 死链检查，任一硬 FAIL 即阻断（<code>ts/src/station3-import/gates.ts:106</code>·口径复刻生产者单一正本）——验包面，与派工侧任务书三关不同域。</td></tr><tr><td>签收单三章+sidecar</td><td>过闸即落账：T1 必搬 sidecar、T2 签收单必交——「收没收到」有账可查，终点=班次工作区 ws。</td></tr><tr><td>拆单两机</td><td>①实施清单解析机 parseImplementationList（<code>ts/src/station3-import/split.ts:57</code>·零大模型纯函数）；②批次波次机 planWaves（<code>ts/src/station3-import/split.ts:168</code>·Kahn 拓扑排依赖）；splitPackage 汇总出工单+波次（<code>ts/src/station3-import/split.ts:244</code>·调用 <code>ts/src/run-slice.ts:150</code>）。</td></tr><tr><td>追加读回+薄度闸</td><td>业主补写只认 TICKETS 指定节、引擎只记账不猜落点（调用 <code>ts/src/run-slice.ts:164</code>）；考题面薄度闸（<code>ts/src/run-slice.ts:184</code>）拆单后即量——题薄早暴露，不浪费施工预算。</td></tr><tr><td>站4 施工车道</td><td>波次循环+指纹缓存+停车场+预算刹车（装配点 <code>ts/src/run-slice.ts:213</code>）；逐票 buildTicket（定义 <code>ts/src/station4-build/build.ts:137</code>·调用 <code>ts/src/night-shift/build-lane.ts:107</code>）——车道纪律归 [mk-20261021-007]。</td></tr><tr><td>双槽位与降级链</td><td>两槽分工：copy 槽照搬产物保底，llm 槽按文件出码（头注 <code>ts/src/station4-build/build.ts:1</code>）；llm 连红进⟲自愈环至多 3 轮，环满且有素材时按预授权清单降到 copy 槽并 DEC 留痕候晨报追认——降档路径全在册可考、不临场发明。</td></tr><tr><td>判卷守卫（站4 质量闸）</td><td>验收命令的执行口只有守卫一个（<code>ts/src/station4-build/build.ts:210</code>·拍板#82）：开跑先比对判卷素材的工作区副本指纹，动过手脚=一票终局的红旗，既不进自愈环也不进降级链——守卫管防作弊不管红绿，判卷权仍在命令本身。</td></tr></tbody></table>
+<h2>节点详注表·下（站5 验收→追认与账本·接续）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>段2.5 判卷门</td><td>施工收完先过门（调用点 <code>ts/src/run-slice.ts:238</code>）：二层探针→自愈⟲1→补票环（覆盖缺失红→合成工单回站4·轮/量/账三闸限流）→红账本——施工质量红在此收敛，不带病进验收。</td></tr><tr><td>段2.7 质量门三段式</td><td>功能门→粗分诊→硬化道（调用点 <code>ts/src/run-slice.ts:251</code>）；旗标缺省开（<code>ts/src/run-slice-flags.ts:41</code>·拍板#50）——切片①先烤功能门，硬化腿再上强度，回归腿兜翻案。</td></tr><tr><td>站5 切片验收</td><td>verifyApp 起服→切片循环跑考题（<code>ts/src/station5-verify/verify.ts:39</code>·调用 <code>ts/src/run-slice.ts:264</code>·三态语义头注 <code>ts/src/station5-verify/verify.ts:1</code>）；页面双证（看得见+接口通）、NA≠PASS——站5 细节归 [mk-20261021-008]。</td></tr><tr><td>三态分诊+考题修复道</td><td>机械三分：断言败=app 照红（分诊不碰真红）；NA∧崩溃签名=考题病（不装红不装绿）；修复道 LLM 起草+白名单机检——断言集不可减，违者拒收转追认清单，修考题不能变删断言放水。</td></tr><tr><td>判定梯（站5 闸）</td><td>judgeOverall 整单三态 PASS/PASS*/FAIL（<code>ts/src/station5-verify/ladder.ts:32</code>·调用 <code>ts/src/run-slice.ts:277</code>）；NA 占比≥20% 即 FAIL（NA_RATIO_GATE <code>ts/src/station5-verify/ladder.ts:13</code>）、PASS* 带星晨报置顶追认——堵「多 NA 少 PASS 机械判 pass」放水口。</td></tr><tr><td>判卷追认 confirm</td><td>晨报五栏机器自决清单×业主意向→追认/推翻事件序列（decide 纯函数 <code>ts/src/confirm.ts:27</code>）；推翻须带 reason 缺则拒，--rollback 逐条现场 sha 校验后逆操作（<code>ts/src/confirm.ts:90</code>）——撤回只还原文件不还原结论：判据面一变下轮照样重考，翻案不放水。</td></tr><tr><td>queue 账本记态</td><td>run-slice 整体三态经退出码回叫号循环（spawn 面 <code>ts/src/queue/queue-runner.ts:77</code>·零改动红线注记 <code>ts/src/queue/queue-runner.ts:5</code>）；排期账本五态（<code>ts/src/queue/queue-ledger.ts:13</code>）写侧白名单三型（<code>ts/src/queue/queue-ledger.ts:27</code>）append-only——FAIL 版停队列不派下一版，账全可重放。</td></tr></tbody></table>
+<h2>与封印档案差异（骨架参照 vs 本仓 as-built·以码为准）</h2>
+<ul><li>档案 02 卷 2.2「契约三关+纯函数拆单（降级链）」——as-built 降级链不在拆单侧：拆单零大模型纯函数（<code>ts/src/station3-import/split.ts:57</code>），降级链长在站4 施工层（预授权降级·<code>ts/src/station4-build/build.ts:1</code>）。</li><li>档案 03 卷 3.4 质量门「三钥匙」——as-built 保留且加码为段2.5 判卷门+段2.7 三段式（功能门→硬化→回归门·<code>ts/src/run-slice.ts:238</code>/<code>:251</code>），另加档案所无的判卷素材防篡改守卫（拍板#82·<code>ts/src/station4-build/build.ts:210</code>）。</li><li>档案 04 卷 4.1「三段式两道门（C-032）」——as-built 判定梯已是三态 PASS/PASS*/FAIL+NA≥20% 门槛+考题病分诊修复道（<code>ts/src/station5-verify/ladder.ts:32</code>·verify 头注），「坏考题不充当罪证」纪律只加严未放松。</li><li>档案未覆盖的夜车机制（指纹缓存/停车场/预算刹车/补票环三闸）as-built 已长进站4 车道与判卷门（<code>ts/src/night-shift/build-lane.ts:107</code>·<code>ts/src/run-slice.ts:238</code>）——画环节时以本卡为准。</li></ul>
+<h2>实例层（主线现在跑着什么）</h2>
+<ul><li>在册 as-built 实证：W16 验证班 manifest 丙案双绿终版——判定梯/切片族在多版本逐版过闸中担纲（实物契约=[ct-20261021-002]·站5 实战见 [mk-20261021-008] 事件链）。</li><li>同系活例：W-044 包A 总装图已收口（<code>90-过程/窗队列.md:70</code>·台账 <code>90-过程/执行台账.md:587</code>），本卡为其「拉窗施工」节点向窗内的展开；W-045 本窗即主线活票（<code>90-过程/窗队列.md:71</code>）。</li><li>语义边界：本卡只画实然主干——各站「怎么判/怎么修」的机检细节归五张模块卡（mk-006~010），本卡零正文复制。</li></ul>
+<h2>防重复指针（应然在别处·本卡只画实然）</h2>
+<ul><li>单站内部（接口/分诊/修复道/账本机制）=[mk-20261021-006]~[mk-20261021-010] 五卡——本卡只画跨站主线与闸门位置。</li><li>窗外主干（渠道→派工→拉窗→投影）=[bf-20261021-007]；秒级时序=[sq-20261021-001]；维修环四级阶梯细目=[bf-20261021-002]与包C 图（bf-009·W-046 候出）。</li><li>理念版骨架参照（封印史料·只取闸门清单）=v1.2 仓「05-TS重构蓝图/深读档案/AFK全流程深度解读/」02/03/04 三卷——应然档案只读引用，差异见上节，正文零复制。</li></ul>
+<h2>时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 0cb1d3d（2026-10-21 现勘·全锚亲验）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（rrm_lint 全区+render_views 渲染+accept 自检）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261021-008-三站施工主线.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

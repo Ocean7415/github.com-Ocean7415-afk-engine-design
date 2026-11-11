@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>图版件 · 两层状态机×机制对照矩阵 · sm-20261101-006</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, useMaxWidth: false, padding: 8, nodeSpacing: 40, rankSpacing: 40 }, themeVariables: { fontSize: "14px" } });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .redline { background:#fef2f2; border:1px solid #dc2626; }
+  .shuo { background:#fffbeb; border-left:4px solid #d97706; }
+  .term { background:#f0f9ff; border-left:4px solid #0284c7; }
+  code { font-size: 0.85em; }
+  .mermaid { overflow-x: auto; }
+  .mermaid svg { height: auto; }
+  .mermaid svg .nodeLabel, .mermaid svg .edgeLabel, .mermaid svg .label,
+  .mermaid svg foreignObject div, .mermaid svg foreignObject span { font-size: 14px !important; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+<header class="space-y-2">
+  <h1 class="font-serif text-3xl">FSM Runtime 七层对照详述 <span class="text-slate-400 text-xl">图版件 · 16 图 · sm-20261101-007</span></h1>
+  <p class="text-sm text-slate-500">2026-11-01 · 基准 <code class="bg-stone-200 rounded px-1">6732949</code> · 状态 <code class="bg-stone-200 rounded px-1">draft 候核候拍</code> · 总卡（已合并原 006）· 正本=同目录 md</p>
+  <div class="deep-box rounded-lg p-3 text-sm text-slate-100">本图版主旨：两层 harness 状态机总卡图版——总论述走查、六台图册、七层 Runtime 逐层落点、双范式重试、补偿对。</div>
+</header>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">1 · 图1 · 两层系统上下文</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+    OWNER["自然人·业主<br/>拍板/终认/翻案"]
+    subgraph L2G["L2 派工台·窗级·91-脚本"]
+        Q["窗队列状态机<br/>九态·宪法十对"]
+        D["派工器 pi_runner·领单闸链"]
+        EX["施工窗·Agent员工·pi 会话"]
+    end
+    subgraph L1G["L1 车间·票级·ts/src"]
+        RUN["run 状态机·十态"]
+        TIC["票级状态机·十一态"]
+        VER["双证验收·站5·探针/功能门"]
+    end
+    OWNER -->|"①拍板"| Q
+    Q -->|"②派工器领单·宪法对1"| D
+    D -->|"③翻格▶＋弹窗"| EX
+    EX -->|"④跑夜车"| RUN
+    RUN --> TIC
+    TIC --> VER
+    VER -->|"⑤交活回执·宪法对2"| Q
+    Q -->|"⑥复考绿＋终认·宪法对4"| OWNER
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">2 · 2.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+  subgraph L1G["L1 车间·票级 三台半"]
+    RUN["批次运行状态机<br/>十态"]
+    TIC["工序票状态机<br/>十一态"]
+    WAV["波次排期账<br/>五态"]
+    PKG["包级十值<br/>候拍设计"]
+  end
+  subgraph L2G["L2 派工台·窗级 两台"]
+    WIN["窗队列状态机<br/>九态·宪法十对"]
+    SICK["病卡状态机<br/>七态"]
+  end
+  WIN -->|"领单开窗 跑夜车"| RUN
+  RUN --> TIC
+  RUN --> WAV
+  SICK -->|"返工重领"| WIN
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">3 · 2.3 状态流转表范式（三件套·关键流转统一记法）</h2>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+    S --> RETRYING: 调用失败·额度>0
+    RETRYING --> RETRYING: 定时自环·额度-1
+    RETRYING --> OK: 重试成功
+    RETRYING --> FAILED: 额度耗尽
+    RETRYING --> MANUAL: 人工介入
+    FAILED --> MANUAL: 人工核账
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">4 · 图2 · L2 窗队列九态与宪法十对边</h2>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+    [*] --> 探讨中未批: 立票
+    探讨中未批 --> 待实施已批: 拍板号落表·owner
+    待实施已批 --> 施工中: 派工器领单·dispatcher·对1
+    施工中 --> 完工待确认: 收口自报·window·对2
+    施工中 --> 维修中: 半截·下一棒锚必填·window·对3
+    施工中 --> 挂起: 巡检宁停·inspector·对5
+    施工中 --> 挂起: 业主宁停·owner·对6
+    完工待确认 --> 已完成: 复考绿＋业主终认·owner·对4
+    挂起 --> 施工中: 误挂恢复·owner·#301·对8
+    挂起 --> 已完成: 挂账清偿·owner·#301·对9
+    挂起 --> 完工待确认: 挂账随裁·owner·#309·对10
+    维修中 --> 待实施已批: 闸4重领·dispatcher·对7
+    已完成 --> [*]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">5 · 图3 · L1 run 十态主线（票级十一态详表见 §13 表B）</h2>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+    [*] --> 启动
+    启动 --> 导入中
+    导入中 --> 拆单中
+    拆单中 --> 装备中
+    装备中 --> 施工中
+    施工中 --> 探针中
+    探针中 --> 自愈中
+    探针中 --> 验收中
+    自愈中 --> 验收中
+    验收中 --> 汇报中
+    汇报中 --> 收车
+    收车 --> [*]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">6 · 图4 · L1 票级十一态（施工账·正本=ticket-state.ts:21,47）</h2>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+    [*] --> 待建
+    待建 --> 缓存问询: 前置全绿·先问缓存
+    待建 --> 施工中: 无直通·开工
+    待建 --> 缓存直通绿: resume·复跑绿
+    缓存问询 --> 缓存直通绿: 命中·复跑绿
+    缓存问询 --> 施工中: 未命中
+    施工中 --> 审查扣绿闸: 测试绿暂扣
+    施工中 --> 红严重偏题: 跑偏
+    施工中 --> 降级产物: 预授权降级
+    降级产物 --> 审查扣绿闸: 降级同审
+    降级产物 --> 红严重偏题: 修不动
+    审查扣绿闸 --> 施工中: 回喂重写·⟲≤3
+    审查扣绿闸 --> 红严重偏题: 严重偏题
+    审查扣绿闸 --> 硬化出关: 对题绿
+    硬化出关 --> 绿灯可吊销: 三钥匙齐·发灯
+    硬化出关 --> 施工中: 补测回炉
+    硬化出关 --> 停车场: 预算断
+    绿灯可吊销 --> 停车场: 回归翻案·唯一降级
+    红严重偏题 --> 停车场: park#1
+    红严重偏题 --> 终局: park#2
+    停车场 --> 施工中: 夜末补考
+    停车场 --> 终局: 补考不过
+    终局 --> [*]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">7 · 图5 · L1 波次五态（排期账·正本=queue-ledger.ts:13,18）</h2>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+    [*] --> queued: 入队·decision_ref过闸
+    queued --> in_progress: 派工开工
+    queued --> superseded: 排期唯一·废旧
+    queued --> needs_replan: 叫停重排·未开工
+    in_progress --> done: 班过闸·终态
+    in_progress --> needs_replan: 继承失败·不装绿
+    needs_replan --> queued: 重排后重入队
+    done --> [*]
+    superseded --> [*]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">8 · 图6 · L2 病卡七态（维修账·正本=repair-contract.mjs:23,40）</h2>
+<pre class="mermaid text-sm">
+stateDiagram-v2
+    [*] --> 待分诊: 红票立卡
+    待分诊 --> 诊断
+    诊断 --> A域
+    A域 --> 方案件
+    方案件 --> 修复
+    修复 --> 金丝雀: 金丝雀验证
+    金丝雀 --> 关: 验证过·关卡
+    关 --> [*]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">9 · 3.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart TB
+  subgraph L2C["L2 准入拦截链·领单时"]
+    A1["领单验格闸<br/>五道资格"] --> A2["查撞单<br/>告警不拦"] --> A3["再验单<br/>派发三关"] --> A4["体检门<br/>四查·超时宁停"] --> A5["定档闸<br/>风险三档"]
+  end
+  subgraph L1C["L1 质量拦截链·票级"]
+    B1["收包验货关<br/>三道"] --> B2["对题审查<br/>扣绿闸"] --> B3["硬化双闸<br/>对坏必须FAIL"] --> B4["三钥匙<br/>发绿灯"]
+  end
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">10 · 4.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+  S1["队列变更<br/>queue_watcher"] --> GW
+  S2["定时到点<br/>afk_cron 挂链"] --> GW
+  S3["人工拍板/推卡"] --> GW
+  GW["事件网关<br/>路由·去重·乱序·死信"] --> SM["状态机实例<br/>六台"]
+  GW -->|"跳过/非法·记因"| DL["死信账<br/>记因·rejected·审计jsonl"]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">11 · 5.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+  SM["状态机实例·翻格"] --> LED["append-only 账本<br/>events.jsonl·审计jsonl"]
+  SM --> SNAP["快照<br/>状态格·快照三键·产物锚"]
+  SNAP -->|"宕机/判死"| REC["恢复<br/>末态+游标·巡检/值守"]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">12 · 6.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart TB
+  Q["排队队列<br/>窗队列·优先级列"] --> SLOT["并发槽<br/>max_parallel=5"]
+  CRON["定时器<br/>afk_cron·30分/每小时"] --> SLOT
+  SLOT -->|"槽满排队·空槽唤醒"| WORK["施工窗在跑"]
+  HEART["心跳租约<br/>在跑续租"] -.-> WORK
+  TMO["超时驱逐<br/>闸4重领·判死"] -.-> Q
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">13 · 7.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart TB
+  subgraph SHORT["短同步重试·Action 内"]
+    R1["干活自愈环<br/>分诊→修→复跑·换档坐席"]
+  end
+  subgraph LONG["长周期重试·显式态+定时自环"]
+    P["停车场"] -->|"夜末补考·带FAIL摘录"| W["施工中"]
+    W -->|"同因再犯·熔断"| P
+  end
+  CB["熔断·同因/审批双率"] --> FAST["快速失败"]
+  BK["舱壁·沙箱/作业面"] --> ISO["隔离防挤塌"]
+  TO["超时·宁停不装绿"]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">14 · 8.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+  subgraph P1["L1 质量补偿"]
+    G1["绿灯·发灯"] -->|"回归翻案·吊销"| C1["停车场·重做"]
+  end
+  subgraph P2["L2 账务补偿·业主令"]
+    G2["⏸挂账登记"] -->|"清偿票收口·随裁"| C2["完工待确认"]
+    G2 -->|"业主令清偿"| C3["✅直接清账"]
+    A3["代拍生效"] -->|"翻案·rollback"| R3["撤销恢复"]
+  end
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">15 · 9.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+  LED["事件/审计账<br/>jsonl·台账·latitude-log"] --> AUD["审计·全量留痕"]
+  LED --> MET["指标·效率账/双率/NA率"]
+  LED --> ALM["告警·wip_scan/判死"]
+  AUD --> RPT["晨报/收班报/判定梯"]
+  ALM -->|"IM 推卡"| OWNER["自然人业主<br/>终认·追认·恢复"]
+</pre>
+</section>
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">16 · 10.0 本层图与机制矩阵</h2>
+<pre class="mermaid text-sm">
+flowchart LR
+  CODE["码内正本<br/>转移表·宪法·白名单"] --> CHK["静态校验<br/>对账断言·锚点·meta-lint"]
+  CHK -->|"漂移=红/告警"| DEV["开发期拦截·发布前"]
+  CODE --> VER["版本兼容<br/>LEGACY 映射·钉版闸"]
+</pre>
+</section>
+
+<section class="deep-box rounded-lg p-4 text-sm text-slate-100"><p class="font-semibold">尾注</p><p>16 图＝总卡全部 mermaid；逐层模块矩阵、宪法十对口述、正名全表见正本 md。</p></section>
+</main></body></html>

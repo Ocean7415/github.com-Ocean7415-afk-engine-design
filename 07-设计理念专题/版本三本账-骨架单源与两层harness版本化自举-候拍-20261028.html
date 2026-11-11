@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>版本三本账 · 骨架单源与两层 harness 版本化自举（候拍设计件·20261028）</title>
+<style>
+  body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;max-width:1080px;margin:24px auto;padding:0 16px;color:#1a1a2e;line-height:1.7;background:#fafafc;}
+  h1{font-size:1.5em;border-bottom:3px solid #3b5bdb;padding-bottom:8px;}
+  h2{font-size:1.2em;color:#3b5bdb;border-left:5px solid #3b5bdb;padding-left:10px;margin-top:2em;}
+  h3{font-size:1.05em;color:#333;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;}
+  th,td{border:1px solid #c8c8d4;padding:6px 10px;text-align:left;vertical-align:top;}
+  th{background:#e8ecfb;}
+  blockquote{background:#fffbe6;border-left:5px solid #f59f00;margin:16px 0;padding:10px 16px;}
+  .ver{color:#666;font-size:.85em;}
+  .layer1{background:#e7f5ff;border:2px solid #1c7ed6;border-radius:8px;padding:10px 14px;margin:8px 0;}
+  .layer2{background:#fff0f6;border:2px solid #d6336c;border-radius:8px;padding:10px 14px;margin:8px 0;}
+  .skel{background:#ebfbee;border:2px solid #2f9e44;border-radius:8px;padding:10px 14px;margin:8px 0;}
+  .arrow{text-align:center;font-size:1.2em;color:#555;margin:2px 0;}
+  .tag{display:inline-block;background:#3b5bdb;color:#fff;border-radius:4px;padding:0 8px;font-size:.85em;margin-right:4px;}
+  .ok{color:#2f9e44;font-weight:bold;}
+  .gap{color:#e8590c;font-weight:bold;}
+  .small{font-size:.85em;color:#555;}
+  code{background:#eee;padding:1px 5px;border-radius:3px;font-size:.9em;}
+</style>
+</head>
+<body>
+
+<h1>版本三本账 · 骨架单源与两层 harness 版本化自举（候拍设计件）</h1>
+<p class="ver">v1.0 · 2026-10-28 · 性质=<b>候拍设计件</b>（业主对话 2026-10-28 令「再深挖分析当前代码，落盘 07-设计理念专题」）· 素材源=主窗四轮会话（跨层借鉴→OO+RSI 对表→自举蓝图→班内外维修环数据流）＋当日代码实勘（锚点全 file:line）·
+关联权威件=<code>07-设计理念专题/两层harness分治-*.html</code>（引擎#101 定名·#101⑥ 版本档案四轨=#101② 引擎站点1/2）· <code>拍板记录表.md</code> #212/#213·
+关联票=W-152（班内外维修环解耦·三关绿已入列）· 候拍载体候=本件（拍板行引本件路径）·<br>
+tags: [版本三本账, 骨架单源, 自举, 版本pin, 候拍设计件]</p>
+
+<blockquote><b>结论先行（五句）</b>：①「稳定版第一层自举生产新版」蓝图与拍板#101②/#101⑥ 完全同向，本件把它落到代码级：引擎<b>已经会管别人的版本</b>（manifest versions[]+inherits·#65 跨班继承），<b>还没管自己的版本</b>（package.json version 死值·跑夜车用工作区 HEAD 无 pin）——版本 pin 就是把 manifest 思想反射到 harness 自身；②模板方法化<b>不是从零提炼</b>：<code>run-slice.ts</code> main() 已是固定站序+旗标旋钮形态，且 <code>queue-runner</code> 已是第二实例（spawn 子进程复用）——Pull Up 两实例条件已满足；③机械件包（S）候选成员现成大半：<code>ts/src/shared/</code> 30+ 件（ledger/judge 三卫/model-tier/exec-retry…）；④考题库留出分割=现有 3 清单加列，不是新造系统；⑤最大风险=尺病代际传染（稳定版当考官·教义七），保险=考题库独立版本化+留出集+业主终认道版本外。</blockquote>
+
+<h2>§一 · 自举流程定稿（业主确认·2026-10-28）</h2>
+<blockquote><b>第二层用 L1.n 实施新功能/维修 → 产出 L1.n+1 候选 → 留出考题核账＋业主终认 → 上线 → 骨架若有升级，第二层择机拍板跟进（不强绑）。</b></blockquote>
+<p class="small">口径注：本件全部「L1.n/L1.n+1/L2.m/S1.x」记法服从此句——实例版本独立演进，只有骨架基线是同步面；「强绑同号」被业主明确排除（上轮尺病论证在案：考官版本须独立于被考版本·教义七）。</p>
+
+<h2>§二 · 三本账模型图（应然·候拍）</h2>
+<div class="skel">骨架 <b>S1.x</b>（单源·一份代码）——模板方法基类（夜车站序 run()）＋机械件包（shared/ 候选成员 30+ 件）＋交接契约（班产物 schema·state_dict_check 接口契约台 W-152 件②）</div>
+<div class="arrow">↓ 装配（inherit）　　　　↓ 装配</div>
+<div class="layer1"><b>第一层实例 L1.n</b> = S + 站3-6 装配（run-slice 站序＋岗卡 9＋SYSTEM 常量）——造客人 APP → 成绩入版本档案四轨（#101⑥·只记不判）</div>
+<div class="layer2"><b>第二层实例 L2.m</b> = S + 管理层装配（pi_runner 六闸＋fail-loop 维修环＋postshift 优化环）——管团队自身 → <b>用 L1.n 当考官</b>（留出考题核账）</div>
+<div class="arrow">↑ 自举环（业主确认句·§一）：L2.m 用 L1.n 施工 → 产 L1.n+1 → 核账+终认 → 上线；S 升级两实例各自择机跟进</div>
+
+<h2>§三 · 当前代码实态深挖（六张对表·全带锚）</h2>
+
+<h3>对表① 模板方法雏形已在码——步④工作量比预想小</h3>
+<table>
+<tr><th>OO 要素</th><th>当前代码实态</th><th>锚</th></tr>
+<tr><td>模板方法 run()（流程焊死）</td><td class="ok">已在</td><td><code>run-slice.ts:1-3</code> 头注即站序声明「导入→拆单→施工（确定性）→E2E（轨道B）→报告」；main()（<code>:44</code> 起）段0 preflight 六硬项→拆单→施工→验收→报告顺序固定；体量守卫已拆件（run-ckpt/run-finish/run-slice-flags）</td></tr>
+<tr><td>第二实例（Pull Up 前提）</td><td class="ok">已在</td><td><code>queue-runner.ts:5</code>「spawn 子进程跑 run-slice（退出码=整体三态），<b>不 import</b>」——队列逐版串行复用同一切片链，进程边界隔离（<code>:74</code> 默认 IO=子进程跑 run-slice）</td></tr>
+<tr><td>配置差异=旗标旋钮</td><td class="ok">已在</td><td>builder auto/llm/copy（<code>run-slice.ts:62</code> 区）·quality-gate-3stage（:49·拍板#50 默认开）·增量 diff 旋钮（:63·#49G）·--resume/--preserve（:82,89·#65）——正是「配置差异走构造参数不进继承树」的现行例</td></tr>
+<tr><td>缺口</td><td class="gap">站序无基类</td><td>站序以 main() 函数体形态存在，第二实例靠 spawn 整进程复用——「复制产线」（引擎站点1/2·#101②）仍要复制 main 骨架；基类化=把段序提为可继承骨架、站实现留填空</td></tr>
+</table>
+
+<h3>对表② 版本化的镜面缺口——引擎管别人版本、不管自己版本</h3>
+<table>
+<tr><th>对象</th><th>版本化现状</th><th>锚</th></tr>
+<tr><td>客人 APP（被施工对象）</td><td class="ok">已版本化</td><td>manifest <code>versions[]</code>（id/package/decision_ref/workspace）＋<code>inherits</code> 跨班继承终态工作区（#65）＋<code>max_final_reds</code>/<code>max_rounds</code> 班参＋docker digest 对账（<code>queue-runner.ts:40-58</code>·T8 fail-closed）</td></tr>
+<tr><td>引擎自身（harness 第一层）</td><td class="gap">无 pin</td><td><code>ts/package.json</code> version="1.0.0" 死值（单包·非 workspace）；夜车跑的是工作区 HEAD——成绩归因混着代码漂移；state_edge_check 的 --base 三路缺省（W-144）已用 git merge-base 做过「跨版本对照」先例，但只守状态机边不构成构成物 pin</td></tr>
+<tr><td>成绩侧</td><td class="ok">半成品</td><td>版本档案四轨（#101⑥·只记成绩不判成绩）——记了成绩，没 pin 成绩所属的 harness 构成物版本</td></tr>
+</table>
+<p class="small"><b>叙事核心</b>：步②（夜车入口版本 pin）=把 manifest 对客人的版本纪律反射到 harness 自身——镜面对称，不是新造机制。pin 内容=构成物清单（步①）的 git sha+卡版本+考题版本；pin 面=夜车入口读 pin 文件，缺 pin 拒启（fail-closed·沿 T8 digest 拒发车先例 <code>queue-runner.ts:54-56</code>）。</p>
+
+<h3>对表③ 机械件包（S）候选成员——shared/ 盘点</h3>
+<p><code>ts/src/shared/</code> 30+ 件现成候选：<code>ledger.ts</code>（事件账本·append-only+白名单硬校验）·<code>event-types.ts</code>（114+ 型白名单正本）·<code>judge-append/judge-guard/judge-relock</code>（判卷守卫三卫·红线级）·<code>model-tier.ts</code>（档位旋钮）·<code>exec/exec-retry</code>·<code>env/fsutil/interrupt-guard/middleware-stage</code>…＋queue 层 <code>gate.ts</code>（纯函数闸）＋night-shift 层 <code>night-budget.ts</code>（预算三路）＋<code>undo-plan</code>（撤回）。<br>
+<b>步①构成物清单的「机械件」栏可即刻盘点出大半</b>；W-152 搬址（⑬⑮+repair-cli 迁出）完成后，班外执行器也归位 L2 侧——S/L1/L2 三栏从此可干净填写。</p>
+
+<h3>对表④ 考题库现状——留出分割=清单加列</h3>
+<p><code>91-脚本/考题库/</code> 现有 3 清单（清单-工具层文档窗/清单-桥接通道窗/清单-状态机码件窗）＋夹具＋标定样本＋inject 驱动；复考闸按窗型匹配多清单并集（<code>pi_runner.mjs:215-243</code> aggregateExamResults·宁严勿漏）。<b>留出分割落点</b>=清单 JSON 内加「用途：日常复考/留出核账」字段（或新增清单-留出核账.json）——考题增删改照旧=业主拍板（#207 清单制不动），涉出题权禁区→对比件候拍（#212⑤）。</p>
+
+<h3>对表⑤ 两环交接面（W-152 在飞）</h3>
+<p>班内维修环（probe-selfheal/probe-gate·修客人 APP）与班外维修环（fail-loop→diagnose→业主 L1→promote·修引擎）交接=班产物文件单向只读（df-003 典型链3→df-004 e4.1-3）＋状态机三台分离（票级 11 态/波次五态/病卡七态·repair-contract 线4 红线）；⑬⑮ 执行器搬址＋接口契约台=<b>W-152 已立（引擎#213·三关绿在列）</b>——本件步①的班外栏依赖 W-152 收口。</p>
+
+<h3>对表⑥ 自举的进程边界先例</h3>
+<p><code>queue-runner.ts:5</code> 「站3 管线零改动——spawn 子进程，不 import」＋复考闸 exit code 唯一判据（#87）——两层隔离的现行形态已是<b>进程边界+退出码</b>。自举环沿用：L2.m 考 L1.n+1 时跑独立进程/独立工作区（sandbox worktree 先例 <code>provider-types.ts</code>），尺不被被考对象污染——这是「稳定版当考官」的物理保证，无需新发明。</p>
+
+<h2>§四 · 优缺点（代码实态修正版）</h2>
+<table>
+<tr><th>#</th><th>优/险</th><th>实态依据</th><th>处置</th></tr>
+<tr><td>1</td><td class="ok">优·成绩可归因</td><td>manifest versions 先例＋版本档案四轨——只差 harness 侧 pin</td><td>步①②</td></tr>
+<tr><td>2</td><td class="ok">优·生产/被改物理分离</td><td>spawn 子进程边界＋sandbox worktree 现成</td><td>沿用·零新造</td></tr>
+<tr><td>3</td><td class="ok">优·考官独立性有先例</td><td>复考闸 exit code 唯一判据＋考题库业主拍板制（#207）</td><td>步③留出加列</td></tr>
+<tr><td>4</td><td class="gap">险·尺病代际传染</td><td>3 清单无留出概念——同一套题既日常复考又终核</td><td>步③＋业主终认道版本外</td></tr>
+<tr><td>5</td><td class="gap">险·双版本维护税</td><td>单包结构无多版本机制</td><td>在役只留两代（V_n 生产/V_n+1 发育）·缺陷默认 cherry-pick 两版</td></tr>
+<tr><td>6</td><td class="gap">险·顺序陷阱</td><td>「完全优化好再做版本管理」=移动靶无锚</td><td><b>倒序：版本管理先行</b>——pin 即度量基础设施</td></tr>
+</table>
+
+<h2>§五 · 改造路径五步（每步带当前代码锚）</h2>
+<table>
+<tr><th>步</th><th>动作</th><th>性质</th><th>已满足条件</th><th>缺口工程</th></tr>
+<tr><td><b>1</b></td><td>拍版本构成物清单：L1=ts/src＋岗卡9＋SYSTEM 常量；L2=pipeline-lab/91-脚本＋班外岗卡＋⑬⑮执行器（W-152 搬来后）；S=shared/ 机械件＋交接契约；<b>版本外</b>=考题库/出题权/禁区六项</td><td>拍板件·零代码</td><td>shared/ 30+ 件已盘点（对表③）·W-152 在飞</td><td>清单拍板（本件候拍清单§六①）</td></tr>
+<tr><td><b>2</b></td><td>夜车入口版本 pin：入口读 pin 文件（清单 sha+卡版本+考题版本）·缺 pin 拒启 fail-closed</td><td>小工程</td><td>manifest 校验先例（validateManifestRoot 发车拦·<code>queue-runner.ts:132</code>）＋T8 digest 拒发车款（:54-56）＋state_edge_check --base 三路缺省先例</td><td>pin 文件 schema＋入口接线＋拒启案</td></tr>
+<tr><td><b>3</b></td><td>考题库留出分割</td><td>对比件候拍（出题权禁区）</td><td>3 清单结构现成＋#207 清单制</td><td>清单加「用途」列＋终认道接线</td></tr>
+<tr><td><b>4</b></td><td>OO 骨架基类化（Pull Up）</td><td>小工程·P2</td><td><b>两实例已在</b>（run-slice+queue-runner·对表①）＋旗标旋钮形态</td><td>main() 站序提基类·站实现填空；服务引擎站点1/2 复制（#101②）</td></tr>
+<tr><td><b>5</b></td><td>自举生产环按业主确认句落地</td><td>路线已拍·形态细化</td><td>#101② 引擎站点1/2＋复考闸＋版本档案四轨＋W-152 解耦</td><td>站点1/2 出包接线＋留出核账接入终认道</td></tr>
+</table>
+<p class="small">优先序：1→2 最小闭环（自举即成立）；3 补尺病保险；4 提效不设卡；5 终点态。全程不动 pi 窗架构、不动判卷语义、不碰禁区六项（与 #212/#213 一致）。</p>
+
+<h2>§六 · 候拍清单（本件拍板项·无拍板号不入列队）</h2>
+<ol>
+<li><b>构成物清单拍板</b>（步①·§五表）：L1/L2/S 三栏内容＋版本外边界——拍板后 W-152 收口即填终值</li>
+<li><b>版本 pin 接线拍板</b>（步②）：pin 文件 schema（sha/卡版本/考题版本三键）＋拒启语义（缺 pin=红不烧钱）</li>
+<li><b>考题库留出分割</b>（步③·与 #212⑤ 合流走对比件）</li>
+<li><b>骨架基类化立项</b>（步④·候灵感池毕业出对比件·灵感池 2026-10-28 行在案）</li>
+</ol>
+
+<h2>§七 · evidence 契约</h2>
+<p class="small">tier=Verify · ledger=disk-self（当日真实读段）· 基准 repo_head=a22f4c5（2026-10-28）· verdict=PASS（设计件·零码改动主张）。<br>
+<b>实锚清单</b>：<code>run-slice.ts:1-3,44,49-120</code>（站序/旗标/preflight 段0）· <code>queue-runner.ts:5,40-58,60-74,132</code>（spawn 红线/manifest 契约/校验拦）· <code>ts/package.json:1-25</code>（单包死版本）· <code>91-脚本/考题库/</code> 目录清单（3 清单+夹具+标定+inject）· <code>pi_runner.mjs:215-243</code>（复考闸并集）· <code>ts/src/shared/</code> 目录盘点（30+ 件）· <code>provider-types.ts</code>（沙盒先例）· df-003/df-004 数据流卡（基准 0cb1d3d）· 拍板表 #212/#213· 执行台账 :592-598（RSI 收口/#101 落盘/变式卡）。<br>
+<b>反向校验命令</b>（复用前跑）：<br>
+① <code>grep -n "versions\[\]\|inherits" ts/src/queue/queue-runner.ts | head -3</code>（镜面缺口前提在）<br>
+② <code>grep -n '"version"' ts/package.json</code>（死值现状在）<br>
+③ <code>ls 91-脚本/考题库/清单-*.json | wc -l</code>（=3）<br>
+④ <code>grep -c "spawn 子进程跑 run-slice" ts/src/queue/queue-runner.ts</code>（≥1·两实例先例在）<br>
+⑤ <code>ls ts/src/shared/ | wc -l</code>（≥30·S 包候选在）</p>
+
+</body>
+</html>

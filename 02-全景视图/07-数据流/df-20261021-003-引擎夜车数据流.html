@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261021-003 · 数据流卡 · df-003 引擎夜车数据流（N6-N9）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261021-003 · 数据流卡 · df-003 引擎夜车数据流（N6-N9）</h1>
+<div class="meta"><b>id</b> df-20261021-003 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 0cb1d3d · <b>run_id</b> queue-99-w047</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>数据流卡 · df-003 引擎夜车数据流（N6-N9）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：回答「一夜车跑起来，manifest 怎么变队列、每步事件怎么落账本、晨报从哪来」——节点=N6 夜车队列目录/N7 事件账本/N8 排期账本/N9 晨报，边=e3.1~e3.7（登记表编号零漂移）。<strong>边界</strong>：本卡只画账本数据面；夜车时序（步骤先后与闸门）=[sq-20261021-001]，波次状态机=[sm-20261021-002]。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>queue-52/queue-40 实跑：manifest versions 逐版串行→queueRoot 下双账本逐行 append（queue-events.jsonl 9 行 3 事件型/queue-ledger.jsonl 11 行 2 事件型实物在案）</td><td><code>ts/src/queue/queue-runner.ts:161</code></td></tr><tr><td>2</td><td>防假绿/防串班：发车即读 probe-red-ledger.json+TICKETS.md 比对——非源码非配置，专防陈旧报告假绿与 V0 红账串班</td><td><code>ts/src/queue/queue-runner.ts:12</code></td></tr><tr><td>3</td><td>收车：queue-summary.md 覆盖写（<code>ts/src/queue/queue-runner.ts:268</code>）+confirm 出 morning-report.json（<code>ts/src/confirm.ts:20</code>）→postshift 六件链接手（df-004）</td><td><code>ts/src/queue/queue-runner.ts:268</code></td></tr></tbody></table>
+<h2>§节点与边总览（编号正本=00 登记表·零漂移）</h2>
+<ul><li><strong>节点</strong>：manifest.json（e3.1 读面）、N6 夜车队列目录（queueRoot：<code>queue-events.jsonl</code>/<code>queue-ledger.jsonl</code>/<code>queue-summary.md</code>/<code>ws-〈版ID〉/</code>）、N7 事件账本行（type 白名单 114+ 型）、N8 排期账本（五态+3 事件型白名单）、N9 班次工作区报告（morning-report.json/.md）；e3.4/e3.5 涉 ws 产物与站3/4/5 写面（模块细节=mk-006~010）。</li><li><strong>边</strong>：e3.1~e3.7 共 7 条，<strong>全部本地零飞书</strong>——夜车身份面不涉 bot/user 双色（双色线落 df-002/df-004）。</li></ul>
+<h2>§数据流主线（mermaid）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    MF["manifest.json<br/>versions[].id/package/decision_ref<br/>workspace/inherits/project_ref"] -->|"e3.1 逐版串行消费<br/>project_ref 号段校验"| QR["queue-runner.ts"]
+    QR -->|"e3.1 建目录 N6<br/>缺省 ts/.queue"| N6[("N6 夜车队列目录<br/>queueRoot")]
+    QR -->|"e3.2 每步 append 事件<br/>白名单外 TypeError"| N7[("N7 queue-events.jsonl<br/>seq/ts/type/payload")]
+    QR -->|"e3.2 排期状态机 append"| N8[("N8 queue-ledger.jsonl<br/>queued→in_progress→done")]
+    PRL["probe-red-ledger.json<br/>+TICKETS.md"] -->|"e3.3 防假绿/防红账串班"| QR
+    RS["run-slice.ts"] -->|"e3.4 spec+contract 读<br/>verdict 指纹缓存写"| WS["ws 产物<br/>ws-〈版ID〉/"]
+    S345["站3收货→站4施工→站5验收"] -->|"e3.5 票/素材读<br/>产物写（源码件/red-ledger/账本）"| WS
+    N7 -->|"e3.6 投影派生<br/>waveTrace/depChains/repairTrail"| MR["morning-report<br/>confirm.ts"]
+    MR -->|"e3.6 写"| N9[("N9 report/<br/>morning-report.json.md")]
+    QR -->|"e3.7 收车覆盖写"| SUM["queue-summary.md<br/>（N6 内）"]
+</div></div>
+<h2>§节点详注（图正下方·每节点做什么/边界/锚点）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>manifest.json</td><td>夜车发车输入：versions[] 每版 id/package/decision_ref/workspace/inherits（+project_ref 运行时必填·号段校验=<code>ts/src/queue/queue-runner.ts:46</code> 接口定义+<code>ts/src/queue/queue-runner.ts:132</code> validateManifestRoot 发车拦）；逐版串行消费。</td></tr><tr><td>N6 夜车队列目录</td><td>queueRoot 缺省 <code>ts/.queue</code>（<code>ts/src/queue/queue-runner.ts:287</code>）；实跑如 pipeline-lab/queue-52/——夜车全部落盘物的家目录。</td></tr><tr><td>N7 事件账本行</td><td>行车记录仪：每行 {seq,ts,type,payload}；type 白名单=EVENT_TYPE_LIST（<code>ts/src/shared/event-types.ts:8</code>·114+ 型）——<strong>白名单外 TypeError</strong>（写侧契约门）；双账本落位=<code>ts/src/queue/queue-runner.ts:161</code>。</td></tr><tr><td>N8 排期账本</td><td>波次状态机账本：五态 queued/in_progress/done/superseded/needs_replan（<code>ts/src/queue/queue-ledger.ts:13</code>）+自有白名单 3 事件型（<code>ts/src/queue/queue-ledger.ts:27</code> 区）——与 N7 双账本分工=行车记录 vs 排期状态。</td></tr><tr><td>ws 产物</td><td>班次工作区：run-slice 读 spec.md+contract.json 写产物+<code>.cache</code> verdict 指纹缓存（<code>ts/src/run-slice.ts:149</code> 读+<code>ts/src/run-slice.ts:179</code> 缓存建）；站3/4/5 全链读写同一 ws（e3.5）。</td></tr><tr><td>N9 班次报告</td><td>confirm 出 report/morning-report.json+md（<code>ts/src/confirm.ts:20</code>）；waveTrace/depChains/repairTrail 皆 N7 账本投影派生——<strong>晨报无独立数据源，全是账本投影</strong>。</td></tr><tr><td>queue-summary.md</td><td>收车覆盖写（<code>ts/src/queue/queue-runner.ts:268</code>）——班次级摘要，与 N9 晨报分工=队列摘要 vs 报告。</td></tr></tbody></table>
+<h2>§边明细（e3.1~e3.7·对照登记表 §三 零漂移）</h2>
+<table><thead><tr><th>边</th><th>程序</th><th>读←</th><th>写→</th><th>明细</th></tr></thead><tbody><tr><td>e3.1</td><td>queue-runner.ts</td><td>manifest.json</td><td>N6 建</td><td>versions 逐版串行；project_ref 号段校验；queueRoot 缺省 ts/.queue</td></tr><tr><td>e3.2</td><td>queue-runner.ts</td><td>—</td><td>N7/N8</td><td>每步 append 事件；白名单外 TypeError</td></tr><tr><td>e3.3</td><td>queue-runner.ts</td><td>probe-red-ledger.json/TICKETS.md</td><td>—</td><td>防假绿/防红账串班</td></tr><tr><td>e3.4</td><td>run-slice.ts</td><td>spec.md+contract.json</td><td>ws 产物</td><td><code>.cache</code> verdict 指纹缓存（四铁律 ADR-0003）</td></tr><tr><td>e3.5</td><td>站3/4/5 全链</td><td>票/素材</td><td>ws</td><td>tickets-md、red-ledger、llm-fs 写源码件、value/verdict-cache</td></tr><tr><td>e3.6</td><td>morning-report</td><td>N7 投影</td><td>N9</td><td>report/morning-report.json+md（全派生无独立源）</td></tr><tr><td>e3.7</td><td>queue-runner.ts 收车</td><td>—</td><td>N6</td><td>queue-summary.md 覆盖写</td></tr></tbody></table>
+<h2>§纪律线（登记表 §七 落图·本块归属声明+块内契约纪律）</h2>
+<ul><li>§七 编号纪律线 1-6 中本块<strong>无直接归属边</strong>（零飞书·线2 双色不适用）——归属卡=df-002（线1/2/3）与 df-004（线2/4/5/6），全 6 条落图见各卡；登记表引言「七条」vs §七 正文实列 6 条差异已在 df-001 如实申报。</li><li>本块自身契约纪律（显式标注）：<strong>事件型写侧白名单</strong>（N7 白名单外 TypeError·N8 仅 3 事件型）——夜车任何程序不得发明新事件型；<strong>防假绿/防串班</strong>（e3.3 发车即比对·<code>ts/src/queue/queue-runner.ts:12</code>）；<strong>排期状态机合法转移</strong>（N8 转移表=QUEUE_TRANSITIONS·细目=[sm-20261021-002] 标源）。</li></ul>
+<h2>§防重复指针</h2>
+<ul><li>夜车时序（步骤先后/闸门）=[sq-20261021-001]；波次五态转移=[sm-20261021-002]；双件套字段契约=[ct-20261021-001]、manifest 家族契约=[ct-20261021-002]——本卡=数据面（谁写哪个文件哪类行），契约卡=schema 面（字段长什么样），零正文复制。</li><li>派工链（票怎么来）=[df-20261021-001]；班后维修环（账本数据接着去哪）=[df-20261021-004]。</li><li>agent 输入输出契约正本=登记表 §〇-A 段（A1-A21·拍板#343 W-259），本卡不重复——夜车链判断岗=A1写码/A2审查/A3采样/A4判据追加/A7补锚/A8解环（详见总图卡 gw-20261103-001 §3~§6）。</li></ul>
+<h2>§时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 0cb1d3d（2026-10-21 现勘·锚点 13 处 sed 亲验）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（登记表 N6-N9/e3.1-e3.7 逐条对照；run-slice/confirm 全路径修正=ts/src/ 根）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261021-003-引擎夜车数据流.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

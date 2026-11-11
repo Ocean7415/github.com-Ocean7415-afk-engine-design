@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261021-004 · 数据流卡 · df-004 班外维修环数据流（e4.1~e4.9）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261021-004 · 数据流卡 · df-004 班外维修环数据流（e4.1~e4.9）</h1>
+<div class="meta"><b>id</b> df-20261021-004 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 0cb1d3d · <b>run_id</b> queue-99-w047</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>数据流卡 · df-004 班外维修环数据流（e4.1~e4.9）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：回答「一夜车跑完后，病灶数据怎么一步步变成病卡、诊断、方案、修复、入真仓的」——边=e4.1~e4.9（登记表编号零漂移），F3 病卡表七态转移+开工已入真仓字段级回写。<strong>边界</strong>：本卡只画数据面（谁写哪个表哪个字段）；F2 审批台通道细节=[df-20261021-002]。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>信号统计纯读例：signal-stats 班后只计数不归因，零 lark 零写表——统计 JSON 只喂晨报环境建议栏</td><td><code>pipeline-lab/scripts/signal-stats.mjs:1</code></td></tr><tr><td>2</td><td>缺参降级实规：postshift 缺 lark 参数=只快照落盘不推卡（<code>pushed:false</code> 如实报），显式 --base-token 才推 F2/F3</td><td><code>pipeline-lab/scripts/postshift.mjs:76</code></td></tr><tr><td>3</td><td>病卡走全环例：report-issues 立卡「待分诊」→diagnose 推「诊断中」→propose-fix 推「方案待拍」（业主 L1 触点）→repair-execute「修复中→已修✅/转人工」→promote 回写 F4 已入真仓</td><td><code>pipeline-lab/scripts/repair-execute.mjs:195</code></td></tr></tbody></table>
+<h2>§节点与边总览（编号正本=00 登记表·零漂移）</h2>
+<ul><li><strong>节点</strong>：班产物（events.jsonl/findings.json/班卡导出/stats.json/诊断件/方案件）＋F3 病卡表（<code>tblR2sjYpA3pt4Gh</code>）、F4 班次表（<code>tbltoCEGfuhUNBxL</code>）、F5 用例库表（<code>tblMI1l5LTAsdqeW</code>）、F2 审批台（e4.2 推审面）；真仓 git（e4.7 commit 面·push 由人）。</li><li><strong>边</strong>：e4.1~e4.9 共 9 条。<strong>身份面=全 user</strong>（pipeline-lab 系·纪律线2 双色的另一色）。</li></ul>
+<h2>§数据流主线（mermaid·全边身份=user·虚线=人工触点）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    BAN["班产物<br/>events.jsonl+findings.json+班卡"] -->|"e4.1 signal-stats 纯读<br/>stats.json 只计数"| ST["stats.json"]
+    BAN -->|"e4.2 postshift 快照落盘<br/>缺参不推卡·--base-token 才推"| SNAP["快照落盘"]
+    SNAP -->|"e4.2 显式参时推 F2 审批卡"| F2["F2 审批台"]
+    BAN -->|"e4.3 report-issues 建 F3 卡<br/>状态=待分诊"| F3["F3 病卡表<br/>tblR2sjYpA3pt4Gh"]
+    F3 -->|"e4.4 diagnose 读证据<br/>状态→诊断中/A域诊断中"| DJ["诊断件落盘"]
+    DJ -->|"e4.5 propose-fix 读诊断件<br/>状态→方案待拍"| PF["方案件落盘"]
+    PF -.->|"业主 L1 拍板<br/>（人工虚线触点）"| RE["repair-execute"]
+    RE -->|"e4.6 状态→修复中→已修✅/转人工"| F3
+    RE -->|"e4.7 修复入真仓"| GIT["真仓 git"]
+    PR["promote.mjs"] -->|"e4.7 commit（push 由人）<br/>F4 已入真仓=true fldY2oVQ2q"| F4["F4 班次表<br/>tbltoCEGfuhUNBxL"]
+    NR["nightrun-wrap.mjs 收车反投"] -->|"e4.8 search 班次ID<br/>patch 状态/卡在哪/轮数/WBS摘要"| F4
+    NR -->|"e4.9 用例ID+考题文件锚点<br/>回写最近结果/最近班次ID/最近票ID"| F5["F5 用例库<br/>tblMI1l5LTAsdqeW"]
+</div></div>
+<h2>§节点详注（图正下方·每节点做什么/边界/锚点）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>signal-stats（e4.1）</td><td>班后统计起点：纯读零 lark 零写表（<code>pipeline-lab/scripts/signal-stats.mjs:1</code> 头注红线）；事件型=EVENT_TYPES 白名单子集，白名单外不猜不计数；病卡状态枚举从 repair-contract import 不复制。</td></tr><tr><td>postshift（e4.2）</td><td>六件链编排：快照恒落盘；推卡面=缺参不推（fail-open 但 <code>pushed:false</code> 如实报·<code>pipeline-lab/scripts/postshift.mjs:76</code>），显式 --base-token 才建 F2 审批记录（<code>pipeline-lab/scripts/postshift.mjs:184</code> createApprovalLark+buildApprovalRecord）。</td></tr><tr><td>report-issues（e4.3）</td><td>F3 建卡：病ID/项目名称/域/来源班次/标题=<code>病:〈tag〉·〈head〉</code>/状态=待分诊（<code>pipeline-lab/scripts/report-issues.mjs:84</code> schema 区）。</td></tr><tr><td>F3 病卡表</td><td>七态 select 单一正本=<code>pipeline-lab/scripts/repair-contract.mjs:23</code> SICK_STATUS；转移表=<code>:39</code> SICK_TRANSITIONS——状态机见下图二。</td></tr><tr><td>diagnose（e4.4）</td><td>证据→诊断件落盘+F3 状态→诊断中（<code>pipeline-lab/scripts/diagnose.mjs:202</code> 写 DIAGNOSED）；A 域分支=拍板#75 上溯车道。</td></tr><tr><td>propose-fix（e4.5）</td><td>诊断件→方案件落盘+F3 patch 状态→方案待拍+方案链接（<code>pipeline-lab/scripts/propose-fix.mjs:120</code>）——<strong>业主 L1 拍板输入·唯一人工拍板触点</strong>。</td></tr><tr><td>repair-execute（e4.6）</td><td>审批闸→修复中（<code>pipeline-lab/scripts/repair-execute.mjs:152</code>）→A 域分支（<code>pipeline-lab/scripts/repair-execute.mjs:162</code>）→红=转人工（<code>pipeline-lab/scripts/repair-execute.mjs:171</code>）/绿=已修✅（<code>pipeline-lab/scripts/repair-execute.mjs:195</code>）——七态转移全部经 larkStatus 写 F3。</td></tr><tr><td>promote（e4.7）</td><td>晋升闭环：--apply 代执行 commit（<strong>push 永远由人</strong>）；commit 落真仓后回写 F4「已入真仓」=true（字段 ID <code>fldY2oVQ2q</code>·<code>pipeline-lab/scripts/promote.mjs:17</code>）；--mark-only=业主手动 commit 后补账模式（<code>pipeline-lab/scripts/promote.mjs:186</code>）。</td></tr><tr><td>nightrun-wrap（e4.8/e4.9）</td><td>收车自动反投：F4 按「班次ID」search 后 patch 状态/卡在哪/轮数/WBS摘要（<code>pipeline-lab/scripts/nightrun-wrap.mjs:509</code> 区·卡在哪=夜车收车自动反投+时间戳）；F5 按用例ID+考题文件锚点回写最近结果/最近班次ID/最近票ID（<code>pipeline-lab/scripts/nightrun-wrap.mjs:128</code> 区·<strong>只回写本班跑到的考题·未跑不动不装 NA</strong>）。</td></tr></tbody></table>
+<h2>§F3 病卡七态转移图（图二·正本=<code>pipeline-lab/scripts/repair-contract.mjs:39</code> SICK_TRANSITIONS·逐格照抄）</h2>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> 待分诊: e4.3 report-issues 立卡
+    待分诊 --> 诊断中: e4.4 diagnose
+    诊断中 --> A域诊断中: 拍板#75 A域分支
+    诊断中 --> 方案待拍: e4.4 出诊断件
+    A域诊断中 --> 方案待拍: e4.5 L2业主勾选
+    方案待拍 --> 修复中: e4.6 审批闸过·业主L1拍板后
+    修复中 --> 已修✅: e4.6 金丝雀绿
+    修复中 --> 转人工: e4.6 金丝雀红
+</div></div>
+<h2>§边明细（e4.1~e4.9·对照登记表 §四 零漂移）</h2>
+<table><thead><tr><th>边</th><th>程序</th><th>读←</th><th>写→</th><th>明细</th></tr></thead><tbody><tr><td>e4.1</td><td>signal-stats.mjs</td><td>班次 events+findings+班卡导出</td><td>stats.json</td><td>纯读零 lark 零写表；事件型白名单子集</td></tr><tr><td>e4.2</td><td>postshift.mjs</td><td>班产物</td><td>快照落盘</td><td>缺参不推卡；显式 --base-token 才推 F2/F3</td></tr><tr><td>e4.3</td><td>report-issues.mjs</td><td>findings</td><td>F3 建卡</td><td>病ID/标题/状态=待分诊/域全称/来源班次/诊断链接</td></tr><tr><td>e4.4</td><td>diagnose.mjs</td><td>证据</td><td>诊断件+F3</td><td>状态→诊断中（或 A域诊断中）</td></tr><tr><td>e4.5</td><td>propose-fix.mjs</td><td>诊断件</td><td>方案件+F3</td><td>状态→方案待拍（业主 L1 触点）</td></tr><tr><td>e4.6</td><td>repair-execute.mjs</td><td>方案件</td><td>执行+F3</td><td>状态→修复中→已修✅/转人工（转移表 repair-contract:39-45）</td></tr><tr><td>e4.7</td><td>promote.mjs</td><td>F4</td><td>F4+真仓</td><td>已入真仓=true（fldY2oVQ2q·键=工单ID列）+代执行 commit；--mark-only 补账</td></tr><tr><td>e4.8</td><td>nightrun-wrap.mjs</td><td>F4(search 班次ID)</td><td>F4 patch</td><td>状态/卡在哪/轮数/WBS摘要（收车自动反投）</td></tr><tr><td>e4.9</td><td>nightrun-wrap.mjs</td><td>F5(用例ID/考题文件锚点)</td><td>F5 三列</td><td>最近结果/最近班次ID/最近票ID（只回写本班跑到的）</td></tr></tbody></table>
+<h2>§纪律线（登记表 §七 落图·本块归属 4 条）</h2>
+<ul><li><strong>线2 两套身份</strong>：pipeline-lab 系=<strong>user</strong>（本卡 9 边全 user 色·与 df-002 bot 色对偶）。</li><li><strong>线4 病卡状态机单一正本</strong>：F3 七态枚举+转移表=<code>pipeline-lab/scripts/repair-contract.mjs:23</code>/<code>pipeline-lab/scripts/repair-contract.mjs:39</code>（图二逐格照抄）——与引擎票级 11 态（ticket-state.ts）<strong>无关不混用</strong>（repair-contract 红线头注）。</li><li><strong>线5 缺参 no-op 降级</strong>：postshift（e4.2）缺 lark 参数=只落盘零推卡（fail-open 但 <code>pushed:false</code> 如实报）。</li><li><strong>线6 push 由人</strong>：promote（e4.7）只 commit，<code>git push</code> 业主亲自（仓红线4）。</li></ul>
+<h2>§防重复指针</h2>
+<ul><li>发车编排模块=[mk-20261021-004]、收车编排=[mk-20261021-005]；夜车账本上游=[df-20261021-003]；F2 审批通道=[df-20261021-002]。病卡状态机契约细节（字段/schema 面）=repair-contract.mjs 本体（单一正本·本卡只画转移不加字段表）。</li><li>本卡与 mk-004/005 分类轴不同：本卡=表字段回写数据面，mk 卡=模块接口面——零正文复制。</li><li>agent 输入输出契约正本=登记表 §〇-A 段（A1-A21·拍板#343 W-259），本卡不重复——维修环判断岗=A9诊断/A10深化/A11翻译/A13兑底/A15改包（详见总图卡 gw-20261103-001 §8~§9）。</li></ul>
+<h2>§时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 0cb1d3d（2026-10-21 现勘·锚点 14 处 sed 亲验）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（F3 七态转移逐格对照 SICK_TRANSITIONS·F4/F5 回写字段逐字对照登记表）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261021-004-班外维修环数据流.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

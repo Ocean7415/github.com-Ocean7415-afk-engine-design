@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ct-20261021-004 · 契约卡 · routeOf 五类路由表＋宿主白名单</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>ct-20261021-004 · 契约卡 · routeOf 五类路由表＋宿主白名单</h1>
+<div class="meta"><b>id</b> ct-20261021-004 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 01c1d9a · <b>run_id</b> queue-93-w041</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；三关（收包验货关 L1／立票验单关·贴卡拦病关·领单再验单 L2）。</p>
+</blockquote>
+<h1>契约卡 · routeOf 五类路由表＋宿主白名单</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：定义窗队列「大业务」列到作业面（本仓/宿主仓）的路由契约——五类单选、宿主仓根从任务书宿主固定节提取、缺宿主/未知大业务 fail-closed 拒发。<strong>为什么存在</strong>：派工器「把票送到对的地方」全靠这张纯函数表——路由错不产生副作用（只拒不改），这是派工制安全性的第一道契约（拍板#91② 引号含空格修正实证契约演进·<code>90-过程/拍板记录表.md:111</code>）。<strong>边界</strong>：宿主白名单正本=登记表（本卡只指针不复制）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立约：拍板#76② 路由表落地（routeOf <code>91-脚本/pi_runner.mjs:103</code>·五类×两作业面）</td><td>本卡接口节</td></tr><tr><td>2</td><td>契约修正实战：拍板#91②——工作区根 "pi agent" 带空格致旧正则截断，parseHostRoot 优先匹配引号包裹形式修正（<code>91-脚本/pi_runner.mjs:112</code>）</td><td><code>90-过程/拍板记录表.md:111</code></td></tr><tr><td>3</td><td>白名单首票实战：W-034 App首跑冒烟（宿主=039舆情V5·登记表在役主宿主行锚 <code>90-过程/宿主仓登记表.md:8</code>）——契约从纸面到真票</td><td>本卡宿主白名单指针节</td></tr></tbody></table>
+<h2>接口（路由表·<code>91-脚本/pi_runner.mjs:103</code>）</h2>
+<table><thead><tr><th>大业务（BIZ_KINDS·<code>91-脚本/pi_runner.mjs:99</code>）</th><th>作业面</th><th>cwd 来源</th><th>拒发案</th></tr></thead><tbody><tr><td>引擎优化</td><td>本仓</td><td>repoCwd（引擎仓根）</td><td>—</td></tr><tr><td>引擎修复</td><td>本仓</td><td>repoCwd</td><td>—</td></tr><tr><td>App新建</td><td>宿主仓</td><td>任务书「宿主固定节·宿主仓根」</td><td>宿主空=拒（fail-closed）</td></tr><tr><td>App优化</td><td>宿主仓</td><td>同上</td><td>宿主空=拒</td></tr><tr><td>App修复</td><td>宿主仓</td><td>同上</td><td>宿主空=拒</td></tr><tr><td>（其余/空值）</td><td>—</td><td>—</td><td>未知大业务=拒（fail-closed·<code>91-脚本/pi_runner.mjs:100</code> isAppBiz 判定之外）</td></tr></tbody></table>
+<h2>宿主白名单指针（不在本卡复制·查登记表）</h2>
+<p><strong>权威件=<code>90-过程/宿主仓登记表.md</code></strong>（append-only 台账）：列宿主名/宿主仓根（引号包裹·含空格路径）/栈/启动方式/git 基线/状态。现状在役主宿主=039 舆情监测平台 V5（app/·Python 后端+契约件 RuntimeSpec·<code>90-过程/宿主仓登记表.md:8</code>）；历史资产行标「不接派工」。<strong>开新 App 类票时宿主仓根必须已在本表</strong>——派工器路由只认任务书文本，本表=业主认可的先决台账，两处对不齐=票不立。</p>
+<h2>宿主仓根提取契约（parseHostRoot·<code>91-脚本/pi_runner.mjs:112</code>）</h2>
+<ul><li>优先匹配<strong>引号包裹</strong>形式（引号内允许空格·剥引号）——拍板#91②（工作区根 "pi agent" 本身带空格·旧正则遇空格截断实证后修正）；</li><li>无引号沿旧截断（兼容既有票）；</li><li>与三关校验器（派发书三关校验.mjs）同格式——发书侧与领单侧单一语义防双头漂移。</li></ul>
+<h2>路由决策流（图示与节点详注）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    ROW[队列行大业务列<br/>第 9 列·窗队列.md:25] --> BIZ{在 BIZ_KINDS<br/>五类内?}
+    BIZ -->|未知/空值| X1[fail-closed 拒发<br/>exit 2 面]
+    BIZ -->|引擎两类| LOCAL[routeOf→本仓<br/>cwd=repoCwd·无需宿主]
+    BIZ -->|App 三类| HOST{宿主固定节<br/>parseHostRoot 提取}
+    HOST -->|空| X2[fail-closed 拒发<br/>不改行状态]
+    HOST -->|非空| REG{宿主在登记表?}
+    REG -->|未登记| X3[票不立<br/>白名单先决·拍板#91①]
+    REG -->|已登记| GO[routeOf→宿主仓<br/>cwd=hostCwd·引号剥空格兼容]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>队列行大业务列</td><td>路由输入：窗队列第 9 列（表头锚 <code>90-过程/窗队列.md:25</code>·拍板#76① 五类单选）——缺列旧格式缺省「引擎优化」（存量行零迁移）。</td></tr><tr><td>BIZ_KINDS 判定</td><td>五类白名单（<code>91-脚本/pi_runner.mjs:99</code>）外的值一律拒（<code>:100</code> isAppBiz 判定之外·fail-closed）——枚举封闭，不猜业务。</td></tr><tr><td>引擎两类→本仓</td><td>引擎优化/引擎修复返回本仓根——无需宿主固定节，本仓是这两类的默认作业面（<code>91-脚本/pi_runner.mjs:103</code>）。</td></tr><tr><td>App 三类→宿主固定节</td><td>App新建/优化/修复必须从任务书提取宿主仓根（parseHostRoot <code>:112</code>）——业主显式给坐标，引擎不猜路径。</td></tr><tr><td>fail-closed 拒发</td><td>三个拒面（未知业务/空宿主/未登记）方向一致：只拒不改——路由错不产生副作用，修任务书/登记表后重领。</td></tr><tr><td>登记表白名单</td><td>先决台账（<code>90-过程/宿主仓登记表.md:8</code> 在役主宿主行）：未登记=票不立——白名单把「哪些仓可动工」的决定权留在业主手里（拍板#91①·<code>90-过程/拍板记录表.md:111</code>）。</td></tr><tr><td>引号剥空格兼容</td><td>契约演进实证：引号包裹优先匹配（引号内允许空格·剥引号）——"pi agent" 带空格的教训直接写进了提取契约（拍板#91②）。</td></tr></tbody></table>
+<h2>调用语义（消费方）</h2>
+<ol><li><code>--auto/--loop</code> 领单：选中行→routeOf 定作业面→ok=false 则拒发记因（不弃单不改行状态）；</li><li><code>--window --go</code> 手工：同闸·拒发 exit 2；</li><li>大业务列本身（窗队列第 9 列·拍板#76①·表头锚 <code>90-过程/窗队列.md:25</code>）：缺列旧格式→缺省「引擎优化」（存量行零迁移）。</li></ol>
+<h2>从哪测</h2>
+<p><code>node 91-脚本/pi_runner.mjs --selftest</code>（routeOf 五类+拒发案在册）；缺省 dry-run 对真队列只读可看每行大业务→作业面映射。</p>
+<h2>参数与预算</h2>
+<p>路由是纯函数零 IO 零预算；fail-closed 方向=只拒不改——路由错不产生副作用，重发须修任务书/登记表后重领。</p>
+<h2>时效</h2>
+<p>基准=仓 head 01c1d9a（2026-10-21·W-041 核对·pi_runner.mjs 源码+登记表现行逐行比对）；失效触发=本卡头 frontmatter「失效触发」键。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/04-接口与数据契约/ct-20261021-004-routeOf五类路由表.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

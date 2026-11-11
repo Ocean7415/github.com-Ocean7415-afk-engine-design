@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>handoff · 配置调参标准流程（SOP）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>handoff · 配置调参标准流程（SOP）</h1>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；熔断（同因熔断 L1／收班复盘器 L2）。</p>
+</blockquote>
+<h1>handoff · 配置调参标准流程（SOP）</h1>
+<p>--- id: sop-config-tuning-20261028 kind: 标准作业程序（可重复执行·非单票任务书） created_at: 2026-10-28 适用: 全厂参数调（预算帽/阈值/比率/开关/词表/帽值）——业主亲自，或任何窗口持业主令代调 配套: <code>00-配置总索引卡.md</code>（同目录·参数总账·先查它定位参数） tags: [配置调参, SOP, handoff, 配置目录] ---</p>
+<h2>〇 · 什么时候翻开这份 handoff</h2>
+<p>只要想改下面任何一类东西，就走本流程——<strong>不问不改，改必留痕</strong>：</p>
+<ul><li>「token 预算帽改成 X」「软超比例改 Y」——预算面</li><li>「熔断阈值/回退率/事故率改成 Z」——审批面（W-155 落地后）</li><li>「重探几次/停更几分钟/尾窗多少行」——机检参数</li><li>「某个开关打开/关掉」——演练阀与三态开关</li><li>「词表加一条/删一条」——敏感区词表（C3 范围内增删）</li></ul>
+<p><strong>不适用</strong>：改纪律红线值（⟲≤3、park≤2、NA 门槛 0.2、CRAP 30 等「L0 纪律级」）——那些<strong>不是配置，是纪律</strong>，改=码改＋拍板号，本 SOP 故意不管它们（见 00-配置总索引卡 §1 分级设计）。</p>
+<h2>一 · 第一步：定位参数与等级（查索引卡）</h2>
+<p>翻开同目录 <code>00-配置总索引卡.md</code>：</p>
+<ol><li>在 §2（L1 运维调参面）/§3（L3 环境变量）/§4（L0 纪律级）找到目标参数——<strong>查不到=新参数</strong>，先补索引卡行（含码锚）再继续；</li><li>看它的「等级」列：</li></ol>
+<p>   - <strong>L0 纪律级</strong> → 停。走拍板（对比件→拍板号→码改），本 SOP 到此为止；    - <strong>L1 引擎配置 / L3 env</strong> → 继续第二步；    - <strong>L2 票面参数</strong>（如某票任务书预算帽）→ 那是票面事：立票时写，或业主令改该票任务书对应行＋该票队列行留痕（参照 2026-10-28 W-149 豁免先例），不走本 SOP 其余步骤。</p>
+<h2>二 · 第二步：确认授权与影响面</h2>
+<ol><li><strong>授权</strong>：业主令（对话在案）——主窗/窗口不得自调；</li><li><strong>影响面三问</strong>（在台账行里要答）：</li></ol>
+<p>   - 谁消费这个参数？（索引卡「消费方」列）    - 在飞的窗有几个会受影响？（<code>90-过程/窗队列.md</code> 查 ▶ 行＋其任务书是否引用同一参数）    - 改完要不要跑谁的 selftest？（见第四节复算清单）</p>
+<h2>三 · 第三步：改（按层分操作）</h2>
+<h3>L1 引擎配置（两类改法）</h3>
+<p><strong>类 a · 配置件参数</strong>（afk_dispatch_config.json 的槽位/模型/熔断阈值/词表等）：</p>
+<ol><li>备份意识：配置件入 .gitignore 的（含凭据段）——改前 <code>cp 配置件 配置件.bak-日期</code>；</li><li>只改目标键（delta），其他节零触碰；</li><li>JSON 合法性验证：<code>python -X utf8 -c "import json;json.load(open('91-脚本/afk_dispatch_config.json',encoding='utf-8'));print('OK')"</code>。</li></ol>
+<p><strong>类 b · 代码常量参数</strong>（尚未迁移 L1 的——如 DEFAULT_CAP_TOKENS/SOFT_RATIO）：</p>
+<ol><li>改常量行，行尾注释格式：<code>// 业主令 日期「原文」·全局调帽·对话在案·候追认</code>；</li><li><strong>同步 selftest 夹具</strong>：该参数的 selftest 若有按旧值造数的夹具（如预算帽案 3a-3e、案 8/9/10 三档 usage），<strong>同比例同步</strong>——2026-10-28 调帽实录：改 1M→3M 后 selftest 8 败，夹具六处 ×3 后 38 案全过（台账在案）；</li><li>跑 selftest 复绿才算改完（见第四节）。</li><li>（推荐后续）高频参数迁移到配置件后，此类 b 操作退役。</li></ol>
+<h3>L3 环境变量</h3>
+<ul><li>设 env 的地方分两种：会话级（当前窗口）/持久级（afk_cron.cmd 对应行或启停台）——改持久级前看 afk_cron.cmd 现行写法；改完跑一次对应件确认读到了新值。</li></ul>
+<h2>四 · 第四步：复算（跑什么才算改完）</h2>
+<table><thead><tr><th>参数所属件</th><th>必跑</th><th>绿标准</th></tr></thead><tbody><tr><td>窗预算刹车.mjs（帽/比率）</td><td><code>node 91-脚本/窗预算刹车.mjs --selftest</code></td><td>38 案（或当时案数）全过 EXIT=0</td></tr><tr><td>收口申报器/收割器（mtime 阈等）</td><td><code>node 91-脚本/pi_runner.mjs --selftest</code></td><td>全量 EXIT=0</td></tr><tr><td>wip_scan（扫描阈）</td><td><code>python -X utf8 91-脚本/wip_scan.py</code>（可加 --check-feishu）</td><td>无新增红·EXIT=0</td></tr><tr><td>会审门/分级器/熔断器（W-155 落地后）</td><td>各自 selftest＋pi_runner selftest</td><td>全过</td></tr><tr><td>锚点断言（基线刷新类）</td><td><code>node 91-脚本/锚点断言.mjs --check</code></td><td>漂移数不异常放大</td></tr></tbody></table>
+<p><strong>红先绿后提醒</strong>：调参类热修的红屏=改前行为（如崩溃/误判实录）——已有就引用；改后必须绿屏（selftest 全过）。</p>
+<h2>五 · 第五步：留痕（三处·缺一不算完）</h2>
+<ol><li><strong>执行台账 append</strong>，行格式（金样=2026-10-28 三例）：</li></ol>
+<p>   <code>- 【业主令调参 日期 时间】参数名 旧值→新值（触发事件·业主令原文·对话在案）·复算=selftest N 案全过 EXIT0·影响面=某窗某链·候追认。</code></p>
+<ol><li><strong>在飞窗受影响的</strong>：窗队列该行更新列前插一条（例：「【业主令调帽…】本票帽沿新缺省自动转绿·候追认」——金样=W-153 行）；</li><li><strong>配置总索引卡对应行</strong>「现值」列刷新（本目录 00 卡）。</li></ol>
+<h2>六 · 红线（本 SOP 的不可越面）</h2>
+<ol><li>L0 纪律级不走本 SOP（改=拍板＋码改＋拍板号）；</li><li>判卷语义/出题权/考题内容/push 由人/凭据值——零触碰（调参≠改判卷：帽值/阈值/开关可以，红绿判定规则不行）；</li><li>改配置件不改凭据段（corpid/secret 类在 .gitignore 段·只读不动）；</li><li>新拦截性开关（enforce 类）翻转=业主令＋渐进开闸制（先影子一班）——不因本 SOP 免除；</li><li>全程留痕候追认——主窗/窗口代调无例外。</li></ol>
+<h2>七 · 历史案例参照（2026-10-28 三例·金样）</h2>
+<table><thead><tr><th>案例</th><th>场景</th><th>走的路径</th></tr></thead><tbody><tr><td>例1 W-149 豁免</td><td>硬超触帽→业主「不设预算继续」→<strong>L2 票面</strong>：改该票任务书帽行＋队列留痕</td><td>本 SOP 一·二·五（L2 分支）</td></tr><tr><td>例2 全局调帽 300 万</td><td>W-153 软超→业主「预算改 3,000,000」→<strong>L1 类 b</strong>：改代码常量＋selftest 夹具同步＋复绿</td><td>本 SOP 全程（L1 类 b）</td></tr><tr><td>例3 影子开关</td><td>会审门首班观察期 DRYRUN 红→只记不拦</td><td>L3 现状（渐进开闸·翻 enforce 候业主令）</td></tr></tbody></table>
+<h2>八 · 参数速查</h2>
+<p>参数全账（名字/现值/锚/等级）＝同目录 <code>00-配置总索引卡.md</code>——本 SOP 不重复列，索引卡失效触发=任一参数变更即更新对应行。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/09-配置目录/handoff-配置调参标准流程-20261028.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+</body>
+</html>

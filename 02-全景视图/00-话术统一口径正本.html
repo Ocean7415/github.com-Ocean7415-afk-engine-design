@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>quanjing-koujing-001 · 02-全景视图 · 话术统一口径正本</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>quanjing-koujing-001 · 02-全景视图 · 话术统一口径正本</h1>
+<div class="meta"><b>id</b> quanjing-koujing-001 · <b>kind</b> 口径正本卡（话术统一·02-全景视图唯一事实源） · <b>domain</b> engine · <b>status</b> draft · <b>created_at</b> 2026-11-01 · <b>repo_head</b> 6732949</div>
+<h1>02-全景视图 · 话术统一口径正本</h1>
+<blockquote>
+<p><strong>本卡是什么</strong>：02-全景视图全部文档的术语唯一事实源——混淆词消歧、状态机标准名、闸家族事件名、坐标范式、使用规则，一张卡定死。</p>
+<p><strong>效力</strong>：新内容强制按本口径；存量内容按「增量勘误」分批校准（§9），不做一次性全量重写（防打断机检词面锚与各卡失效触发对账）。</p>
+<p><strong>总原则（双名制）</strong>：机检短名/比喻名<strong>不改动</strong>（词面锚焊死：判班黄靠「会审门红」词面·写口宪法靠态名中文字面）；本卡给出<strong>标准全称/事件名</strong>，文档首现双写「标准名（短名）」。</p>
+</blockquote>
+<p>---</p>
+<h2>§1 两层总口径</h2>
+<table><thead><tr><th>口径</th><th>定义</th><th>白话</th></tr></thead><tbody><tr><td><strong>L1＝车间流水线</strong></td><td>票级·ts/src·机器为主</td><td>把立项包变成验收过的代码</td></tr><tr><td><strong>L2＝派工台</strong></td><td>窗级·91-脚本</td><td>把拍板变成施工窗、把窗管到业主终认</td></tr><tr><td>白话三词</td><td>机械设备＝确定性脚本/机检 · Agent员工＝施工窗会话 · 自然人审核＝业主</td><td>引 04-规则/话术规范</td></tr><tr><td>状态机六台</td><td>L1 三台半（批次运行/工序票/波次/包级候拍）＋L2 两台（窗队列/病卡）</td><td>图册＝007 §2.4</td></tr></tbody></table>
+<h2>§2 状态机标准名（全称｜短名｜正本锚）</h2>
+<table><thead><tr><th>层</th><th>标准全称</th><th>状态数</th><th>正本锚</th><th>图</th></tr></thead><tbody><tr><td>L1</td><td>批次运行状态机（run）</td><td>10</td><td>run-state.ts:19-43</td><td>007 图3</td></tr><tr><td>L1</td><td>工序票状态机（ticket）</td><td>11</td><td>ticket-state.ts:21-46</td><td>007 §2.4 图4</td></tr><tr><td>L1</td><td>波次排期账</td><td>5</td><td>queue-ledger.ts:13,18</td><td>007 §2.4 图5</td></tr><tr><td>L1</td><td>包级账</td><td>10 值</td><td>候拍设计·未落地</td><td>——</td></tr><tr><td>L2</td><td>窗队列状态机</td><td>9</td><td>窗队列.md:6＋队列写口.mjs:47-60</td><td>007 图2</td></tr><tr><td>L2</td><td>病卡状态机</td><td>7</td><td>repair-contract.mjs:23,40</td><td>007 §2.4 图6</td></tr></tbody></table>
+<h2>§3 高频混淆词消歧表（★核心·撞车词必须带消歧）</h2>
+<table><thead><tr><th>混淆词</th><th>L1 车间口径</th><th>L2 派工台口径</th></tr></thead><tbody><tr><td><strong>票</strong></td><td><strong>工序票</strong>（拆单机产物·11 态施工账）</td><td><strong>窗票</strong>（窗队列一行·9 态派工账）</td></tr><tr><td><strong>三关</strong></td><td><strong>收包验货关</strong>（包导入三关）</td><td><strong>立票验单关</strong>（任务书三关）／<strong>贴卡拦病关</strong>（队列行三关）／<strong>领单再验单</strong>（派发复跑）</td></tr><tr><td><strong>判定梯</strong></td><td><strong>交卷判分梯</strong>（R13·判票）</td><td><strong>收班判色梯</strong>（判班：绿/黄/红）</td></tr><tr><td><strong>补考/复考</strong></td><td><strong>挂起补考</strong>（夜末挂起票重试·同因熔断）</td><td><strong>交活重考闸</strong>（窗宣称完工重考·绿才认✅）</td></tr><tr><td><strong>翻案</strong></td><td><strong>绿灯吊销</strong>（机器吊销绿灯票·回归翻案）</td><td><strong>业主撤回</strong>（rollback 推翻代拍）</td></tr><tr><td><strong>环</strong></td><td><strong>干活自愈环</strong>（施工内·⟲≤3）</td><td><strong>返工环</strong>（病卡七态·窗级）</td></tr><tr><td><strong>授权面</strong></td><td><strong>票单授权面</strong>（latitude）</td><td><strong>窗单授权面</strong>（任务书）</td></tr><tr><td><strong>熔断</strong></td><td><strong>同因熔断</strong>（重试保护）</td><td><strong>收班复盘器</strong>（审批熔断·代拍双率）</td></tr><tr><td><strong>挂起</strong></td><td>无态——gate_suspend/resume 事件对＋游标</td><td>⏸ 独立状态格（写口宪法管）</td></tr><tr><td><strong>体检</strong></td><td>——（L1 无此喻）</td><td><strong>领单体检门</strong>（会审门·开工前四查）</td></tr></tbody></table>
+<h2>§4 闸与门 · 事件名总表（双名对照）</h2>
+<table><thead><tr><th>标准事件名（首现用）</th><th>现行短名（机检锚·不改）</th><th>时点</th><th>迁移边/驻留</th></tr></thead><tbody><tr><td>收包验货关</td><td>包导入三关（#2）</td><td>L1 收包时</td><td>导入中入边</td></tr><tr><td>拆单排产</td><td>拆单机（#3）</td><td>L1 拆单中</td><td>驱</td></tr><tr><td>考卷封存</td><td>判卷素材冻结（#4）</td><td>L1 拆单中</td><td>驱</td></tr><tr><td>干活自愈环</td><td>回喂自愈环⟲≤3（#15）</td><td>L1 施工中</td><td>驻</td></tr><tr><td>挂起补考</td><td>挂起补考（#23）</td><td>L1 夜末</td><td>自环</td></tr><tr><td>交卷判分梯</td><td>R13 判定梯（#36）</td><td>L1 验收→汇报</td><td>闸</td></tr><tr><td>拍板落账</td><td>拍板落票</td><td>L2 立票时</td><td>驱</td></tr><tr><td>立票验单关</td><td>任务书三关（#6）</td><td>L2 立票时</td><td>闸</td></tr><tr><td>立票贴卡</td><td>窗卡台投影（#88）</td><td>L2 立票时</td><td>闸＋驱</td></tr><tr><td>领单验格闸</td><td>pickDispatch 五闸（#7）</td><td>L2 领单时</td><td>闸</td></tr><tr><td>领单查撞单</td><td>领地交叠反查（#92）</td><td>L2 领单时</td><td>闸(软)</td></tr><tr><td><strong>领单体检门</strong></td><td><strong>会审门（#37）</strong></td><td>L2 领单时</td><td><strong>闸</strong></td></tr><tr><td>领单定档闸</td><td>风险分级/分级闸（#62b）</td><td>L2 领单时</td><td>闸</td></tr><tr><td>翻格开窗</td><td>markRunning＋spawn（#26/#28）</td><td>L2 领单时</td><td>驱</td></tr><tr><td>干活力续租</td><td>心跳租约（W-189）</td><td>L2 干活时</td><td>驻</td></tr><tr><td>拿不准停车请示闸</td><td>方向题闸（#43）</td><td>L2 干活时</td><td>闸</td></tr><tr><td>交活五件套</td><td>收口五件套（#57）</td><td>L2 交活时</td><td>驱</td></tr><tr><td>关窗对账钩</td><td>退出钩子（#89甲）</td><td>L2 交活时</td><td>钩</td></tr><tr><td><strong>交活重考闸</strong></td><td><strong>复考闸（#38）</strong></td><td>L2 交活时</td><td><strong>闸</strong></td></tr><tr><td>没考卷不装绿</td><td>完工待确认（#179）</td><td>L2 交活时</td><td>闸</td></tr><tr><td>考砸分诊</td><td>打回分诊（#49）</td><td>L2 交活时</td><td>驱</td></tr><tr><td>返工环</td><td>病卡维修环（#47/#48）</td><td>L2 维修中</td><td>驻</td></tr><tr><td>误挂恢复/挂账清偿/挂账随裁</td><td>宪法对8/9/10（#301/#309）</td><td>L2 ⏸出边</td><td>驱</td></tr><tr><td>值守巡检推进</td><td>值守道双层（#305）</td><td>L2 ⏸驻留</td><td>驻</td></tr><tr><td>半小时巡逻</td><td>wip_scan（#50）</td><td>L2 巡逻时</td><td>驻</td></tr><tr><td>宁停判死</td><td>僵尸认定/停更签名分诊（#63）</td><td>L2 巡逻时</td><td>闸</td></tr><tr><td>僵尸核账报告</td><td>核账处置报告（#64）</td><td>L2 巡逻时</td><td>驻</td></tr><tr><td>收班放行⏸</td><td>班末 drain（W-147）</td><td>L2 收班时</td><td>驱</td></tr><tr><td>收班报</td><td>班次汇报聚合器（#46）</td><td>L2 收班时</td><td>报</td></tr><tr><td>收班判色梯</td><td>班次判定梯（#61）</td><td>L2 收班时</td><td>闸</td></tr><tr><td>收班复盘器</td><td>审批熔断（#62a）</td><td>L2 收班时</td><td>器</td></tr><tr><td>收班工时账</td><td>效率账（#60）</td><td>L2 收班时</td><td>账</td></tr><tr><td>候批推卡道</td><td>监工道（#275/#306）</td><td>L2 驻留</td><td>驻</td></tr><tr><td>候批回执道</td><td>审批卡异步道（#44）</td><td>L2 立票时</td><td>驻</td></tr></tbody></table>
+<p>（L1 侧事件名总表＝第七章弹性/第三章拦截/第四章事件各矩阵，同规则双写）</p>
+<h2>§5 状态流转六列表范式（正本）</h2>
+<p>流转统一用六列表：<strong>From 现态｜Event 触发事件｜Guard 守卫｜Action 动作｜To 次态｜出口说明</strong>——<code>S+Event+Guard→S'</code> 逐行展开。三件套＝表（机读正本）＋mermaid 图（人看）＋口述（外行）。范式全文与示例＝sm-20261101-007 §2.3。</p>
+<h2>§6 机制定位五元组（坐标正本）</h2>
+<p>凡定位一个机制，统一五元组：<strong>层（L1/L2）·状态机台·触发事件·迁移边/驻留态·出口映射</strong>。闸/驱/驻/底座四类坐标（定义＝007 各章 N.0）。</p>
+<h2>§7 断言口径（五品种）</h2>
+<p>行为断言／同步断言／不变式断言／锚点断言／防假绿断言——定义与锚＝007 §3.3。口径句：<strong>断言是闸的牙齿；绿才认＝认 exit code 不认感觉</strong>。</p>
+<h2>§8 FSM Runtime 归属（候拍采纳）</h2>
+<p>机制目录加「FSM 层归属」列：Core/拦截/事件/持久化/调度/弹性/补偿/观测/静态工具＋<strong>流程（非Runtime）</strong>/<strong>治理（非Runtime）</strong>/<strong>辅助系统（RAG/通道/记忆·框架外）</strong>——不改机制卡名（理由：约四分之一机制非运行时概念·硬套失真；详见 007 §11-§14 对账）。</p>
+<h2>§9 使用规则与执行分批</h2>
+<p><strong>使用规则</strong>：</p>
+<ol><li>首现双写「标准事件名（现行名）」，如「领单体检门（会审门）」；同篇后续可用短名；</li><li>机检短名/词面锚<strong>永不改</strong>（会审门/复考闸/三关/判班词面等）；</li><li>撞车词必须带消歧：窗票 vs 工序票·判色 vs 判分·挂起补考 vs 交活重考；</li><li>新卡立卡：按本卡 §4 立「事件名」栏＋§6 五元组坐标；</li><li>存量勘误走各卡失效触发流程，改共享面前拍板＋改前快照（#80）；</li><li><strong>命名按 §10 命名体系</strong>：正名一律中文全称，不用英文缩写、不省略限定词。</li></ol>
+<p><strong>执行分批（候拍板号）</strong>：</p>
+<table><thead><tr><th>批</th><th>范围</th><th>动作</th></tr></thead><tbody><tr><td>批1</td><td>05-状态机 7 卡＋08-机制目录 13 md</td><td>头注加「口径：见 00-话术统一口径正本」＋高频混淆词首现双写</td></tr><tr><td>批2</td><td>01-业务流程 10＋07-数据流 9</td><td>同上＋两层口径校准</td></tr><tr><td>批3</td><td>03-模块卡 13＋04-契约 4＋09-配置 2＋02-时序 2</td><td>同上＋收尾全量 grep 复查</td></tr><tr><td>收尾</td><td>006 转史档已毕；007 已按新口径</td><td>全量复查报告</td></tr></tbody></table>
+<p>---</p>
+<h2>§10 命名体系（三层命名法·中文全称版）</h2>
+<blockquote>
+<p><strong>效力（业主同意·2026-11-01 对话在案）</strong>：§10.1-10.5 三层命名法体系本体<strong>即刻生效</strong>——新机制立卡必过命名审查三问（10.5）、必填中文正名；§10.6 落地（存量批1-3 勘误）仍候拍板号；本节候落拍板表追认（代录候选）。</p>
+</blockquote>
+<h3>10.1 三层命名法</h3>
+<table><thead><tr><th>层</th><th>名什么</th><th>语言</th><th>权威来源</th><th>改不改</th></tr></thead><tbody><tr><td>层1 · 码名</td><td>代码符号（run-slice/wip_scan/queue_mutex）</td><td>英文</td><td>代码即正本</td><td>永不改；<strong>文档行文不裸用码名</strong>——用层2 中文名</td></tr><tr><td>层2 · 正名</td><td>机制卡卡面名·文档首现名</td><td><strong>中文全称</strong></td><td>构词公式（10.2）·业内 Pattern 名只作考据注记</td><td>只增不改（双名制）</td></tr><tr><td>层3 · 话名</td><td>行文口述白话隐喻</td><td>中文</td><td>词根封闭表（限工厂域）</td><td>随文可换·不入机检</td></tr></tbody></table>
+<h3>10.2 层2 正名构词公式（中文全称）</h3>
+<blockquote>
+<p><strong>正名 ＝〔层域前缀·可省〕＋〔时点/范围限定词〕＋〔动作动词〕＋〔类型后缀〕</strong></p>
+</blockquote>
+<p>类型后缀封闭集（九类·不再新增）：</p>
+<table><thead><tr><th>后缀</th><th>语义</th><th>例</th></tr></thead><tbody><tr><td>闸（含门/关）</td><td>迁移边守卫·不过不放行</td><td>领单体检门／收班判色梯旁的定档闸／收包验货关</td></tr><tr><td>环</td><td>有限重试修复循环</td><td>干活自愈环／返工环</td></tr><tr><td>账</td><td>append-only 留痕</td><td>效率账／事件账</td></tr><tr><td>报</td><td>周期汇总产出</td><td>晨报／收班报</td></tr><tr><td>器</td><td>周期运行组件</td><td>收班复盘器／收割器</td></tr><tr><td>道</td><td>人工/异步通道</td><td>候批回执道</td></tr><tr><td>钩</td><td>时点自动触发</td><td>关窗对账钩</td></tr><tr><td>制</td><td>治理制度</td><td>渐进开闸制／代拍追认制</td></tr><tr><td>机</td><td>转换组件</td><td>拆单机／翻译机</td></tr></tbody></table>
+<h3>10.3 全称三规则</h3>
+<ol><li><strong>不用英文缩写作名</strong>——NA/PASS/TaskID 是判据值与标识符，不是名；码名只活在代码与锚点里，行文一律用中文名；</li><li><strong>不省略限定词</strong>——限定词承载时点与范围，省了就撞车或丢义：「领单体检门」不可省成「体检门」，「交活重考闸」不可省成「重考闸」，「收班判色梯」不可省成「判定梯」；</li><li><strong>首现＝全称正名</strong>（机检短名括注），如「领单体检门（会审门）」；机检词面锚永不改。</li></ol>
+<h3>10.4 存量名 · 中文正名对照全表（批1 勘误已完成 2026-11-01）</h3>
+<p><strong>L1 车间（票级）</strong>：</p>
+<table><thead><tr><th>现短名/码名</th><th>中文正名（全称）</th><th>业内考据（注记·不作卡面名）</th></tr></thead><tbody><tr><td>夜车</td><td>完整批次运行（话名「夜车」保留）</td><td>Batch Run</td></tr><tr><td>停车场</td><td>失败票挂起重试场</td><td>Parking Lot</td></tr><tr><td>金丝雀</td><td>小流量先行验证</td><td>Canary Release</td></tr><tr><td>拆单机</td><td>拆单排产机</td><td>DAG Batching</td></tr><tr><td>装备信封</td><td>五槽装备信封</td><td>Work-Order Contract</td></tr><tr><td>素材冻结</td><td>判卷素材封存</td><td>Integrity Anchoring</td></tr><tr><td>扣绿闸</td><td>对题审查扣绿闸</td><td>Quality Gate</td></tr><tr><td>三钥匙</td><td>三钥匙出关</td><td>Multi-signal Sign-off</td></tr><tr><td>判定梯</td><td>验收交卷判分梯</td><td>Verdict Ladder</td></tr><tr><td>补考</td><td>挂起补考</td><td>Retry-once</td></tr><tr><td>同因熔断</td><td>同因熔断</td><td>Circuit Breaker</td></tr><tr><td>双证</td><td>双证验活切片</td><td>Two-witness Verification</td></tr></tbody></table>
+<p><strong>L2 派工台（窗级）</strong>：</p>
+<table><thead><tr><th>现短名/码名</th><th>中文正名（全称）</th><th>业内考据</th></tr></thead><tbody><tr><td>会审门</td><td>领单体检门</td><td>Pre-spawn Review Gate</td></tr><tr><td>复考闸</td><td>交活重考闸</td><td>Post-completion Exam Gate</td></tr><tr><td>分级闸</td><td>领单定档闸</td><td>Risk-based Approval Tiering</td></tr><tr><td>熔断器</td><td>收班复盘器</td><td>Circuit Breaker（审批）</td></tr><tr><td>效率账</td><td>收班工时账</td><td>Usage Accounting</td></tr><tr><td>wip_scan</td><td>在途窗落差巡逻机检</td><td>Stale-row Scanner</td></tr><tr><td>监工道</td><td>候批推卡道</td><td>Notifier</td></tr><tr><td>值守道</td><td>定时值守巡检推进</td><td>Watchdog ＋ LLM Patrol</td></tr><tr><td>心跳孤儿</td><td>心跳无主窗（领单实例退出·无人续租）</td><td>Orphaned Heartbeat</td></tr><tr><td>收割器</td><td>交活回执收割器</td><td>Reaper</td></tr></tbody></table>
+<p><strong>跨层/通用</strong>：</p>
+<table><thead><tr><th>现短名/码名</th><th>中文正名（全称）</th><th>业内考据</th></tr></thead><tbody><tr><td>NA</td><td>不适用（检验前提不满足·NA≠PASS）</td><td>Not Applicable</td></tr><tr><td>TaskID</td><td>任务实例标识</td><td>Task Identifier</td></tr><tr><td>补偿</td><td>失败反向撤销（人工主导）</td><td>Saga Compensation</td></tr><tr><td>舱壁</td><td>资源隔离舱壁</td><td>Bulkhead</td></tr><tr><td>事件溯源</td><td>账本全量事件重放</td><td>Event Sourcing</td></tr><tr><td>死信</td><td>无法消费事件留痕账</td><td>Dead Letter</td></tr></tbody></table>
+<h3>10.5 命名审查三问（新机制入库·拍板前必查）</h3>
+<ol><li>业内已有成熟 Pattern 吗？——有：取其语义作中文正名（构词公式生成），英文 Pattern 名入考据注记；</li><li>词根/后缀与 §3 消歧表、§4 事件名总表冲突吗？——撞车即改；</li><li>隐喻域越界吗？——话名限工厂域，混域隐喻只进口述不进卡面。</li></ol>
+<h3>10.6 落地</h3>
+<p>新机制立卡必填「中文正名」栏（构词公式生成＋审查三问过闸）；存量卡按双名制增量校准（首现双写·短名不改）；批1-3 头注声明与消歧注记已于 2026-11-01 完成（59 卡）。</p>
+<p>---</p>
+<h2>附 · 本卡与相关正本的关系</h2>
+<ul><li>04-规则/话术规范＝全仓话术母法（白话三词·结论先行）——本卡是其<strong>全景视图实施细则</strong>，冲突以母法为准；</li><li>sm-20261101-007＝FSM Runtime 对照详述（本卡 §4/§5/§7/§8 与其同源）；</li><li>sm-20261101-006＝已转史档（本卡吸收其全部口径结论：双名制/消歧表/六列范式/五元组）。</li></ul>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/00-话术统一口径正本.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+</body>
+</html>

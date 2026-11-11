@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-005 · 模块卡 · 收车编排（postshift）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-005 · 模块卡 · 收车编排（postshift）</h1>
+<div class="meta"><b>id</b> mk-20261021-005 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 67e5b04 · <b>run_id</b> queue-93-w040</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>模块卡 · 收车编排（postshift）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：夜车收车后自动做班后复盘——监听 gate 事件或手动触发，跑复盘/归因/方案件六件，产出全部「待拍板」形态。<strong>为什么存在</strong>：班后归因和深化是高价值但机械的活，postshift 用「零代码写入·零重跑·零判卷触碰」三红线把它自动化，人只拍板（头注红线·锚 pipeline-lab/scripts/postshift.mjs:1）。<strong>边界</strong>：不碰夜车进程、不给将死的版本写判词（closed 闸）、每件失败不挡后续。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>编排实勘：W-041 深读确认 postshift 六件编排锚（病卡/诊断/方案件/信号/复盘/深化挂 closed 闸）</td><td><code>90-过程/执行台账.md:583</code></td></tr><tr><td>2</td><td>触发源：queue-40 班 gate 事件流（queue_gate_failed/passed 落 queue-events.jsonl）——--watch 道的行车记录仪</td><td><code>runs/.queue-roots/queue-40/queue-events.jsonl:1</code>（实物在册）</td></tr><tr><td>3</td><td>深化闸纪律：closed 闸 fail-closed——「读不到状态≠放行」，深化只对已关环稳定态工作区开放</td><td>本卡实现概览·锚 pipeline-lab/scripts/postshift.mjs:38</td></tr></tbody></table>
+<h2>接口</h2>
+<p>CLI 两路：手动复盘 <code>node pipeline-lab/scripts/postshift.mjs --ws &lt;班次工作区&gt; [--run-id] [--loop-root &lt;维修环根·closed闸&gt;] [--max-calls 5]</code>·监听 <code>--watch --manifest &lt;m&gt; --queue-events &lt;q.jsonl&gt; [--poll-sec 30]</code>。 导出：deepenGate closed 闸纯函数（锚 pipeline-lab/scripts/postshift.mjs:38）·runPostShift 编排主流程（锚 pipeline-lab/scripts/postshift.mjs:59·loopStateReader/shFn 可注入打桩）·watchMode 监听（锚 pipeline-lab/scripts/postshift.mjs:207·gate 事件触发）。</p>
+<h2>实现概览</h2>
+<p>把 nightrun-wrap 九连的「收车半段」独立拉起：班次结束后做复盘/归因/方案件，不碰夜车进程。红线（头注·锚 pipeline-lab/scripts/postshift.mjs:1）：零代码写入·零重跑·零判卷触碰——产出全部「待拍板」形态，不装绿不改车。 closed 闸 fail-closed：深化只对已关环（绿+总结落盘两件齐）的稳定态工作区开放；读不到状态≠放行——不给将死的版本写判词。韧性：每件失败不挡后续（warnings 收集）·全部子件可独立重跑幂等。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    TRG{触发道}
+    QE[queue-events.jsonl<br/>gate 事件流] -->|queue_gate_failed/passed| TRG
+    MAN[业主手动令<br/>--ws] --> TRG
+    TRG --> RP[runPostShift 编排<br/>六件顺序跑]
+    RP --> R1[病卡复核]
+    RP --> R2[诊断复核]
+    RP --> R3[方案件]
+    RP --> R4[信号]
+    RP --> R5[班后复盘件]
+    RP --> DG{deepenGate<br/>closed 闸}
+    DG -->|绿+总结两件齐| R6[深化件]
+    DG -->|读不到状态| HOLD[不放行<br/>不给将死版本写判词]
+    R1 & R2 & R3 & R4 & R5 & R6 --> SUM[postshift-summary.md<br/>缺席告警置顶]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>触发道</td><td>两路入口并行可用：--watch 监听 gate 事件（锚 pipeline-lab/scripts/postshift.mjs:207·poll-sec 轮询事件流）与业主手动令——同一编排主流程，幂等可重跑。</td></tr><tr><td>queue-events.jsonl</td><td>行车记录仪：gate 判定事件的唯一正本（拍板#35 实锚）；postshift 只读它做触发判断，不改写（账本契约见 ct-20261021-001）。</td></tr><tr><td>runPostShift 编排</td><td>六子件顺序拉起（锚 pipeline-lab/scripts/postshift.mjs:59）；loopStateReader/shFn 可注入打桩（测试面）；每件失败 warnings 收集不挡后续。</td></tr><tr><td>deepenGate closed 闸</td><td>深化的资格闸纯函数（锚 pipeline-lab/scripts/postshift.mjs:38）：绿+总结落盘两件齐才放行；fail-closed——读不到状态≠放行。</td></tr><tr><td>深化件</td><td>班后深化产出（待拍板形态）：只对已关环稳定态工作区开放，不给将死的版本写判词——「宁缺勿滥」的复盘纪律。</td></tr><tr><td>postshift-summary.md</td><td>六件汇总落 <code>&lt;ws&gt;/report/postshift-summary.md</code>；某件缺席=告警置顶（不藏失败）——业主晨读的单一入口。</td></tr></tbody></table>
+<h2>调用方与被调用</h2>
+<p>被调：nightrun-wrap（收车半段·见卡 mk-20261021-004）/业主手动复盘令。 调用：六子件独立 CLI（复盘/归因/方案件族·编排搬家不重写）；环状态读 repair-loop-state.json。</p>
+<h2>从哪测</h2>
+<p>pipeline-lab/tests 下 postshift 相关测试件（node --test）；deepenGate 纯函数可直测。</p>
+<h2>参数与预算</h2>
+<p>独立分账（--max-calls 透传 diagnose·与夜车预算互不挤占）；产出汇总落 <code>&lt;ws&gt;/report/postshift-summary.md</code>（缺席告警置顶）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 67e5b04（2026-10-21·W-040 核对）；失效触发=收车子件面/closed 闸判据改动（看执行台账 pipeline-lab 新笔）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-005-收车编排-postshift.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

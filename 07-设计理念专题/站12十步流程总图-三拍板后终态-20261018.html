@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>站1/站2 十步流程总图 · 三拍板后终态（07-设计理念专题）</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-12 space-y-12">
+
+<!-- ═══════════════ 头部 ═══════════════ -->
+<header class="space-y-3">
+  <h1 class="font-serif text-3xl">站1/站2 十步流程总图 <span class="text-slate-400 text-xl">三拍板后终态（#50/#51/#52 · 2026-10-18）</span></h1>
+  <p class="text-sm text-slate-500">源件=<code class="text-xs bg-stone-200 rounded px-1">站点1站点2方案规划流程/01-流程/</code>工作流蓝图.md §3/§7 + 执行编成.md §6.0-§6.4（正本已落三拍板）· 深读核账 2026-10-18（边界 113 件·P0/P1 全读）· 交接件=<code class="text-xs bg-stone-200 rounded px-1">90-过程/handoffs/handoff-站12流程改造窗三拍板与调研深度治理-20261018.md</code></p>
+  <p class="text-sm text-emerald-700">🟩 绿粗边 = 本窗新增件：<a href="#s2" class="underline">P-A3.5 调研综合分析节点（#50）</a> · <a href="#s2" class="underline">P-G5 交件修复窗（#51）</a> · <a href="#s3" class="underline">调研深度治理四件套（#52）</a></p>
+  <div class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
+    <span><span class="inline-block w-3 h-3 deep-box rounded-sm align-middle"></span> 自然人审核（只有业主能做）</span>
+    <span><span class="inline-block w-3 h-3 bg-purple-500 rounded-sm align-middle"></span> Agent员工（LLM 调用面·各窗口）</span>
+    <span><span class="inline-block w-3 h-3 bg-blue-500 rounded-sm align-middle"></span> 机械设备（确定性脚本·零 LLM）</span>
+    <span><span class="inline-block w-3 h-3 border-2 border-emerald-600 bg-emerald-50 rounded-sm align-middle"></span> 本窗新增（#50/#51/#52）</span>
+  </div>
+</header>
+
+<!-- ═══════════════ 一 · 十步主链总图 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">一 · 十步主链总图：需求进 → 图纸袋出 <span class="text-slate-400 text-sm">执行编成.md §6.4 进度表（唯一权威状态）· 工作流蓝图.md §3 产物链</span></h2>
+  <pre class="mermaid">
+flowchart TD
+  T0["0 前置拍板 ✅ 22项在案<br/>拍板记录表.md（append-only）"]
+  S05["0.5 产成品样品窗 P-S1（#32）<br/>pi 真造最终产出物·三件交付：<br/>样品实物＋验收判据集＋审核记录<br/>判据前灌设计书与工单 accept"]
+  S1["1 A窗·需求定稿<br/>Destination 五件套提问<br/>＋当场拍七位能力开关（#18）"]
+  S2["2 B轮调研 ⟲按需多轮<br/>B1 联网调研 / B2 读码调研<br/>先派发后开窗·发窗前过三关机检（#49）"]
+  G52{"B1 必跑闸（#52·人检）<br/>B1 产出落盘？对照系矩阵齐？"}
+  S25["🆕 2.5 调研综合分析件 P-A3.5（#50）<br/>汇总全部回传→逐维度对表→候选横比矩阵<br/>→证据冲突节→推荐带依据<br/>无分析件不拍板（简单项目可短不可无）"]
+  PA(["业主过目分析件·拍板"])
+  S3["3 决策期收口<br/>拍板表 / CONTEXT.md / ADR<br/>灵感池未分诊条目顺手分诊（#36）"]
+  S4["4 C轮原型定稿<br/>C1 superdesign→ui-*.html<br/>C2 Mermaid手写→logic-*.html（#19）"]
+  S5["5 A窗·技术栈定案 P-A4＋设计书 V1<br/>十三章骨架＋实施清单节（#13/#16）"]
+  S6["6 圆桌会议窗 ⟲≤3<br/>机检预检 roundtable-precheck（不过不烧轮次）<br/>产品/架构/风险三persona→设计书 V2 md+html"]
+  S7["7 备份窗·本地快照<br/>快照.ps1 只出文本由人执行<br/>（改代码才需要·新项目免）"]
+  S8["8 交件归档<br/>提交版本文件/（站3入场材料进 提交给站点3/ 子夹）"]
+  G4["一键交件自检（#48·四闸串联）<br/>闸1 圆桌预检 13项 · 闸2 契约三关<br/>闸3 移交预检 43+项 · 闸4 拼装实测提示"]
+  S85["🆕 8.5 交件修复窗 P-G5（#51）<br/>FAIL清单分诊三分类：<br/>①机械缺陷→定向修·只动清单指到的位置<br/>②语义问题→回A窗拍板（本窗不碰）<br/>③工具误报→出证走换装卡 P-X7"]
+  S9["9 交接窗·站1收尾 handoff<br/>总交接＋渲染下一棒提示词"]
+  OUT(["业主自行过目 · 自行导入站3<br/>（批准窗已取消·不翻案）"])
+
+  T0 --> S05 --> S1 --> S2 --> G52
+  G52 -->|"缺＝回开 B1 票·不过就拦"| S2
+  G52 -->|"齐"| S25 --> PA --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> G4
+  G4 -->|"四闸双绿＝交件完成"| S9 --> OUT
+  G4 -->|"任一 FAIL"| S85
+  S85 -->|"机械缺陷定向修→复跑 ⟲≤3"| G4
+  S85 -->|"烧完⟲≤3仍有FAIL"| HUMAN(["转人工·如实报剩余清单<br/>永不静默放弃·永不装绿"])
+
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  classDef agent fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef mech fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  classDef fresh fill:#ecfdf5,stroke:#059669,color:#065f46,stroke-width:3px;
+  class PA,OUT,HUMAN human
+  class S05,S1,S2,S25,S3,S4,S5,S6,S85,S9 agent
+  class G4 mech
+  class G52 agent
+  class S25,S85 fresh
+  </pre>
+  <p class="text-sm text-slate-700"><b>怎么读这张图</b>：十步骨架一条（<code class="text-xs bg-stone-100 rounded px-1">执行编成.md §6.4</code>），A 主窗口常驻不关（6.0 总原则①）——需求、决策、成书都在 A，调研/原型一律派子窗（§四）。本窗三拍板只动了三个位置：<b class="text-emerald-700">2.5 插一个节点</b>（拍板前先综合分析）、<b class="text-emerald-700">2→3 之间加一道闸</b>（B1 必跑·人检）、<b class="text-emerald-700">8 之后挂一个修复环</b>（机检 FAIL 不再打回圆桌烧 persona 轮次）。其余骨架零改动。</p>
+  <div class="bg-emerald-50 border border-emerald-300 rounded p-3 text-sm">
+    <b>一句话</b>：三拍板治的同一类病——<b>拍板前的判断质量</b>（#50 无分析件不拍板、#52 无调研不收口）与<b>收口后的兜底路径</b>（#51 修复窗代替"打回圆桌"）——流程主链一寸没动，加的都是"闸"和"环"。
+  </div>
+</article>
+
+<!-- ═══════════════ 二 · 三拍板落地明细 ═══════════════ -->
+<article id="s2" class="bg-white border border-emerald-300 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">二 · 本窗三拍板落地明细 <span class="text-slate-400 text-sm">拍板记录表.md 表尾 #50/#51/#52（站12侧权威·append-only）</span></h2>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/12">拍板</th><th class="p-2 w-1/5">治什么病</th><th class="p-2 w-1/3">落地动作</th><th class="p-2">落点锚点</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr class="bg-emerald-50/40">
+        <td class="p-2 font-semibold text-emerald-700">#50</td>
+        <td class="p-2">B1/B2 回传散着到、业主凭直觉拍技术栈——<b>无汇总分析件</b></td>
+        <td class="p-2">十步新增 <b>P-A3.5 调研综合分析节点</b>：B轮回传齐后、技术栈定案前，A窗产《调研综合分析件》——①需求对齐表（Destination+七位开关×各回传证据）②候选横比矩阵（每格带 file:line/URL 锚点）③证据冲突节 ④推荐+反方案；立规「<b>无分析件不拍板</b>」（与 #36 无对比件不拍板同构）</td>
+        <td class="p-2 font-mono text-[11px] text-slate-500">工作流蓝图.md §3 产物链＋§7.1 P-A3.5 · 执行编成.md §6.0 第8条＋§6.4 里程碑2.5</td>
+      </tr>
+      <tr>
+        <td class="p-2 font-semibold text-emerald-700">#51</td>
+        <td class="p-2">机检 FAIL 直接打回圆桌——<b>机械缺陷杀鸡用牛刀</b>烧 persona 轮次；⟲≤3 烧完无兜底</td>
+        <td class="p-2">新增 <b>P-G5 交件修复窗</b>：FAIL 清单分诊三分类——机械缺陷定向修（只动清单指到的文件与位置·逐条留痕）⟲≤3 复跑；语义问题回 A窗；工具误报出证走 P-X7 换装卡；烧完仍红→转人工如实报——<b>永不静默放弃、永不装绿</b></td>
+        <td class="p-2 font-mono text-[11px] text-slate-500">工作流蓝图.md §7.4 P-G5＋§4 收口表补注 · 执行编成.md §6.1 交件修复窗行＋§6.4 里程碑8.5</td>
+      </tr>
+      <tr class="bg-emerald-50/40">
+        <td class="p-2 font-semibold text-emerald-700">#52</td>
+        <td class="p-2">「调研深度不足」——039 正式首跑 B1 零票缺席（三跑二实证），<b>想起来才跑不是不过就拦</b>；核账挖掘不深入</td>
+        <td class="p-2"><b>调研深度治理四件套</b>：①B1 必跑收口纪律（决策期收口前 B1 必有产出落盘·可短不可无）②深度验收硬字段（B1 accept 加对照系矩阵：候选项目/星数/许可证三列必填；B2 必交 deepread 覆盖账本 read/total）③回传书加「深度自报」节（读了哪些/没读哪些/为什么）④核账作业纪律硬化＋核账发现台账（开工先交边界清单+深度分级声明·对照系强制·交卷三问）</td>
+        <td class="p-2 font-mono text-[11px] text-slate-500">执行编成.md §6.0 第9条 · 03-模板/research票模板.md 验收判据末两行 · 03-模板/回传书模板.md 深度自报节 · 90-过程/核账发现台账.md F-001~F-004</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="text-xs text-slate-500 font-mono leading-relaxed">边界（三拍板共同遵守）：不让 B/C 子窗做综合（一切经 A 不变）· 机检工具包零触碰（#48 回归锚纪律：改动须 --regression 双金标准包全绿）· 派发书七字段结构零变（#49 不受扰）· 不做 PoC 实验窗（另议→见 §八 候拍）。</p>
+</article>
+
+<!-- ═══════════════ 三 · 深度治理四件套嵌入点 ═══════════════ -->
+<article id="s3" class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">三 · #52 四件套嵌在流程哪些点位 <span class="text-slate-400 text-sm">每件＝一个触发点·不是一份口号</span></h2>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border-2 border-blue-300 bg-blue-50/40 p-4 space-y-2">
+      <p class="font-semibold text-blue-700">件① B1 必跑收口纪律</p>
+      <p class="text-sm text-slate-700">站桩点位＝<b>主链 2→3 之间的闸</b>（§一绿图 G52）。决策期收口（里程碑3）前核对 B1 联网调研必有产出落盘（对照系矩阵齐），缺＝回开 B1 票。治「27区跑了质量高／正式首跑没建票」的三跑二病。简单项目可短不可无。</p>
+      <p class="text-xs text-slate-500 pt-1 border-t border-blue-200">现为 A窗人检；机检化方案＝对比件⑤（候拍 #70，见 §八）</p>
+    </div>
+    <div class="rounded-lg border-2 border-blue-300 bg-blue-50/40 p-4 space-y-2">
+      <p class="font-semibold text-blue-700">件② 深度验收硬字段</p>
+      <p class="text-sm text-slate-700">站桩点位＝<b>派发书 accept 与 research 票模板</b>。B1 票 accept 加对照系矩阵（候选项目/星数/许可证三列必填）；B2 票必交 deepread 覆盖账本（read/total 硬数字＋盲区补搜记录）——深度从"自报感觉"变成"机器可数的数字"。</p>
+      <p class="text-xs text-slate-500 pt-1 border-t border-blue-200">03-模板/research票模板.md 验收判据末两行（#52 升格为硬项）</p>
+    </div>
+    <div class="rounded-lg border-2 border-purple-300 bg-purple-50/40 p-4 space-y-2">
+      <p class="font-semibold text-purple-700">件③ 回传书「深度自报」节</p>
+      <p class="text-sm text-slate-700">站桩点位＝<b>回传书模板新增节</b>：读了哪些（清单／read-total 硬数字）／没读哪些（清单）／为什么没读（逐条理由）。A 窗 P-A3.5 综合分析时先看深度自报——深度不够的回传进不了横比矩阵。</p>
+      <p class="text-xs text-slate-500 pt-1 border-t border-purple-200">03-模板/回传书模板.md（#52 新增节）</p>
+    </div>
+    <div class="rounded-lg border-2 border-purple-300 bg-purple-50/40 p-4 space-y-2">
+      <p class="font-semibold text-purple-700">件④ 核账作业纪律＋发现台账</p>
+      <p class="text-sm text-slate-700">站桩点位＝<b>一切核账/深挖类任务的开工与交卷</b>：开工先交边界清单（仓全集＋文件数）＋深度分级声明；对照系强制（先列所有场合矩阵）；交卷三问（证据链到头了吗／反面找了吗／元层面立过账没有）。发现进《核账发现台账》（F-001 起·带读写规约）。</p>
+      <p class="text-xs text-slate-500 pt-1 border-t border-purple-200">90-过程/核账发现台账.md · 母本=92-痛点说明和解决方案/总结-20261018</p>
+    </div>
+  </div>
+</article>
+
+<!-- ═══════════════ 四 · 一切经A：派发回传环 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">四 · 一切经 A：派发/回传环 <span class="text-slate-400 text-sm">工作流蓝图.md §2 流转纪律 · 子窗之间不互传</span></h2>
+  <pre class="mermaid">
+flowchart LR
+  A["A 主窗口（常驻·主线主持人）<br/>只做需求/决策/成书·不亲自调研不亲自画"]
+  J1["派发书三关校验.mjs（#49）<br/>关1 字段完备（goal/accept 非空）<br/>关2 引用路径存在 · 关3 禁区声明<br/>红＝拦截＋逐条病名"]
+  subgraph SUB["B/C 子窗（派发书开了才存在）"]
+    B1["B1 联网调研窗<br/>项目级＋组件级两层·只扫开位（#17/#18）<br/>对照系矩阵三列必填（#52）"]
+    B2["B2 读码调研窗<br/>deepread 四步流水<br/>覆盖账本 read/total 必交（#52）"]
+    C1["C1 前端原型窗<br/>superdesign·mock 假数据"]
+    C2["C2 后端原型窗<br/>Mermaid 手写单 HTML（#19）"]
+  end
+  RB(["业主：人工切入追问<br/>（B窗跑完停下等追问）"])
+  A -->|"派发书：goal/inputs只给指针/accept可核对/范围外"| J1
+  J1 -->|"全绿才发窗"| B1
+  J1 --> B2
+  J1 --> C1
+  J1 --> C2
+  RB -.->|"追问新结论并进事实文件"| B1
+  B1 -->|"回传书：结论/证据/产出物路径/未决＋深度自报（#52）"| A
+  B2 -->|"回传书＋深读档案"| A
+  C1 -->|"产出物路径必填"| A
+  C2 -->|"产出物路径必填"| A
+
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  classDef agent fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef mech fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  class RB human
+  class A,B1,B2,C1,C2 agent
+  class J1 mech
+  </pre>
+  <p class="text-sm text-slate-700">流转纪律六条（蓝图 §2）：<b>①一切经 A</b>——回传书是子窗回 A 的唯一通道；<b>②先派发后开窗</b>——没有派发书（goal/accept 空）不开子窗，发窗前必过三关机检（#49）；<b>③回传书必写产出物路径</b>；④A 窗可换人会话（状态全在盘上）；⑤原型归一化 ui-*.html / logic-*.html 带稳定 id；⑥能跑的后端不属于本阶段（那是站4）。</p>
+</article>
+
+<!-- ═══════════════ 五 · 机械闸工具链 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">五 · 五道机械闸：什么时候拦、拦什么 <span class="text-slate-400 text-sm">工具包/ · 全部零 LLM·红＝拦截</span></h2>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/5">闸（脚本）</th><th class="p-2 w-1/6">站在哪</th><th class="p-2 w-1/3">查什么</th><th class="p-2">红的后果</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-medium">派发书三关校验.mjs<br/><span class="text-xs text-slate-400">#49</span></td><td class="p-2">发窗前（A→B/C）</td><td class="p-2">关1 字段/六节完备 · 关2 引用路径存在 · 关3 禁区/纪律声明（只查机械面·不查内容对不对）</td><td class="p-2">拦截＋逐条病名·窗不开</td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-medium">roundtable-precheck.mjs<br/><span class="text-xs text-slate-400">13 项</span></td><td class="p-2">圆桌评审第一步</td><td class="p-2">章序/占位词/锚点死链 · 实施清单三键语法＋落点唯一 · 计数对账（端点↔接口章/表↔存储章）· 落点↔目录树同构</td><td class="p-2">不过不烧 persona 轮次</td></tr>
+      <tr><td class="p-2 font-medium">契约三关校验.mjs</td><td class="p-2">交件时（闸2）</td><td class="p-2">contract.json 对 schema v2 · 计数核对 · 死链检查</td><td class="p-2">FAIL＝交件阻断</td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-medium">contract/移交预检.mjs<br/><span class="text-xs text-slate-400">#21 三闸</span></td><td class="p-2">交件时（闸3·引擎收货口径模拟）</td><td class="p-2">关5a 安装素材自包含 · 关5b 契约覆盖（endpoints 落点⊆工单落点）· 关5c 前端票保底素材 ＋ 版本闸/签收单三章/切片考题锚点</td><td class="p-2">FAIL＝引擎将拒收→交 8.5 修复窗</td></tr>
+      <tr><td class="p-2 font-medium">一键交件自检.mjs<br/><span class="text-xs text-slate-400">#48</span></td><td class="p-2">交件统一入口（四闸串联）</td><td class="p-2">spawnSync 聚合上三器＋拼装实测提示·一键出总表；<b>回归锚：工具再改动必须 --regression 双金标准包全绿</b></td><td class="p-2">任一 FAIL 非零退出→P-G5</td></tr>
+    </tbody>
+  </table>
+  <div class="bg-blue-50 border border-blue-300 rounded p-3 text-sm">
+    <b>分工口径</b>：机检只拦「机械面」（字段/路径/同构/覆盖率）——<b>方向对错唯人能拦</b>：判卷语义、出题权、设计语义零触碰，语义问题永远回 A 窗业主拍板（#51 分诊②③·不为凑绿改口径）。
+  </div>
+</article>
+
+<!-- ═══════════════ 六 · 灵感→拍板→排期支线 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">六 · 横切支线：灵感 → 对比件 → 拍板 → 排期 <span class="text-slate-400 text-sm">拍板#36 站12 · 任意窗口随时入池</span></h2>
+  <pre class="mermaid">
+flowchart LR
+  IDEA["灵感池 P-X8<br/>30秒一行·不过滤不展开<br/>append-only·永不直接产生排期"]
+  TRI{"分诊三分类<br/>（A窗里程碑收口时·业主拍板）"}
+  RES["B1/B2 调研票<br/>（池子状态→调研中）"]
+  CMP["决策对比件 P-X9（七段）<br/>§0这是什么/§1为什么现在/§2对比主图<br/>现状红标vs改后绿标/§3改动点明细<br/>§4场景对照/§5边界归属/§6来源锚点"]
+  PB(["业主过目对比件→拍板#N<br/>无对比件不拍板（#36）"])
+  SQ["排期分流<br/>小改＝TICKETS 追加/CR<br/>方案级＝走十步产交件包"]
+  Q["入列队编排器<br/>（v1.2 引擎侧·机械）<br/>无拍板号不入列队（v1.2 #39）"]
+  LATER["later 留池 / wontfix"]
+
+  IDEA --> TRI
+  TRI -->|"值得调研"| RES --> CMP
+  TRI -->|"可直接拍板"| CMP
+  TRI -->|"暂不做"| LATER
+  CMP --> PB --> SQ --> Q
+
+  classDef human fill:#0f172a,color:#fff,stroke:#0f172a,stroke-width:3px;
+  classDef agent fill:#faf5ff,stroke:#9333ea,color:#6b21a8;
+  classDef mech fill:#eff6ff,stroke:#2563eb,color:#1e40af;
+  class PB human
+  class IDEA,RES,CMP,SQ agent
+  class Q mech
+  class TRI agent
+  </pre>
+  <p class="text-sm text-slate-700">这条支线与十步主链<b>并联不串扰</b>：主链走「需求→图纸袋」，支线走「碎片想法→正式决策」。两把锁同一原理——<b>拍板必有前置件</b>（方案级=对比件 P-X9·选型级=调研综合分析件 P-A3.5 #50），排期必有拍板号。</p>
+</article>
+
+<!-- ═══════════════ 七 · 异常出口与三包裁剪 ═══════════════ -->
+<article class="bg-white border border-stone-200 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">七 · 异常出口（P-X 系列）与三包裁剪 <span class="text-slate-400 text-sm">工作流蓝图.md §7.5 · 手册 §二 三包技能编制（#45）</span></h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div>
+      <h3 class="font-serif text-base mb-2">异常出口（9 条·即拷即用）</h3>
+      <table class="w-full text-sm border border-slate-200">
+        <thead><tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500"><th class="p-2 w-1/5">节点</th><th class="p-2">什么时候用</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="p-2 font-medium">P-X1</td><td class="p-2">调研事实互相矛盾→按核账级别仲裁（源码＞设计书）·记 ADR</td></tr>
+          <tr class="bg-slate-50"><td class="p-2 font-medium">P-X2</td><td class="p-2">原型 4 轮仍不满意→先自然语言对齐状态模型（prototype LOGIC）再回 superdesign</td></tr>
+          <tr><td class="p-2 font-medium">P-X3</td><td class="p-2">A 窗上下文快满→交接续命：未决/拍板写盘·渲染「A 续窗」提示词</td></tr>
+          <tr class="bg-slate-50"><td class="p-2 font-medium">P-X4</td><td class="p-2">中途改需求→先评估影响面列清单拍板·再重派受影响子窗</td></tr>
+          <tr><td class="p-2 font-medium">P-X5</td><td class="p-2">拍不了的决策→转人工问卷挂待拍板区·不阻塞其他票</td></tr>
+          <tr class="bg-slate-50"><td class="p-2 font-medium">P-X7</td><td class="p-2">工具/方案不达标→换装五步：停损/定性/小调研/试用（accept 一字不改）/固化或回退</td></tr>
+          <tr><td class="p-2 font-medium">P-X8</td><td class="p-2">灵感捕捉/分诊（§六支线入口）</td></tr>
+          <tr class="bg-slate-50"><td class="p-2 font-medium">P-X9</td><td class="p-2">调研对比成图——拍板前置件（§六支线）</td></tr>
+          <tr><td class="p-2 font-medium">P-X10</td><td class="p-2">大任务装袋拆卡→包/班划分建议表先行（#44·sizing四规矩·agent 只建议不拍板）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3 class="font-serif text-base mb-2">三包裁剪（#45·十步骨架一条按型裁）</h3>
+      <table class="w-full text-sm border border-slate-200">
+        <thead><tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500"><th class="p-2 w-1/4">包型</th><th class="p-2">与十步的差异</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="p-2 font-medium">新项目包</td><td class="p-2">十步全开（§一主链）</td></tr>
+          <tr class="bg-slate-50"><td class="p-2 font-medium">优化包</td><td class="p-2"><b>deepread 定点读码强制在先</b>（Step4 换引擎）＋codebase-design 接缝设计；只拆变更范围票；回归清单转切片考题；深化普查不入本班</td></tr>
+          <tr><td class="p-2 font-medium">修复包</td><td class="p-2"><b>快道三件</b>：diagnosing-bugs 根因定位→修复清单即票（免切票）→装修复包模板；免 wayfinder/research/原型/grilling</td></tr>
+        </tbody>
+      </table>
+      <p class="text-xs text-slate-500 mt-2">横切（三包通用）：ask-matt 路由 / spec-tutor 讲解 / to-questionnaire 问卷 / archify 出图（C2 备选） / retro 会话收尾 / handoff 交接。</p>
+    </div>
+  </div>
+</article>
+
+<!-- ═══════════════ 八 · 候拍事项 ═══════════════ -->
+<article class="bg-white border border-amber-300 rounded-xl p-6 space-y-4 shadow-sm">
+  <h2 class="font-serif text-xl">八 · 候拍事项：对比件在盘·批了才施工 <span class="text-slate-400 text-sm">handoff §二 · <b class="text-amber-700">未拍板不立卡不入列队</b></span></h2>
+  <table class="w-full text-sm border border-slate-200">
+    <thead>
+      <tr class="bg-stone-100 text-left text-xs uppercase tracking-wider text-slate-500">
+        <th class="p-2 w-1/12">件</th><th class="p-2 w-1/4">主题</th><th class="p-2 w-1/3">批后动作</th><th class="p-2">对比件路径</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <tr><td class="p-2 font-semibold text-amber-700">④</td><td class="p-2"><b>P-B5 技术验证实验窗</b>（A1·纯流程零码·候拍=#69）——纸面裁不动的选型（候选≥2·判据靠推演）条件触发抛弃式最小实验，实测数据回填 P-A3.5 横比矩阵</td><td class="p-2">蓝图三处＋编成一处（约+35行）</td><td class="p-2 font-mono text-[11px] text-slate-500">06-案例工作区/2026-10调研综合分析与交件修复窗/对比件/对比流程-04-*.html</td></tr>
+      <tr class="bg-slate-50"><td class="p-2 font-semibold text-amber-700">⑤</td><td class="p-2"><b>B1 存在性机检化</b>（A2·工具包三处·候拍=#70）——把 #52 件①人检闸机检化：收口闸脚本（主·站里程碑3门上）＋派发书三关辅检＋移交预检兜底提示，三闸三时点纵深防御</td><td class="p-2">新建收口机检.mjs＋改派发书三关/移交预检（<b>触发 #48 回归锚：--regression 双金标准包复跑全绿</b>）</td><td class="p-2 font-mono text-[11px] text-slate-500">同目录 对比流程-05-*.html</td></tr>
+    </tbody>
+  </table>
+  <div class="bg-amber-50 border border-amber-300 rounded p-3 text-sm">
+    <b>挂账提醒</b>（handoff §三）：#50/#51/#52 已落流程文档但<b>未提交候业主 push</b>、未在新案例实跑（进度表里程碑 2.5/8.5 ☐ 面向下一案例）· 核账发现台账升 RRM 档候切片器新档 · 其余七项挂账见 handoff §三（带出处防丢）。
+  </div>
+</article>
+
+<footer class="text-center text-xs text-slate-400 pt-4 space-y-1">
+  <p>AFK无人值守引擎V1.0 · 07-设计理念专题 · 站12十步流程总图（三拍板后终态）· 深读核账 2026-10-18 · repo 见 拍板记录表.md #50/#51/#52 行与 handoff-20261018</p>
+  <p>话术：机械设备=确定性代码 · Agent员工=LLM 调用面 · 自然人审核=只有业主能做的事 · 红线：安全边界红线 R1-R7（危险命令只出文本由人执行·无人值守永不碰 main）· 拍板唯一权威=站点1站点2方案规划流程/拍板记录表.md（append-only）</p>
+</footer>
+
+</main>
+</body>
+</html>

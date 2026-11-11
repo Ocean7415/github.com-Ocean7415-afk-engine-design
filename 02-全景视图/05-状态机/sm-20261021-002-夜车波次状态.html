@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>sm-20261021-002 · 状态机卡 · 夜车波次状态（排期账本五态）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>sm-20261021-002 · 状态机卡 · 夜车波次状态（排期账本五态）</h1>
+<div class="meta"><b>id</b> sm-20261021-002 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 01c1d9a · <b>run_id</b> queue-93-w041</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·L1·口径正本 §3）</strong>：「票」＝<strong>工序票</strong>（拆单机产物·十一态施工账——非 L2 窗票）；本卡为 L1 波次排期账（五态）。</p>
+</blockquote>
+<h1>状态机卡 · 夜车波次状态（排期账本五态）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：把夜车内「一波（一版）」的排期生命周期画成图——queued/in_progress/done/superseded/needs_replan 五态+合法转移表。<strong>为什么存在</strong>：夜车多波逐版串行，每版的排期推进必须有机器可校验的转移表——「继承失败不装绿」（fail-closed 转 needs_replan）这类纪律全在转移表里（源=queue-ledger.ts 逐格抄录）。<strong>边界</strong>：gate 判定事件不在本五态账（在 queue-events 行车记录仪·拍板#35 读侧正本）；层级口径（会话用语 v1.2 拍板#36）：票→波/批次→里程碑实施→完整夜车。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>实物班：queue-40 班 ledger 11 行（enqueued/entry_state 两事件型）——W-041 逐行实勘，五态推进有真账可重放</td><td><code>90-过程/执行台账.md:583</code></td></tr><tr><td>2</td><td>gate 接缝实物：queue-40 班 gate 事件（passed/failed 落 queue-events·EXIT=1 投影在 queue-summary）</td><td><code>runs/.queue-roots/queue-40/queue-summary.md:3</code>+<code>queue-events.jsonl:1</code></td></tr><tr><td>3</td><td>转移表源：QUEUE_TRANSITIONS 逐行=<code>ts/src/queue/queue-ledger.ts:18</code>——非法转移留痕 rejected 不影响末态（<code>:24</code> 语义）</td><td>本卡文字投影表</td></tr></tbody></table>
+<blockquote>
+<p><strong>源标注（防重复四规）</strong>：本卡五态与转移表的<strong>唯一源=<code>ts/src/queue/queue-ledger.ts</code></strong>——五态枚举（<code>ts/src/queue/queue-ledger.ts:13</code>）与合法转移表（<code>ts/src/queue/queue-ledger.ts:18</code>）。层级口径（会话用语·v1.2 拍板#36）：票→波/批次→里程碑实施→完整夜车；本卡「波次」=manifest <code>versions[]</code> 的一版（一个夜车内的多波逐版串行）。叫停/重排细节如需追设计意图→<code>07-设计理念专题</code>（本卡只投影实然）。</p>
+</blockquote>
+<h2>状态图（mermaid）</h2>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+    [*] --> queued: queue_enqueued（入队·decision_ref 过闸）
+    queued --> in_progress: 派工开工
+    queued --> superseded: 排期唯一·先 superseded 旧排期
+    queued --> needs_replan: 叫停/重排（只作用未开工）
+    in_progress --> done: 班过闸（done=终态）
+    in_progress --> needs_replan: 继承失败 fail-closed（不派工不装绿）
+    needs_replan --> queued: 重排后重新入队（MVP runner 不触发·槽位）
+    done --> [*]
+    superseded --> [*]
+</div></div>
+<p><strong>节点详注表</strong>（图中状态逐格·语义/转移边界/标源）：</p>
+<table><thead><tr><th>节点（状态）</th><th>详注</th></tr></thead><tbody><tr><td>queued</td><td>已排期待派：queue_enqueued 入队登记（decision_ref 过闸才进·契约见 ct-20261021-002）；叫停只作用此态（未开工不烧钱）——枚举源=<code>ts/src/queue/queue-ledger.ts:13</code>。</td></tr><tr><td>in_progress</td><td>派工开工中：runner 派班推进（queue_entry_state 留痕）；此态的两条出路=done（过闸）或 needs_replan（继承失败 fail-closed）。</td></tr><tr><td>done</td><td>终态：班过闸收车（queue_gate_passed 后推进）——done 无出边（终态语义·转移表 <code>:18</code>），版本史就此定格可回放。</td></tr><tr><td>superseded</td><td>终态·排期被替换：排期唯一守卫——旧排期先 superseded 才允许新排期入队（不覆盖历史·留痕完整）。</td></tr><tr><td>needs_replan</td><td>唯一可回炉态：继承失败 fail-closed（不派工不装绿·锚 ts/src/queue/queue-runner.ts:16）/叫停重排进入；重排后回 queued——MVP runner 不触发重排槽位（<code>:4</code> 注记如实转录）。</td></tr><tr><td>[*]（起终点）</td><td>入队凭 queue_enqueued 事件（state:"queued"·重复入队拒）；出账=done/superseded 两终态——五态全貌逐格见文字投影表（源行锚在表后）。</td></tr></tbody></table>
+<h2>文字投影（机读·转移边表逐格=QUEUE_TRANSITIONS）</h2>
+<table><thead><tr><th>from</th><th>合法 to</th><th>留痕事件</th><th>触发者</th></tr></thead><tbody><tr><td>queued</td><td>in_progress</td><td>queue_entry_state</td><td>runner 派工</td></tr><tr><td>queued</td><td>superseded</td><td>queue_entry_state</td><td>排期替换（排期唯一守卫）</td></tr><tr><td>queued</td><td>needs_replan</td><td>queue_entry_state</td><td>叫停/重排</td></tr><tr><td>in_progress</td><td>done</td><td>queue_entry_state</td><td>班次收车过闸</td></tr><tr><td>in_progress</td><td>needs_replan</td><td>queue_entry_state</td><td>继承失败 fail-closed</td></tr><tr><td>done</td><td>（无·终态）</td><td>—</td><td>—</td></tr><tr><td>superseded</td><td>（无·终态）</td><td>—</td><td>—</td></tr><tr><td>needs_replan</td><td>queued</td><td>queue_entry_state</td><td>重排（MVP runner 不触发）</td></tr></tbody></table>
+<p>（转移表源行：主线定义=<code>ts/src/queue/queue-ledger.ts:17</code> 注记+<code>ts/src/queue/queue-ledger.ts:18</code> 逐行；needs_replan 重入队=<code>ts/src/queue/queue-ledger.ts:24</code>）</p>
+<p>非法转移不抛、留痕 <code>queue_entry_state_rejected</code>、末态保持（<code>ts/src/queue/queue-ledger.ts:24</code> 语义）。</p>
+<h2>gate 语义注记（与事件账的接缝）</h2>
+<ol><li>gate 判定事件（<code>queue_gate_passed/queue_gate_failed</code>）在 <code>queue-events.jsonl</code>（行车记录仪）——<strong>不在本五态账</strong>；gate 终态读取单一正本=queue-events（拍板#35 实锚）；</li><li><code>queue_gate_failed</code>→停队列：后续 queued 版不派（不烧下一版的钱）·汇总投影记 EXIT=1（queue-summary 实物=<code>runs/.queue-roots/queue-40/queue-summary.md:3</code>）；</li><li>继承失败 fail-closed：不派工不装绿——本版转 needs_replan（queue-ledger 既有合法转移）·停队列·退出码 1（<code>ts/src/queue/queue-runner.ts:16</code>）；</li><li>五态推进与事件流的对账关系见 <code>ct-20261021-001</code>（三方对账）；MVP 范围注记：needs_replan 重排槽位=§8.6 动态重排范围外另票（<code>ts/src/queue/queue-ledger.ts:4</code> 注记如实转录）。</li></ol>
+<h2>从哪测</h2>
+<p><code>ts/src/queue/</code> vitest 用例（转移表全覆盖）；实物投影=任一 <code>runs/.queue-roots/queue-N/queue-ledger.jsonl</code> 逐行重放对末态；对账跑 <code>pipeline-lab/scripts/monitor-audit.mjs</code>。</p>
+<h2>参数与预算</h2>
+<p>状态机纯内存投影（载入重放）零 LLM 零预算。</p>
+<h2>时效</h2>
+<p>基准=仓 head 01c1d9a（2026-10-21·W-041 核对·queue-ledger.ts 源码逐格抄录）；失效触发=本卡头 frontmatter「失效触发」键。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/05-状态机/sm-20261021-002-夜车波次状态.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

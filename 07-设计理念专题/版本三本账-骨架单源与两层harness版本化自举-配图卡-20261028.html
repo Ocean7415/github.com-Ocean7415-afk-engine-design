@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>版本三本账配图卡 · 骨架单源与两层 harness 自举</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose", flowchart: { htmlLabels: true, useMaxWidth: false, padding: 8, nodeSpacing: 40, rankSpacing: 40 }, themeVariables: { fontSize: "14px" } });
+</script>
+<style>
+  .deep-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .redline { background:#fef2f2; border:1px solid #dc2626; }
+  .shuo { background:#fffbeb; border-left:4px solid #d97706; }
+  .term { background:#f0f9ff; border-left:4px solid #0284c7; }
+  code { font-size: 0.85em; }
+  .mermaid { overflow-x: auto; }
+  .mermaid svg { height: auto; }
+  .mermaid svg .nodeLabel, .mermaid svg .edgeLabel, .mermaid svg .label,
+  .mermaid svg foreignObject div, .mermaid svg foreignObject span { font-size: 14px !important; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+<header class="space-y-2">
+  <h1 class="font-serif text-3xl">版本三本账 · 配图卡 <span class="text-slate-400 text-xl">6 卡 · 候拍设计件配图 · 20261028（v2）</span></h1>
+  <p class="text-sm text-slate-500">2026-10-28 · 基准 <code class="bg-stone-200 rounded px-1">a22f4c5</code> · 正本=同目录《版本三本账-骨架单源与两层harness版本化自举-候拍-20261028.html》 · tags: [版本三本账, 骨架单源, 自举, 版本pin, 配图卡]</p>
+  <div class="deep-box rounded-lg p-3 text-sm text-slate-100">本册主旨：引擎已经会管客人的版本、还没管自己的版本——三本账（骨架 S 单源，装配出第一层 L1、第二层 L2）＋版本 pin＋自举环，把 manifest 纪律镜面反射到 harness 自身。</div>
+</header>
+
+<!-- 卡1 三本账模型 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡1 · 三本账模型：一份骨架装出两层机器 <span class="text-slate-400 text-sm">业内名：单源骨架 + 两层装配 · 本件§二</span></h2>
+  <p class="text-sm">一句话：骨架 S 只有一份代码，两个实例各自从骨架「领零件」装配；第二层拿第一层当考官。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  SK["骨架 S1.x·单源一份<br/>①夜车站序模板<br/>②机械件包 58 件<br/>③交接契约"]
+  SK -->|"装配 inherit"| L1["第一层实例 L1.n<br/>造客人 APP"]
+  SK -->|"装配 inherit"| L2["第二层实例 L2.m<br/>管团队自身"]
+  L1 --> W["成绩记入<br/>版本档案四轨"]
+  L2 -.->|"拿 L1 当考官<br/>留出题核账"| L1
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：骨架 S＝一份共用的发动机图纸＋标准零件库（站序模板＋机械件＋交接契约）｜L1/L2＝照图纸装出来的两台机器——一台造客人的 APP，一台管团队自己｜装配 inherit＝从骨架领零件再装自己的专属件｜版本档案四轨＝记成绩的四个本子（只记不判）。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：厂里只有一张发动机图纸（骨架）。照它装出两台机器：第一台（L1）给客人造 APP，每造一批就把成绩记进四个本子；第二台（L2）是车间主任，管整个团队，但它考核下属不用自己的感觉——它拿第一台机器当考官，用「平时不见的卷子」来核账。图纸升级了，两台机器不必同时回炉，各挑自己方便的时候跟进。</div>
+  <p class="text-xs text-slate-500">锚：本件§二三本账模型｜关联权威件=两层harness分治-*.html（引擎#101 定名）·拍板#101②/#101⑥｜实勘：ts/src/shared/ 58 件（§七说 30+，实际更多）</p>
+</section>
+
+<!-- 卡2 自举生产环 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡2 · 自举生产环：用稳定版造出新稳定版 <span class="text-slate-400 text-sm">业内名：版本化自举环 · 本件§一业主确认句</span></h2>
+  <p class="text-sm">一句话：第二层拿在役稳定版施工，产出新版候选，留出题核账＋业主终认后上线，环就转起来了。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  L2["第二层 L2.m<br/>在役管理版"]
+  L1["第一层 L1.n<br/>在役稳定版"]
+  L2 -->|"拿 L1 施工·维修"| L1
+  L2 -->|"产出候选"| C["第一层新版候选<br/>L1.n+1"]
+  C -->|"留出考题核账"| D{"核账过吗？"}
+  D -->|"不过·打回重修"| L2
+  D -->|"过·业主终认"| E["上线切换<br/>L1.n+1 转正在役"]
+  E -.->|"自举回边<br/>新稳定版继续被 L2 用"| L2
+  S2["骨架升级 S1.x+1"] -.->|"两实例各自择机跟进<br/>不强绑同号"| L1
+  S2 -.->|"择机跟进"| L2
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：自举＝自己造自己的新版本（用现役稳定版当工人）｜留出考题＝平时锁起来不给学生刷的期末卷｜业主终认＝最后一道人工验收，机器说了不算｜不强绑＝骨架升级与实例升级各走各的排期，不强行同号。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：车间主任（L2）每天干活用的都是在役稳定版工人（L1.n）。他带徒弟修出改良版工人（L1.n+1 候选），先不能上岗——拿保险柜里的期末卷考一遍；考砸了打回重修；考过了还要老板亲自签字，才换班上岗。上岗后它就成了新的「稳定版」，主任继续用它干活、继续造下一版——轮子就这么一圈圈滚。图纸若升级，两台机器各自找时间跟进，不搞集体同时停机。</div>
+  <p class="text-xs text-slate-500">锚：本件§一（业主确认 2026-10-28）·教义七（考官版本独立于被考版本）｜进程边界先例：<code>queue-runner.ts:5</code> spawn 子进程＋退出码唯一判据｜红不烧钱：核账不过=打回，不上线</p>
+</section>
+
+<!-- 卡3 镜面缺口 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡3 · 镜面缺口：会管别人、没管自己 <span class="text-slate-400 text-sm">业内名：版本化镜面对称 · 本件§三对表②</span></h2>
+  <p class="text-sm">一句话：对客人 APP 的版本纪律三件俱全，对引擎自己一件没有——版本 pin 就是把左边照到右边。</p>
+<pre class="mermaid text-sm">
+flowchart LR
+  subgraph DONE["已会：管客人的版本"]
+    direction TB
+    M1["manifest 版本清单<br/>versions[] 登记每版"] --> M2["跨班继承 inherits<br/>终态工作区接续"] --> M3["docker digest 对账<br/>不符拒绝发车"]
+  end
+  subgraph GAP["没管：引擎自己的版本"]
+    direction TB
+    N1["package.json<br/>版本号死值 1.0.0"] --> N2["夜车跑工作区 HEAD<br/>代码一直在漂"] --> N3["成绩没法归因<br/>到固定的代码版"]
+  end
+  DONE ==>|"镜面反射：把管别人的<br/>纪律照到自己身上"| GAP
+  GAP ==> P["步②版本 pin：<br/>入口读 pin 文件钉死三键<br/>sha·卡版本·考题版本<br/>缺 pin 拒启"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：manifest＝客人 APP 的版本登记册（每版一行）｜pin＝开工前把「这夜用哪一版」钉死在文件里｜HEAD＝工作区当前最新代码（一直在漂移）｜digest 对账＝发车前核对镜像指纹，不符就拒发｜fail-closed 拒启＝缺条件拒绝开工，绝不带病跑。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：厂里对客人特别讲究：每个 APP 都有登记册，版本继承有规矩，发车前还要核对镜像指纹，对不上就不发。可对自己呢？自己的出厂铭牌是个死数字「1.0.0」，每晚开工用的零件全凭「仓库里最新的那堆」，哪天成绩好了，说不清是方法好了还是零件换了。步②就是把对待客人那套纪律原样照到自己身上：开工前先钉死「用哪版代码、哪版岗卡、哪版考题」，钉不死就拒绝开工。</div>
+  <p class="text-xs text-slate-500">锚：manifest 契约 <code>queue-runner.ts:40-58</code>·校验拦 <code>:132</code>｜版本死值 <code>ts/package.json:4</code>｜成绩侧半成品=#101⑥ 版本档案四轨（只记成绩没记 harness 版本）｜<span class="redline rounded px-1">红线：缺 pin 拒启沿 T8 digest 拒发车先例（:54-56）</span></p>
+</section>
+
+<!-- 卡4 尺病与三道保险 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡4 · 最大风险与三道保险：尺病不传代 <span class="text-slate-400 text-sm">业内名：考官独立性（教义七） · 本件§四险4</span></h2>
+  <p class="text-sm">一句话：稳定版当考官，考官有病会传给下一代——三道保险（留出分割＋考题库独立版本化＋业主终认版本外）斩断传染链。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  R["最大风险：尺病代际传染<br/>稳定版当考官<br/>考官有病传下一代"]
+  R --> T["现状加剧：一套题两用<br/>日常复考和终核同卷"]
+  T --> K["保险①留出分割<br/>核账卷平时不上桌"]
+  T --> V["保险②考题库<br/>独立版本化"]
+  T --> O["保险③业主终认<br/>在版本外人工兜底"]
+  K --> G{"三道保险齐"}
+  V --> G
+  O --> G
+  G ==>|"考官独立有物理保证<br/>尺不被被考对象污染"| OK["新一代才敢放上线"]
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：尺＝考题（量东西的尺子）｜尺病＝尺子本身刻度错了｜代际传染＝考官的病传给被考出来的一代，代代加重｜留出集＝锁保险柜的期末卷，平时刷题碰不到｜版本外＝终认这步不依赖任何自动版本机制，人工说了算。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：让老工人给新工人监考，最怕的是老工人自己手艺有毛病——毛病会顺着「考什么就会什么」传给新一代，一代比一代歪。现在厂里只有一套卷子，平时练兵也用它、出师考核还用它，卷子早被刷熟了，考出来的高分是真是假说不清。三道保险：①考核卷另外立一套，平时永远不上桌；②卷库自己单独记账版本，不跟着引擎版本走；③出师最后一关由老板亲自面试，不认任何机器结论。三道都装上，考官才算物理独立。</div>
+  <p class="text-xs text-slate-500">锚：现状 3 清单 <code>91-脚本/考题库/</code>（当日实勘恰 3 份）｜复考闸并集 <code>pi_runner.mjs:215-243</code>（宁严勿漏）｜出题权禁区=#212⑤ 对比件候拍 · #207 清单制不动｜物理保证先例：<code>provider-types.ts</code> sandbox worktree</p>
+</section>
+
+<!-- 卡5 五步路线 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡5 · 改造五步：先立尺再提速 <span class="text-slate-400 text-sm">业内名：改造路径（倒序：版本管理先行） · 本件§五</span></h2>
+  <p class="text-sm">一句话：步①②最小闭环自举即成立，步③补保险，步④提效不设卡，步⑤终点态。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  S1["步① 拍构成物清单<br/>L1/L2/S 三栏+版本外<br/>拍板件·零代码"]
+  S2["步② 版本 pin 接线<br/>缺 pin 拒启<br/>小工程"]
+  S3["步③ 考题库留出分割<br/>对比件候拍"]
+  S4["步④ 骨架基类化<br/>小工程·P2·提效"]
+  S5["步⑤ 自举生产环<br/>按确认句落地<br/>终点态"]
+  S1 ==>|"最小闭环<br/>自举即成立"| S2
+  S2 -->|"补尺病保险"| S3
+  S3 -->|"提效不设卡"| S4
+  S4 -->|"终点态"| S5
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：构成物清单＝把引擎拆成「哪些件算版本的一部分」的清单（版本外＝考题库/出题权/禁区六项）｜基类化（Pull Up）＝把两处重复的固定流程上提为一份母版，各站只做填空｜顺序陷阱＝「等全优化好再做版本管理」＝移动靶无锚，所以倒序：版本管理先行。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：五步的排法讲究「先立尺、再提速」。第一步一分钱代码不用写——老板拍板「哪些东西算版本的一部分」；第二步把开工钉版本的闸装上，从此每夜成绩都能对上固定代码版，自举的最小闭环就成了；第三步给考卷分家，堵住尺病传染；第四步才做省力气的活——把重复流程提炼成母版（活源现成：站序雏形和第二实例都在码里）；第五步按老板确认的那句话把自举环正式跑顺。要是反过来「先优化好再管版本」，就像给一边跑一边变形的车装里程表，永远量不准。</div>
+  <p class="text-xs text-slate-500">锚：五步表=本件§五（每步带代码锚）·候拍清单=§六｜步①班外栏依赖 W-152 收口（三关绿在列）｜<span class="redline rounded px-1">红线：无拍板号不入列队（拍板#76）·不动判卷语义·不碰禁区六项</span>｜两实例先例=<code>queue-runner.ts:5</code>＋旗标旋钮 <code>run-slice.ts:49-120</code></p>
+</section>
+
+<!-- 卡6 骨架详解 -->
+<section class="bg-white rounded-lg border border-stone-200 p-5 space-y-3">
+  <h2 class="font-serif text-xl">卡6 · 骨架 S1.x 详解：一份图纸三件套 <span class="text-slate-400 text-sm">它现在还不是实体类 · 卡1 深化 · v2 增补</span></h2>
+  <p class="text-sm">一句话：骨架＝全厂唯一一份发动机图纸（流程怎么走+零件从哪拿+交接怎么对账）；现在三件里两件半已在码但都不是类，把它变成实体基类正是步④的活。</p>
+<pre class="mermaid text-sm">
+flowchart TB
+  SK["骨架 S1.x＝一份图纸<br/>不是一类·是三件套"]
+  SK --> A["件一·模板方法基类<br/>夜车站序 run()<br/>管：流程怎么走"]
+  SK --> B["件二·机械件包<br/>shared/ 五十八件零件<br/>管：零件从哪拿"]
+  SK --> C["件三·交接契约<br/>班产物 schema+契约台<br/>管：交接怎么对账"]
+  A --> D["现状：函数体雏形<br/>站序焊死在主函数里<br/>第二层 spawn 子进程复用<br/>不 import 不继承"]
+  B --> E["现状：模块集合<br/>多为纯函数+常量<br/>仅账本件是真类"]
+  C --> F["现状：契约格式已在码<br/>接口契约台候 W-152"]
+  D --> G["步④基类化后：<br/>抽象骨架基类·站序焊死<br/>各站留填空钩子<br/>两层各继承一份"]
+  E --> G
+  F --> G
+</pre>
+  <div class="term rounded p-3 text-sm"><b>术语白话对照</b>：模板方法模式＝父类定流程（焊死不许改）、子类填内容的面向对象手法｜钩子方法＝基类里留空的「填空题」，每个实例填自己的做法｜spawn 子进程复用＝第二层要跑同一条流水线时，不是引用同一段代码，而是另开一个独立进程去跑——隔离性好但代码层面是两套｜Pull Up（上提）＝把多处重复的代码上提为一份共享母版的重构手法。</div>
+  <div class="shuo rounded p-3 text-sm leading-7"><b>口述</b>：把骨架想成全厂唯一一张发动机图纸。图纸上画三样东西。<b>第一样是流水线的工序顺序</b>（模板方法基类）：夜车开工必须按「入夜门禁六硬项→导入拆单→探针编译装备→施工→质量门→切片验收→报告」的顺序走，一步不改。这段顺序今天真实存在，但它是写在一个函数体里的——像一道菜谱抄在一张纸上，谁想做这道菜就整页抄一遍（第二层就是整进程抄：开个子进程跑同一条流水线），而不是照着「菜谱母版」各做各的。<b>第二样是标准零件库</b>（机械件包）：五十八个两层共用的零件——记流水账的账本、防偷改考题的判卷守卫三卫、大模型档位旋钮、防提示注入的变量盒封套等。注意它们的形态：绝大多数是纯函数和常量，只有账本等少数是真类——「零件包」是零件的集合，不是面向对象的类库。<b>第三样是交货单格式</b>（交接契约）：班与班之间交货凭机器可查的凭据，凭据格式已在码里，而「接口契约台」（逐项对账的机器面）还挂在候拍窗 W-152 名下没落码。<br>所以回答「骨架是不是一个实体对象类」：<b>现在不是</b>——三件里没有一件以「类」为中心形态存在，站序是函数、零件是模块、契约是类型定义。<b>步④拍板后才是</b>——把函数体里的焊死站序上提为一个抽象基类的模板方法，各站留填空：第一层继承它填「造客人 APP 的做法」，第二层继承它填「管团队的做法」。届时的样子大致是：基类里 run() 流程焊死不许改，preflight/build/verify 等站留成填空钩子，两个实例类各自继承填空。为什么要费这个劲？一是两层同构现在全靠文档互相指认，代码层各写各的，久了必漂移——基类化后同构等于继承，改一处两处自动跟；二是版本记账需要它——「骨架版本 S1.x」要成为一个边界清晰的实体才钉得进夜车入口的钉版文件；三是自举需要它——造新版的车和被造的零件共享同一张图纸，账才对得上。设计件把它排 P2「提效不设卡」：因为进程边界已提供隔离复用，基类化是省力活不是保命活。</div>
+<pre class="text-xs bg-slate-900 text-slate-100 rounded p-3 overflow-x-auto"><code>// 步④基类化后的形态示意（非实码·真实设计以步④拍板件为准）
+abstract class NightShiftSkeleton {        // ← 骨架 S1.x 的实体形态
+  final async run(pkg): ExitCode {         // 模板方法：站序焊死，子类不许改流程
+    await this.preflight();                // 段0 入夜门禁
+    const plan = this.importAndSplit(pkg); // 段1 导入+拆单
+    await this.build(plan);                // 段2 施工
+    await this.verify();                   // 段3 验收
+    return this.report();                  // 收尾报告
+  }
+  protected abstract preflight(): void;    // 站实现＝填空（钩子方法）
+  protected abstract build(plan): void;
+}
+class TeamL1 extends NightShiftSkeleton { /* 造客人 APP 的填空：岗卡+系统提示词常量 */ }
+class ManagerL2 extends NightShiftSkeleton { /* 管团队的填空：六闸+维修环+派工 */ }
+</code></pre>
+  <p class="text-xs text-slate-500">锚：站序雏形=<code>ts/src/run-slice.ts:2</code>（头注站序声明）·<code>:44</code>（主函数）·<code>:115/:135/:211/:247/:258</code>（段0/段1/段2/段2.7/段3 锚）｜进程复用=<code>ts/src/queue/queue-runner.ts:5</code>（spawn 不 import 红线）｜机械件包=<code>ts/src/shared/</code> 五十八件实勘（真类仅 ledger/package-ledger）｜契约面=<code>ts/src/contract/</code>（类型+事件白名单）｜基类缺口与步④=正本对表①+§五步④｜<span class="redline rounded px-1">红线：伪代码为形态示意非实码——基类真实现步④拍板件定，落码前禁改 ts/ 区（W0 纪律）</span></p>
+</section>
+
+<section class="deep-box rounded-lg p-4 text-sm text-slate-100 space-y-1">
+  <p class="font-semibold">册尾注 · 同构轴</p>
+  <p>五卡一根轴＝「镜面反射」：manifest 对客人的版本纪律（卡3左）反射到 harness 自身（卡3右＝卡5步②）。卡1 的两层同构与卡3左的 spawn/退出码进程边界，是卡2 自举环能成立的地基；卡4 三道保险服务教义七「考官版本独立于被考版本」；卡5 是四者按「先立尺再提速」排出的施工序。</p>
+  <p class="text-slate-300 text-xs">锚点验证：基准 a22f4c5（2026-10-28）·本册当日实勘五项全过——run-slice.ts:1-3 站序在 / queue-runner.ts:5 spawn 红线在 / package.json:4 死值在 / shared/ 58 件 / 考题库 3 清单。正本=《版本三本账-…-候拍-20261028.html》（同目录）。<br><b>v2 变更记录</b>：增补卡6骨架 S1.x 详解（三件套现状形态+步④基类化目标形态+伪代码示意）·册头卡数 5→6。</p>
+</section>
+
+<footer class="text-xs text-slate-400 border-t border-stone-200 pt-3">版本三本账配图卡 · 2026-10-28 · 落盘目录=07-设计理念专题/ · 索引=正本候拍设计件</footer>
+</main>
+</body>
+</html>

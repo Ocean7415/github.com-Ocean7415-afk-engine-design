@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-006 · 模块卡 · 三站站3收货导入（station3-import）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-006 · 模块卡 · 三站站3收货导入（station3-import）</h1>
+<div class="meta"><b>id</b> mk-20261021-006 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 67e5b04 · <b>run_id</b> queue-93-w040</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；三关（收包验货关 L1／立票验单关·贴卡拦病关·领单再验单 L2）。</p>
+</blockquote>
+<h1>模块卡 · 三站站3收货导入（station3-import）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：把交付包（出题正本）安全导入班次工作区——版本闸/验真/签收单/搬 sidecar/三关重跑一条龙。<strong>为什么存在</strong>：三站流水线（站3收货→站4施工→站5验收）的第一道门，导入面坏则后面全坏——契约 v2 八条行为把「收什么、怎么验、入哪账」全部机械化（头注·锚 ts/src/station3-import/import.ts:1）。<strong>边界</strong>：纯机械零 LLM（导入侧不判红绿·判卷语义零触碰）、T1 必搬 sidecar、T2 签收单必交。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>实战：W-015（改包道末轮回滚·ts 码件窗白名单首票）——站3 导入面在码件窗白名单条款下被触碰后回滚复验</td><td><code>90-过程/执行台账.md:239</code></td></tr><tr><td>2</td><td>实测面：import.test.ts/gates.test.ts/backflow.test.ts/coverage.test.ts 测试族全量跑（ts/ 面 1091 案基线）</td><td>本卡从哪测节</td></tr><tr><td>3</td><td>链位：站3→站4→站5 串联构成切片流水线（queue-runner 派班逐站调用）</td><td>三卡互链（mk-006/007/008 related）</td></tr></tbody></table>
+<h2>接口</h2>
+<p>主入口 importPackage(pkgDir, wsDir, ledger, opts)（锚 ts/src/station3-import/import.ts:34·Result 型出参）——把交付包导入工作区。 辅助导出：scanEnvConsumption（锚 ts/src/station3-import/import.ts:208）/collectEnvConsumption/runEnvNameProbe（env 消费面扫描与探针）。</p>
+<h2>实现概览</h2>
+<p>契约 v2 导入行为八条中的①-⑤（头注·锚 ts/src/station3-import/import.ts:1）：版本闸/验真/签收单三章/搬 sidecar/三关重跑——关1 结构校验走 ajv；三关 runGates（import 自 gates.js·锚 ts/src/station3-import/import.ts:13·调用点锚 ts/src/station3-import/import.ts:155）。T1 必搬 sidecar·T2 签收单必交。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    PKG[交付包<br/>出题正本] --> VG{版本闸+验真}
+    VG -->|版本不符/验真败| REJ[拒收·Result 坏果]
+    VG -->|过| AJV[关1 结构校验<br/>ajv]
+    AJV -->|结构坏| REJ
+    AJV -->|过| SC[搬 sidecar<br/>T1 必搬]
+    SC --> RG[三关 runGates<br/>重跑]
+    RG -->|任一关红| REJ
+    RG -->|全绿| SIG[签收单三章<br/>T2 必交]
+    SIG --> WS[入班次 ws<br/>shared/ledger 签收入账]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>交付包</td><td>施工对象=出题正本（交件包·站1/2 产物）；导入只读包不改正本——「正本只增不改」是四级数据记录铁律（见总表卡 bf-20261021-006）。</td></tr><tr><td>版本闸+验真</td><td>契约 v2 第一二条：包版本与引擎版本对表+包完整性验真；不过=拒收（Result 型坏果出参·锚 ts/src/station3-import/import.ts:34），不带病导入。</td></tr><tr><td>关1 结构校验</td><td>ajv 校验包结构 schema——机械可复核，坏结构在站3 就拦下，不流到站4 浪费施工预算。</td></tr><tr><td>搬 sidecar</td><td>T1 类票 sidecar 必搬（头注契约第三条）——依赖资产随包进 ws，防施工时缺料。</td></tr><tr><td>三关 runGates</td><td>导入侧三关重跑（锚 ts/src/station3-import/import.ts:155·gates.js 单一正本）；与派工三关（任务书面）不同域——这里验的是包，不是任务书。</td></tr><tr><td>签收单三章</td><td>T2 签收单必交（契约第五条）：导入完成=签收落 shared/ledger 账本——「收没收到」有账可查，纠纷可回放。</td></tr><tr><td>入班次 ws</td><td>导入终点=班次工作区（票级家址·随 ws 生命周期，保留近 5 班余归档）；env 消费面扫描（锚 ts/src/station3-import/import.ts:208）顺带记账。</td></tr></tbody></table>
+<h2>调用方与被调用</h2>
+<p>被调：queue-runner（切片流水线站3道）/e2e 链。 调用：gates.js（三关）·satisfiability 探针·gherkin 编译机检（出题草稿道·拍板#8 C-025）·shared/ledger（签收入账）。</p>
+<h2>从哪测</h2>
+<p>同目录测试族：import.test.ts/gates.test.ts/backflow.test.ts/coverage.test.ts 等（<code>npm test</code> 全量 node --test·ts/ 面 1091 案基线）。</p>
+<h2>参数与预算</h2>
+<p>零 LLM（纯机械导入校验）；opts.gherkinGate=warn|block 二档；判卷语义零触碰（导入侧不判红绿）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 67e5b04（2026-10-21·W-040 核对）；失效触发=契约 v2 版本闸/三关语义改动（看 ts/ 面 git log+契约件）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-006-三站站3收货导入-station3-import.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

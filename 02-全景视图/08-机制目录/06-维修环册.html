@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mc-20261028-006 · 机制卡册⑥ · 维修环（4 卡·批2·2026-10-28）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mc-20261028-006 · 机制卡册⑥ · 维修环（4 卡·批2·2026-10-28）</h1>
+<div class="meta"><b>id</b> mc-20261028-006 · <b>kind</b> 机制卡册 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-28 · <b>repo_head</b> 1feb0f5</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本册·口径正本 §3）</strong>：「票」＝窗票（L2）；「挂起」＝gate_suspend/resume 事件对（L1 引用）或 ⏸ 格（L2）随文标注；返工/维修＝返工环。</p>
+<p><strong>事件名速查（口径正本 §4·拍板#316① W-234 双名化落册）</strong></p>
+<p>- 病卡维修环七态 → <strong>返工环</strong> · 维修环八岔分类器 → <strong>返工环</strong>（§4 #47/#48 同名族）</p>
+<p>- 打回分诊三分类 → <strong>考砸分诊</strong>（L2 交活驱动）</p>
+<p>- 停更签名分诊 → <strong>宁停判死</strong>（L2 巡逻闸）</p>
+<p>- 两岗编制 → 候正名；wip_scan 卡面在册⑨（→<strong>半小时巡逻</strong>·见册⑨速查）</p>
+<p>- 双名制：首现双写「标准事件名（现行短名）」·短名机检永不改；§4 空缺→候正名不硬造名</p>
+</blockquote>
+<h1>机制卡册⑥ · 维修环（4 卡·批2·2026-10-28）</h1>
+<blockquote>
+<p><strong>本册管什么</strong>：夜车修不好的病去哪——第一层「施工修不好」转第二层「维修环」的全链：病卡七态流转、八岔分类器、打回三分类、两个生产岗。图版=同目录 06-维修环册.html。</p>
+</blockquote>
+<p>---</p>
+<h2>卡47 · 病卡维修环七态（业内名：事件管理生命周期·ITIL 同构）</h2>
+<p><strong>harness 层</strong>：harness第二层 · 维修环</p>
+<p><strong>一句话</strong>：夜车修不好的病立卡进第二层维修环，七个状态走完全程——待分诊→诊断→（引擎域分支）→方案待拍→修复→已修/转人工；转移表写死「谁能到谁」，错一个字都拒。</p>
+<div class="figwrap"><div class="mermaid">
+stateDiagram-v2
+  待分诊 --> 诊断中: 病卡立卡·出诊断报告
+  诊断中 --> A域诊断中: 上溯=引擎域
+  A域诊断中 --> 方案待拍: 出方案件
+  诊断中 --> 方案待拍: 非 A 域直出方案件
+  方案待拍 --> 修复中: 业主勾选方案（唯一人工触点）
+  修复中 --> 已修: 金丝雀验证过
+  修复中 --> 转人工: 修坏/金丝雀红
+</div></div>
+<p><strong>术语白话对照</strong>：<code>七态</code>＝病卡状态列的七个合法值（待分诊/诊断中/A域诊断中/方案待拍/修复中/转人工/已修✅）；<code>方案待拍</code>＝<strong>唯一人工触点</strong>——诊断员出的方案件由业主勾选（L1 语义），机器不替业主选方案；<code>诊断免责</code>＝诊断报告固定印「诊断为假设非结论，修复以金丝雀为准」——防「把假设当真理」；<code>金丝雀</code>＝修复件先在真环境小范围验证，过了才回搬；<code>A域诊断中</code>＝拍板#75：病根上溯到引擎自身的病走专用车道（deepread 定位→分档授权）。</p>
+<p><strong>口述</strong>：夜车修不好的病，进第二层病卡走七态：先分诊，再诊断——诊断报告永远印着「假设非结论」，防把猜测当真理；出方案件时是<strong>全环唯一人工触点</strong>——业主在方案件上勾选，机器不替业主选方案；修复后金丝雀先验证，过了回搬第一层工作区。转移表写死「谁能到谁」，状态列错一个字都拒——防「一个错别字分叉出平行状态」。修复件回搬是病卡账与票级账之间唯一的缝合件：两层互不直写，靠修复件传话。</p>
+<p><strong>锚</strong>：repair-contract.mjs:23（七态枚举）·:40（转移表）·:119（免责条款）·:195（引擎证据形态）｜业内对照：ITIL 事件管理生命周期（分诊→诊断→方案→修复→验证→关闭）｜变式：票级 11 态=同族异台（互不直写）｜红线：两层账互不直写；方案件=唯一人工触点；诊断=假设非结论。</p>
+<p>---</p>
+<h2>卡48 · 维修环八岔分类器（业内名：维修回路分类器·同病停车）</h2>
+<p><strong>harness 层</strong>：harness第二层 · 维修环</p>
+<p><strong>一句话</strong>：维修轮次的每次失败先过八岔分类器——能自动修的两类机器修（L1 预授权/L2 回归子类）、新语义出方案件、同病两遍停车转人工附深读清单；没有「再试一次看看」这个岔路。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  FAIL["维修轮次失败"] --> CL["八岔分类器（纯函数）"]
+  CL -->|"L1 预授权类"| AUTO["自动修（预授权清单内）"]
+  CL -->|"L2 回归子类"| AUTO2["自动修（回归子类·候追认）"]
+  CL -->|"新语义问题"| PROP["出方案件候业主勾选"]
+  CL -->|"同病≥2 轮"| STOP["停车转人工<br/>＋深读清单进晨报<br/>（不再盲修）"]
+  CL -->|"其他"| FULL["全量重修（现行为·如实降级）"]
+</div></div>
+<p><strong>术语白话对照</strong>：<code>八岔</code>＝分类器的八个出口岔路（纯函数·同样的失败永远同样的岔）；<code>同病≥2 停车</code>＝同样的病第二遍还犯→停止盲修：转人工+深读清单进晨报——「再试一次看看」这条路被堵死；<code>L1 预授权/L2 回归</code>＝两类可以自动修的病（清单内·修了候追认）；<code>93 库只读</code>＝分类器读病卡历史库做参照，但零写入（写权在维修执行侧）。</p>
+<p><strong>口述</strong>：维修环最怕无脑循环烧钱。八岔分类器把「失败怎么办」变成纯函数问答：这是预授权清单里的病？机器修。是回归类的病？机器修+候追认。是新语义问题？出方案件等业主。同样的病第二遍还犯？停车——附深读清单转人工，因为「同一个坑摔两次」说明缺的不是算力是认知。都没有？全量重修（如实降级）。每条岔路都有明确出口，没有一个岔路写着「再试试看」。</p>
+<p><strong>锚</strong>：fail-loop.mjs:30（classifyLoopAction）·:49（同病停车）·:126（93 库只读红线）｜业内对照：repair loop classifier·circuit breaker 思想同族（册③卡20/23）｜变式：L2 打回分诊（卡49）=窗级同构；机械分诊（册②卡15a）=施工版｜红线：纯函数零副作用；93 库只读；同病停车线只加严。</p>
+<p>---</p>
+<h2>卡49 · 打回分诊三分类（业内名：打回三分类·循环帽）</h2>
+<p><strong>harness 层</strong>：harness第二层 · 派工链（打回）</p>
+<p><strong>一句话</strong>：施工窗被复考/机检打回来，按死法分三类处置——压根没跑完的自动重排、干到一半的转续拍自决道、翻来覆去三次不过的挂起候人工；三条路条条有出口。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  B["窗被打回"] --> T{"打回分诊三查"}
+  T -->|"中途断开（窗死/断线）"| RE["自动重排重跑<br/>（会话档收割接棒）"]
+  T -->|"做到一半"| CON["转续拍自决道<br/>带断点接着干·自决拍板落账继续"]
+  T -->|"循环帽≥3"| HOLD["⏸候人工<br/>（帽只加严不加松）"]
+</div></div>
+<p><strong>术语白话对照</strong>：<code>打回</code>＝窗被复考闸/机检判不合格退回（🔁维修中）；<code>三分类</code>＝①中途断开（窗死/断线）→自动重排重跑；②做到一半（半截活）→转续拍自决道（断点续干·自决拍板落账继续跑不停等）；③循环帽≥3（打回三次都不过）→⏸候人工；<code>续拍自决道</code>＝断点续干的法定通道——带断点摘要，自决拍板落账继续，不停等。</p>
+<p><strong>口述</strong>：窗被打回来最怕石沉大海。三分类让每种死法都有出口：压根没跑完的（窗死/断线）自动重排——收割器接棒；干到一半的转续拍道——带上断点摘要接着干，工人自决拍板落账继续跑，不停下来等；翻来覆去三次都不过的——挂起候人工，帽是硬的（只加严不加松）。本次会话的「—」占位笔误案也在这里补了课：打回原因要落盘存档（可观测性），不能只打在会丢的控制台上。</p>
+<p><strong>锚</strong>：打回分诊.ts（三分类·拍板#173·W-129）｜业内对照：bounce triage + retry cap｜变式：夜末补考=夜车版重试（册③卡20）｜红线：帽≥3 只加严；续拍落账；打回原因落盘（可观测）。</p>
+<p>---</p>
+<h2>卡51 · 两岗编制（业内名：生产岗 Agent 员工·出题权冻结）</h2>
+<p><strong>harness 层</strong>：harness第一层→harness第二层（生产岗在第一层·编制管理在第二层）</p>
+<p><strong>一句话</strong>：治「调研表层化」的两个生产岗——拆票打包师把业主需求拆成票（候选扫描+横比件），考题起草师出考题；编制已生效（#209），但出题权冻结在开工前、判卷权碰都不碰。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  DEMAND["业主需求"] --> CP["拆票打包师<br/>候选扫描·出横比件·票预生成<br/>（依赖图机检·W-064 金样格式）"]
+  CP --> OWN["👤 业主拍横比件<br/>（出题权边界）"]
+  OWN --> EK["考题起草师<br/>考题面起草（只加严·格式金样）"]
+  EK --> PKG["交付包→站3 三关"]
+</div></div>
+<p><strong>术语白话对照</strong>：<code>两岗</code>＝治「12 张票只有 2 个方案角度、拆票全凭自觉」病的两个 Agent 员工岗（拍板#170 拍板B 授权·#209 横比件拍定生效）；<code>横比件</code>＝多个候选拆法的对比报告——业主只拍横比件（不逐票看）；<code>出题权冻结</code>＝考题开工前冻结：岗再智能也不碰判卷、不改开工后的题；<code>格式金样（W-064）</code>＝拆票产出的格式标准样张，新岗按样对齐。</p>
+<p><strong>口述</strong>：「调研表层化」的病根是没有专职生产岗——拆票全凭当班自觉，角度多少看运气。两岗编制补上这个洞：拆票打包师做候选扫描、出横比件（几个拆法的对比+依赖图），业主只拍横比件；考题起草师按金样格式出考题面。两条铁律焊死：出题权冻结在开工前（岗不碰开工后的题）；判卷权零触碰（岗出的考题也走同一套三关/冻结/复考）。</p>
+<p><strong>锚</strong>：工具包/skills/拆票打包师/SKILL.md·考题起草师/SKILL.md·#209（生效拍板）·#170 拍板B（授权）·W-128（落位窗）｜业内对照：producer agent roles｜变式：引擎站点1/2 复制（#101② 候二期）｜红线：出题权冻结；判卷权零触碰。</p>
+<p>---</p>
+<h2>卡63 · 停更签名分诊（业内名：stall signature triage·停更症候分诊路由）</h2>
+<p><strong>harness 层</strong>：harness第二层（派工链·收据员停更处置段·W-148 出卡·A类补卡批③ 拍板#233①）</p>
+<p><strong>一句话</strong>：施工窗长时间没动静（停更达阈），先读它会话档尾部做签名分类——限流、上下文爆、断网、死循环各有各的出路，分不出来的宁停候人工；绝不「没动静就当干完了」。</p>
+<h3>图（停更分诊流水·F 型）</h3>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  STALL["窗停更达阈<br/>（收据员二次确认过）"] --> TAIL["读会话档尾部<br/>（只读·80行）"]
+  TAIL --> SURF["提取结构化错误面<br/>（不扫裸全文）"]
+  SURF --> CL["停更签名分类器<br/>（纯函数·零猜业务）"]
+  CL -->|"限流签名"| RL["延时重探不收割<br/>（穷尽才上报）"]
+  CL -->|"上下文爆签名"| CTX["转续拍自决道<br/>（带断点接着干）"]
+  CL -->|"网络断签名"| NET{"重排过帽了吗"}
+  NET -->|"没到帽"| RE["自动重排重跑<br/>（沿打回分诊）"]
+  NET -->|"到了帽"| CAP["挂起候人工<br/>（不烧钱重跑）"]
+  CL -->|"死循环签名"| LOOP["挂起候人工<br/>（不再盲等）"]
+  CL -->|"不确定/无据"| UNK["宁停兜底<br/>（不猜不误埋）"]
+</div></div>
+<h3>图说明（逐节点注解）</h3>
+<ul><li><strong>窗停更达阈</strong>：分诊前提——收据员盯窗发现超过阈值（缺省 10 分钟·可配）没有新字节，且二次确认过不是探测抖动；达不到阈不进分诊。</li><li><strong>读会话档尾部（只读·80 行）</strong>：只读窗自己的干活流水文件最后 80 行；档丢了/读不了=空数组，后面按「无据」兜底。</li><li><strong>提取结构化错误面</strong>：只扫两类可靠位置——助手消息的报错字段＋标记为出错的工具结果尾部 1200 字；不扫裸全文（实勘证明裸扫全是误报："429" 命中数字、"rate limit" 命中网页正文）。</li><li><strong>停更签名分类器（纯函数）</strong>：同样的尾部永远同样的分类——恰一类词面命中=该类（高置信）；两类及以上并存=置信不足转兜底；零命中且尾部可读=死循环签名（长窗无新字节〔前提〕且尾部无新错误）；零命中且尾部不可读=无据转兜底。</li><li><strong>限流→延时重探不收割</strong>：API 限流是暂时病——收据员主循环内等几分钟再探（缺省 5 分×2 次·可关），恢复了接着干；穷尽了才进本图上报⏸（限流持续）。</li><li><strong>上下文爆→续拍自决道</strong>：上下文装不下了——转 W-129 续拍自决道，带断点摘要接着干（状态翻回「待实施(已批)」让派工器再领）。</li><li><strong>网络断→重排（超帽⏸）</strong>：断网自动重排重跑，沿打回分诊重排（计数+事件+代拍行候追认）；重排次数到帽（3·沿拍板#173）就⏸候人工——循环重跑烧钱不过机器。</li><li><strong>死循环→⏸候人工</strong>：长窗无新字节且尾部无新错误=死循环签名——不猜业务（普通业务报错不算「新错误」），一律⏸不再盲等。</li><li><strong>不确定/无据→宁停⏸兜底</strong>：多类并存/档不可读/格式陌生/陌生类别——全部宁停候人工核账，宁停不误埋（W-131 探测道同族）。</li></ul>
+<h3>术语白话对照</h3>
+<p><code>停更</code>＝窗的会话档超过阈值（缺省 10 分钟·env 可配）没有新字节；<code>签名分类</code>＝按报错词面把停更原因归成四类＋兜底（限流/上下文爆/网络断/死循环/不确定）；<code>结构化错误面</code>＝会话档里可靠的报错位置（助手 errorMessage 字段＋isError=true 工具结果尾部 1200 字）——词面只扫这里防误报；<code>延时重探</code>＝限流签名专治：等几分钟再探一次，恢复就继续不收割；<code>续拍自决道</code>＝W-129 立的断窗自愈通道：带断点摘要重领续干（打回三分类「中途断开/做到一半」两路的合流出口·卡49）；<code>宁停⏸兜底</code>＝分类器拿不准一律停车候人工——宁可多停一次，不可误埋一个活窗；<code>▶行手术</code>＝分类后改队列行的动作（守卫=只翻▶施工中行·锚列与备注史 300 字逐字保留·终态/🔁/⏸ 行永不碰）。</p>
+<h3>口述（一个窗没动静之后）</h3>
+<p>夜里两点，某个施工窗十来分钟没写一个字了。搁在改造前，收割道会「没动静就当它干完了」——W-125/126/129/120 四连误收割就是这么来的：明明是活窗或正常收工，被当尸体埋了。现在规矩改了：收据员先确认真停更（达阈＋二次确认），然后打开这个窗的会话档读最后 80 行，只看可靠报错位置做分类。<strong>实战回放（W-148）</strong>：四案真实尾部拿回来一跑——全是「正常收工汇报、零错误签名」→分类=死循环签名→⏸候人工，与后来人工翻案的史实完全一致（旧链会把它们埋掉）；另两份真实报文档，限流档正路由限流、断网档正路由重排。核心纪律一句：<strong>分诊器只认词面和结构，不判窗的生死</strong>——窗死没死是收割道和复考闸的职权；拿不准就宁停，绝不猜。</p>
+<h3>业内对照</h3>
+<p>failure triage / error classification（故障分诊：按症候分类再路由，而不是统一重试）＋ circuit breaker 思想同族（册③卡20/23——穷尽即停车）。差异：经典分诊多在请求层按 HTTP 状态码分类，本厂分诊在「窗生命周期层」按会话档错误签名分类；经典断路器按失败计数熔断，本厂对「分不出来」直接宁停——分类学兜底比计数兜底更保守。</p>
+<h3>变式对照</h3>
+<ul><li><strong>L2 同族分诊器</strong>：打回三分类（卡49）=窗被打回时的死法分诊（重排/续拍/宁停三向）；停更签名分诊=窗没动静时的病分诊（重排/续拍/⏸/宁停）——重排与续拍两路同构（复用打回分诊导出的计数/事件/续拍档案·零双写），死循环⏸与循环帽⏸同向；维修环八岔分类器（卡48）=维修轮次的失败分诊——三器同族（纯函数＋分类即路由＋没有「再试试看」岔路）。</li><li><strong>上游折叠出处</strong>：收据员＋收割器（册③卡25）折叠条「停更处置（候 W-148）」——本卡即其独立展开，卡25 锚行「变式：停更签名分诊=在飞」随之落定。</li><li><strong>跨层同构对</strong>：无——同构漂移实测报告 §1 十五对全集＋附带发现一条均无涉；停更分诊属「对象面 L2 特有」（实测报告 :65·L2 管理侧窗体生命体征在 L1 无对应物）。<strong>随卡申报：零未登记同构对</strong>（沿卡60 随卡登记先例的实勘义务·本卡实勘结果=无对可登）。</li></ul>
+<h3>锚点表（file:line·出卡亲验·批A 切换注记＝停更签名分诊 .mjs→.ts 已于 W-163 收口（施工本笔 001aaec·2026-10-29）切换·本卡锚＝.ts 终态·开工锚=收口时实锚 HEAD·2026-10-29）</h3>
+<table><thead><tr><th>锚</th><th>亲验行内容</th></tr></thead><tbody><tr><td>91-脚本/停更签名分诊.ts:50</td><td>STALL_SIGNATURES 词面表三实锚类（ratelimit/context/network·:88 注明 loop=结构判定不入表）</td></tr><tr><td>91-脚本/停更签名分诊.ts:94</td><td>extractErrorSurface：assistant errorMessage／isError 工具结果两源·非错误角色返 null（零证据零猜）</td></tr><tr><td>91-脚本/停更签名分诊.ts:109</td><td>isError 工具结果取尾部 1200 字（traceback 摘要常在尾部）</td></tr><tr><td>91-脚本/停更签名分诊.ts:119</td><td>classifyStall 四态分类主入口（恰一类=high／≥2类=unknown low／零可读=unknown none／零命中可读=loop structural）</td></tr><tr><td>91-脚本/停更签名分诊.ts:136-139</td><td>四态出口逐行（唯一命中／多类并存／无据／死循环结构判定）</td></tr><tr><td>91-脚本/停更签名分诊.ts:144</td><td>routeDisposition 五向路由（:143 注明 state 只出 ⏸挂起/待实施(已批) 两态·对终态✅/🔁 零写权）</td></tr><tr><td>91-脚本/停更签名分诊.ts:147</td><td>ratelimit→⏸「限流持续」（到处置段=重探已穷尽·主循环内延时重探不收割）</td></tr><tr><td>91-脚本/停更签名分诊.ts:149-151</td><td>network→redispatch 重排·capReached=true 时改⏸「重排帽到」（帽沿拍板#173）</td></tr><tr><td>91-脚本/停更签名分诊.ts:153</td><td>default→⏸「宁停」（分类不确定/置信不足兜底·陌生 kind 同落此支）</td></tr><tr><td>91-脚本/停更签名分诊.ts:159</td><td>stallRewriteRow ▶行手术（锚列＋备注史 300 字逐字保留·:164 非▶行幂等零动作）</td></tr><tr><td>91-脚本/停更签名分诊.ts:174</td><td>tailLinesOf 只读尾 80 行·档不可读/空档=空数组（→unknown 宁停）</td></tr><tr><td>91-脚本/停更签名分诊.ts:183</td><td>selftest 10 案（词面穷举 4+12+5 gold／兜底双案／路由五向／手术幂等／案10 零写零杀源码守卫）</td></tr><tr><td>91-脚本/hook_receipt_clerk.mjs:67</td><td>消费方 import 行（批A 切换实证）：收据员从 ./停更签名分诊.ts 导入四件（classifyStall/routeDisposition/stallRewriteRow/tailLinesOf）</td></tr><tr><td>91-脚本/hook_receipt_clerk.mjs:133</td><td>sessionClerkStallMin：停更阈 env AFK_SCLERK_STALL_MIN 缺省 10 分（env 可配·缺省写死·非法回落）</td></tr><tr><td>91-脚本/hook_receipt_clerk.mjs:319-327</td><td>处置接线：classifyStall→routeDisposition（:323 计帽）→withQueueLock 内 stallRewriteRow（:327·queue_mutex 同锁）</td></tr><tr><td>90-过程/handoffs/同构漂移实测报告-20261029.md:65</td><td>「L2 演进属停更分诊/骨架代产等 L2 特有面」——对象面 L2 特有实锚</td></tr></tbody></table>
+<h3>红线</h3>
+<ul><li>分诊只读会话档：<strong>零写零杀</strong>（零 process.kill／零删档——selftest 案10 源码守卫恒在）；</li><li>分类不确定=<strong>宁停⏸</strong>：不猜不装绿不误埋（宁可多停一次·不可埋错一窗）；</li><li>窗的生死=收割道/复考闸职权，分诊器不判窗完不判窗死；</li><li>队列行手术只翻▶施工中行：终态✅/🔁/⏸ 永不碰（幂等）·锚列与备注史逐字保留；路由态只出两态（⏸挂起/待实施(已批)）；</li><li>重排帽/重探次数只加严不加松（沿拍板#173）。</li></ul>
+<h3>失效触发＋防重复指针</h3>
+<ul><li>失效触发：停更阈值/词面表/路由表任一变更→本卡＋册③卡25（收据员消费方）逐卡复验；打回分诊重排/续拍接口变更→本卡变式节复验。</li><li>防重复：票级状态机=sm-003·两层数据流=df-002——只指针引用零复制；收割三查语义=卡25 正本零复制（本卡只管「停更」一支）。</li></ul>
+<p>---</p>
+<h2>册⑥ 尾注 · 同构轴</h2>
+<p>4 卡（批2 正本·2026-10-28 成文时点）＋卡63（A类补卡批③ 追加·2026-10-29）是「病怎么被治理」的闭环：<strong>病卡七态（卡47）管病的旅程 → 八岔分类器（卡48）管每轮失败怎么办 → 打回三分类（卡49）管窗的死法 → 停更签名分诊（卡63）管窗的假死 → 两岗（卡51）管病的源头（票和考题的质量）</strong>。全册一条铁律：<strong>第一层修不好的病才进第二层；两层账互不直写；人工触点唯一且明确</strong>。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/08-机制目录/06-维修环册.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

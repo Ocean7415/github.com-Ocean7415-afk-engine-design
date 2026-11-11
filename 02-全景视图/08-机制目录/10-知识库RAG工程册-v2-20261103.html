@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mc-20261103-010 · 机制卡册⑩ v2 · 知识库RAG工程（6 卡·六层闭环重验·2026-11-03）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mc-20261103-010 · 机制卡册⑩ v2 · 知识库RAG工程（6 卡·六层闭环重验·2026-11-03）</h1>
+<div class="meta"><b>id</b> mc-20261103-010 · <b>kind</b> 机制卡册 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-11-03 · <b>repo_head</b> e170067 · <b>supersedes</b> mc-20261029-010</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>v2 缘起（拍板#333·2026-11-03·主窗代产）</strong>：v1 册头失效触发条款正中——「分块器更换→卡75/76 重验」（W-227 句窗翻缺省·拍板#321②）＋「eval 检索路径变更」（W-240 prod 主尺翻缺省·拍板#321③）。本件=v1 全卡重验版：卡75/79 大改·卡76/78 增笔·卡74/77 补笔；v1 三缺口申报逐条对账（见册头）。</p>
+<p><strong>消歧（本册·口径正本 §3）</strong>：「票」按层消歧（工序票 L1/窗票 L2）；「轨」=建库分块分派轨（RRM/legacy/process 三轨）；「票（评估）」=独立量尺（四票）。</p>
+</blockquote>
+<h1>机制卡册⑩ v2 · 知识库RAG工程（6 卡·六层闭环重验·2026-11-03）</h1>
+<blockquote>
+<p><strong>本册管什么</strong>：94-班外经验库RAG 子系统的工程机制——语料治理→分块→索引→检索→生成→评估反馈六层闭环（含回流）。数据基础=2026-11-03 deepread 二轮实勘（docstore 4067 块直扫·句窗 1130/legacy 176/process 2761/common 7/engine 1299·W240-prod-20题-r1 逐题配对）。</p>
+<p><strong>业内定位</strong>：RAG（检索增强生成）参考架构六层——Ingestion/Chunking/Indexing/Retrieval/Generation/Evaluation+Feedback；文档学位置=02-全景视图知识库分册（模块卡管静态结构·本册管知识流动机制·数据流正本=<a href="../07-数据流/df-20261103-001-知识库RAG数据流v2.md">df-20261103-001</a>）。</p>
+<p><strong>纪律</strong>：判卷语义零触碰（册④另账）·全部锚点出卡时实勘（repo_head 9833204）·缺口如实申报不装绿。</p>
+</blockquote>
+<h2>册头总图 · 六层闭环（v2 重验版）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+  L1["卡74 语料治理层<br/>四源入池·层分类学·回灌桥缺省关<br/>（engine 1299+common 7+process 2761）"] --> L2["卡75 分块层 v2<br/>RRM轨句窗缺省（800/80）·section逃生口<br/>legacy轨·process轨（散文帽4000）"]
+  L2 --> L3["卡76 索引层 v2<br/>三轨缓存·指纹三键·null契约<br/>（总池4067·W-227句窗重建）"]
+  L3 --> L4["卡77 检索层<br/>四通道缺省：结构路→BM25∥向量→RRF→rerank<br/>优化四档全缺省关"]
+  L4 --> L5["卡78 生成层 v2<br/>make_block 1500预算·§节名出处行<br/>prompt单一事实源（W-185）"]
+  L5 --> L6["卡79 评估反馈层 v2<br/>主尺=prod轨（W-240）·四票+judge_version<br/>外考四基准·噪声带0.188-0.212"]
+  L6 -->|"hit_log/病题/核账发现台账 回流"| L1
+  L6 -.->|"⚠剪刀差：mrr10=0.825 ≫ recall=0.550<br/>答案端瓶颈→W-253回捞票候施工（#337）"| L4
+</div></div>
+<p><strong>v1→v2 缺口对账（v1 三缺口逐条清点）</strong>：①「eval 检索路径≠产线四通道」→<strong>已清偿</strong>（W-184 prod 轨立·W-240 翻缺省主数字·拍板#256①/#321③）；②「两套切分器并存无单一事实源」→<strong>部分清偿</strong>（W-227 句窗翻缺省+section 显式逃生口·legacy 轨仍并存=拍板#59§4.4 不回改语义）；③「层分类学无成文契约·孤儿档不入池」→<strong>仍开放</strong>（如实转呈候票）。<strong>v2 新申报</strong>：query_engine.py 工作树 M 态一笔未提交（M4 档龄注记·业主令 2026-10-31·#327③ 转呈候勘）——检索面多写者风险在案，处置候业主示下。</p>
+<p>---</p>
+<h2>卡74 · 语料治理层（业内名：Corpus Governance·入池标准与升降级）</h2>
+<p><strong>一句话</strong>：知识源按层分类学（engine=引擎经验/common=跨层公共/process=过程流水/app=班内回灌）入池，frontmatter 质量门票（rrm-lint ERROR 拒收·draft 拒入·样例排除）把住入口，升降级走 hit_log 机检判据不走路由人情——粮食入库不检=全链白干。</p>
+<p><strong>v2 增笔</strong>：①<strong>93→94 回灌桥</strong>（W-125·拍板#170 C1·缺省关两段式）——<code>KB_APP_INGEST="1"</code> 开闸后 93 病卡以 layer=app 并入（闸1 样例排除+闸2 draft 拒入+闸3 kind:病卡 判定三闸防稀释·<code>--scope=app</code> 显式口才可达·现网关态零变化）；②<strong>M4 档龄注记</strong>（业主令 2026-10-31·缺省关）——FRESH_NOTE/FRESH_MARK env 开时按 as_of 标 &gt;30 天旧档（与 W-114 互补：W-114 管「文件变了没重建」·M4 管「落盘时点绝对档龄」）；③实勘构成（4067 块=engine 1299+common 7+process 2761）。</p>
+<p><strong>锚点</strong>[现行]：<code>settings.py:150-170</code>（kb_sources 缺省三源）·<code>build_index.py</code>（回灌桥接线段·wardcard_enabled 闸）·<code>query_engine.py:325-353</code>（_fresh_note_for/_stale_days）·<code>wardcard_bridge.py:40-47</code>（wardcard_enabled/闸3）</p>
+<p>---</p>
+<h2>卡75 · 分块层 v2（业内名：Chunking Strategy·句窗缺省与三轨分派）</h2>
+<p><strong>一句话</strong>：RRM 轨缺省已从「H2 节切」翻成「<strong>句窗档</strong>」（节边界保留·节内句窗 800 字重叠 80——v1 后最大变更·W-227·拍板#321②），section=显式逃生口逐字可达；legacy 轨照旧黑盒切+0.85 折降权；process 轨宽松分块（表格行块+H2 节·散文帽 4000）——块是检索的原子，块切坏了后面全白搭。</p>
+<p><strong>v2 重验要点</strong>：①档位口=env <code>RRM_CHUNK_STRATEGY</code> 自持 fail-closed（未设=句窗·"section"=逃生口·非法值 RuntimeError 建库即炸——配置错≠静默回退·静默回退=拿错档建出与申报不符的索引=装绿）；②句窗装填=句贪心至窗预算→冲刷回填重叠→围栏段（``<code>…</code>`<code>）为不可分原子（围栏内句号禁切）；③每窗带 </code>window_part<code>（i/N·同节窗序）与 </code>section` 键——<strong>回捞定位三键</strong>（消费面=W-253 句窗回捞档候施工）；④E4 2000 字闸只作用于 section 档与 rrm-lint（句窗档无节长闸·窗帽自身兜底）；⑤实勘：句窗 1130 块 p50=410 字/max 856·节组 823·窗序 N p50=3/max 6。</p>
+<p><strong>锚点</strong>[现行]：<code>rrm_chunker.py:70-90</code>（_env_chunk_strategy fail-closed）·<code>:133-141</code>（围栏原子）·<code>:214-253</code>（句窗装填+重叠回填）·<code>:262-275</code>（window_part/section 键）·<code>build_index.py:80-120</code>（process 散文帽 4000 env·修法甲）</p>
+<p>---</p>
+<h2>卡76 · 索引层 v2（业内名：Indexing with Config-Fingerprinted Cache·三轨缓存与增量重建）</h2>
+<p><strong>一句话</strong>：嵌入按「配置指纹」缓存（模型路径+设备+查询指令三键哈希定缓存位·换模型天然 miss 防错账），三轨各走各缓存文件互不互踩，嵌入失败批减半重试→仍败置 null 不入索引（宁停不装绿·退出码非零）——未变块零重嵌·重建全量增量。</p>
+<p><strong>v2 增笔</strong>：①总池 2697→4027（W-227 句窗重建·RRM 1130 块缓存全命中零重嵌·process 951 全嵌）→2026-11-03 实勘 4067（增量源文件自然增长）；②null 契约三轨同构（RRM/legacy/process·<code>EMBED_NULL</code> 计数汇总+__main__ 退出码非零兜底）；③GPU 显存帽工厂（W-196/W-215·外考侧 ext_index 工厂自动生效·产线 build 同源消费 cap=14GB）；④失效传播 W-114（缺省关·STALE_PROPAGATION="1" 开态建库前盘点+检索加载时横幅标记）。</p>
+<p><strong>锚点</strong>[现行]：<code>settings.py:70-88</code>（指纹三键）·<code>build_index.py</code>（_cache_path_for/_rrm_cache_path_for/_embed_batch_null·null 契约段）·<code>build_index.py</code>（_stale_prewrite_inventory/_stale_consume_report）</p>
+<p>---</p>
+<h2>卡77 · 检索层（业内名：Hybrid Multi-Stage Retrieval with Reranking·四通道编排）</h2>
+<p><strong>一句话</strong>：产线缺省=四通道编排「结构路（引用图 PPR+枢纽夹逼）→BM25 词面∥向量双段→RRF 融合（k=60）→rerank 精排（bge-reranker-v2-m3）」+护栏三件（每文档 1 块+配额降尾+枢纽夹逼）——每一路治另一种检索失败，融合分后不设线（ES 官方口径）。</p>
+<p><strong>v2 补笔</strong>：①<strong>优化四档全缺省关</strong>（家族化对账）——query-expand（LLM 变体·缓存确定性化·帽 200）/dedup-sim（贪心余弦 0.89 标定值）/kind-bonus/tag-bonus 沿「缺省关两段式」家族纪律（拍板#165/#131/#138②）；②弱命中三态标注（z 口径 2.3·判定子集=语义路在榜块防词面假阳）；③process 语料门（缺省融合路的 BM25 语料与弱命中分布池剔除 process 层——防流水块漏进缺省口漂序）；④<strong>候飞注记</strong>：句窗回捞档+首尾保留截断（W-253·拍板#337·原 #331 让位改号）已立票候施工·本卡不装现状、收口后追笔。</p>
+<p><strong>锚点</strong>[现行]：<code>query_engine.py:1841-1846</code>（CLI 缺省 rerank=True/hybrid=True/structure=True）·<code>:952-1008</code>（retrieve_hybrid·stages 打点）·<code>:1181-1241</code>（apply_structure_quota 配额降尾）·<code>:1372-1427</code>（weak_hit_note z 口径）·<code>:242-261</code>（语料门/分布池门）</p>
+<p>---</p>
+<h2>卡78 · 生成层 v2（业内名：Grounded Generation·块组装与答案合成）</h2>
+<p><strong>一句话</strong>：检索回来的 top-k 块经 make_block 拼成 ≤1500 字候选材料（出处行带 §节名+层标记+as_of 档龄标），交给 LLM 按单一事实源提示词生成带出处答案——块选对了答案不一定对，这层决定「材料怎么喂、答案怎么长」。</p>
+<p><strong>v2 增笔（v1 后全量新笔）</strong>：①<strong>出处行带 §节名</strong>（W-185·拍板#256②·RRM 轨 meta.section 2652/2652 全量在场）；②<strong>答题提示词单一事实源</strong>（ANSWER_PROMPT_TMPL 常量·产线 rag_answer 与 eval run_eval 同源引用——收敛前 eval 台缺 B4 防御句的副本漂移根治）；③预算精确记账（拼接实长·注记白送不计）；④<strong>剪刀差观察</strong>：prod mrr10=0.825 ≫ recall=0.550——检索排序好、答案覆盖低=答案端瓶颈（W-227 同向观察·W-253 对症立票）；⑤头行双注记（weak_note 弱命中+fresh_note 档龄·均缺省关/输出端零排序）。</p>
+<p><strong>锚点</strong>[现行]：<code>query_engine.py:353-416</code>（make_block·:391 头截断）·<code>:1544-1560</code>（ANSWER_PROMPT_TMPL 单一事实源）·<code>:1606</code> 区（B4/think 剥除·组查询注入面）</p>
+<p>---</p>
+<h2>卡79 · 评估反馈层 v2（业内名：Evaluation &amp; Feedback Loop·双轨主尺与外考基准）</h2>
+<p><strong>一句话</strong>：主尺已从「裸向量最弱腿」翻成「<strong>prod 轨</strong>」（产线四通道直调·W-240·拍板#321③——主数字/prod 列·控制变量/bare 列双报并存），20 题内考四票（recall/grounded+answer_rel/ctx_prec）带 judge_version 尺版本指纹随件，外考四基准（C-MTEB/MLDR/RGB）考卷隔离零 LLM 量检索能力——对表必带噪声带（0.188~0.212）单跑不定谳。</p>
+<p><strong>v2 重验要点</strong>：①双报口径写死（report_role=主数字（prod）/control_column=bare·bare 件格式零新键逐字同现役）；②<strong>新基线</strong>（11-03·W-240·句窗索引态）：prod=0.550/bare=0.625·mrr10=0.825·grounded=1.0——#118 产线锚 0.713 方向未复现（带内反向如实申报·bare 列三跑 0.500/0.537/0.625 跨度=单跑噪声注脚·方向解读候业主）；③尺版本指纹（judge_model+判准提示词+公式指纹联合哈希·拍板行引用数字必注·尺换→历史结论标「基于旧尺·降级」）＋饱和度机检（≥0.95 告警·信号无效不引调优）＋双尺对照（分歧=红旗人审）；④<strong>外考四基准</strong>（考卷隔离红线 #264·永不入本地经验库）：C-MTEB 六件本仓 0.7048 vs 官方 0.6744（候选池口径虚高已知）·MLDR-zh 三口径（doc 0.4663/节切 0.4663/<strong>句窗 0.7399</strong>→句窗翻缺省数据源）·RGB 中文四能力 97-98/100（失败 2.25% 全 GLM 内容安全拦截·非检索病）·MLDR-en 三口径 0.7565-0.7619；⑤回流三道：hit_log→升降级候选清单（#88⑤）·病题→evalset 场景卷·核账发现台账（W-125 起收口申报必写）。</p>
+<p><strong>锚点</strong>[现行]：<code>eval/run_eval.py:72-86</code>（TRACK_DESC 双轨口径）·<code>:161</code>（prod= retrieve_for_query 直调）·<code>eval/eval_metrics.py</code>（四票公式·judged_texts 带回）·<code>eval/calibration_gate.py</code>（scale_version/results_scale_status）·results 实件：<code>W240-prod-20题-r1.json</code>/<code>W240-bare-20题-r1.json</code>/<code>external-mldr-zh-汇总.json</code>/<code>external-cmateb-对表报告.md</code>/<code>external-rgb-汇总.json</code></p>
+<p>---</p>
+<h2>附 · v1→v2 漂移清单与时效声明</h2>
+<table><thead><tr><th>卡</th><th>v1 态</th><th>v2 变更</th><th>变更源</th></tr></thead><tbody><tr><td>卡74</td><td>三源·层分类学</td><td>+回灌桥（缺省关）+M4 档龄注记+构成实勘</td><td>W-125·业主令 10-31</td></tr><tr><td>卡75</td><td>「节切 2000 字闸+二切」</td><td><strong>句窗缺省（800/80）+section 逃生口+process 帽 4000</strong></td><td>W-227·拍板#321②</td></tr><tr><td>卡76</td><td>2697 nodes·双缓存</td><td>4067 实勘·三轨缓存+null 契约三轨同构+GPU 帽</td><td>W-227/W-092/W-215</td></tr><tr><td>卡77</td><td>四通道+护栏</td><td>+优化四档家族对账+候飞注记（W-253）</td><td>#165/#138·#337</td></tr><tr><td>卡78</td><td>「最薄层零票」</td><td>+§节名+prompt 单一事实源+剪刀差观察</td><td>W-185·拍板#256②</td></tr><tr><td>卡79</td><td>「eval 走裸奔路（缺口①）」</td><td><strong>主尺=prod 双报</strong>+外考四基准+judge_version</td><td>W-184/240/190-215·#256①/#321③</td></tr></tbody></table>
+<p><strong>时效声明</strong>：本册 as_of=2026-11-03（repo_head 9833204）·结构型结论月级保质·态势型（候飞/M 态/翻缺省候拍）以拍板表与窗队列尾部为准；分块缺省档/主尺轨/提示词源任一再变更→按册头失效触发重验。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/08-机制目录/10-知识库RAG工程册-v2-20261103.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

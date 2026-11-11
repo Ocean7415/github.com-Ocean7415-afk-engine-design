@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<title>状态机卡 · 票生命周期（窗队列七态）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.tag.purple{background:#f3e8ff;color:#6b21a8}.tag.blue{background:#e8f0fb;color:#2b5fa8}
+.tag.green{background:#e9f7ee;color:#2e7d4f}.tag.dark{background:#0f172a;color:#fff}
+.yes{color:#2e7d4f;font-weight:700}.mid{color:#92400e}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+a.ln{color:#2b5fa8;text-decoration:none;border-bottom:1px dotted #b9c6dd}
+a.ln:hover{border-bottom-style:solid}
+.mermaid{display:flex;justify-content:center}
+.stalewarn{color:#92400e;font-weight:700}
+</style>
+</head>
+<body>
+<div style="background:#fff3cd;border:2px solid #92400e;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-size:14px">
+<strong>⚠️ 本件已退役（2026-11-03·W-251 对账批·拍板#334）</strong>——本件=旧名「票生命周期」v1 七态版历史存档（repo_head 01c1d9a·2026-10-21 W-041 核对版），已停更。<strong>正名在役件=「<a href="sm-20261021-001-窗票生命周期.html">窗票生命周期</a>」</strong>（<a href="sm-20261021-001-窗票生命周期.md">md 正本</a>·id sm-20261021-001 不变·v3=写口宪法十四对逐对实勘＋拍板号锚·repo_head e170067）。本件不物理删除防断链（沿「卡过期改 draft 失效」机制·拍板#93 口径1）；检索池以正名件为准（B1 闸）。
+</div>
+<h1>状态机卡 · 票生命周期（窗队列七态） <span class="tag blue">模块卡</span> <span class="tag" style="background:#6b7280;color:#fff">已退役·存档</span></h1>
+<div class="meta"><b>id</b> sm-20261021-001 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 01c1d9a · <b>run_id</b> queue-93-w041 · <b>基准</b> repo_head 01c1d9a · <b>生成式</b> 否 · <b>核对</b> 2026-10-21</div>
+<h1>状态机卡 · 票生命周期（窗队列七态）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：把一张票从「灵感」到「关账」的状态旅程画成图——探讨中/待实施/▶施工中/✅已完成 四主线+🔁维修中/⏸挂起/转人工 三异常态。<strong>为什么存在</strong>：窗队列=唯一队列事实源（拍板#69 立队），状态语义必须唯一且逐格可查——本卡把窗队列头部不变量表投影成图（源标注：状态不自立定义·改语义去改窗队列）。<strong>边界</strong>：本卡零运行时零预算；状态定义唯一源=<code>90-过程/窗队列.md</code> 头部（<code>:6</code> 状态机行/<code>:12</code>-<code>:15</code> 不变量表）。</p>
+<h2>§典型事件链</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>事件</th>
+<th>锚</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>逐格自检：W-041 把窗队列源不变量表四行×三列与卡面投影表逐格比对=4/4 全对（异常态三态在卡）——「投影≠自立」的机检实证</td>
+<td><code><a class="ln" href="../../90-过程/执行台账.md#L583">90-过程/执行台账.md:583</a></code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>实战（活例）：W-043 本窗行从「待实施(已批)」→派工器领单改「▶施工中」（快照三键入行）→收口将改「✅已完成」+产物锚——七态中三态的完整演练</td>
+<td><code><a class="ln" href="../../90-过程/拍板记录表.md#L117">90-过程/拍板记录表.md:117</a></code>（母账拍板#96·窗队列 W-043 行）</td>
+</tr>
+<tr>
+<td>3</td>
+<td>领单闸接线：eligible=待实施(已批) 且拍板号非空（<code><a class="ln" href="../../91-脚本/pi_runner.mjs#L122">91-脚本/pi_runner.mjs:122</a></code>）——状态机与派工器的接缝</td>
+<td>本卡转移语义注记1</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>源标注（防重复四规·状态不自立定义）</strong>：本卡状态定义与不变量的<strong>唯一源=<code>90-过程/窗队列.md</code> 头部</strong>——状态机行（<code><a class="ln" href="../../90-过程/窗队列.md#L6">90-过程/窗队列.md:6</a></code>）与状态不变量表（<code><a class="ln" href="../../90-过程/窗队列.md#L12">90-过程/窗队列.md:12</a></code>–:15）。本卡=对源的文字投影+图示，源变则本卡过期（失效触发见 frontmatter）。改状态语义去改窗队列，不改本卡。</p>
+</blockquote>
+<h2>状态图（mermaid）</h2>
+<div class="figwrap"><div class="mermaid">stateDiagram-v2
+    [*] --&gt; 探讨中未批: 灵感毕业/立票
+    探讨中未批 --&gt; 待实施已批: 拍板号落表（无对比件不拍板）
+    待实施已批 --&gt; 施工中: 派工器领单（闸族全过）
+    施工中 --&gt; 已完成: 复考后认（机检窗型·exit code 判据）
+    施工中 --&gt; 维修中: 复考红打回/半截交接
+    维修中 --&gt; 施工中: 维修补全再领
+    施工中 --&gt; 挂起: 候授权/等外部/复考超时宁停
+    挂起 --&gt; 施工中: 解挂续作
+    施工中 --&gt; 转人工: 越权面/业主接手
+    已完成 --&gt; [*]
+</div></div>
+<p>（图内态名缩写：探讨中未批=<code>探讨中(未批)</code>·待实施已批=<code>待实施(已批)</code>·施工中=<code>▶施工中</code>·已完成=<code>✅已完成</code>·维修中=<code>🔁维修中</code>·挂起=<code>⏸挂起</code>）</p>
+<h2>节点详注（图中状态逐格·语义/不变量/标源）</h2>
+<table>
+<thead>
+<tr>
+<th>节点（状态）</th>
+<th>详注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>探讨中(未批)</td>
+<td>管理可见·不可领单：拍板号列空（或"候拍"）、产物锚=对比件路径（出了就有·无对比件不拍板）——灵感池行毕业出对比件才入此态（源=<code><a class="ln" href="../../90-过程/窗队列.md#L12">90-过程/窗队列.md:12</a></code>）。</td>
+</tr>
+<tr>
+<td>待实施(已批)</td>
+<td>唯一可领单态：拍板号必填、产物锚可空、不建窗产物目录（惰性创建）——eligible 判据=<code><a class="ln" href="../../91-脚本/pi_runner.mjs#L122">91-脚本/pi_runner.mjs:122</a></code>（源=<code><a class="ln" href="../../90-过程/窗队列.md#L13">90-过程/窗队列.md:13</a></code>）。</td>
+</tr>
+<tr>
+<td>▶施工中</td>
+<td>派工器领单进入：拍板号+产物锚双必填、多产物窗建 <code>90-过程/窗产物/W-NNN-主题/</code>（源=<code><a class="ln" href="../../90-过程/窗队列.md#L14">90-过程/窗队列.md:14</a></code>）——写权=派工器（领单时改）。</td>
+</tr>
+<tr>
+<td>✅已完成</td>
+<td>复考后认：机检窗型重跑考题库·exit code 唯一判据·全绿才认（<code><a class="ln" href="../../90-过程/窗队列.md#L8">90-过程/窗队列.md:8</a></code> 头注）——关账不搬家，产物锚含 handoff（源=<code>:15</code>）。</td>
+</tr>
+<tr>
+<td>🔁维修中</td>
+<td>异常态：半截·下一棒锚必填——复考红打回/收口半截进入，维修补全再领回 ▶；「半截必填下一棒锚」让接力不断档（源=状态机行 <code>:6</code>）。</td>
+</tr>
+<tr>
+<td>⏸挂起</td>
+<td>异常态：候授权/等外部·原因必填——复考超时宁停 ⏸ 不打 ✅（永不装绿同源纪律）；解挂续作回 ▶。</td>
+</tr>
+<tr>
+<td>转人工</td>
+<td>异常态：越权面/业主接手（无列附加要求）——机械判不了的场景显式交还自然人，不硬撑。</td>
+</tr>
+</tbody>
+</table>
+<h2>文字投影（机读·主线四态×不变量表逐格）</h2>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>拍板号列</th>
+<th>产物锚</th>
+<th>窗产物目录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>探讨中(未批)</td>
+<td>空（或"候拍"）</td>
+<td>对比件路径（出了就有·无对比件不拍板）</td>
+<td>不建（惰性创建）</td>
+</tr>
+<tr>
+<td>待实施(已批)</td>
+<td>必填</td>
+<td>可空</td>
+<td>不建</td>
+</tr>
+<tr>
+<td>▶施工中</td>
+<td>必填</td>
+<td>必填</td>
+<td>多产物窗建 <code>90-过程/窗产物/W-NNN-主题/</code></td>
+</tr>
+<tr>
+<td>✅已完成</td>
+<td>必填</td>
+<td>必填（含 handoff）</td>
+<td>关账不搬家</td>
+</tr>
+</tbody>
+</table>
+<p>（源行锚逐格：探讨中=<code><a class="ln" href="../../90-过程/窗队列.md#L12">90-过程/窗队列.md:12</a></code>·待实施=<code><a class="ln" href="../../90-过程/窗队列.md#L13">90-过程/窗队列.md:13</a></code>·▶施工中=<code><a class="ln" href="../../90-过程/窗队列.md#L14">90-过程/窗队列.md:14</a></code>·✅已完成=<code><a class="ln" href="../../90-过程/窗队列.md#L15">90-过程/窗队列.md:15</a></code>）</p>
+<h2>文字投影（机读·异常态三行·照状态机行定义）</h2>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>不变量</th>
+<th>进入缘由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔁维修中</td>
+<td>半截·<strong>下一棒锚必填</strong></td>
+<td>复考红打回/收口半截</td>
+</tr>
+<tr>
+<td>⏸挂起</td>
+<td>候授权/等外部·<strong>原因必填</strong></td>
+<td>宁停不装绿</td>
+</tr>
+<tr>
+<td>转人工</td>
+<td>业主接手（无列附加要求）</td>
+<td>越权面/机械判不了</td>
+</tr>
+</tbody>
+</table>
+<h2>转移语义注记（照源·不自立规则）</h2>
+<ol>
+<li><strong>探讨中行=管理可见·不可领单</strong>（无拍板号不入列队红线·v1.2#39）；<strong>领单仅从 待实施(已批)</strong>（<code><a class="ln" href="../../90-过程/窗队列.md#L17">90-过程/窗队列.md:17</a></code>·eligible 判据=<code><a class="ln" href="../../91-脚本/pi_runner.mjs#L122">91-脚本/pi_runner.mjs:122</a></code>）；</li>
+<li><strong>✅=复考后认</strong>（<code><a class="ln" href="../../90-过程/窗队列.md#L8">90-过程/窗队列.md:8</a></code> 头注：机检窗型·派工器按窗型重跑考题库机检命令·exit code 唯一判据·全绿才认·任一红打回 🔁+IM·缺考题窗型跳过记因不拦·复考超时=宁停改 ⏸）；</li>
+<li>状态件=窗队列（状态列可机械/人工回改）·与拍板记录表/执行台账（append-only）分职；</li>
+<li>灵感池行毕业出对比件→入队列为探讨中行。</li>
+</ol>
+<h2>从哪测</h2>
+<p>读 <code>90-过程/窗队列.md</code> 头部三段（状态机/✅注记/不变量表）逐格对照本卡两表；机检=meta_lint 候施工校验（#69⑤·在票）；领单闸实测=<code>node 91-脚本/pi_runner.mjs --selftest</code>（eligible/状态闸案）。</p>
+<h2>参数与预算</h2>
+<p>本卡零运行时零预算；状态推进的写权在窗本身（收口回写）与派工器（领单 ▶/复考 ✅🔁）——投影通道=window_card_sync（单向飞书投影）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 01c1d9a（2026-10-21·W-041 核对·窗队列.md 头部逐格抄录）；失效触发=本卡头 frontmatter「失效触发」键。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/05-状态机/sm-20261021-001-票生命周期.md</code> · repo_head 01c1d9a · 渲染于 2026-10-31 19:22:00 +0800 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

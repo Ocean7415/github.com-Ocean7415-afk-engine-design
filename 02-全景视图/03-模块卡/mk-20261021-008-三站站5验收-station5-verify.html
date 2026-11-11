@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-008 · 模块卡 · 三站站5验收（station5-verify）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-008 · 模块卡 · 三站站5验收（station5-verify）</h1>
+<div class="meta"><b>id</b> mk-20261021-008 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 67e5b04 · <b>run_id</b> queue-93-w040</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；判定梯（交卷判分梯 L1／收班判色梯 L2）。</p>
+</blockquote>
+<h1>模块卡 · 三站站5验收（station5-verify）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：流水线的「验收道」——切片跑考题出验收结论，并把「考题自身坏了」与「App 真坏了」分诊开。<strong>为什么存在</strong>：脚本崩≠app 红——把坏考题当罪证会冤枉 App、把真红当考题病会放过 App；站5 用机械分诊守住「坏考题不充当罪证=更严」的判卷纪律（头注·锚 ts/src/station5-verify/verify.ts:1）。<strong>边界</strong>：分诊只识别不改判卷语义；考题修复=LLM 起草+白名单机检双重约束（断言集不可减）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>定形：W6 件⑦ 考题病分诊+修复道上岗——崩溃签名表机械分诊（SyntaxError/Cannot find module/is not defined 等→考题病·不装红不装绿）</td><td>本卡实现概览（头注·锚 ts/src/station5-verify/verify.ts:1）</td></tr><tr><td>2</td><td>实战：W16 验证班（manifest-w16-c-v6 丙案双绿终版）——验收面（判定梯/切片族）在多版本逐版过闸中担纲</td><td><code>runs/manifest-w16-c-v6.json:1</code>（实物在册·契约卡 ct-20261021-002）</td></tr><tr><td>3</td><td>修复道纪律：断言集不可减（orig 全部 expectText 文本必须存活∧expectStatus 不变·违者拒收转站6 追认清单）</td><td>本卡实现概览</td></tr></tbody></table>
+<h2>接口</h2>
+<p>主入口 verifyApp(opts)（锚 ts/src/station5-verify/verify.ts:39）——站5 验收主流程（切片跑考题出验收结论）。 辅助导出 appStartCauseOf（锚 ts/src/station5-verify/verify.ts:253）——启动失败 stderr 尾→BootCause 归因。</p>
+<h2>实现概览</h2>
+<p>W6·件⑦ 考题病分诊+修复道（头注·锚 ts/src/station5-verify/verify.ts:1）：脚本自身崩≠app 红——分诊（机械）：NA∧崩溃签名（SyntaxError/Cannot find module/is not defined 等）→「考题病」（不装红不装绿·NA≠PASS 照旧——坏考题不充当罪证=更严）；断言败→app 照红（分诊不碰真红）。 修复道（Agent员工起草+机械白名单机检）：修复原语白名单=选择器/url 修正/新增 goto·expectText 步；断言集不可减（orig 全部 expectText 文本必须存活∧expectStatus 不变·违者拒收转站6追认清单）；修复落 ws/_slices/case-fixes.json（正本 pkg 字节不动·按 id 覆盖进运行副本·sha 重锚）+undo 令随件。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart TB
+    V[verifyApp<br/>切片跑考题] --> RUN[逐 case 执行]
+    RUN --> T{结果分诊<br/>机械}
+    T -->|断言败| RED[app 照红<br/>分诊不碰真红]
+    T -->|NA∧崩溃签名| SICK[考题病<br/>不装红不装绿·NA 照旧]
+    T -->|过| PASS[绿]
+    SICK --> FX[修复道<br/>LLM 起草]
+    FX --> WL{白名单机检<br/>断言集不可减}
+    WL -->|违者| S6[拒收转站6 追认清单]
+    WL -->|过| FIX[落 case-fixes.json<br/>正本字节不动·sha 重锚+undo]
+    FIX --> RUN
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>verifyApp</td><td>站5 主入口（锚 ts/src/station5-verify/verify.ts:39）：组织切片族（slice-cases/slice-parallel/slice-triage/slice-selfheal）跑考题，汇总出验收结论给判定梯。</td></tr><tr><td>结果分诊</td><td>机械三分：断言败=app 真红（分诊不碰）；NA∧崩溃签名=考题病；过=绿——判据全是签名表比对，零 LLM 零主观。</td></tr><tr><td>app 照红</td><td>真红路径不动摇：断言败就是断言败，分诊的存在绝不给 App 洗红——「更严」方向的纪律。</td></tr><tr><td>考题病</td><td>坏考题路径：不装红不装绿、NA≠PASS 照旧——坏考题既不冤枉 App 也不帮 App 蒙混，留待修复道。</td></tr><tr><td>修复道</td><td>Agent员工（LLM）起草修复案+机械白名单机检双重约束：原语只有选择器/url 修正/新增 goto·expectText 步——起草自由、收口严卡。</td></tr><tr><td>白名单机检</td><td>断言集不可减：orig 全部 expectText 文本必须存活∧expectStatus 不变——修考题永远不能变成「删断言放水」；违者拒收转站6 追认清单。</td></tr><tr><td>落 case-fixes.json</td><td>修复产物落 ws/_slices/（正本 pkg 字节不动·按 id 覆盖运行副本·sha 重锚）+undo 令随件——可回滚可审计，考题正本仍归业主资产。</td></tr><tr><td>启动归因</td><td>appStartCauseOf（锚 ts/src/station5-verify/verify.ts:253）：启动失败 stderr 尾→BootCause 归因——起不来的 App 也能给出「死在哪一步」的机械判词。</td></tr></tbody></table>
+<h2>调用方与被调用</h2>
+<p>被调：queue-runner（切片流水线站5道）/slice-runner。 调用：slice-cases/slice-parallel/slice-triage/slice-selfheal（切片族）·functional-gate/ladder（功能闸/判定梯）·shared/llm（考题修复起草）。</p>
+<h2>从哪测</h2>
+<p>同目录测试族（slice/ladder/case-defect 等件 .test.ts）+e2e 链；<code>npm test</code> 全量跑。</p>
+<h2>参数与预算</h2>
+<p>考题修复=LLM 起草+白名单机检双重约束（断言集不可减）；判卷红绿权/出题权零触碰（分诊只识别考题病·不改判卷语义）。</p>
+<h2>时效</h2>
+<p>基准=仓 head 67e5b04（2026-10-21·W-040 核对）；失效触发=分诊签名表/白名单/判定梯语义改动（看 ts/ 面 git log+执行台账）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-008-三站站5验收-station5-verify.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

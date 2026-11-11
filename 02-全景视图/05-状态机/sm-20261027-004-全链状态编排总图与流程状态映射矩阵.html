@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>sm-20261027-004 · 状态机卡 · 全链状态编排总图 × 流程-状态映射矩阵</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>sm-20261027-004 · 状态机卡 · 全链状态编排总图 × 流程-状态映射矩阵</h1>
+<div class="meta"><b>id</b> sm-20261027-004 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-27 · <b>verified_at</b> 2026-10-27 · <b>repo_head</b> 9b7dd9c · <b>run_id</b> main-window-20261027</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：「票」两层随节标注——<strong>窗票</strong>（L2·窗队列）／<strong>工序票</strong>（L1·拆单产物）；「判定梯」＝<strong>交卷判分梯</strong>（L1·验收判定·非 L2 收班判色梯）。</p>
+</blockquote>
+<h1>状态机卡 · 全链状态编排总图 × 流程-状态映射矩阵</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：把六台状态机沿核心业务主线<strong>编排</strong>起来——§1 编排总图（四段六台·六条接缝），§2 流程-状态映射矩阵（主线 15 节点 × 六台各自所处态），§3 触发链接缝表。<strong>为什么存在</strong>：sm-003 答「每台内部怎么转」，bf-008 答「三站怎么串」——缺「六台沿全链怎么接力、谁在哪个节点持账」的编排视角，本卡补位。<strong>术语正名</strong>：多台状态机沿业务线串联=业内<strong>状态机编排（State Machine Orchestration）</strong>（BPMN/Temporal/Saga 同词），非时序图（时序=消息交互顺序·归 sq-001）；映射矩阵=流程-状态映射矩阵（Process-State Matrix·追踪矩阵一族）。<strong>边界</strong>：零新状态定义（正本=sm-003）；窗外渠道=bf-007·窗内三站=bf-008·端到端业务流程=bf-009。</p>
+<h2>§编排总图（四段六台）</h2>
+<p>规划段（包级·候拍板）→ 派工段（窗队列）→ 施工段（run+波次+票级 三台并行）→ 维修段（病卡）。图版+逐段逐态逐缝<strong>口述说明</strong>（九节长文：含三回环·三条设计律·空档态设计意图·候拍板注记）见同名 html §1/§1.1。</p>
+<h2>§流程-状态映射矩阵（15 节点 × 6 台）</h2>
+<p>竖读=某台的一生；横读=某时刻全引擎在干什么。全表见同名 html §2（含接缝行标）。三处空档态可见：候业主拍板（包级）·完工待确认（窗队列）·方案待拍（病卡）——同构「机器做完等自然人」。</p>
+<h2>§六条接缝（触发链）</h2>
+<p>①拍板落票（包 approved→窗 待实施(已批)·拍板号=join 钥匙）②领单拉窗（待实施→▶ + run init + 波次 in_progress + 票 queued）③站3导入闸（包 approved→站3交接毕·三台接管）④红票立卡（票 final→病卡 待分诊）⑤窗退出钩子（▶→✅/🔁）⑥终认/复考（完工待确认→✅）。接缝纪律：两台永不互写对方的账——只写自己账本，对方由对方回写口自翻。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/05-状态机/sm-20261027-004-全链状态编排总图与流程状态映射矩阵.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+</body>
+</html>

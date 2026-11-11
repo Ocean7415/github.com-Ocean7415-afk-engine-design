@@ -1,0 +1,105 @@
+---
+id: ct-20261021-002
+kind: 模块卡
+domain: engine
+status: verified
+created_at: 2026-10-21
+verified_at: 2026-10-21
+repo_head: 01c1d9a
+run_id: queue-93-w041
+anchors: ["ts/src/queue/queue-runner.ts:2", "ts/src/queue/queue-runner.ts:7", "ts/src/queue/queue-runner.ts:42", "runs/manifest-v2.json:1", "runs/manifest-v6.json:1", "runs/manifest-w16-c-v6.json:1", "pipeline-lab/scripts/fail-loop.mjs:93", "90-过程/执行台账.md:583"]
+tags: ["契约卡", "manifest", "夜车排期", "runs"]
+related: ["ct-20261021-001", "sm-20261021-002"]
+基准: repo_head 01c1d9a
+生成式: 否
+核对: 2026-10-21
+失效触发: queue-runner.ts manifest 装载/派工语义改码，或新 manifest 顶层键入列（看执行台账 runs/ 新笔+本卡锚行漂移→过期改 draft 走 B1 保鲜闸）
+---
+> **口径**：本卡话术/命名遵循《[00-话术统一口径正本](../00-话术统一口径正本.md)》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。
+> **消歧（本卡·口径正本 §3）**：票（工序票 L1／窗票 L2·随文标注）。
+
+# 契约卡 · runs manifest 家族（v2–v6 / w16）
+
+## §0 一句话
+
+**解决什么**：定义夜车排期单（`runs/manifest-*.json`）的家族契约——顶层声明版本清单与闸参数，versions[] 每元素=一波。**为什么存在**：manifest 是业主资产（改它=改排期意图），家族字段差异（v2 无 project_ref/w16 无 _comment 等）必须逐键落约，runner 消费语义才不会读错旧排期单（W-041 三家族逐键比对·`90-过程/执行台账.md:583`）。**边界**：本卡只投影契约——出题权/排期权不在施工窗，代理只读不写 manifest。
+
+## §典型事件链
+
+| # | 事件 | 锚 |
+|---|---|---|
+| 1 | 家族实物谱系：v2/v3/v4/v5/v5b（039-V5 早波·无 project_ref）→v6（增 project_ref）→w16-c（W16 验证班丙案双绿终版·无 _comment/max_final_reds） | `runs/manifest-v2.json:1`/`runs/manifest-v6.json:1`/`runs/manifest-w16-c-v6.json:1` |
+| 2 | 实勘入卡：W-041 三家族实物逐键对照（差异如实记：v2 无 project_ref/w16-c 无 _comment 与 max_final_reds） | `90-过程/执行台账.md:583` |
+| 3 | decision_ref 闸实战语义：任一版校验拒=整个 manifest 不派工（fail-closed·不烧下一版的钱·拍板#39 排期纪律） | `ts/src/queue/queue-runner.ts:7` |
+
+## 接口（顶层字段·逐家族实勘）
+
+| 字段 | v2–v5(v5b) | v6 | w16-c-* | 语义 |
+|---|---|---|---|---|
+| `_comment` | ✓ | ✓ | ✗ | 人类注释（版本背景/考题口径/queue root 指路） |
+| `project_ref` | ✗ | ✓（="039"） | ✓ | 项目号（board#30 起） |
+| `versions` | ✓ | ✓ | ✓ | 波次数组（见下） |
+| `max_final_reds` | ✓ | ✓ | ✗ | 过闸阈值（终局红票≤此值·w16 班由 gate 现场定） |
+| `max_rounds` | ✓ | ✓ | ✓ | 每版最多轮次（超=停·防烧钱） |
+
+## versions[] 元素契约（全家族一致）
+
+| 字段 | 必填 | 语义 |
+|---|---|---|
+| `id` | ✓ | 版本号（如 `V5F-V6`·排期账本以其为主键） |
+| `package` | ✓ | 交件包路径（提交给站点3-Vn 目录） |
+| `decision_ref` | ✓ | 拍板依据（如 `拍板#27`）——**入队资格闸**：必过 validateDecisionRef，拒=整个 manifest 不派工（拍板#39） |
+| `workspace` | ✓ | 班次工作区（`runs/q-ws-*`） |
+| `inherits` | 可选 | 跨班工作区继承——指向同 manifest 内先行班 id，派工首轮前搬入其终态工作区（拍板#65·锚 ts/src/queue/queue-runner.ts:42） |
+
+## 消费语义（读侧实然）
+
+1. **逐版串行**：按 `versions[]` 顺序 V0→Vn 派工·叫号循环（ts/src/queue/queue-runner.ts:2）；
+2. **decision_ref 闸**：任一版 `decision_ref` 校验拒=整个 manifest 不派（fail-closed·不烧下一版的钱·`ts/src/queue/queue-runner.ts:7`）；
+3. **闸参数**：`max_final_reds` 随 gate 事件 payload 的 `threshold` 落账；`max_rounds` 限定每版维修轮帽；
+4. **续号**：旧根已有排期=新窗 id 续 `-r2/-r3…`（排期唯一守卫·pipeline-lab/scripts/fail-loop.mjs:93）。
+
+## 排期消费流（图示与节点详注）
+
+```mermaid
+flowchart LR
+    M[manifest 排期单<br/>业主资产·只读] --> V{validateDecisionRef<br/>逐版校验}
+    V -->|任一拒| NO[整个 manifest 不派<br/>fail-closed·不烧钱]
+    V -->|全过| SER[逐版串行 V0→Vn<br/>queue-runner.ts:2]
+    SER --> INH{inherits?}
+    INH -->|有| CPY[首轮前搬入先行班<br/>终态工作区·:42]
+    INH -->|无| RUN[派班施工]
+    CPY --> RUN
+    RUN --> GATE[闸参数落账<br/>max_final_reds→threshold]
+    GATE --> NEXT{下一版}
+    NEXT --> SER
+    NEXT -->|版本尽| END[班终·summary 投影]
+```
+
+**节点详注表**（图正下方·每节点做什么/边界/锚点）：
+
+| 节点 | 详注 |
+|---|---|
+| manifest 排期单 | 夜车的排期输入与业主资产：versions/闸参数改动=改排期意图须拍板依据——代理施工只读不写（出题权/排期权红线）。 |
+| validateDecisionRef | 入队资格闸：每版 decision_ref（如「拍板#27」）逐版校验——任一拒=整个 manifest 不派（锚 ts/src/queue/queue-runner.ts:7·fail-closed 拒面在派工前）。 |
+| 逐版串行 | 消费主循环（锚 ts/src/queue/queue-runner.ts:2）：按 versions[] 顺序叫号，不并行不跳版——排期纪律机械化。 |
+| inherits 继承 | 跨班工作区继承（拍板#65·锚 ts/src/queue/queue-runner.ts:42）：指向同 manifest 内先行班 id，派工首轮前搬入其终态工作区——迭代版站在前版肩膀上。 |
+| 派班施工 | 波次执行：每版走站3→站4→站5 三站流水+班内判卷（时序见 sq-20261021-001）——本卡只管「哪版先哪版后」。 |
+| 闸参数落账 | max_final_reds 随 gate 事件 payload.threshold 落账（对表见 ct-20261021-001）；max_rounds 限定每版维修轮帽——防烧钱双闸。 |
+| 排期唯一守卫 | 旧根已有排期=新窗 id 续 -r2/-r3（锚 pipeline-lab/scripts/fail-loop.mjs:93）——同一根名不重排，历史排期不被覆盖。 |
+
+## 与班次账本的关系
+
+manifest=排期输入；queue-ledger.jsonl=排期执行账（每 version 一条状态线）；queue-events.jsonl=过程事件（dispatched/gate）——三件关系逐格见 `ct-20261021-001`。
+
+## 从哪测
+
+实物抽验：`runs/manifest-v2.json`（早波形态·无 project_ref）、`runs/manifest-v6.json`（v6 形态）、`runs/manifest-w16-c-v6.json`（w16 形态）三件逐字段对照本卡表；语义级=queue-runner vitest 用例。
+
+## 参数与预算
+
+manifest 是**业主资产**：改 versions/闸参数=改排期意图，须拍板依据（每版自带 decision_ref 为证）；代理施工只读不写 manifest（出题权/排期权不在施工窗）。
+
+## 时效
+
+基准=仓 head 01c1d9a（2026-10-21·W-041 核对·三家族实物逐键比对）；失效触发=本卡头 frontmatter「失效触发」键。

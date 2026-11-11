@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261027-009 · 业务流程卡 · 全业务端到端流程图（站1/2 规划→拍板派工→三站施工→收口追认→维修回环）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261027-009 · 业务流程卡 · 全业务端到端流程图（站1/2 规划→拍板派工→三站施工→收口追认→维修回环）</h1>
+<div class="meta"><b>id</b> bf-20261027-009 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-27 · <b>verified_at</b> 2026-10-27 · <b>repo_head</b> 9b7dd9c · <b>run_id</b> main-window-20261027</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；复考（交活重考闸·L2）。</p>
+</blockquote>
+<h1>业务流程卡 · 全业务端到端流程图（站1/2 规划→拍板派工→三站施工→收口追认→维修回环）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：一个任务从业主一句话到 APP 交付完工的<strong>端到端业务流程图</strong>（E2E Process Flow·闸门显式）——把 bf-007（窗外主干）与 bf-008（窗内三站）向前后各补一段：前补站1/2 规划段（方案→拆票→考题→打包→四闸），后补收口追认与维修回环。<strong>为什么存在</strong>：007/008 各管一段，缺「全链一张图看闸门排布」的总览——本卡补位，三卡拼全链。<strong>边界</strong>：不复制 007/008 的图（只指针）；不定义状态（字典=sm-003·编排=sm-004）；站1/2 两岗与密度闸=候拍板（琥珀标）。§1 增口述说明九节（v2）：规划段三步备料/拍板点为什么不可下放/五道闸逐口述/三站三级闸/完工三道手续/终认与追认两处确认权/两个回环带帽子/一句话收拢（权力结构+账本结构）。</p>
+<h2>§五段六闸（段落-闸门-账本对表）</h2>
+<p>①规划段（闸=四闸+P-G5⟲≤3·账=包级候拍板）②拍板段（闸=无对比件不拍板·接缝=拍板落票）③派工段（闸=五闸+优先级分桶·账=窗队列八态）④施工段（闸=三级闸·账=run+波次+票级三台并行）⑤收口段（闸=复考闸绿才认✅·账=窗队列完工待确认/✅）⑥维修回环（闸=93库 rrm_lint verified·账=病卡七态）。</p>
+<h2>§业主三时点（全链深色闸门）</h2>
+<p>拍板（对比件前置·#36）→ 终认（完工待确认翻✅/🔁·#179）→ 追认（晨报 final 清单·R13）。其余一切闸均为机械设备（零 LLM）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>编号接续 bf-008→009·落盘 2026-10-27</td><td>本卡 frontmatter</td></tr><tr><td>2</td><td>状态机视角姊妹件同步落盘</td><td><code>02-全景视图/05-状态机/sm-20261027-004</code></td></tr><tr><td>3</td><td>站1/2 段两岗已落位（W-128·#170 拍板B）·密度闸候拍</td><td>拍板记录表 #170</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261027-009-全业务端到端流程图-站12规划到完工追认.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+</body>
+</html>

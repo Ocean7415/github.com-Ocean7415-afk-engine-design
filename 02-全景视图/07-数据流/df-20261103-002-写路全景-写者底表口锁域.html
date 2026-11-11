@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>数据流卡 · df-20261103-002 写路全景（写者 × 底表 × 口 × 锁域）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>数据流卡 · df-20261103-002 写路全景（写者 × 底表 × 口 × 锁域）</h1>
+<p>&lt;!-- meta: window=W-271 type=全景件 status=verified tags=数据流卡,全景视图,专题化 --&gt;</p>
+<p>--- id: df-20261103-002 kind: 模块卡 domain: engine status: verified version: v1 created_at: 2026-11-03 verified_at: 2026-11-03 repo_head: b944d35 run_id: queue-w271-20261103 anchors: ["91-脚本/账本发号器.py:33", "91-脚本/账本发号器.py:62", "91-脚本/账本发号器.py:112", "91-脚本/账本发号器.py:142", "91-脚本/队列写口.mjs:7", "91-脚本/队列写口.mjs:54", "91-脚本/队列写口.mjs:160", "91-脚本/队列写口.mjs:174", "91-脚本/队列写口.mjs:199", "91-脚本/队列写口.mjs:203", "91-脚本/queue_mutex.ts:114", "91-脚本/meta-lint.ts:249", "91-脚本/打回分诊.ts:247", "91-脚本/pi_runner.ts:257", "90-过程/规则-发号即落行与账本单口纪律.md:1", "90-过程/规则-队列写口纪律.md:29", "02-全景视图/07-数据流/df-20261030-001-业务链触发CRUD矩阵.md:94", "02-全景视图/07-数据流/df-20261030-001-业务链触发CRUD矩阵.md:111"] tags: ["数据流卡", "全景视图", "专题化"] related: ["df-20261030-001", "sm-20261030-005", "df-20261021-001"] 基准: repo_head b944d35（开工实测=任务书repo_head开工时实勘·拍板#357②④扩面笔已在本笔工作树·锚以本笔收口态为准） 生成式: 否 核对: 2026-11-03 升版缘由: 首版（拍板#357④·对比件 §3-④「写路全景补卡」·任务书 W-271 accept4） 失效触发: 发号器 LEDGERS/append_row/fill_row 行号漂移·队列写口四道闸改码（道增删）·第四本账入锁域·宪法表增删对（拍板级）→本卡过期改 draft 走 B1 保鲜闸 ---</p>
+<blockquote>
+<p><strong>口径</strong>：本卡话术遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——白话三词（机械设备/Agent员工/自然人审核）；发号=领号，落行=把行写进账本，临界区=锁内别人插不进来的那一小段时间。</p>
+<p><strong>母账</strong>：拍板#357（并发写撞号三缝收口·业主令「准」2026-11-03）·对比件=<code>90-过程/handoffs/对比流程-并发写撞号三缝收口-现状vs改后-20261103.html</code>（§3-④=本卡蓝本）。</p>
+</blockquote>
+<h1>数据流卡 · df-20261103-002 写路全景（写者 × 底表 × 口 × 锁域）</h1>
+<blockquote>
+<p><strong>本卡是什么</strong>：全仓「append 类写」的<strong>单口可查可审总图</strong>（拍板#357④）——七写者（谁在写）× 四本账（写到哪）× 口与锁域（经哪道口、进哪把锁）×审计心跳（写了留什么痕）。姊妹件=df-20261030-001（业务链触发 CRUD 矩阵·36 行×15 列）——本卡是它行29/30/31 三行的<strong>写路治理视角放大件</strong>，行30/31 旧现状行已随本卡同笔回改（勘误依据=拍板#357·B1 保鲜道）。</p>
+</blockquote>
+<h2>§1 七写者（谁在写）</h2>
+<table><thead><tr><th>#</th><th>写者</th><th>属列</th><th>写面（写哪本账·干什么）</th><th>实勘锚</th></tr></thead><tbody><tr><td>1</td><td>主窗代录（含手机出令·主窗代行）</td><td>L2</td><td>拍板行 append（发号器锁内落行）·立票建行（窗队列 W 行·发号器）·owner 转换代录（须 --board 拍板号）</td><td><code>规则-发号即落行 §一1·队列写口.mjs:63</code></td></tr><tr><td>2</td><td>分诊器（代拍道）</td><td>L2</td><td>拍板表代拍行 append（appendProxyRow·断窗重排/班末 drain 两道）</td><td><code>打回分诊.ts:247</code></td></tr><tr><td>3</td><td>派工器（dispatcher）</td><td>L2</td><td>窗队列领单翻▶（队列写口 actor=dispatcher·宪法对①）</td><td><code>队列写口.mjs:55</code></td></tr><tr><td>4</td><td>施工窗（window）</td><td>L2</td><td>窗队列注记/翻🔁/推🔵/转人工（宪法对②③⑪⑬）·执行台账收口 append（<strong>新道=发号器 --append-row-file --ledger 执行台账</strong>·拍板#357②）</td><td><code>队列写口.mjs:56-58,66-68</code>·<code>账本发号器.py:112</code></td></tr><tr><td>5</td><td>收口申报器</td><td>L2</td><td>窗队列翻完工待确认（▶非本态拒收 fail-closed）</td><td><code>pi_runner.ts:257,1276</code></td></tr><tr><td>6</td><td>巡检（inspector）</td><td>L2</td><td>窗队列宁停推⏸（僵尸/无据宁停·宪法对⑤）</td><td><code>队列写口.mjs:59</code></td></tr><tr><td>7</td><td>业主道（owner）</td><td>L2</td><td>终认翻✅/勘误恢复/挂账清偿/业主宁停（宪法对④⑥⑦⑧⑨⑩⑫⑭·主窗代录须 --board）</td><td><code>队列写口.mjs:60-69</code></td></tr></tbody></table>
+<blockquote>
+<p><strong>七写者口径注</strong>：治本架构件（20261030）立「五写者」（主窗/施工窗/派工器/巡检/收口申报器）——本卡实勘加严为七：+分诊器代拍道（打回分诊.ts:247）+业主道独立 actor（owner·宪法表四 actor 词汇之一·<code>队列写口.mjs:52</code>）。只加严不加松（仓规）。</p>
+</blockquote>
+<h2>§2 四本账（写到哪）</h2>
+<table><thead><tr><th>账</th><th>语义</th><th>写道（唯一写口）</th><th>占用/编号语义</th><th>锁</th></tr></thead><tbody><tr><td>🔴拍板记录表</td><td>append-only（母账·一字不改删）</td><td>发号器 <code>--append-row-file --ledger 拍板</code>（锁内发号→{N}替换→追加→同号唯一验证→释锁·验证不过回滚重试≤3）</td><td><strong>有号账</strong>（#N 递增·禁占位行禁 fill-row——append-only 一次写全·写不全=宁晚落行）</td><td><code>.locks/.拍板.lock</code></td></tr><tr><td>窗队列</td><td>状态件（状态列许回改·宪法十四对管流转）</td><td>翻格/注记=队列写口四道闸；<strong>建行/占位补全=发号器</strong>（立票 <code>--ledger 窗队列</code> W 行模板·补全 <code>--fill-row W-N --row-file &lt;新行&gt;</code> 仅窗队列开放）</td><td><strong>有号账</strong>（W-N 递增·占位短行许钉号后同锁补全）</td><td><code>.locks/.窗队列.lock</code></td></tr><tr><td>🔴执行台账</td><td>append-only（收口五件套①·无号）</td><td><strong>新道=发号器 <code>--append-row-file --ledger 执行台账</code></strong>（纯锁内追加·行原样落账零改写·不发号不验号）；生效前直写照旧已翻篇</td><td><strong>无号账</strong>（越界引入编号语义=A 类越面推卡停车·对比件 §6 边界；<code>--next</code> 对它=用法错 exit 2）</td><td><code>.locks/.执行台账.lock</code></td></tr><tr><td>审计与运行态</td><td>append-only jsonl（运行态不进 git）</td><td>写口审计=<code>storage/queue_audit.jsonl</code>（成功与拒都记·道4）；发号器 fill 审计=<code>storage/tmp/发号器审计.jsonl</code>（op:fill·ts/pid/行号/前后指纹）；心跳=<code>storage/heartbeat/</code></td><td>无号</td><td>—（审计零锁·追加道自带幂等）</td></tr></tbody></table>
+<blockquote>
+<p>四本账口径注：拍板#357 语境「三本账」=拍板表/窗队列/执行台账（三缝收口对象）——本卡实勘加审计/运行态 jsonl 为第四本（写口审计+发号器 fill 审计+心跳租约=可审面），与 sm-005 append-only 六对象（events/queue-events/分诊事件/latitude-log 等 L1 车间账）分层不混：L1 车间账见 df-001 行22-23/32-33，本卡只管 L2 派工台账。</p>
+</blockquote>
+<h2>§3 口与锁域（怎么写·单口收敛全景）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+  subgraph W["七写者"]
+    A1["主窗代录"]
+    A2["分诊器代拍"]
+    A3["派工器"]
+    A4["施工窗"]
+    A5["收口申报器"]
+    A6["巡检"]
+    A7["业主道"]
+  end
+  subgraph G["口（单口收敛·零旁路）"]
+    F["账本发号器.py<br/>锁内发号/追加/补全"]
+    Q["队列写口.mjs<br/>四道闸翻格/注记"]
+  end
+  subgraph L["锁域（90-过程/.locks/）"]
+    K1[".拍板.lock"]
+    K2[".窗队列.lock"]
+    K3[".执行台账.lock"]
+  end
+  subgraph D["四本账"]
+    B1("🔴拍板记录表<br/>append-only 有号")
+    B2("窗队列<br/>状态件 W 号")
+    B3("🔴执行台账<br/>append-only 无号")
+    B4("审计+心跳 jsonl<br/>运行态")
+  end
+  A1 -->|拍板行/立票| F
+  A1 -->|owner 代录| Q
+  A2 -->|代拍行| B1
+  A3 -->|翻▶| Q
+  A4 -->|注记/翻格| Q
+  A4 -->|收口台账行| F
+  A5 -->|翻完工| Q
+  A6 -->|宁停⏸| Q
+  A7 -->|终认✅| Q
+  F --> K1 --> B1
+  F -->|"建行/补全"| K2 --> B2
+  F -->|"无号追加(新道)"| K3 --> B3
+  Q -->|"同锁文件同锁域"| K2
+  Q --> B4
+  F -->|"fill 审计"| B4
+</div></div>
+<ul><li><strong>发号器四道牙</strong>（自身硬闸·<code>账本发号器.py</code>）：锁内重查最大号（防 TOCTOU）→ <code>{N}</code> 占位守卫拒发（无占位行不落账）→ 追加后同号唯一验证（不过自动回滚重试≤3）→ 全败如实 exit 1 账本零污染（宁停不装绿）。锚：<code>append_row:112</code>·<code>next_number:100</code>·<code>validate_unique:106</code>。</li><li><strong>fill_row 补全道</strong>（拍板#357④·仅窗队列）：同锁域读→按行号定位唯一目标行（不存在/同号多行=fail-closed 拒写 exit 1）→整行替换→同号唯一验证→写盘→审计（<code>fill_row:142</code>）。拍板表/执行台账传 <code>--fill-row</code>=用法错 exit 2（append-only 禁回改）。</li><li><strong>写口四道闸</strong>（翻格/注记·<code>队列写口.mjs:7-12</code>）：道1 词面（WINDOW_STATES 白名单·:160）→道2 转换权宪法（十四对查表·:174·表本体 :54-69）→道3 乐观锁（mtime+行指纹复核·重读重试上限3·:199）→道4 审计（成功与拒都记·:203,283）。</li><li><strong>锁协议同构三件</strong>：发号器 <code>acquire_lock:62</code>（O_EXCL 原子占位+PID 存活判+死锁接管+只摘己锁+W-271 坏锁文短等加严+抖动重试）↔ <code>queue_mutex.ts:114 withQueueLock</code>（同锁文件同协议·TS 侧）↔ 写口道3 乐观锁（同一窗队列锁域）。<strong>同一账本的一切写（发号建行/写口翻格）互斥在同一把锁上</strong>。</li></ul>
+<h2>§4 写路全景矩阵（写者 × 账本 × 口 × 锁域）</h2>
+<table><thead><tr><th>写者 ↓ 账 →</th><th>拍板记录表</th><th>窗队列</th><th>执行台账</th><th>审计/心跳</th></tr></thead><tbody><tr><td>主窗代录</td><td><strong>C</strong>·发号器锁内落行（禁 grep+edit 直落·禁 --next 取号后落笔）·<code>发号即落行 §一</code></td><td><strong>C</strong>·立票建行走发号器 W 行模板（§二1）·owner 翻格走写口 --board</td><td>—</td><td>—</td></tr><tr><td>分诊器代拍</td><td><strong>C</strong>·appendProxyRow·<code>打回分诊.ts:247</code></td><td><strong>U</strong>·drain 翻回（走口）·<code>打回分诊.ts:349,360</code></td><td>—</td><td>—</td></tr><tr><td>派工器</td><td>NA</td><td><strong>U</strong>·领单翻▶（走口·闸1 前置沿 W-187）·<code>队列写口.mjs:55</code></td><td>—</td><td><strong>C</strong>·审计行·<code>queue_audit.jsonl</code></td></tr><tr><td>施工窗</td><td>NA</td><td><strong>U</strong>·注记/翻🔁/推🔵/转人工（走口）·<code>队列写口.mjs:56-68</code>·占位补全走 <code>--fill-row</code>（W-271 新道）</td><td><strong>C</strong>·收口五件套① append 走发号器新道（拍板#357②·W-271 起一律）</td><td><strong>C</strong>·fill 审计（补全时）</td></tr><tr><td>收口申报器</td><td>NA</td><td><strong>U</strong>·翻完工待确认（走口·fail-closed）·<code>pi_runner.ts:257,1276</code></td><td>—</td><td>—</td></tr><tr><td>巡检</td><td>NA</td><td><strong>U</strong>·宁停推⏸（走口 inspector）·<code>队列写口.mjs:59</code></td><td>—</td><td>—</td></tr><tr><td>业主道</td><td>拍板令=母账（主窗代录落行）</td><td><strong>U</strong>·终认✅/勘误恢复/挂账清偿（走口 owner·--board）·<code>队列写口.mjs:60-69</code></td><td>—</td><td>—</td></tr></tbody></table>
+<p><strong>机检伴生双道</strong>（meta-lint 撞号·告警级不拦车·<code>meta-lint.ts:249,364,367</code>·W-265 在役）+写口 duplicateRow 四锚拒收 fail-closed（W-265 案H）+发号器同号唯一验证四道牙=<strong>撞号三道防线</strong>。绕行扫描器候后续票（拍板#357 §五·本票只申报）。</p>
+<h2>§5 append-only 红线占用语义（本卡视角）</h2>
+<ul><li>🔴拍板记录表：<strong>U/D 全禁</strong>——禁占位行禁 fill-row（拍板#357 立规=宪法句·发号器码面 <code>fill_row:142</code> 仅窗队列开放=物理化）；号面勘误走业主令专用道（#279/#329 先例）。</li><li>🔴执行台账：append-only·无号——禁编号线（A 类越面）·禁回改；<code>--next</code> 拒发 exit 2（<code>main:307</code>）。</li><li>窗队列：行本体禁 bash/edit 直改（队列写口纪律 §三禁令清单·<code>规则-队列写口纪律.md:29</code>）——建行/补全（发号器）与翻格/注记（写口）之外<strong>零旁路</strong>。</li><li>审计 jsonl：append-only·拒写也记（事故可回放）。</li></ul>
+<h2>§6 与 df-001 行30/31 回改联动（B1 保鲜）</h2>
+<p>df-20261030-001 行30（拍板表「表尾 grep 防撞号」旧道）与行31（执行台账「无脚本写口」）已随本卡同笔回改为新道（勘误依据=拍板#357·<code>账本发号器.py:33</code> LEDGERS 三账+<code>fill_row:142</code>）——df-001「失效触发」节所列锚漂移情形（发号器/写口改码）自此含本卡 §3 四道牙与 fill_row 锚；本卡自身失效触发节同口径。</p>
+<h2>§7 来源锚点</h2>
+<ul><li>拍板#357 全文·对比件 §3-②④·规约件 <code>90-过程/规则-发号即落行与账本单口纪律.md</code>（§一/§二/§三=本卡语义源）</li><li>姊妹纪律 <code>90-过程/规则-队列写口纪律.md</code>（§三禁令·写侧）</li><li>正本码 <code>91-脚本/账本发号器.py</code>（W-271 扩面笔：LEDGERS:33/NO_NUMBER_LEDGERS:38/append_row:112/fill_row:142/acquire_lock:62/_audit_fill:172）·<code>91-脚本/队列写口.mjs</code>（四道闸:7-12·宪法表:54-69·审计:203）·<code>91-脚本/queue_mutex.ts:114</code>·<code>91-脚本/meta-lint.ts:249</code></li><li>治本架构 <code>07-设计理念专题/窗队列并发写治理-五写者单口收敛与状态机宪法-根因分析与治本架构-候拍-20261030.md</code>（五写者→本卡实勘加严为七）</li><li>姊妹卡 <code>df-20261030-001</code>（行29/30/31=本卡放大对象·行30/31 已回改）</li></ul>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261103-002-写路全景-写者底表口锁域.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

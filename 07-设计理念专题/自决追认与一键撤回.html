@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>自决追认与一键撤回 · AFK无人值守引擎V1.0</title><style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;background:#f1f5f9;color:#0f172a;line-height:1.75}
+.wrap{max-width:980px;margin:24px auto;padding:0 16px}
+header{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border-radius:12px;padding:24px 30px}
+header h1{font-size:22px} header .sub{opacity:.85;margin-top:4px;font-size:13px}
+section{background:#fff;border-radius:12px;padding:20px 26px;margin-top:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+h2{font-size:15px;color:#1e3a8a;border-left:4px solid #1e3a8a;padding-left:10px;margin-bottom:10px}
+h3{font-size:13.5px;color:#0f172a;margin:14px 0 6px}
+p{font-size:13.5px;margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:6px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+th{background:#f8fafc;color:#475569}
+li{margin:3px 0 3px 20px;font-size:13.5px}
+.small{color:#64748b;font-size:12px}
+code{background:#f1f5f9;padding:1px 6px;border-radius:5px;font-size:12px}
+blockquote{border-left:4px solid #94a3b8;background:#f8fafc;padding:8px 14px;margin:8px 0;font-size:13px;color:#334155}
+.badge{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:600;color:#fff}
+.g{background:#16a34a}.b{background:#2563eb}.r{background:#dc2626}.o{background:#d97706}
+.flow{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 16px;font-size:12.5px;font-family:Consolas,monospace;overflow-x:auto;line-height:1.9}
+.flow b{color:#7dd3fc}.flow i{color:#fbbf24;font-style:normal}
+.kw{color:#1e3a8a;font-weight:600}
+.warn{background:#fef2f2;border-left:4px solid #dc2626;padding:8px 14px;margin:8px 0;font-size:13px}
+.ok{background:#f0fdf4;border-left:4px solid #16a34a;padding:8px 14px;margin:8px 0;font-size:13px}
+footer{text-align:center;color:#94a3b8;font-size:12px;margin:22px 0}</style></head><body><div class='wrap'>
+<header><h1>自决追认与一键撤回 <span class='badge b' style='vertical-align:middle'>v2.1</span></h1>
+<div class='sub'>AFK无人值守引擎V1.0 · 07-设计理念专题 · HTML 成品权威件（沿 v1.2 拍板#35 纪律）· v2.1 2026-10-12（W7~W11 长跑对表）· v2.0 2026-10-12（W6 收口·设计稿升格 as-built：七件落地 782/782·HEAD <code>af10f1c</code>）· 素材源：业主对谈（「不等人拍板直接做·站6 留痕追认·复盘后一键撤回」总观念）＋ 本仓深读核账 ＋ sandcastle 参考仓实读 · 对比件=`90-过程/handoffs/对比流程-W6站6追认闭环窗-自决追认与一键撤回-20261012.md`（拍板#12）</div></header>
+
+<section><h2>〇、一句话总纲</h2>
+<p><b>站1/2 出门之后，夜车里没有「停下来等人」的点，只有「自决＋待追认」的点。</b>三段式：<b>Agent员工出主意（起草），机械设备守门（机检/撤销令），自然人拍板（追认/推翻）</b>——中途变动全部留痕（账本 append-only），站6 晨报全量汇报供追认，复盘后可按票一键撤回（撤销令随件落地·撤回不洗绿）。QA agent 判据追加（拍板#11）是该模式的第一块落地样板；<b>v2.0 as-built：本理念已经 W6 窗（拍板#12）全量落地为引擎机制</b>——三起草道（锚点/切片/考题病修复）+撤销令+回滚执行器七件收口（782/782·L0 PASS），存量「人工清单」六处处置完毕（改名/平移/红线）。</p>
+<blockquote>与姊妹篇《隔离与信任边界》（v1.2 权威区·只读引用）同一条信任轴：<b>隔离决定「能不能碰到」，晋升决定「碰了之后怎么过去」，追认决定「过去之后业主能不能反悔」</b>——三件合成完整的信任闭环。</blockquote></section>
+
+<section><h2>一、现状：追认框架三件套已建成（不是新建，是补全）</h2>
+<h3>1.1 三件套</h3>
+<table>
+<tr><th>件</th><th>锚点</th><th>作用</th></tr>
+<tr><td><b>账本</b>（append-only·事件白名单 108 型）</td><td class='small'><code>shared/ledger.ts</code> · <code>shared/event-types.ts:11</code>（白名单外 TypeError）</td><td class='small'>唯一事实源，永不涂改</td></tr>
+<tr><td><b>晨报七栏＋</b>（五栏＝机器自决清单·逐条可推翻）</td><td class='small'><code>night-shift/morning-report.ts:4</code> · <code>report-sections.ts:69,78</code></td><td class='small'>每条自决带时间戳/票号/明细；六点五栏＝判据追加全量</td></tr>
+<tr><td><b>追认环</b>（owner_confirmed / owner_rejected）</td><td class='small'><code>confirm.ts:2-6</code>（reject 必带 reason·只入账不自动改码）</td><td class='small'>追认可批量 all；推翻走补票环/下一轮 resume</td></tr>
+</table>
+<h3>1.2 已在「自决＋追认」模式下的九个点（as-built）</h3>
+<table>
+<tr><th>自决点</th><th>事件型</th><th>锚点</th></tr>
+<tr><td>预授权降级（LLM ⟲3 未绿→copy 保底）</td><td class='small'><code>slot_degraded</code></td><td class='small'><code>degrade-chain.ts:27</code>（拍板#80）</td></tr>
+<tr><td>红票挂起 / park 超限终局</td><td class='small'><code>ticket_parked</code> / <code>park_limit_reached</code></td><td class='small'><code>park.ts</code></td></tr>
+<tr><td>预算收车 / 续腿 / 夜末补考重试</td><td class='small'><code>budget_final_stop</code> / <code>leg_resumed</code> / <code>night_retry_started</code></td><td class='small'><code>lane-stop.ts</code> · <code>lane-drain.ts</code></td></tr>
+<tr><td>容器冲突自愈（移除占用容器重试）</td><td class='small'><code>runtime_install_conflict_selfheal</code></td><td class='small'><code>runtime-install.ts:81</code></td></tr>
+<tr><td>L3 偏移弹早停（宁停不装绿）</td><td class='small'><code>trace_bullet_fire</code> + <code>review_findings{phase:'trace'}</code></td><td class='small'><code>l3-sample.ts:27</code>（拍板#10）</td></tr>
+<tr><td><b>QA agent 判据追加</b>（样板件）</td><td class='small'><code>judge_append_proposed</code></td><td class='small'><code>qa-agent.ts:12</code> · <code>judge-append.ts</code>（拍板#11）</td></tr>
+<tr><td colspan='3' class='small'><b>W6 增补四自决点（拍板#12 as-built·均进五栏机器自决清单·均带 undo 令）</b>：切片追加 <code>slice_append_proposed</code>（<code>slice-append.ts</code>）· 锚点起草 <code>anchor_draft_proposed</code>（<code>anchor-draft.ts</code>）· 考题病 <code>case_defect_triaged</code>（<code>case-defect.ts</code>）· 沙箱删除回搬 <code>sandbox_deletion_applied</code>（<code>worktree-provider.ts</code> syncOut v2）；另有撤销回执 <code>rollback_applied</code>（<code>confirm --rollback</code>）——事件白名单 108→113 型</td></tr>
+<tr><td>PASS＊带星过闸（队列级放行下一版）</td><td class='small'><code>queue_gate_passed</code></td><td class='small'><code>queue/gate.ts:44</code></td></tr>
+<tr><td>站3 基线重盖防呆（告警级不拦车）</td><td class='small'><code>contract_gates_checked</code></td><td class='small'><code>station3-import/gates.ts:66</code></td></tr>
+<tr><td>变异延期 / 缺陷单自动立</td><td class='small'><code>mutation_deferred</code> / <code>defect_raised</code></td><td class='small'><code>hardening-lane.ts</code></td></tr>
+</table></section>
+
+<section><h2>二、存量「人工清单」六处盘点：平移 / 改名 / 红线</h2>
+<table>
+<tr><th>#</th><th>环节</th><th>锚点</th><th>判定</th><th>理由</th></tr>
+<tr><td>1</td><td><b>补票环无锚点</b>（探针红定位不到文件）</td><td class='small'><code>backflow.ts:36</code>「引擎不猜落点」· <code>probe-gate.ts:147</code></td><td class='small'><span class='badge g'>✅ 平移</span></td><td class='small'>施工面不出题权。<b>锚点起草道</b>：Agent员工起草候选落点→机检（候选 ∈ 票面 target/manifest 路径集·纯白名单校验）→合格才自动补票→晨报追认</td></tr>
+<tr><td>2</td><td><b>沙箱删除未回搬</b></td><td class='small'><code>worktree-provider.ts:5</code>「删除不回搬·留人工清单」</td><td class='small'><span class='badge g'>✅ 平移（小件）</span></td><td class='small'>机检守门：被删文件 sha256 == 影子树基线锚（<code>worktree-provider.ts:4</code>）才自动回搬删除→追认；不成立照旧转人工</td></tr>
+<tr><td>3</td><td><b>功能门硬化挂起</b>（切片①红·无锚/悬空兜底）</td><td class='small'><code>functional-gate.ts:130,137</code>（拍板#49/#54/#55）</td><td class='small'><span class='badge o'>☑ 改名</span></td><td class='small'>挂起本身已自决留痕（⟲1 自愈先跑·下轮 resume 自动重试）——实质已是此模式，只差把「人工清单」改叫「追认清单」</td></tr>
+<tr><td>4</td><td><b>就绪制停滞</b>（依赖环/悬空票）</td><td class='small'><code>ready-scheduler.ts:85</code></td><td class='small'><span class='badge o'>⚠ 半平移</span></td><td class='small'>依赖图来自包侧（站2 产物），解环=改票面=出题权，<b>不能自动执行</b>；可做 Agent员工起草《解环方案草稿》入晨报附件、业主转站2 采纳——只起草不执行</td></tr>
+<tr><td>5</td><td><b>业主追加需求 CR 单</b></td><td class='small'><code>owner-readback.ts:14</code>「翻译权在站1/2 A 窗」</td><td class='small'><span class='badge r'>❌ 红线</span></td><td class='small'>出题权冻结在站2（仓红线 1）：中途自动改题=施工队自己改考卷。可加速的只有「CR 单自动转工单<b>草稿</b>」（站1/2 侧另案）</td></tr>
+<tr><td>6</td><td><b>守卫计数</b>（补票量闸 8 张 / QA 追加上限 3 张）</td><td class='small'><code>backflow.ts:14</code> · <code>qa-agent.ts:12</code></td><td class='small'><span class='badge r'>❌ 红线</span></td><td class='small'>守卫计数即红线——参数若可自动调，守卫自废</td></tr>
+</table>
+<div class="ok"><b>v2.0 as-built 对照（W6 收口·拍板#12）</b>：#1 已改名（<code>ack-list-rename-guard.test.ts</code> 结构守卫 rg=0）· #2 锚点起草道已建（<code>anchor-draft.ts</code>·manifest∪票面白名单机检·每轮上限 4·并入既有补票三闸）· #3 已改名+下轮 resume 自动重试照旧 · #4 解环草稿道已建（<code>decompose-draft.ts</code>·落 report/attachments·纯报告层）· #5/#6 红线照守。三起草道旗标缺省 on（--anchor-draft/--slice-append/--case-fix·off=opt-out·沿拍板#11 先例）。</div>
+<div class="warn"><b>真「停等人」且应当继续等的唯一一处</b>：队列级 FAIL 停队列（<code>queue/gate.ts:31</code>）。蓝图 §8.5 不对称性兜底已论证：漏叫停烧真金白银，错叫停只损可恢复的排期——自动停方向正确，不平移。</div></section>
+
+<section><h2>三、理念①：起草→机检→自动做→站6追认（四段流水）</h2>
+<div class="flow">偏移/缺口发现（L3 弹·功能门·补票环）<br>
+　↓ <b>Agent员工起草</b>（qa-N/候选锚点/解环草稿——无判卷权物种·写错也污染不了红绿）<br>
+　↓ <b>机械设备机检</b>（只加严·白名单落点·sha256 重锚——判据/预算/判卷零触碰）<br>
+　↓ <b>自动执行</b>（晋升进判卷面/自动补票/自动回搬）<br>
+　↓ <b>站6 晨报追认</b>（全量清单·逐条可推翻——推翻走撤销令·见理念②）</div>
+<ul>
+<li><b>样板件</b>：拍板#11 QA agent——L3 add_tests 建议→QA 员工（LLM）起草候选测试（只新增不覆盖）→appendJudgeTest 只加严晋升（sha256 重锚·旧绿失效按 miss 重烧·无骗绿激励）→每票上限 3 张守卫→晨报六点五栏全量（<code>qa-agent.ts</code> 全链）；</li>
+<li><b>平移判据（一条不满足就不平移）</b>：①机检可机械执行（不叫 LLM）②动作对判卷语义零触碰 ③出错可撤（有撤销令承载面）④无骗绿/骗预算激励；</li>
+<li><b>指令/数据分离铁律不破</b>：Agent员工只出正向产物；「能不能算数」永远由机检+晋升规则说了算。</li>
+<li><b>v2.0 as-built</b>：三起草道全落地——锚点道 <code>anchor-draft.ts</code>（白名单=manifest file 集∪票面 targets/testFiles·逐字）· 切片道 <code>slice-draft.ts</code>→<code>slice-append.ts</code>（五道机检：只新增/溯源锚必填+files⊆票面/schema qa-slice- 前缀/sha256 重锚/每班 6 张）· 考题病道 <code>case-defect.ts</code>（修复原语白名单：选择器/url 修与新增步放行·断言集不可减拒收）——接线均在组合根 <code>stage27.ts</code>/<code>probe-gate.ts</code>，功能门保持纯门。</li>
+</ul>
+<blockquote class='ok'><b>v2.1 对表（2026-10-12·W7~W11 长跑后）</b>：理念① 三起草道+票级判据追加（#11）本体<b>零改动</b>（git b1d39c2..HEAD 实证）。四结论：①<b>口径扩展</b>——「唯一加题路」自 W7 修法A（拍板#14·#11⑤ 修订）起覆盖票级判卷面（testFiles）：builder 禁生成/改写考题，起草→机检→晋升成全引擎唯一加题路；②<b>班外新增机械起草道</b>——齿A rule-gap-ticket（拍板#19·深读结论规则缺口行→A 域草稿票落 pending·无拍板号不入列队）：起草者是机械设备非 Agent员工，四段流水的班外延伸形态；③<b>已知缺口（顺风候选）</b>——四草稿岗（qa-agent/slice-draft/case-fix/anchor-draft）变量盒未接 E6 洗字节第二墙（W9 只接 writer/builder/reviewer）：机检守住加题路，但草稿岗自身指令注入面差一道墙——段1 加固候选·待顺风窗；④<b>机检面元强化</b>——D12 事件白名单元组单源+写侧编译期穷尽（拍板#18·114 型成员不动）。</blockquote></section>
+
+<section><h2>四、理念②：撤销令随件落地（undo at write-time）</h2>
+<p><b>在做好的同时就写好怎么拆、怎么返回</b>——撤销令不由人事后重建，由机械设备在动文件之前从 before-state 派生。</p>
+<h3>4.1 参考实现（sandcastle 参考仓·实读）</h3>
+<table>
+<tr><th>机制</th><th>锚点</th><th>引擎对应</th></tr>
+<tr><td><b>两阶段同步</b>：先存证后应用（补丁/diff/未跟踪文件先落 <code>patches/&lt;时间戳&gt;/</code> 再回搬；失败不删存证、打恢复指引）</td><td class='small'>sandcastle <code>syncOut.ts:6-16</code> · <code>RecoveryMessage.ts</code></td><td class='small'>动文件前先写撤销令入账；撤销/回搬失败保留证据目录+恢复指引（fail-safe 不静默·与「如实」纪律同构）</td></tr>
+<tr><td><b>三叉提取</b>：已提交 format-patch+am --3way；未提交 git diff HEAD+apply；未跟踪 ls-files --others+逐文件拷出</td><td class='small'>sandcastle <code>syncOut.ts:18-22</code></td><td class='small'>撤销令三形态：删新增文件 / 恢复改动前内容（旧 sha 校验）/ 删回搬物</td></tr>
+<tr><td><b>git worktree 制</b>（每沙箱一棵·分支策略合并回主支）</td><td class='small'>sandcastle <code>WorktreeManager.ts</code> · <code>SandboxProvider.ts</code></td><td class='small'>引擎伏笔已埋：<code>worktree-provider.ts:6</code>「影子树＝git worktree 语义的 ws 等价形态」→ 升级真 git 是自然演进</td></tr>
+</table>
+<h3>4.2 铁律：撤销令由机械设备派生，不由 LLM 起草</h3>
+<div class="warn"><b>安全钉子</b>：Agent员工既能改码又能写撤销令，追认环就被架空。故撤销令字段 <code>{op, path, prior_sha, 关联事件 seq}</code> 全部机械生成（改动前状态在案：<code>judge_assets_frozen</code>/<code>judge_freeze_locked</code>/影子树基线锚）；LLM 全程只起草正向产物。</div>
+<div class="ok"><b>v2.0 as-built</b>：<code>shared/undo-plan.ts</code> 三形态实装（delete_file·expectSha 现场校验／restore_file·先存后用备份 .undo/／state_reburn·状态回退标记——物理返工走下轮补票/resume 如实不装）；<code>confirm.ts --rollback</code> 实装（与 --reject 并用·逐条校验→逆操作→<code>rollback_applied</code> 入账·漂移拒执行如实）；撤销令机械派生铁律有守卫测试锁死（LLM 草稿携 undo 字段=机器从写入内容重算覆盖）。<b>v1 边界（如实）</b>：补票/降级等深修票的物理撤销走状态标记+既有轮闸/量闸管辖；锚点起草令的 ticketId 回填留后续窗。</div>
+<h3>4.3 撤回闭环流程</h3>
+<div class="flow">自决动作执行时（机械设备）：动文件前 → 派生撤销令 → 入账（伴随事件或 <b>*_undo</b> 事件型·先登记白名单再用）<br>
+　↓ 站6 晨报：追认栏每条自决带「撤销计划」人读行（RecoveryMessage 式）<br>
+　↓ 业主推翻（<code>confirm --reject</code> 已入账）→ <b>--rollback 执行器</b>：<br>
+　　读账本撤销令 → 现场校验（当前 sha == 令内 prior_sha 才动手·防漂移）→ 执行逆操作<br>
+　　→ 账本追加 <b>*_revoked</b> → 该票判据指纹失效 → 下轮按 miss 如实重烧<br>
+<i>已出报告不改写（账本 append-only）——撤销不洗绿：与拍板#82/#83 加严失效同一把锁，方向反过来</i></div></section>
+
+<section><h2>五、理念③：工作区 git 化三护栏（一键撤回的载体）<span class='badge o' style='vertical-align:middle;font-size:11px'>挂账·Q4b-B 独立后置窗</span></h2>
+<table>
+<tr><th>护栏</th><th>为什么</th><th>做法</th></tr>
+<tr><td><b>① 分区隔离</b></td><td class='small'>git revert 若连账本/晨报一起回滚＝抹痕，违反 append-only 留痕纪律</td><td class='small'>git 只管<b>码区</b>；<code>ledger/</code>、<code>report/</code>、<code>.judge-freeze.json</code>、<code>changes/</code> 排除在 revert 面外。撤回＝git revert（码区）＋账本追加撤销事件（痕区），两笔并行缺一不可</td></tr>
+<tr><td><b>② commit 粒度＝自决粒度</b></td><td class='small'>「撤回相关变动」要按票/按决策撤，不能整夜一坨</td><td class='small'>每笔自决一个 commit：机读约定 <code>auto:&lt;kind&gt;:&lt;ticketId&gt;:&lt;seq&gt;</code>；变动清单投影不用自建（git log 即是）；归档打 tag、<b>不 squash</b>（squash 毁粒度）</td></tr>
+<tr><td><b>③ 撤回不洗绿</b></td><td class='small'>git 只回滚文件态，判卷语义必须原样</td><td class='small'>撤销后快照再变→旧 verdict 失效按 miss 重烧；已出报告不改写；<b>push 仍业主亲自</b>（仓红线 4 不动·ws 内 git 纯本地）</td></tr>
+</table>
+<p class='small'>成本面：git 二进制进 preflight 探针（<code>runtime-probe.ts</code> 模式加一查）；每夜车 ws 在 scaffold（<code>workspace_scaffolded</code> 事件已有）时 <code>git init</code>+基线 commit；Windows 挂载毛边 sandcastle 已踩过（<code>createWorktree-windowsMounts.test.ts</code>）。<b>依赖关系</b>：undo 令（理念②）不依赖 git 可先行——令的语义在文件系统面钉死，git 化后令的载体自动变成 commit，执行器退化为 git revert 编排。</p></section>
+
+<section><h2>六、不平移红线清单（正面论证·防「自动万能论」）</h2>
+<table>
+<tr><th>红线</th><th>出处</th><th>论证</th></tr>
+<tr><td>出题权（CR 单/切片考题/验收命令）</td><td class='small'>仓红线 1 · 双证判卷</td><td class='small'>施工道改考题=既当运动员又当裁判；合法路只有回站2/判据追加协议（只加严）</td></tr>
+<tr><td>预算三路（add_cycles/续腿定额）</td><td class='small'>仓红线 1</td><td class='small'>⟲≤3 是守卫不是参数；扩预算只建议走预算闸，不无闸扩</td></tr>
+<tr><td>判卷红绿权（验收命令 exit code）</td><td class='small'>拍板#28②</td><td class='small'>Agent员工/机检面永不改判卷结果；只加严不加松</td></tr>
+<tr><td>守卫计数（补票 8/QA 3/park 2）</td><td class='small'><code>backflow.ts:14</code> 等</td><td class='small'>参数即红线，自动调参=守卫自废</td></tr>
+<tr><td>push 由人执行</td><td class='small'>仓红线 4</td><td class='small'>ws 内 git 纯本地；远端推做梦不碰</td></tr>
+<tr><td>队列 FAIL 停队列</td><td class='small'><code>gate.ts:31</code> · 蓝图 §8.5</td><td class='small'>不对称性兜底：漏叫停烧真金白银，错叫停只损排期——自动停方向正确</td></tr>
+</table></section>
+
+<section><h2>七、拍板与挂账（八题已答·W6 已收口——存照）</h2>
+<table>
+<tr><th>题</th><th>内容</th><th>选项</th><th>推荐</th></tr>
+<tr><td><b>Q1 口径改名</b></td><td class='small'>「人工清单」→「站6追认清单」全仓改名＋晨报措辞（零行为差）</td><td class='small'>A 准｜B 缓</td><td class='small'><span class='badge g'>A</span>（观念统一·先改名字再改机制）</td></tr>
+<tr><td><b>Q2 锚点起草道</b></td><td class='small'>补票环无锚点：Agent员工起草候选落点＋白名单机检＋自动补票＋追认</td><td class='small'>A 准｜B 只起草不执行｜C 不做</td><td class='small'><span class='badge g'>A</span>（施工面·机检可白名单化·有撤销令承载）</td></tr>
+<tr><td><b>Q3 沙箱删除机检回搬</b></td><td class='small'>被删文件 sha==基线锚才自动回搬删除＋追认</td><td class='small'>A 准｜B 缓</td><td class='small'><span class='badge g'>A</span>（小件·机检纯 sha 比对）</td></tr>
+<tr><td><b>Q4a undo 令机制</b></td><td class='small'>自决点落笔即产撤销令（机械派生·LLM 不起草）+ *_undo/*_revoked 事件型 + 晨报撤销计划栏 + --rollback 执行器</td><td class='small'>A 准｜B 先只做撤销令不做执行器</td><td class='small'><span class='badge g'>A</span>（追认环的收口件·撤回不洗绿语义全在此）</td></tr>
+<tr><td><b>Q4b 工作区 git 化</b></td><td class='small'>ws git init＋per-decision commit＋真 git worktree＋preflight git 探针＋分区纪律</td><td class='small'>A 与 4a 同窗｜B 独立后置窗｜C 不做</td><td class='small'><span class='badge o'>B</span>（中大件·4a 不依赖它；独立窗判据更干净）</td></tr>
+<tr><td><b>Q5 解环草稿道 + CR 转工单草稿</b></td><td class='small'>依赖环/CR 单：Agent员工起草方案草稿入晨报附件（只起草不执行·转站2/业主）</td><td class='small'>A 准（只起草）｜B 不做｜C CR 草稿另案挂账</td><td class='small'><span class='badge o'>A+C</span>（出题权红线内只做「纸面起草」；CR 加速属站1/2 侧另案）</td></tr>
+</table>
+<p class='small'><b>拍板结果（业主 2026-10-12）</b>：Q1-A/Q2-A/Q3-A/Q4a-A/Q4b-B/Q5-AC/Q6-A/Q7-准 → 对比件《对比流程-W6站6追认闭环窗》（拍板#12 批「准」）→ 七件施工收口（782/782·L0 PASS·逐件独立 commit）。<b>余下挂账</b>：Q4b git 化窗（三护栏本件 §五已钉死）· CR 转工单草稿（站1/2 侧另案）· 起草道真跑佐证（R7-00·随下一轮真夜车）。</p></section>
+
+<footer>自决追认与一键撤回 · v2.0 · 2026-10-12 W6 收口升格 · 素材源：业主对谈＋本仓深读核账＋sandcastle 参考仓实读 · as-built HEAD af10f1c · 07-设计理念专题 · HTML 成品权威件</footer>
+<div style='max-width:980px;margin:0 auto 30px;padding:0 16px'><section style='margin-top:0'><h2>版本与变更记录（append-only·只追加不回改）</h2>
+<table>
+<tr><th style='width:110px'>版本</th><th style='width:130px'>日期</th><th>变更</th></tr>
+<tr><td>v2.1</td><td>2026-10-12</td><td>理念① 对表（W7~W11 长跑后·业主动议「看看这个」）：三起草道+判据追加本体零改动实证；四结论——唯一加题路口径扩票级判卷面（#14）·班外机械起草道齿A（#19）·四草稿岗未接 E6 洗字节（段1 加固候选·顺风）·D12 机检面元强化（#18）</td></tr>
+<tr><td>v2.0</td><td>2026-10-12</td><td class='small'>W6 收口升格 as-built：八题拍板答复全落成机制（拍板#12·七件 80f1771..bb37b8c·782/782+L0 PASS）。§一增补 W6 四自决点+撤销回执（事件白名单 108→113）；§二六处处置完毕 as-built 对照（改名/锚点起草道/解环草稿道/红线照守）；§三三起草道实装锚点；§四 undo 令三形态+--rollback 实装（机械派生铁律守卫测试锁死·v1 边界如实：深修票物理撤销走状态标记）；§五 git 化转挂账（Q4b-B 独立窗）；§七改存照（余挂账：git 化窗/CR 另案/真跑佐证）。理念正文零改——变的是「设计→已建成」。</td></tr>
+<tr><td>v1.1</td><td>2026-10-12</td><td class='small'>八题答复收录（正文零改动）：Q1-A/Q2-A/Q3-A/Q4a-A/Q4b-B/Q5-AC/Q6-A/Q7-准——全量落进对比件《对比流程-W6站6追认闭环窗》（<code>90-过程/handoffs/对比流程-W6站6追认闭环窗-自决追认与一键撤回-20261012.md</code>·七件+5 新事件型+三旗标缺省 on）。待拍板项 §七 状态=已答复。</td></tr>
+<tr><td>v1.0</td><td>2026-10-12</td><td class='small'>首版。追认框架三件套（九个自决点 as-built）＋「人工清单」六处盘点三分类（平移2/改名1/半平移1/红线2＋真停1）＋理念①起草→机检→自动做→站6追认四段流水（QA-agent 拍板#11 样板升格）＋理念②撤销令随件落地（机械派生铁律·sandcastle syncOut 借鉴·撤回不洗绿）＋理念③工作区 git 化三护栏＋不平移红线六条＋待拍板项六题（Q1/Q2/Q3/Q4a/Q4b/Q5）。入「站6追认闭环窗」对比件素材池。</td></tr>
+</table></section></div>
+</div>
+</body></html>

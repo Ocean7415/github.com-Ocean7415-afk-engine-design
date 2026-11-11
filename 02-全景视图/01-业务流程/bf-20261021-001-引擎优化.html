@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261021-001 · 业务流程卡 · 引擎优化（大业务→本仓作业面）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261021-001 · 业务流程卡 · 引擎优化（大业务→本仓作业面）</h1>
+<div class="meta"><b>id</b> bf-20261021-001 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 7f51c83 · <b>run_id</b> queue-93-w042</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+</blockquote>
+<h1>业务流程卡 · 引擎优化（大业务→本仓作业面）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：五类大业务中「对引擎自身做改进」的一类——工具层/文档/流程/机检件/知识基建的票都归它，派工器路由到<strong>本仓</strong>施工。<strong>为什么存在</strong>：引擎自己也要持续进化，但进化票必须与修复票（治坏损）、宿主票（改 App）分流，才能各走各的验收面。<strong>边界</strong>：白名单=流程窗/文档窗/调研窗/工具层施工窗（<code>pi_runner.mjs:87</code> WHITELIST_NOTE·ts 码件窗 #71④ 开闸另走四关固定节）。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立规：拍板#76 五类大业务枚举+路由表落地（BIZ_KINDS <code>91-脚本/pi_runner.mjs:99</code>·routeOf <code>91-脚本/pi_runner.mjs:103</code>）</td><td><code>90-过程/拍板记录表.md:95</code></td></tr><tr><td>2</td><td>实战六连：引擎#93 六波知识基建全线走本类——W-036（rrm_lint 枚举扩）/W-040（P3 知识库 13 卡）/W-041（P4 生成层 7 卡）/W-042（P4b 手工层 8 卡）</td><td><code>90-过程/执行台账.md:578</code>/<code>:582</code>/<code>:583</code>/<code>:584</code></td></tr><tr><td>3</td><td>实战（活例）：W-043 本窗（视图增密与渲染）——本类票从立票（拍板#96）到队列拉起施工的全流程实证</td><td><code>90-过程/拍板记录表.md:117</code></td></tr></tbody></table>
+<h2>定义层（这个类是什么）</h2>
+<ul><li>枚举正本=<code>BIZ_KINDS</code>（<code>91-脚本/pi_runner.mjs:99</code>·五类单选·拍板#76①）；本类=<code>"引擎优化"</code>。</li><li>判据：改的是<strong>引擎仓自身</strong>（91-脚本/pipeline-lab/文档账面/机检件），非宿主 App、非缺陷修复。修复缺陷类走 [bf-20261021-002]（引擎修复）。</li><li>窗队列行第 9 列承载实例值（解析=<code>parseRows</code> <code>91-脚本/pi_runner.mjs:92</code>·缺列旧格式缺省=引擎优化·拍板#76① 存量兼容）。</li></ul>
+<h2>路由层（派工器怎么路由它）</h2>
+<ul><li><code>routeOf("引擎优化", …)</code> → <code>{ok:true, cwd:repoCwd, lane:"本仓"}</code>（<code>91-脚本/pi_runner.mjs:103</code>·拍板#76② 路由表·现状默认）——<strong>无需宿主仓路径</strong>，与其他四类的关键差异。</li><li>领单闸：<code>eligible</code>=状态「待实施(已批)」且拍板号非空（<code>91-脚本/pi_runner.mjs:122</code>·拍板号闸）；后续六闸见时序卡 [sq-20261021-002]。</li><li>拉窗落点=本仓根（<code>pickDispatch</code> <code>91-脚本/pi_runner.mjs:866</code> → <code>spawnSync SPAWNER</code> <code>91-脚本/pi_runner.mjs:1118</code>）。</li><li>机检自证：selftest 案6 断言 routeOf 五类×宿主组合（<code>91-脚本/pi_runner.mjs:528</code>·未知类型 fail-closed 拒发）。</li></ul>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    T[优化票<br/>工具层/文档/流程/机检] --> PB{业主拍板<br/>无对比件不拍板}
+    PB -->|拍板号落表| EN["窗队列入列<br/>待实施(已批)"]
+    EN --> PI[派工器领单<br/>eligible+拍板号闸]
+    PI --> RO[routeOf<br/>→本仓·无需宿主]
+    RO --> WIN["本仓施工窗<br/>pi --auto 可见"]
+    WIN --> ACC[按 accept 施工收口<br/>✅/🔁 回写队列]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>优化票</td><td>本类入口：改引擎仓自身（工具层/文档/流程/机检件/知识基建）的意图票——与修复类分野=非病灶驱动，与 App 类分野=不涉宿主仓。</td></tr><tr><td>业主拍板</td><td>流程闸：先出对比件、无对比件不拍板（拍板#36）；拍板号落表才可入列队——「无拍板号不入列队」硬规矩（v1.2#39）。</td></tr><tr><td>窗队列入列</td><td>落「待实施(已批)」状态行（大业务列=引擎优化·第 9 列）；队列=唯一事实源（<code>90-过程/窗队列.md:8</code> 不变量表）。</td></tr><tr><td>派工器领单</td><td>eligible 闸（<code>91-脚本/pi_runner.mjs:122</code>）+六闸族全过才领（缺省 dry-run 只读可预演·锚 91-脚本/pi_runner.mjs:866 槽位选单）。</td></tr><tr><td>routeOf</td><td>本类专属福利：返回本仓根无需宿主固定节（<code>91-脚本/pi_runner.mjs:103</code>）——App 三类必须带宿主，本类免。</td></tr><tr><td>本仓施工窗</td><td>拉窗落点=本仓根（<code>91-脚本/pi_runner.mjs:1118</code>）；窗=可见工作台按任务书 accept 施工，收口回写队列（状态机见 sm-20261021-001）。</td></tr></tbody></table>
+<h2>实例层（现在队列里长什么样）</h2>
+<ul><li>现行 verified 实例：W-036（rrm_lint 枚举扩）/W-038（门牌先行）/W-040（P3 知识库）/W-041（P4 生成层）/W-042（本卡所在窗）——均为引擎#93 六波知识基建线，全部本仓施工收口。</li><li>状态机语义（▶/✅/🔁 等谁改怎么改）<strong>不自立</strong>，标源=窗队列不变量表（<code>90-过程/窗队列.md:8</code> 状态不变量表·状态卡 [sm-20261021-001]）。</li></ul>
+<h2>防重复指针（应然在别处·本卡只画实然）</h2>
+<ul><li>理念版场景编排=「07-设计理念专题/五业务场景编排总图-厂务线与项目产线-一期现状与二期方向-20261018.html」（<strong>场景轴</strong>①-⑥·与本卡<strong>大业务轴</strong>不同分类法·应然视图原图引用不复制）。</li><li>意图回链=<code>01-蓝图/</code>；角色互链=<code>90-过程/岗卡/</code>；状态定义标源=<code>90-过程/窗队列.md</code>。</li></ul>
+<h2>时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 7f51c83（2026-10-21 现勘）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（rrm_lint 整区 PASS+accept 自检）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261021-001-引擎优化.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

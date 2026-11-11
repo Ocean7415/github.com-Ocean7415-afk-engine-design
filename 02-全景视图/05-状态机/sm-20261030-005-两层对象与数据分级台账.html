@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>sm-20261030-005 · 两层对象与数据分级台账（L1/L2 主数据·静态·动态全景）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>sm-20261030-005 · 两层对象与数据分级台账（L1/L2 主数据·静态·动态全景）</h1>
+<p>&lt;!-- meta: window=主窗对话 type=全景件 status=verified tags=对象台账,数据分级,harness分层,状态机全景 --&gt;</p>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：「挂起」双形态——L1＝gate_suspend/resume 事件对（无态）·L2＝⏸ 独立状态格；「票」＝工序票（L1）/窗票（L2）；「会审门」＝领单体检门（L2）；「三关」按层消歧（收包验货关 L1／立票验单关 L2）；「复考」＝交活重考闸（L2）。</p>
+</blockquote>
+<h1>sm-20261030-005 · 两层对象与数据分级台账（L1/L2 主数据·静态·动态全景）</h1>
+<p>--- window: 主窗对话 type: 全景件（指针索引式） status: verified created_at: 2026-10-30 基准: repo_head=7a561bd（W-195 施工本笔后·拍板#268 在案） 母件: sm-20261027-003-六台状态机全景（本件=其对象与数据分级扩展） tags: [对象台账, 数据分级, harness分层, 状态机全景] ---</p>
+<h2>§0 定位与保鲜纪律</h2>
+<p><strong>本件回答</strong>：harness L1（项目APP研发团队·站3-6 实施·<code>ts/src</code>）与 harness L2（研发部管理层·派工链/窗队列/复考闸/维修环·<code>91-脚本</code>+<code>90-过程</code>）里各有哪些对象，哪些是主数据、静态数据、动态数据。</p>
+<p><strong>保鲜纪律（反面教材#1「死字漂移」的反面）</strong>：本件<strong>只存指针不抄态值</strong>——六台态清单/转移表/事件码/正本名一律引用正本文件；运行时随时可复算：</p>
+<pre><code>node 91-脚本/state_dict_check.ts --local   # 六台齐备核对（正本运行时提取·引用正本零复抄）</code></pre>
+<p>正本漂移时本件锚点列若失效，以 <code>git log</code> 最新收口笔为准（本件每次机制修订窗顺带核对锚列）。</p>
+<h2>§1 分类口径（判据一条）</h2>
+<table><thead><tr><th>档</th><th>判据</th><th>改它的规矩</th></tr></thead><tbody><tr><td><strong>主数据</strong></td><td>字典/正本：业务对象「合法态有哪些/叫什么名」的单一事实源，跨层共享</td><td><strong>加态/加型须拍板</strong>（卡54 白名单闸·拍板#199 六台先例）</td></tr><tr><td><strong>静态</strong></td><td>行为常量：随码发布、运行期只读</td><td>走码改（拍板号·不进字典面）</td></tr><tr><td><strong>动态</strong></td><td>运行态：账本/状态列/缓存/产物，运行期追加或流转</td><td>只追加或经合法转移表流转；账本一字不改删</td></tr></tbody></table>
+<h2>§2 主数据（字典与正本·跨层共享）</h2>
+<h3>L1 四台（票/班/包/波次·<code>ts/src/shared</code>+<code>ts/src/queue</code>）</h3>
+<table><thead><tr><th>对象</th><th>态数</th><th>锚</th></tr></thead><tbody><tr><td>票级状态机（TICKET_STATES＋TICKET_TRANSITIONS＋STATE_LABELS＋LEGACY_EN_MAP）</td><td>11</td><td><code>ts/src/shared/ticket-state.ts:29,47,94</code></td></tr><tr><td>班次 run 状态机（RUN_STATES 十态＋转移表＋STATE_LABELS）</td><td>10</td><td><code>ts/src/shared/run-state.ts:15,26,56</code></td></tr><tr><td>包级状态机（PACKAGE_STATES）</td><td>10</td><td><code>ts/src/shared/package-state.ts</code></td></tr><tr><td>波次（包队列账本 QUEUE_ENTRY_STATES：排队中/施工中/完成/被替代/待重排）</td><td>5</td><td><code>ts/src/queue/queue-ledger.ts:16-29</code></td></tr></tbody></table>
+<h3>L1 词汇字典</h3>
+<table><thead><tr><th>对象</th><th>量</th><th>锚</th></tr></thead><tbody><tr><td>事件码白名单 EVENT_TYPE_LIST（加型须拍板）</td><td>119 型</td><td><code>ts/src/shared/event-types.ts:10</code></td></tr><tr><td>事件码中文正本字典 EVENT_LABELS（首位层词：票53/班52/切片8/列队6）＋考题病 3 kind＋槽位/沙箱/预算档/原因码小枚举册</td><td>119＋册</td><td><code>ts/src/shared/event-labels.ts</code>（W-195·拍板#268）·<code>event-types.ts:149</code></td></tr></tbody></table>
+<h3>L2 两台＋治理字典</h3>
+<table><thead><tr><th>对象</th><th>态数</th><th>锚</th></tr></thead><tbody><tr><td>窗队列状态机 WINDOW_STATES（探讨中(未批)/待实施(已批)/▶施工中/完工待确认/✅已完成/🔁维修中/⏸挂起/转人工）＋转移表</td><td>8</td><td><code>91-脚本/window-card.ts:41</code>＋<code>90-过程/窗队列.md:7</code> 不变量表</td></tr><tr><td>病卡状态机 SICK_STATUS（维修环）</td><td>7</td><td><code>pipeline-lab/scripts/repair-contract.mjs</code></td></tr><tr><td>状态机宪法表＋队列写口唯一化</td><td>—</td><td>W-189（queue-write 四道）</td></tr><tr><td>投影状态白名单 STATE_KINDS</td><td>8</td><td><code>91-脚本/window_card_sync.mjs:57</code></td></tr><tr><td>标签词表（组⑤叙事阶段词等）</td><td>—</td><td><code>90-过程/标签词表.md</code></td></tr></tbody></table>
+<p><strong>跨层看守</strong>（非第七台）：<code>91-脚本/state_dict_check.ts:54-61</code> 六台目录——运行时从正本文件提取做齐备核对，引用正本零复抄。</p>
+<h2>§3 静态（行为常量·随码发布）</h2>
+<table><thead><tr><th>层</th><th>对象</th><th>锚</th></tr></thead><tbody><tr><td>L1</td><td>run-slice flags 缺省值（sandbox=none 等）</td><td><code>run-slice-flags.ts:36</code></td></tr><tr><td>L1</td><td>免搬清单 WS_SKIP_DIRS/WS_DEP_JUNCTION_DIRS</td><td><code>shared/ws-layout</code>（ticket-sandbox.ts:27 引）</td></tr><tr><td>L1</td><td>沙箱合法级别 SANDBOX_LEVELS（none/worktree/docker）</td><td><code>sandbox/provider-types.ts:13</code></td></tr><tr><td>L1</td><td>五槽装备信封/变量盒协议 schema</td><td><code>equipment.ts</code>·<code>contract/</code></td></tr><tr><td>L1</td><td>预算三路参数/env 阈值</td><td><code>night-budget.ts</code></td></tr><tr><td>L2</td><td>投影路由表 routeTableOf（App三类→T1a·引擎两类→T1b·五类外缺省 T1b 记因）</td><td><code>window_card_sync.mjs:140-143</code>（拍板#104）</td></tr><tr><td>L2</td><td>三关校验 schema（审批规格节六行·拍板#89/#170）</td><td><code>派发书三关校验.mjs</code></td></tr><tr><td>L2</td><td>机检词面锚（对拍机检源码锚）＋考题库</td><td><code>对拍机检.mjs:222-228</code>·<code>91-脚本/考题库/</code></td></tr><tr><td>L2</td><td>派工配置（周期/时点/阈值）</td><td><code>afk_dispatch_config.json</code></td></tr><tr><td>L2</td><td>宿主仓登记表/产物命名与元数据规约</td><td><code>90-过程/</code></td></tr></tbody></table>
+<h2>§4 动态（运行态·账本/状态/缓存/产物）</h2>
+<table><thead><tr><th>层</th><th>对象</th><th>性质</th><th>锚</th></tr></thead><tbody><tr><td>L1</td><td>全厂事件账本 events.jsonl（只追加·唯一事实源·断点恢复=末态＋since(seq) 游标）</td><td>append-only</td><td><code>ledger.ts:139</code>·<code>run-state.ts:8</code></td></tr><tr><td>L1</td><td>包队列账本 queue-events.jsonl</td><td>append-only</td><td><code>queue-ledger.ts</code></td></tr><tr><td>L1</td><td><strong>票停车场</strong> ParkRegistry（班内·park≤2·票挂起池）</td><td>内存态</td><td><code>run-slice.ts:72</code></td></tr><tr><td>L1</td><td>票级状态投影（崩溃后判每票断在哪）</td><td>投影</td><td><code>ticket-state.ts:28</code></td></tr><tr><td>L1</td><td>指纹缓存（只记绿·resume 直通）/值级缓存</td><td>缓存</td><td><code>build-lane.ts:63,80</code></td></tr><tr><td>L1</td><td>判卷快照 .judge-freeze.json（班内）</td><td>快照</td><td>judge_freeze_locked</td></tr><tr><td>L1</td><td>沙箱箱体 tmp 目录（afk-ticket-*·补考开新箱＝干净房）</td><td>临时</td><td><code>ticket-sandbox.ts:61</code></td></tr><tr><td>L2</td><td>窗队列.md 行（状态列八态流转·唯一队列事实源）</td><td>状态件</td><td>拍板#69</td></tr><tr><td>L2</td><td>拍板记录表（append-only·#268 在尾）</td><td>append-only</td><td><code>90-过程/拍板记录表.md</code></td></tr><tr><td>L2</td><td>执行台账（append-only 施工笔/收口笔）</td><td>append-only</td><td><code>90-过程/执行台账.md</code></td></tr><tr><td>L2</td><td>分诊事件.jsonl（window_redispatched/pause_observed·seq 递增）</td><td>append-only</td><td><code>打回分诊.ts:349</code></td></tr><tr><td>L2</td><td>latitude-log.jsonl（候追认）</td><td>append-only</td><td>窗产物</td></tr><tr><td>L2</td><td><strong>窗停车场</strong>＝⏸ 行集合（班末补考扫描·翻回一轮帽/同因熔断）</td><td>状态件</td><td><code>打回分诊.ts:322-356</code></td></tr><tr><td>L2</td><td>PID/launcher 台账（领单幂等判死四查）</td><td>台账</td><td>W-187</td></tr><tr><td>L2</td><td>飞书窗卡投影（单向副本·落差机检对账）</td><td>外投</td><td><code>window_card_sync.mjs</code>·<code>wip_scan.py</code></td></tr></tbody></table>
+<blockquote>
+<p><strong>CRUD 矩阵姊妹件</strong>：本台账 36 数据行逐格实勘触发面=同目录 <code>../07-数据流/df-20261030-001-业务链触发CRUD矩阵.md</code>（行=本件 §2-4 零漏零多·列=业务链两层嵌套·拍板#283②）。</p>
+</blockquote>
+<h2>§5 术语对齐（2026-10-30 业主定名＋夜末/班末层属）</h2>
+<table><thead><tr><th>术语</th><th>对象真身</th><th>层</th><th>备注</th></tr></thead><tbody><tr><td><strong>票停车场</strong></td><td>ParkRegistry（票挂起池）</td><td>L1</td><td>ticket 11 态内「停车场」态的正名</td></tr><tr><td><strong>票挂起</strong></td><td>票进票停车场（事件正本名「票挂入停车场」已层词化）</td><td>L1</td><td><code>ticket_parked</code></td></tr><tr><td><strong>窗挂起</strong></td><td>窗队列 ⏸挂起 态</td><td>L2</td><td>WINDOW_STATES[6]</td></tr><tr><td><strong>窗停车场</strong></td><td>⏸ 行集合（班末补考扫描对象）</td><td>L2</td><td>叙述词·非新态</td></tr><tr><td>票挂起补考</td><td>L1 夜末补考（正本名「票挂起补考开跑」·night_retry_started）</td><td>L1</td><td>拍板#268 定名</td></tr><tr><td>班末补考</td><td>L2 窗翻回一轮（drainVerdict·同因熔断 MELTED）</td><td>L2</td><td>W-147/拍板#211</td></tr><tr><td>补考开新箱＝干净房</td><td>沙箱补考不继承旧箱（环境病分诊）</td><td>L1</td><td><code>ticket-sandbox.ts:3</code></td></tr></tbody></table>
+<p>（译名总表全量=对比件 <code>90-过程/handoffs/对比流程-drain措辞全量中文化-现状vs改后-20261030.html</code> §3·候拍板）</p>
+<h2>§6 三族对照（观测面/判卷面/验收面分账）</h2>
+<table><thead><tr><th>族</th><th>是什么</th><th>考/记谁</th><th>改它规矩</th></tr></thead><tbody><tr><td>事件码 119 型</td><td>「发生了什么」记账词汇（黑匣子·观测面）</td><td>记录票层级与全厂行为事实</td><td>加型须拍板</td></tr><tr><td>考题/判据</td><td>「做得对不对」考卷（slice-cases.json＋testFiles·判卷面）</td><td>考<strong>票产出的 APP</strong>（非引擎）</td><td>出题权冻结开工前·judge_append 只加严</td></tr><tr><td>单测/机检</td><td>「引擎本身对不对」验收题（1214 案·对拍机检）</td><td>考<strong>引擎代码</strong></td><td>红先绿后·同包重放</td></tr></tbody></table>
+<p>考题病 vs 尺病分账：<code>case_defect_triaged</code> kind（script_crash 脚本崩≠app红·judge_scale_defect 尺病最高优先）——<code>event-types.ts:144-148</code>。</p>
+<h2>§7 来源锚</h2>
+<p>六台目录 <code>state_dict_check.ts:54-61</code>·白名单 <code>event-types.ts:10,144-149</code>·恢复硬门 <code>run-state.ts:8</code>·票停车场 <code>run-slice.ts:72</code>·窗停车场 <code>打回分诊.ts:275-284,322</code>·干净房 <code>ticket-sandbox.ts:3,61</code>·窗态 <code>window-card.ts:41</code>·病卡 <code>repair-contract.mjs SICK_STATUS</code>·投影白名单 <code>window_card_sync.mjs:57</code>·卡54（07-横切底座册.md:75）·拍板#268/#199/#211/#69·repo_head=7a561bd。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/05-状态机/sm-20261030-005-两层对象与数据分级台账.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+</body>
+</html>

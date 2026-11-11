@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bf-20261021-003 · 业务流程卡 · App新建（大业务→宿主仓作业面）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>bf-20261021-003 · 业务流程卡 · App新建（大业务→宿主仓作业面）</h1>
+<div class="meta"><b>id</b> bf-20261021-003 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-10-21 · <b>repo_head</b> 7f51c83 · <b>run_id</b> queue-93-w042</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；三关（收包验货关 L1／立票验单关·贴卡拦病关·领单再验单 L2）。</p>
+</blockquote>
+<h1>业务流程卡 · App新建（大业务→宿主仓作业面）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：五类大业务中「在宿主仓从零建 App」的交付类票——路由到<strong>宿主仓</strong>施工，与引擎两类的硬差异=任务书必须带宿主固定节。<strong>为什么存在</strong>：引擎不能替业主决定「在哪个仓动工」——宿主仓根必须业主以固定节显式给、登记表白名单先决（<code>90-过程/拍板记录表.md:111</code> 拍板#91①·未登记=票不立）。<strong>边界</strong>：缺宿主=fail-closed 拒发（<code>91-脚本/pi_runner.mjs:875</code>）——宁可拒发不可猜路径。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>立规：拍板#91「原地接入+存量白名单」批「准」（宿主仓根允许登记表白名单内任意绝对路径）</td><td><code>90-过程/拍板记录表.md:111</code></td></tr><tr><td>2</td><td>实战首票：W-034「App首跑冒烟」（宿主=039舆情V5·git 基线 96c9c6c+起服探活+测试现状记账·白名单首票）——<strong>App新建已通</strong></td><td><code>90-过程/执行台账.md:575</code></td></tr><tr><td>3</td><td>挂账如实：正式开闸候交付链两缺口票（W-017 挂账）——存量队列大业务=App新建 行数=0，后续实例随票落</td><td>本卡实例层</td></tr><tr><td>4</td><td>引号含空格修正：拍板#91②——工作区根 "pi agent" 带空格致旧正则截断，parseHostRoot 优先匹配引号包裹形式修正</td><td><code>90-过程/拍板记录表.md:111</code>（#91②）</td></tr></tbody></table>
+<h2>定义层（这个类是什么）</h2>
+<ul><li>枚举正本=<code>BIZ_KINDS</code>（<code>91-脚本/pi_runner.mjs:99</code>·拍板#76①）；App 类判定=<code>isAppBiz</code>（<code>91-脚本/pi_runner.mjs:100</code>·三类共上岸）；本类=<code>"App新建"</code>。</li><li>判据：交件链站1/2 出题正本（交件包）已立、宿主仓尚无该 App 或首版从零起步——首跑冒烟/基线化类票亦归此（现状先例 W-034）。</li></ul>
+<h2>路由层（派工器怎么路由它）</h2>
+<ul><li><code>routeOf("App新建", hostCwd, …)</code> → 宿主非空 <code>{ok:true, cwd:hostCwd, lane:"宿主仓"}</code>；宿主空串 <code>{ok:false, reason:"缺宿主仓路径…fail-closed 拒发"}</code>（<code>91-脚本/pi_runner.mjs:103</code> 分支体·拍板#76②）。</li><li>宿主仓根从任务书「宿主固定节」提取（<code>parseHostRoot</code> <code>91-脚本/pi_runner.mjs:112</code>·拍板#76③·引号包裹路径含空格兼容=#91②）——三关校验同格式双验。</li><li>领单侧同闸兜底：App 类缺宿主=跳过记因不领（<code>91-脚本/pi_runner.mjs:875</code>·fail-closed）。</li><li>机检自证：selftest 案6 断言 App 类×宿主有无四象限（<code>91-脚本/pi_runner.mjs:528</code>）。</li></ul>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    T[App新建票<br/>站1/2 出题正本已立] --> REG{宿主已登记?<br/>90-过程/宿主仓登记表}
+    REG -->|未登记| NO[票不立<br/>白名单先决·拍板#91①]
+    REG -->|已登记| PB{业主拍板<br/>+宿主固定节}
+    PB -->|缺宿主| REJ[fail-closed 拒发<br/>pi_runner.mjs:875]
+    PB -->|宿主非空| PH[parseHostRoot 提取<br/>引号含空格兼容]
+    PH --> RO[routeOf→宿主仓<br/>cwd=hostCwd]
+    RO --> WIN[宿主仓施工窗<br/>首跑冒烟/基线化]
+    WIN --> ACC[宿主侧验收<br/>探活/测试现状记账]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>App新建票</td><td>交付类票：站1/2 出题正本（交件包）已立、宿主仓从零起步——首跑冒烟/基线化亦归此（现状先例 W-034·<code>90-过程/执行台账.md:575</code>）。</td></tr><tr><td>宿主已登记?</td><td>白名单先决闸（拍板#91①）：宿主仓根必须已在 <code>90-过程/宿主仓登记表.md:1</code>（append-only 台账）——「票不立」在登记环节就拦，派工面根本见不到票。</td></tr><tr><td>业主拍板+宿主固定节</td><td>双保险：业主拍板给票合法性，任务书宿主固定节给作业面坐标——引擎不猜路径、不默认路径。</td></tr><tr><td>fail-closed 拒发</td><td>领单侧同闸兜底（<code>91-脚本/pi_runner.mjs:875</code>）：App 类缺宿主=跳过记因不领——不改行状态不弃单，修好任务书可重领。</td></tr><tr><td>parseHostRoot</td><td>宿主仓根提取契约（<code>91-脚本/pi_runner.mjs:112</code>·拍板#76③+#91②）：优先匹配引号包裹形式（引号内允许空格·剥引号）——"pi agent" 带空格的实证教训。</td></tr><tr><td>routeOf→宿主仓</td><td>宿主非空={ok:true, cwd:hostCwd, lane:"宿主仓"}（<code>91-脚本/pi_runner.mjs:103</code>）——与引擎两类的唯一路由分岔点。</td></tr><tr><td>宿主仓施工窗</td><td>施工面=宿主仓根；引擎判卷语义零涉宿主仓（判卷权冻结在引擎仓红线内）——宿主侧验收以自身测试/探活为准。</td></tr><tr><td>宿主侧验收</td><td>首跑冒烟的验收形态（W-034 先例）：git 基线+起服探活+测试现状记账——新建类先把「现状」立起来，不硬造绿。</td></tr></tbody></table>
+<h2>实例层（现在队列里长什么样）</h2>
+<ul><li>首票实战：W-034「App首跑冒烟」（<code>90-过程/窗队列.md:61</code>·宿主=039舆情V5·git 基线 96c9c6c+起服探活+测试现状记账·拍板#91 白名单首票）——<strong>App新建已通</strong>。</li><li>现网约束如实申报：App新建<strong>正式开闸候交付链两缺口票</strong>（W-017 挂账·丁范围外）——存量队列中大业务=App新建的行=0，后续实例随票落。</li><li>宿主仓清单正本=<code>90-过程/宿主仓登记表.md:1</code>（宿主固定节引用对象）。</li></ul>
+<h2>防重复指针（应然在别处·本卡只画实然）</h2>
+<ul><li>理念版项目产线编排（站1/2↔站3-6 分界=交件包）=「07-设计理念专题/五业务场景编排总图-…-20261018.html」§二（场景轴④⑤⑥·原图引用不复制）。</li><li>交付链设计意图=<code>01-蓝图/</code>；路由契约细节=契约卡 [ct-20261021-004]。</li></ul>
+<h2>时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head 7f51c83（2026-10-21 现勘）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-10-21（rrm_lint 整区 PASS+accept 自检）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/01-业务流程/bf-20261021-003-App新建.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

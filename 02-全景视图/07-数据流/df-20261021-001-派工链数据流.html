@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>df-20261021-001 · 数据流卡 · df-001 派工链数据流（N1 窗队列为中心）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>df-20261021-001 · 数据流卡 · df-001 派工链数据流（N1 窗队列为中心）</h1>
+<div class="meta"><b>id</b> df-20261021-001 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-11-03 · <b>repo_head</b> e170067 · <b>run_id</b> w251</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）；三关（收包验货关 L1／立票验单关·贴卡拦病关·领单再验单 L2）；复考（交活重考闸·L2）。</p>
+<p><strong>变更注记（v2 增密·W-251·拍板#334·2026-11-03）</strong>：repo_head 0cb1d3d→e170067 重锚（行锚随 TS 化迁移刷新·pi_runner/spawn_window/window_card_sync 真身均在 .ts·.mjs=垫片）；增量段=<strong>队列写路收敛</strong>节点边（e1.9-e1.12·唯一写口+审计+备份+哨兵·W-189 拍板#263/W-226 拍板#311/W-227 拍板#324·见边明细）。</p>
+</blockquote>
+<h1>数据流卡 · df-001 派工链数据流（N1 窗队列为中心）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：回答「一张票从窗队列到施工窗拉起，数据在哪个表哪个列哪个文件之间怎么流」——节点=N1 窗队列（唯一事实源）为中心，边=e1.1~e1.8（登记表编号零漂移）。<strong>边界</strong>：本卡只画<strong>本地</strong>派工链数据流（队列读写/配置/考题/窗PID/快照/机检），飞书投影边归 [df-20261021-002]，夜车账本归 [df-20261021-003]。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>W-047 本票即活例：拍板#99 落拍板表（<code>90-过程/拍板记录表.md:120</code>）→窗队列入列「待实施(已批)」（第 5 列）→定时派工器 30min 巡逻 pi_runner --auto 领单→本窗拉起</td><td><code>90-过程/拍板记录表.md:120</code></td></tr><tr><td>2</td><td>领单六闸逐格过：eligible 状态+拍板号闸（<code>91-脚本/pi_runner.mjs:122</code>）→审批规格节拍板号交叉核对（<code>91-脚本/pi_runner.mjs:268</code>）→routeOf 本仓→三关校验→拉窗</td><td><code>91-脚本/pi_runner.mjs:122</code></td></tr><tr><td>3</td><td>收口回写：子窗自写 ✅ 第 5-8 列→window_card_sync 读 N4 窗进程表算窗PID 活体投影（数据流见 df-002 e2.1）→wip_scan 3 天超时催办兜底</td><td><code>91-脚本/wip_scan.py:58</code></td></tr></tbody></table>
+<h2>§节点与边总览（编号正本=00 登记表·零漂移）</h2>
+<ul><li><strong>节点</strong>：N1 窗队列（<code>90-过程/窗队列.md</code>·11 列表头=<code>90-过程/窗队列.md:25</code>）、N2 派工配置（<code>91-脚本/afk_dispatch_config.json</code>）、N4 窗进程表（<code>%TEMP%/afk-window-pids.json</code>）、N5 考题库（<code>91-脚本/考题库/</code>）＋两处登记表行内数据落点：任务书「审批规格节」（e1.5 读面）与产物目录（e1.6 写面）。</li><li><strong>边</strong>：e1.1~e1.8 共 8 条，全部程序↔本地文件，<strong>零飞书边</strong>（飞书投影=e2.x 归 df-002）。</li></ul>
+<h2>§数据流主线（mermaid）</h2>
+<div class="figwrap"><div class="mermaid">
+flowchart TD
+    CRON["定时派工器<br/>afk_cron 30min 巡逻"] -->|"e1.1 触发：--auto --loop"| PR["pi_runner.mjs<br/>派工器·六闸"]
+    N1[("N1 窗队列<br/>90-过程/窗队列.md·11列")]
+    PR -->|"e1.1 读行+写第5列 ▶/✅/🔁"| N1
+    PR -->|"e1.2 读第10列前置闸<br/>成环=fail-closed 全不领"| N1
+    PR -->|"e1.3 读第11列领地<br/>交叠=WARN+IM 不拦车"| N1
+    N2[("N2 派工配置<br/>afk_dispatch_config.json")] -->|"e1.4 读 max_parallel"| PR
+    N5[("N5 考题库<br/>清单-*.json")] -->|"e1.4 复考闸 exit code 唯一判据"| PR
+    PR -->|"e1.4 写窗PID"| N4[("N4 窗进程表<br/>%TEMP%/afk-window-pids.json")]
+    TB["任务书<br/>审批规格节三行"] -->|"e1.5 第六闸：批什么#拍板号<br/>×第4列交叉核对"| PR
+    PR -->|"e1.6 拉窗"| SW["spawn_window.mjs"]
+    SW -->|"e1.6 写交接快照-收口.md<br/>覆盖写+写后回读复核"| ART["产物目录<br/>90-过程/窗产物/〈窗〉/"]
+    WS["wip_scan.py"] -->|"e1.7 读第5列+更新列算超时<br/>WARN 告警不拦车"| N1
+    ML["meta-lint / 回滚预演.mjs"] -->|"e1.8 行结构机检/回滚预演"| N1
+    WR["队列写口.mjs<br/>唯一写口·四道<br/>词面/宪法/乐观锁/审计"]
+    PR -->|"e1.9 翻格写全走口<br/>领单▶/钩子回执✅🔁/宁停⏸/推卡🔵<br/>五写者零直写"| WR
+    WR -->|"e1.10 道4 审计 append<br/>storage/queue_audit.jsonl"| N14[("N14 写口审计账<br/>指纹六字段")]
+    WR -->|"e1.11 写前滚动备份<br/>keep=10"| N15[("N15 备份目录<br/>storage/queue-backups/")]
+    SENT["队列哨兵.mjs<br/>cron :13"] -->|"e1.12 快照对拍<br/>snapshotOf 同口径指纹"| N1
+</div></div>
+<h2>§节点详注（图正下方·每节点做什么/边界/锚点）</h2>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>定时派工器</td><td>计划任务每 30min 拉起 pi_runner --auto --loop 的触发源（afk_cron 巡逻链一环）；只触发不读数据——数据读写全在 pi_runner。</td></tr><tr><td>N1 窗队列</td><td>全引擎唯一队列事实源：11 列表格（<code>90-过程/窗队列.md:25</code> 表头），第 5 列状态/第 4 列拍板号/第 10 列前置/第 11 列领地为派工链四大数据面；行解析=<code>parseRows</code>（<code>91-脚本/pi_runner.mjs:92</code>·缺列旧格式缺省兼容）。</td></tr><tr><td>pi_runner.mjs</td><td>派工器本体：六闸顺序=eligible（<code>91-脚本/pi_runner.mjs:122</code>）→前置闸→领地反查→并行帽→复考闸→审批规格核对（<code>91-脚本/pi_runner.mjs:268</code> 纯函数族）；选单=<code>pickDispatch</code>（<code>91-脚本/pi_runner.mjs:866</code>）；放行=三关校验（<code>91-脚本/pi_runner.mjs:1104</code>）+拉窗（<code>91-脚本/pi_runner.mjs:1118</code>）。</td></tr><tr><td>N2 派工配置</td><td>max_parallel=4 等四键 JSON；pi_runner 读它定并行帽——改并发只动此文件零改码。</td></tr><tr><td>N5 考题库</td><td>复考闸判卷面资产（清单 JSON×2+夹具×4+inject_driver）；增删改须业主拍板——数据流上只被读（exit code 唯一判据），不被派工链写。</td></tr><tr><td>N4 窗进程表</td><td>pi_runner 拉窗后写窗PID（<code>%TEMP%/afk-window-pids.json</code>·<code>91-脚本/window_card_sync.mjs:29</code> PIDFILE 同源消费）；窗卡台投影用它算「pid·存活｜已退」活体格。</td></tr><tr><td>任务书审批规格节</td><td>拍板#89 三行固定节（批什么/预算帽/允许动作面）；第六闸提取「批什么」拍板号与队列第 4 列交叉核对，不一致/提取失败=不领（fail-closed）。</td></tr><tr><td>spawn_window.mjs</td><td>拉窗器：buildStartCommand 组命令（<code>91-脚本/spawn_window.mjs:68</code>）+buildHandoffSnapshotMd 交接快照（<code>91-脚本/spawn_window.mjs:134</code>）覆盖写产物目录+写后回读复核（拍板#89己）。</td></tr><tr><td>wip_scan.py</td><td>超时催办：读第 5 列状态+更新列算超时天数（<code>91-脚本/wip_scan.py:58</code> WARN 行·缺省阈值 3 天）——<strong>告警级不拦车</strong>，只出清单不改队列。</td></tr><tr><td>meta-lint/回滚预演</td><td>手工机检边：队列行结构机检与回滚预演（<code>91-脚本/回滚预演.mjs</code>）——只读校验面。</td></tr><tr><td>队列写口.mjs（e1.9-e1.11 新增）</td><td>窗队列唯一写口（W-189 拍板#263·五写者收编）：翻格写全走口四道=道1 词面校验/道2 宪法表（十四对·<code>91-脚本/队列写口.mjs:54-69</code>）/道3 乐观锁（mtime+行指纹·重试≤3）/道4 审计留痕——治 W-181 误翻/W-182 覆盖双病灶；pi_runner 翻格写（领单▶/钩子回执✅🔁/宁停⏸/闸4升格重领）全走口零直写（<code>91-脚本/pi_runner.ts:84</code> import 消费）。</td></tr><tr><td>N14 写口审计账（新增）</td><td><code>storage/queue_audit.jsonl</code>（append-only·道4）：每写一行 ts/actor/ticket/from/to/note/ok/via/pid＋写前写后指纹六字段（pre/post Md5/Lines/MaxW·<code>队列写口.mjs:83-93,371</code>·契约详表=ct-001 邻域节）；拒写行亦记（ok:false+gate+reason 事故可回放）；幂等零写亦记。</td></tr><tr><td>N15 写前备份目录（新增）</td><td><code>storage/queue-backups/窗队列-&lt;ts毫秒&gt;.md</code>（W-226 拍板#311·<code>队列写口.mjs:96-125</code>）：写口每次落写前拷贝全文·同 md5 已备跳过·滚动保留 keep=10 份删最老（env AFK_QUEUE_BACKUP_KEEP 可配）——备份失败不挡写（兜底不是闸）。</td></tr><tr><td>队列哨兵.mjs（e1.12 新增）</td><td>队列状态机检面（afk_cron :13）：snapshotOf 同口径指纹对拍（<code>91-脚本/队列哨兵.mjs:49,128</code>·票据行数/最大W号/maxW 数值序）——只读不改，异常告警不直写。</td></tr></tbody></table>
+<h2>§边明细（e1.1~e1.8·对照登记表 §一 零漂移）</h2>
+<table><thead><tr><th>边</th><th>程序</th><th>读←</th><th>写→</th><th>字段/列级</th><th>触发</th></tr></thead><tbody><tr><td>e1.1</td><td>pi_runner.mjs</td><td>N1</td><td>N1</td><td>领单第 5 列→▶施工中；钩子回执 exit0→✅/非0→🔁（见 df-006 e6.1d 双写）；快照注记并行同列</td><td>定时派工器 --auto --loop</td></tr><tr><td>e1.2</td><td>pi_runner.mjs</td><td>N1 第 10 列前置</td><td>—</td><td>值以✅开头=就绪；成环=fail-closed 全不领</td><td>同上</td></tr><tr><td>e1.3</td><td>pi_runner.mjs</td><td>N1 第 11 列领地</td><td>—</td><td>拟派×已✅/▶ 求交，命中 WARN+IM（告警不拦车）</td><td>同上</td></tr><tr><td>e1.4</td><td>pi_runner.mjs</td><td>N2/N5</td><td>N4</td><td>读 max_parallel；复考 exit code 唯一判据；写窗 PID</td><td>同上</td></tr><tr><td>e1.5</td><td>pi_runner.mjs</td><td>任务书审批规格节</td><td>—</td><td>批什么#拍板号 × 第 4 列交叉核对</td><td>同上</td></tr><tr><td>e1.6</td><td>spawn_window.mjs</td><td>N1（注记）</td><td>产物目录</td><td>交接快照-收口.md 覆盖写+写后回读复核</td><td>被拉窗时</td></tr><tr><td>e1.7</td><td>wip_scan.py</td><td>N1 全表行</td><td>console</td><td>第 5 列+更新列算超时（告警不拦车）</td><td>手工/催办</td></tr><tr><td>e1.8</td><td>meta-lint/回滚预演.mjs</td><td>N1</td><td>—</td><td>行结构机检/回滚预演</td><td>手工</td></tr><tr><td>e1.9</td><td>pi_runner.ts（及施工窗/主窗/巡检·五写者）</td><td>N1</td><td>N1</td><td><strong>翻格写全走队列写口</strong>（W-189 拍板#263·锚 <code>90-过程/拍板记录表.md:298</code>）：写口四道=词面/宪法十四对（<code>队列写口.mjs:54-69</code>）/乐观锁/审计——五写者零直写</td><td>全部翻格场景</td></tr><tr><td>e1.10</td><td>队列写口.mjs</td><td>—</td><td>N14</td><td>道4 审计 append（含指纹六字段·拒写行/幂等零写亦记）</td><td>每次走口写</td></tr><tr><td>e1.11</td><td>队列写口.mjs</td><td>—</td><td>N15</td><td>写前滚动备份（keep=10·同 md5 跳过·失败不挡写）</td><td>每次真落写前</td></tr><tr><td>e1.12</td><td>队列哨兵.mjs</td><td>N1</td><td>console</td><td>快照指纹对拍（snapshotOf 同口径·异常告警不直写）</td><td>afk_cron :30min 巡逻</td></tr></tbody></table>
+<h2>§纪律线（本块归属）</h2>
+<ul><li>登记表 §七 编号纪律线 1-6 中<strong>本块无直接归属边</strong>（e1.x 全本地零飞书）——双色/单向投影/业主专属写等线落 df-002/df-004 各归其卡。登记表引言称「七条」、§七 正文实列 6 条编号纪律线：本窗照 §七 正文 6 条全落图（归属见各卡），差异如实申报于此，不自造第 7 条编号。</li><li>本块自身闸纪律（登记表行内既有·显式标注）：<strong>前置闸 fail-closed</strong>（e1.2 成环全不领·宁停不派）；<strong>领地告警不拦车</strong>（e1.3 WARN 级）；<strong>复考 exit code 唯一判据</strong>（e1.4 不看文本只看码）；<strong>审批规格拍板号交叉核对 fail-closed</strong>（e1.5 拍板#89）。</li><li><strong>写路收敛纪律（e1.9-e1.11 新增·W-251 补录）</strong>：N1 翻格写唯一通道=队列写口（五写者零直写·越权拒写 fail-closed＋审计留痕＋写前备份）——窗口施工注记走 <code>--note</code>（op:note 注记通道·W-242）禁 bash 直写队列；哨兵/机检面只读（e1.12·e1.7/e1.8）不翻格。</li></ul>
+<h2>§防重复指针</h2>
+<ul><li>派工链时序视角（谁先谁后）=[sq-20261021-002]；状态谁改怎么改=[sm-20261021-001]（标源=窗队列不变量表·本卡不自立状态定义）；模块接口细节=[mk-20261021-001]/[mk-20261021-002]/[mk-20261021-003]。飞书投影数据流=[df-20261021-002]。</li><li>agent 输入输出契约正本=登记表 §〇-A 段（A1-A21·拍板#343 W-259），本卡不重复（派工链零 LLM 调用岗·详见总图卡 gw-20261103-001 §10）。</li><li>本卡与 sq-002 分类轴不同：本卡=<strong>数据面</strong>（哪个表哪个列被谁读写），sq-002=<strong>时间面</strong>（步骤先后）——零正文复制。</li></ul>
+<h2>§时效</h2>
+<table><thead><tr><th>键</th><th>值</th></tr></thead><tbody><tr><td>基准</td><td>repo_head e170067（2026-11-03 W-251 对账批现勘·行锚随 TS 化迁移刷新+写路收敛节点边落卡）</td></tr><tr><td>生成式</td><td>否（as-built 实勘·非生成物）</td></tr><tr><td>核对</td><td>2026-11-03（登记表编号对照·e1.9-e1.12/N14/N15 已同步 append 登记表）</td></tr><tr><td>失效触发</td><td>见 frontmatter 失效触发键</td></tr></tbody></table>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/07-数据流/df-20261021-001-派工链数据流.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>

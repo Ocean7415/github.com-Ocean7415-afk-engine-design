@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>mk-20261021-002 · 模块卡 · 拉窗器（spawn_window）</title>
+<style>
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',system-ui,sans-serif;max-width:1140px;margin:0 auto;padding:24px;line-height:1.75;color:#26282e;background:#fafafa}
+h1{font-size:22px;color:#1d2330;border-bottom:2px solid #e4e7ee;padding-bottom:10px}
+h2{font-size:18px;color:#1d2330;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid #e4e7ee}
+h3{font-size:15px;margin:16px 0 8px;color:#1d2330}
+p,li{font-size:14px}
+code{background:#f0f2f6;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;overflow-x:auto}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px;background:#fff}
+th{background:#eef3fa;color:#1d2330;text-align:left}
+th,td{border:1px solid #e4e7ee;padding:5px 8px;vertical-align:top}
+blockquote{border-left:4px solid #eef3fa;margin:10px 0;padding:4px 14px;color:#5a6070;background:#fff;border-radius:0 8px 8px 0}
+.figwrap{background:#fff;border:1px solid #e4e7ee;border-radius:8px;padding:12px;margin:10px 0;overflow-x:auto}
+.meta{background:#fff;border:1px solid #e4e7ee;border-left:4px solid #2b5fa8;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12.5px}
+.meta b{color:#1d2330}
+.footer{margin-top:34px;padding-top:12px;border-top:1px solid #e4e7ee;color:#8a90a0;font-size:12px}
+.mermaid{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+<h1>mk-20261021-002 · 模块卡 · 拉窗器（spawn_window）</h1>
+<div class="meta"><b>id</b> mk-20261021-002 · <b>kind</b> 模块卡 · <b>domain</b> engine · <b>status</b> verified · <b>created_at</b> 2026-10-21 · <b>verified_at</b> 2026-11-03 · <b>repo_head</b> e170067 · <b>run_id</b> w251</div>
+<blockquote>
+<p><strong>口径</strong>：本卡话术/命名遵循《<a href="../00-话术统一口径正本.md">00-话术统一口径正本</a>》（拍板#312）——双名制首现双写·撞车词带消歧（窗票/工序票·判色/判分）·两层口径 L1 车间（票级）/L2 派工台（窗级）。</p>
+<p><strong>消歧（本卡·口径正本 §3）</strong>：票（工序票 L1／窗票 L2·随文标注）。</p>
+<p><strong>变更注记（v2 增密·W-251·拍板#334·2026-11-03）</strong>：repo_head 67e5b04→e170067 重锚；实现本体已迁 <code>spawn_window.ts</code>（批C1 W-216·拍板#293——<code>spawn_window.mjs</code>=2 行入口垫片兼库转发·pi_runner SPAWNER 词面保活），全卡行锚随迁 .ts；增量段=<strong>print 完全静默壳</strong>（拍板#318·W-236·wscript 隐藏壳拉起形态·见 §增量段）——interactive 道位可见语义零触碰。</p>
+</blockquote>
+<h1>模块卡 · 拉窗器（spawn_window）</h1>
+<h2>§0 一句话</h2>
+<p><strong>解决什么</strong>：把「一条领单指令」变成「一台真实的可见施工窗」——构造 ASCII 安全命令、拉起 pi 子窗进程、自产交接快照三键。<strong>为什么存在</strong>：拍板#70① 定死「窗=可见工作台不静默」（<code>90-过程/拍板记录表.md:88</code>），拉窗器是这条人机边界的技术载体。<strong>边界</strong>：只拉窗不盯窗（收口自检归调用方）、零 LLM 零预算、<code>--title</code> 仅 ASCII 且窗题装饰不承载信息。</p>
+<h2>§典型事件链</h2>
+<table><thead><tr><th>#</th><th>事件</th><th>锚</th></tr></thead><tbody><tr><td>1</td><td>定形：拍板#70 落表——L2 执行窗形态（窗=可见工作台·spawn 快照三键交底）</td><td><code>90-过程/拍板记录表.md:88</code></td></tr><tr><td>2</td><td>实战：W-034（App 首跑冒烟·宿主仓作业面首票）经 spawn_window 拉起宿主窗</td><td><code>90-过程/执行台账.md:575</code></td></tr><tr><td>3</td><td>实战：W-042 拉窗 spawn 快照三键照录（会话档/产物锚/窗PID 在窗队列行·缺会话档如实沿录不谎报）</td><td><code>90-过程/执行台账.md:584</code></td></tr><tr><td>4</td><td>实战（活例）：W-043 本窗拉起时快照三键缺 1 键（产物锚目录未建）→WARN 入账不谎报齐——拍板#89己「缺键不装」纪律的真实演练</td><td><code>90-过程/执行台账.md:584</code>（W-042 同款先例）</td></tr></tbody></table>
+<h2>接口</h2>
+<p>CLI：<code>node 91-脚本/spawn_window.mjs --title &lt;窗题&gt; --cwd &lt;子窗目录&gt; --prompt-file &lt;kick路径&gt; [--mode print|interactive] [--dry-run]</code>（入口=垫片·真身 spawn_window.ts·垫片注记锚 91-脚本/spawn_window.mjs:2）·<code>--selftest</code>。 导出纯函数族（供 pi_runner import 消费）：resolveCwd/buildPrintLaunchContent/buildInteractiveLauncherContent/buildStartCommand/buildPsSpawnCommand/buildWindowProbePsCommand（单引号拒收 fail-closed）·print 拉起命令串纯函数（锚 91-脚本/spawn_window.ts:98——<code>wscript.exe //nologo &lt;vbs&gt; &lt;批处理&gt;</code>）。</p>
+<h2>实现概览</h2>
+<p>v4 定案：命令行全 ASCII（中文/空格路径经环境变量传入批处理·CreateProcessW env 块 Unicode 安全）。两种模式：print=跑完自退（<strong>wscript 静默壳</strong>·拍板#318 见 §增量段）；interactive=TUI 常驻（PS Start-Process -NoExit·可追问·可见语义零变）。 交接快照底座单一事实源：winFromTitle 窗题提取·probeArtifactDir 产物目录探针（前缀匹配取 mtime 最新）·probeLatestSessionFile 会话档探针（mtime 降序+afterTs 过滤防拿调用方旧档谎报）——三件随 TS 化迁 spawn_window.ts（pi_runner.ts:82 import 消费）。</p>
+<div class="figwrap"><div class="mermaid">
+flowchart LR
+    IN[领单参数<br/>title/cwd/prompt-file] --> V{参数校验<br/>fail-closed}
+    V -->|cwd/prompt 不存在| REJ[拒收]
+    V -->|合法| CMD{模式}
+    CMD -->|print| P1[wscript 静默壳·拍板#318<br/>//nologo vbs→Run 批,0,False·pi -p 落日志]
+    CMD -->|interactive| P2[PS Start-Process -NoExit<br/>TUI 常驻可追问]
+    P1 --> SP[子窗进程拉起]
+    P2 --> SP
+    SP --> SN[快照三键自产<br/>winFromTitle/probeArtifactDir/<br/>probeLatestSessionFile]
+    SN --> OUT[窗队列行回填<br/>缺键 WARN 不谎报]
+</div></div>
+<p><strong>节点详注表</strong>（图正下方·每节点做什么/边界/锚点）：</p>
+<table><thead><tr><th>节点</th><th>详注</th></tr></thead><tbody><tr><td>领单参数</td><td>三要素入参：窗题（仅 ASCII·非 ASCII 自动剔除）、子窗目录、kick 提示词文件路径——全部来自派工器领单行或业主手工命令。</td></tr><tr><td>参数校验</td><td>fail-closed 门：cwd/prompt-file 不存在=拒收；探针命令构造含单引号拒收——宁可拒拉不带病拉窗。</td></tr><tr><td>模式分支</td><td>print=跑完自退（一次性会话·落日志+会话档·<strong>wscript 静默壳拉起</strong>·拍板#318）；interactive=TUI 常驻（施工窗默认·可追问·拍板#100 可见语义零变）。命令行全 ASCII，中文/空格路径走环境变量传入（v4 Unicode 安全定案）。mode 判定锚 91-脚本/spawn_window.ts:486-492。</td></tr><tr><td>子窗进程拉起</td><td>interactive 走 PS Start-Process -NoExit，print 走 wscript 静默壳（拍板#318·见 §增量段）——纯系统进程零 LLM。</td></tr><tr><td>快照三键自产</td><td>单一事实源三件：winFromTitle 窗题提取/probeArtifactDir 产物目录探针（mtime 最新）/probeLatestSessionFile 会话档探针（afterTs 过滤防拿旧档谎报）——spawn_window.ts 单源；pi_runner import 消费防双头漂移（锚 91-脚本/pi_runner.ts:82）。</td></tr><tr><td>窗队列行回填</td><td>三键写入窗队列 spawn 快照段；缺键=WARN 照录不谎报齐（拍板#89己）——W-042/W-043 两窗实证。</td></tr></tbody></table>
+<h2>增量段（print 完全静默壳·拍板#318·W-236·2026-11-01 落码·2026-11-03 补录）</h2>
+<p><strong>语义</strong>：拍板#100「拉窗可见」在 <strong>print 道位</strong>由业主令「C. print 完全静默（真静默）」修订为静默自退（拍板#318·W-236）——interactive 道位可见语义<strong>零触碰</strong>；#265 最小化形态在 print 道位被本票升级取代（设计注记锚 91-脚本/spawn_window.ts:49-55）。</p>
+<p><strong>形态</strong>：print 分支拉起从 <code>start /min cmd /c</code> 改为 <strong>wscript 隐藏壳</strong>——<code>wscript.exe //nologo &lt;vbs副本&gt; &lt;批处理&gt;</code>·vbs 内 <code>WScript.Shell.Run &lt;批&gt;, 0, False</code>（0=隐藏窗·False=异步发射即 0 退出码·与 start 异步发射同契约）：</p>
+<table><thead><tr><th>件</th><th>锚</th><th>说明</th></tr></thead><tbody><tr><td>vbs 形态单源</td><td><code>91-脚本/afk_spawn_hidden.vbs:1</code>（一行 ASCII）</td><td>批路径走参数；仓内 vbs 含中文路径故运行时落 %TEMP% 副本再发射（spawn_window.ts:347 注记）</td></tr><tr><td>print 拉起命令串纯函数</td><td>91-脚本/spawn_window.ts:98-101</td><td>title 不再进命令行（wscript 无窗无题·ascii(title)/winFromTitle 快照归属链在调用方零变）</td></tr><tr><td>env 继承链</td><td>spawn→wscript→Run 双级</td><td>AFK_* 三键零字节（快照归属改走批内 env 注入·ts:53-55 注记）</td></tr><tr><td>mode 判定/print 分支</td><td>spawn_window.ts:486/:492</td><td>缺省 interactive 可见（业主拍板：先不做静默）</td></tr></tbody></table>
+<p><strong>边界</strong>：静默壳只改 print 道位拉起形态——快照三键/参数校验/退出码契约零变；夜车/无人值守用 print 道即完全静默（桌面零弹窗），围观追问走 interactive。</p>
+<h2>调用方与被调用</h2>
+<p>被调：pi_runner（import 快照底座四件+子进程拉窗·SPAWNER 指垫片·锚 91-脚本/pi_runner.ts:96）；业主手工拉窗。 调用：wscript.exe/PowerShell/cmd 系统进程（零 LLM）。</p>
+<h2>从哪测</h2>
+<p><code>node 91-脚本/spawn_window.mjs --selftest</code>（入口垫片·真身 spawn_window.ts·含快照底座与静默壳案）；--dry-run 只出命令不真拉窗。</p>
+<h2>参数与预算</h2>
+<p>零 LLM 零预算；--title 仅 ASCII（非 ASCII 自动剔除·窗题装饰不承载信息）；cwd/prompt-file 不存在=拒收；临时 cmd/ps/log 留 %TEMP% 清理由业主；只拉窗不盯窗——收口自检归调用方；print 道位=完全静默（拍板#318）·interactive=可见可追问（拍板#100 零变）。</p>
+<h2>时效</h2>
+<p>基准=仓 head e170067（2026-11-03·W-251 对账批复勘：TS 化迁移随迁+静默壳形态实锚入卡）；上一基准 67e5b04（2026-10-21 W-040）；失效触发=拉窗形态/探针判据/快照底座语义改动（看执行台账 spawn_window 新笔）。</p>
+<div class="footer">生成品（双层制·拍板#96）：源卡 <code>02-全景视图/03-模块卡/mk-20261021-002-拉窗器-spawn_window.md</code> · 由 91-脚本/md2html_全景视图.mjs 生成 · 手改会被渲染器覆盖——改正本请改 md</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+</body>
+</html>
